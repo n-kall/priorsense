@@ -1,0 +1,127 @@
+---
+title: "Powerscaling sensitivity analysis"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{powerscaling}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Introduction
+
+priorsense is a package for prior diagnostics in Bayesian models. It
+currently implements power-scaling sensitivity analysis but may be
+extended in the future to include other diagnostics.
+
+# Installation
+
+priorsense can be installed via:
+
+```{r, eval = FALSE}
+# install.packages("remotes")
+remotes::install_github("n-kall/priorsense")
+```
+
+# Power-scaling sensitivity analysis
+
+In brief, power-scaling sensitivity analysis tries to determine how
+small changes to the prior or likelihood affect the posterior. We do
+this by power-scaling the prior or likelihood by raising it to some
+$\alpha > 0$.
+
+- For prior power-scaling: $p(\theta \mid y) \propto p(\theta)^\alpha
+  p(y \mid \theta)$
+- For likelihood power-scaling: $p(\theta \mid y) \propto
+  p(\theta)^\alpha p(y \mid \theta)$
+
+In priorsense, this is done in a computationally efficient manner
+using Pareto-smoothed importance sampling (and optionally importance
+weighted moment matching) to estimate properties of these perturbed
+posteriors. Sensitivity can then be quantified by considering how much
+the perturbed posteriors differ from the base posterior.
+
+## Example power-scaling sensitivity analysis
+```{r, message = FALSE}
+library(priorsense)
+library(rstan)
+library(ggplot2)
+```
+
+Consider the following model (available via
+`example_powerscale_model("univariate_normal")`:
+
+$$y \sim \text{normal}(\mu, \sigma)$$
+$$\mu \sim \text{normal}(0, 1)$$
+$$\sigma \sim \text{normal}^+(0, 2.5)$$
+
+We have 100 data points for $y$
+We first fit the model using Stan:
+```{r}
+normal_model <- example_powerscale_model("univariate_normal")
+
+fit <- stan(
+  model_code = normal_model$model_code,
+  data = normal_model$data,
+  refresh = FALSE
+)
+
+```
+
+Next, we check the sensitivity of the prior and likelihood to
+power-scaling. The sensitivity values shown below are an indication of
+how much the posterior changes with respect to power-scaling. Larger
+values indicate more sensitivity. By default these values are derived
+from the gradient of the Cumulative Jensen-Shannon distance between
+the base posterior and posteriors resulting from power-scaling.
+
+```{r}
+powerscale_sensitivity(fit, variables = c("mu", "sigma"))
+```
+
+Here, we see that the pattern of sensitivity indicates that there is
+prior-data conflict for $\mu$. We follow up with visualisation.
+
+We first create a `powerscaled_sequence` object, which contains
+estimates of posteriors for a range of power-scaling amounts.
+
+```{r}
+pss <- powerscale_sequence(fit)
+```
+
+There are three plots currently available:
+
+- Kernel density estimates:
+```{r}
+powerscale_plot_dens(pss, variables = "mu")
+```
+
+- Empirical cumulative distribution functions:
+```{r}
+powerscale_plot_ecdf(pss, variables = "mu")
+```
+
+- Quantities:
+```{r, fig.width = 12, fig.height = 4}
+powerscale_plot_quantities(pss, variables = "mu")
+```
+
+As can be seen in the plots, power-scaling the prior and likelihood
+have opposite direction effects on the posterior. This is further
+evidence of prior-data conflict.
+
+Indeed, if we inspect the raw data, we see that the prior on $\mu$,
+$\text{normal}(0, 1)$ does not match well with the mean of the data,
+whereas the prior on $\sigma$, $\text{normal}^+(0, 2.5)$ is
+reasonable:
+
+```{r}
+mean(normal_model$data$y)
+sd(normal_model$data$y)
+```
