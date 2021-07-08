@@ -32,6 +32,7 @@ Calculate the derivative of a posterior quantity with respect to
 power-scaling the prior or likelihood.
 }
 \examples{
+\dontrun{
 example_model <- example_powerscale_model()
 
 fit <- rstan::stan(model_code = example_model$model_code, data = example_model$data)
@@ -41,7 +42,7 @@ draws <- posterior::subset_draws(posterior::as_draws_df(fit), variable = c("mu",
 log_prior <- as.numeric(calculate_log_prior(fit))
 
 posterior::summarise_draws(draws, mean, ~powerscale_derivative(.x, log_prior, quantity = "mean"))
-
+}
 }
 \references{
 Kallioinen, N., Paananen, T., Bürkner, P-C., Vehtari, A. (in
