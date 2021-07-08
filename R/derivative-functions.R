@@ -11,6 +11,7 @@
 ##'   power-scaling factor (alpha).
 ##'
 ##' @examples
+##' \dontrun{
 ##' example_model <- example_powerscale_model()
 ##'
 ##' fit <- rstan::stan(model_code = example_model$model_code, data = example_model$data)
@@ -20,7 +21,7 @@
 ##' log_prior <- as.numeric(calculate_log_prior(fit))
 ##' 
 ##' posterior::summarise_draws(draws, mean, ~powerscale_derivative(.x, log_prior, quantity = "mean"))
-##'
+##' }
 ##' @export
 powerscale_derivative <- function(x,
                                   log_component,
