@@ -69,7 +69,8 @@ normal_model <- example_powerscale_model("univariate_normal")
 fit <- stan(
   model_code = normal_model$model_code,
   data = normal_model$data,
-  refresh = FALSE
+  refresh = FALSE,
+  seed = 123
 )
 
 ```
