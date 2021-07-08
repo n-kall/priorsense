@@ -63,17 +63,17 @@ jobs:
             eval sudo $cmd
           done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "20.04"))')
 
-      - name: Install windows specific dependencies
-        if: runner.os == 'Windows'
-        run: |
-          remotes::install_version("withr", version="2.2.0")
-        shell: Rscript {0}
-
       - name: Install dependencies
         run: |
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("rcmdcheck")
           install.packages("posterior", repos = c("https://mc-stan.org/r-packages/", getOption("repos")), type = "source")
+        shell: Rscript {0}
+
+      - name: Install windows specific dependencies
+        if: runner.os == 'Windows'
+        run: |
+          remotes::install_version("withr", version="2.2.0")
         shell: Rscript {0}
 
       - name: Check
