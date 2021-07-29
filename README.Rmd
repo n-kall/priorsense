@@ -36,7 +36,7 @@ sensitivity analysis relies on Pareto-smoothed importance sampling
 (Vehtari et al., 2019) and importance weighted moment matching
 (Paananen et al., 2021).
 
-Power-scaling sensitivity analysis and priorsense is described in
+Power-scaling sensitivity analysis and priorsense are described in
 Kallioinen et al. (2021).
 
 # Installation
