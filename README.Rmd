@@ -51,11 +51,11 @@ remotes::install_github("n-kall/priorsense")
 
 Kallioinen, N., Paananen, T., Bürkner P-C., and Vehtari, A. (2021).
 Detecting and diagnosing prior and likelihood sensitivity with
-power-scaling. preprint arXiv:XXXX.XXXXX
+power-scaling. preprint [arXiv:2107.14054](https://arxiv.org/abs/2107.14054)
 
 Paananen, T., Piironen, J., Bürkner P-C., and Vehtari, A. (2021).
 Implicitly adaptive importance sampling. Statistics and Computing
 31, 16. https://doi.org/10.1007/s11222-020-09982-2
 
 Vehtari, A., Simpson, D., Gelman, A., Yao, Y., and Gabry, J. (2019).
-Pareto smoothed importance sampling. preprint arXiv:1507.02646
+Pareto smoothed importance sampling. preprint [arXiv:1507.02646](https://arxiv.org/abs/1507.02646)
