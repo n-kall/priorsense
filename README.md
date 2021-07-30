@@ -19,10 +19,81 @@ Power-scaling sensitivity analysis and priorsense are described in Kallioinen et
 
 Download the development version from [GitHub](https://github.com/) with:
 
-``` r
-# install.packages("remotes")
-remotes::install_github("n-kall/priorsense")
+`r, eval = F # install.packages("remotes") remotes::install_github("n-kall/priorsense")`
+
+## Usage
+
+priorsense currently works best with Stan models created with rstan. However there is partial support for models fit with cmdstanr.
+
+### Example
+
+Consider the following model (available via`example_powerscale_model("univariate_normal")`:
+
+*y* ∼ normal(*μ*, *σ*)
+*μ* ∼ normal(0, 1)
+*σ* ∼ normal<sup>+</sup>(0, 2.5)
+
+We have 100 data points for *y* We first fit the model using Stan:
+
+``` stan
+data {
+  int<lower=1> N;
+  real y[N];
+}
+parameters {
+  real mu;
+  real<lower=0> sigma;
+}
+model {
+  // priors
+  target += normal_lpdf(mu | 0, 1);
+  target += normal_lpdf(sigma | 0, 2.5);
+  // likelihood
+  target += normal_lpdf(y | mu, sigma);
+}
+generated quantities {
+  vector[N] log_lik;
+  // likelihood
+  real log_prior;
+  // joint prior specification required for cmdstanr
+  for (n in 1:N) log_lik[n] =  normal_lpdf(y[n] | mu, sigma);
+  log_prior = normal_lpdf(mu | 0, 1)
+    normal_lpdf(sigma | 0, 2.5);
+}
 ```
+
+``` r
+library(priorsense)
+normal_model <- example_powerscale_model("univariate_normal")
+```
+
+### Fitting with rstan and cmdstanr
+
+``` r
+rs_fit <- rstan::stan(
+  model_code = normal_model$model_code,
+  data = normal_model$data,
+  refresh = FALSE,
+  seed = 123
+)
+
+cs_model <- cmdstanr::cmdstan_model(
+  stan_file = cmdstanr::write_stan_file(normal_model$model_code)
+)
+
+cs_fit <- cs_model$sample(data = normal_model$data, refresh = 0, seed = 123) 
+```
+
+Once fit, a sensitivity analysis can be performed as follows. For cmdstanr models it is currently necessary to use to specify `log_prior_fn = extract_log_prior`and have the joint log prior specified in the Stan code (as above)
+
+``` r
+powerscale_sensitivity(rs_fit, variables = c("mu", "sigma"))
+
+
+powerscale_sensitivity(cs_fit, variables = c("mu", "sigma"), log_prior_fn = extract_log_prior)
+```
+
+\`\`\`
 
 ## References
 
