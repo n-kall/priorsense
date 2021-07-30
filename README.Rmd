@@ -127,7 +127,6 @@ powerscale_sensitivity(rs_fit, variables = c("mu", "sigma"))
 powerscale_sensitivity(cs_fit, variables = c("mu", "sigma"), log_prior_fn = extract_log_prior)
 ```
 
-```
 
 ## References
 
