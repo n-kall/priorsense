@@ -93,8 +93,6 @@ powerscale_sensitivity(rs_fit, variables = c("mu", "sigma"))
 powerscale_sensitivity(cs_fit, variables = c("mu", "sigma"), log_prior_fn = extract_log_prior)
 ```
 
-\`\`\`
-
 ## References
 
 Kallioinen, N., Paananen, T., Bürkner P-C., and Vehtari, A. (2021). Detecting and diagnosing prior and likelihood sensitivity with power-scaling. preprint [arXiv:2107.14054](https://arxiv.org/abs/2107.14054)
