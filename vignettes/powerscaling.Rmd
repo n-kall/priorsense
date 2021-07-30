@@ -63,6 +63,36 @@ $$\sigma \sim \text{normal}^+(0, 2.5)$$
 
 We have 100 data points for $y$
 We first fit the model using Stan:
+
+```{stan}
+data {
+  int<lower=1> N;
+  real y[N];
+}
+parameters {
+  real mu;
+  real<lower=0> sigma;
+}
+model {
+  // priors
+  target += normal_lpdf(mu | 0, 1);
+  target += normal_lpdf(sigma | 0, 2.5);
+  // likelihood
+  target += normal_lpdf(y | mu, sigma);
+}
+generated quantities {
+  vector[N] log_lik;
+  // likelihood
+  real log_prior;
+  // joint prior
+  for (n in 1:N) log_lik[n] =  normal_lpdf(y[n] | mu, sigma);
+  log_prior = normal_lpdf(mu | 0, 1)
+	normal_lpdf(sigma | 0, 2.5);
+}
+```
+
+This code and data for this model is accessible in via `example_powerscale_model`.
+
 ```{r}
 normal_model <- example_powerscale_model("univariate_normal")
 
