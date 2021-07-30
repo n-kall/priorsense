@@ -5,3 +5,6 @@
 ^cran-comments\.md$
 ^\.github$
 ^man-roxygen$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
