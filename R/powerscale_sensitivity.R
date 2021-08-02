@@ -115,7 +115,7 @@ powerscale_sensitivity <- function(fit, variables = NA,
   
   out <- list(
     # order by largest value first
-    sensitivity = sense[order(sense$prior, decreasing = TRUE), ],
+    sensitivity = sense,
     div_measure = div_measure
   )
 
