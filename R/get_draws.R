@@ -10,25 +10,52 @@ get_draws <- function(x, variables, ...) {
 }
 
 get_draws.brmsfit <- function(x, variables, ...) {
-  return(posterior::as_draws_df(as.array(x, pars = variables)))
+
+  draws <- posterior::as_draws_df(as.array(x, pars = variables))
+
+
+  if (anyNA(variables)) {
+    # remove unnecessary variables
+    variables <- posterior::variables(draws)
+    variables <- variables[!(variables %in% c("log_prior", "lp__")) &
+                             !(startsWith(variables, "log_lik"))]
+
+    draws <- posterior::subset_draws(draws, variable = variables)
+  }
+
+  return(draws)
 }
 
 get_draws.stanfit <- function(x, variables, ...) {
   if (anyNA(variables)) {
-    out <- posterior::as_draws_df(as.array(x))
+
+    draws <- posterior::as_draws_df(as.array(x))
+
+    # remove unnecessary variables
+    variables <- posterior::variables(draws)
+    variables <- variables[!(variables %in% c("log_prior", "lp__")) &
+                             !(startsWith(variables, "log_lik"))]
+    draws <- posterior::subset_draws(draws, variable = variables)
   } else {
-    out <- posterior::as_draws_df(as.array(x, pars = variables))
+    draws <- posterior::as_draws_df(as.array(x, pars = variables))
   }
 
-  return(out)
+  return(draws)
 }
 
 get_draws.CmdStanFit <- function(x, variables, ...) {
 
   if (anyNA(variables)) {
-    out <- posterior::as_draws_df(x$draws())
+    draws <- posterior::as_draws_df(x$draws())
+
+    # remove unnecessary variables
+    variables <- posterior::variables(draws)
+    variables <- variables[!(variables %in% c("log_prior", "lp__")) &
+                             !(startsWith(variables, "log_lik"))]
+
+    draws <- posterior::subset_draws(draws, variable = variables)
   } else {
-    out <- posterior::as_draws_df(x$draws(variables))
+    draws <- posterior::as_draws_df(x$draws(variables))
   }
-  return(out)
+  return(draws)
 }
