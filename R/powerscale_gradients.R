@@ -238,8 +238,6 @@ powerscale_divergence_gradients <- function(lower_divergences, upper_divergences
   upper_grad <- (subset(upper_divergences, select = -c(variable))) /
     (log(upper_alpha, base = 2))
 
-  #grad <- (abs(upper_grad) + abs(lower_grad)) / 2
-
   # take max of gradients for each variable
   grad <- pmax(abs(upper_grad), abs(lower_grad))
 
