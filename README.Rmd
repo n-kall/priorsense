@@ -86,9 +86,9 @@ generated quantities {
   vector[N] log_lik;
   // likelihood
   real log_prior;
-  // joint prior specification required for cmdstanr
   for (n in 1:N) log_lik[n] =  normal_lpdf(y[n] | mu, sigma);
-  log_prior = normal_lpdf(mu | 0, 1)
+  // joint prior specification required for cmdstanr
+  log_prior = normal_lpdf(mu | 0, 1) +
 	normal_lpdf(sigma | 0, 2.5);
 }
 ```
@@ -116,7 +116,7 @@ cs_fit <- cs_model$sample(data = normal_model$data, refresh = 0, seed = 123)
 ```
 
 Once fit, a sensitivity analysis can be performed as follows. For
-cmdstanr models it is currently necessary to use to specify
+cmdstanr models it is currently necessary to specify
 `log_prior_fn = extract_log_prior`and have the joint log prior
 specified in the Stan code (as above)
 
