@@ -14,7 +14,7 @@ extract_joint_log_lik.stanfit <- function(x, parameter_name = "log_lik", ...) {
 
   dim(log_lik) <- c(dim(log_lik), 1)
   log_lik <- posterior::as_draws_array(log_lik)
-  posterior::variables(log_lik) <- "log_lik"
+  posterior::variables(log_lik) <- parameter_name
 
   return(log_lik)
 }
@@ -45,7 +45,7 @@ extract_joint_log_lik.CmdStanFit <- function(x, parameter_name = "log_lik", ...)
 
   # back to draws_array
   log_lik <- posterior::as_draws_array(log_lik)
-  posterior::variables(log_lik) <- "log_lik"
+  posterior::variables(log_lik) <- parameter_name
   
   return(log_lik)
 }
