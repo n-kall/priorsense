@@ -44,7 +44,7 @@ extract_log_prior.stanfit <- function(x,
 extract_log_prior.brmsfit <- function(x,
                                       parameter_name = "log_prior", ...) {
 
-  log_prior <- as.array(x, pars = parameter_name)
+  log_prior <- as.array(x, variable = parameter_name)
 
   return(log_prior)
 }
