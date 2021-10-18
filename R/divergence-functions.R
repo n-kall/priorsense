@@ -8,7 +8,7 @@ all_divergence_measures <- function() {
     "kl_div",
     "ws_dist",
     "ks_dist"
-  ) 
+  )
 }
 
 
@@ -25,14 +25,16 @@ divergence_measures <- function(draws1, draws2,
                                 measure_args = list(),
                                 ...) {
 
+  draws1 <- posterior::as_draws_df(draws1)
+  draws2 <- posterior::as_draws_df(draws2)
+
   weights1 <- stats::weights(draws1, log = FALSE)
   weights2 <- stats::weights(draws2, log = FALSE)
-
 
   variables <- posterior::variables(draws1)
 
   out <- tibble::as_tibble_col(variables, "variable")
-  
+
   for (m in measure) {
     divs <- numeric(length(variables))
     names(divs) <- variables
@@ -47,7 +49,7 @@ divergence_measures <- function(draws1, draws2,
         ),
         measure_args
       )
-        
+
       divs[v] <- do.call(
         what = m,
         args = args
@@ -58,6 +60,62 @@ divergence_measures <- function(draws1, draws2,
   }
 
   return(out)
+}
+
+##' Multivariate Kullback-Leibler divergence
+##'
+##' @param weights importance weights (unnormalized)
+##' @param ... unused
+kl_multi_div <- function(weights, ...) {
+  return(-mean(log(weights, base = 2)))
+
+}
+
+###' Multivariate Wasserstein distance
+###'
+##' @param draws1 draws from first distribution
+##' @param draws2 draws from second distribution
+##' @param weights1 weights for first distribution
+##' @param weights2 weights for second distribution
+##' @param subsample_size size of subsamples
+##' @param ... unused
+wasserstein_multi_dist <- function(draws1,
+                                   draws2,
+                                   weights1 = NULL,
+                                   weights2 = NULL,
+                                   subsample_size = 100,
+                                   ...
+                                   ) {
+
+  if (is.null(weights1)) {
+    weights1 <- rep(
+      1/posterior::ndraws(draws1),
+      times = posterior::ndraws(draws1)
+    )
+    draws1 <- posterior::weight_draws(x = draws1, weights = weights1)
+  }
+
+  if (is.null(weights2)) {
+    weights2 <- rep(
+      1/posterior::ndraws(draws2),
+      times = posterior::ndraws(draws2)
+    )
+    draws2 <- posterior::weight_draws(x = draws2, weights = weights2)
+  }
+
+  d1 <- transport::wpp(
+    posterior::as_draws_matrix(draws1, merge_chains = TRUE)[, 1:posterior::nvariables(draws1)],
+    mass = weights1
+  )
+  d2 <- transport::wpp(
+    posterior::as_draws_matrix(draws2, merge_chains = TRUE)[, 1:posterior::nvariables(draws2)],
+    mass = weights2
+  )
+
+  dist <- transport::subwasserstein(d1, d2, S = subsample_size)
+
+  return(dist)
+
 }
 
 ##' Jensen-Shannon divergence
@@ -169,7 +227,7 @@ kl_dist <- function(x, y, x_weights, y_weights, ...) {
       y_weights = y_weights,
       ...
     )[[1]])
-  
+
   return(c(kl_dist = dist))
 }
 
@@ -218,6 +276,6 @@ ws_dist <- function(x, y, x_weights, y_weights, p = 1, ...) {
   )
 
   names(wa) <- paste0("wasserstein", p)
-  
+
   return(c(wasserstein = wa))
 }

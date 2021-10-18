@@ -14,11 +14,12 @@
 ##' \deqn{CJS_{dist}(P || Q) = \sqrt{CJS(P || Q) + CJS(Q || P)}}
 ##'
 ##' This has an upper bound of \eqn{\sqrt \sum (P(x) + Q(x))}
-##' 
+##'
 ##' @param x numeric vector of samples from first distribution
 ##' @param y numeric vector of samples from second distribution
 ##' @param x_weights numeric vector of weights of first distribution
 ##' @param y_weights numeric vector of weights of second distribution
+##' @param metric Logical; if TRUE, return square-root of CJS
 ##' @param ... unused
 ##' @return distance value based on CJS computation.
 ##' @references Nguyen H-V., Vreeken J. (2015).  Non-parametric
@@ -28,7 +29,7 @@
 ##'   Notes in Computer Science, vol 9285.  Springer, Cham.
 ##'   \code{doi:10.1007/978-3-319-23525-7_11}
 ##' @export
-cjs_dist <- function(x, y, x_weights, y_weights, ...) {
+cjs_dist <- function(x, y, x_weights, y_weights, metric = TRUE, ...) {
 
   # sort draws and weights
   x_idx <- order(x)
@@ -73,12 +74,16 @@ cjs_dist <- function(x, y, x_weights, y_weights, ...) {
             log(0.5 * Qy + 0.5 * Py, base = 2)
     )
   ) + 0.5 / log(2) * (Py_int - Qy_int)
-  
+
   # calculate upper bound
   bound <- Px_int + Qy_int
-  
+
   # normalise with respect to upper bound
-  out <- (sqrt(cjs_PQ + cjs_QP)) / sqrt(bound)
+  out <- (cjs_PQ + cjs_QP) / bound
+
+  if (metric) {
+    out <- sqrt(out)
+  }
 
   return(c(cjs = out))
 }
