@@ -4,7 +4,7 @@
 ##' prior or likelihood using importance sampling (and optionally moment matching).
 ##'
 ##' @name powerscale-overview
-##' 
+##'
 ##' @template fit_arg
 ##' @param alpha Value by which to power-scale specified component
 ##'   (likelihood/prior).
@@ -35,6 +35,7 @@ powerscale <- function(fit,
                        moment_match = FALSE,
                        k_threshold = 0.5,
                        resample = FALSE,
+                       transform = FALSE,
                        log_prior_fn = calculate_log_prior,
                        joint_log_lik_fn = extract_joint_log_lik,
                        ...) {
@@ -48,7 +49,7 @@ powerscale <- function(fit,
   checkmate::assert_function(log_prior_fn)
   checkmate::assert_function(joint_log_lik_fn)
 
-  
+
   # moment matching only works with PSIS
   if (is_method != "psis" & moment_match) {
     # TODO: also allow moment_match if loo::psis function is given as
@@ -61,7 +62,7 @@ powerscale <- function(fit,
     moment_match <- FALSE
     warning("Moment-matching does not yet work with fits created with cmdstanr. Falling back to moment_match = FALSE")
   }
-  
+
   # extract draws from fit
   draws <- get_draws(fit, variables = variables)
 
@@ -80,28 +81,30 @@ powerscale <- function(fit,
   )
 
   if (!moment_match) {
-  # calculate the importance weights
-  importance_sampling <- is_method(
-    log_ratios = log_ratios,
-    # TODO: check if r_eff specification is correct
-    r_eff = loo::relative_eff(
-      x = exp(-log_ratios)
+    # calculate the importance weights
+    importance_sampling <- is_method(
+      log_ratios = log_ratios,
+      # TODO: check if r_eff specification is correct
+      r_eff = loo::relative_eff(
+        x = exp(-log_ratios)
+      )
     )
-  )
   } else if (moment_match) {
-  # perform moment matching if specified
-  # calculate the importance weights
-  importance_sampling <- SW(is_method(
-    log_ratios = log_ratios,
-    # TODO: check if r_eff specification is correct
-    r_eff = loo::relative_eff(
-      x = exp(-log_ratios)
+    # perform moment matching if specified
+    # calculate the importance weights
+    importance_sampling <- SW(
+      is_method(
+        log_ratios = log_ratios,
+        # TODO: check if r_eff specification is correct
+        r_eff = loo::relative_eff(
+          x = exp(-log_ratios)
+        )
+      )
     )
-  ))
 
     # TODO: give a warning if trying to use moment_matching with:
     # stanfit from other session
-    
+
     mm <- moment_match(
       x = fit,
       psis = importance_sampling,
@@ -122,10 +125,17 @@ powerscale <- function(fit,
 
   }
 
+  # transform the draws if specified
+  if (transform == "spherize") {
+    draws <- spherize_draws(draws, ...)
+  } else if (transform == "scale") {
+    draws <- scale_draws(draws, ...)
+  }
+
   # reweight the draws with the calculated importance weights
   new_draws <- posterior::weight_draws(
     x = draws,
-    weights = stats::weights(importance_sampling),
+    weights = stats::weights(importance_sampling, normalize = FALSE),
     log = TRUE
   )
 
@@ -167,7 +177,7 @@ weights.powerscaled_draws <- function(object, ...) {
 
   # get the weights if they exist
   if (!object$powerscaling$resampled) {
-    stats::weights(object$powerscaling$importance_sampling, ...)
+    stats::weights(object$powerscaling$importance_sampling, normalize = FALSE, ...)
   } else
     NULL
 }

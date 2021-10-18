@@ -26,15 +26,16 @@
 ##' @export
 powerscale_gradients <- function(fit, variables = NA, component = c("prior", "likelihood"),
                                  type = c("quantities", "divergence"),
-                                 lower_alpha = 0.9,
-                                 upper_alpha = 1.1,
+                                 lower_alpha = 0.99,
+                                 upper_alpha = 1.01,
                                  div_measure = "cjs_dist",
                                  measure_args = list(),
-                                 scale = FALSE,
                                  is_method = "psis",
                                  moment_match = FALSE,
                                  k_threshold = 0.5,
                                  resample = FALSE,
+                                 transform = FALSE,
+                                 scale = TRUE,
                                  log_prior_fn = calculate_log_prior,
                                  joint_log_lik_fn = extract_joint_log_lik,
                                  ...
@@ -56,9 +57,15 @@ powerscale_gradients <- function(fit, variables = NA, component = c("prior", "li
   # extract the draws
   base_draws <- get_draws(fit, variables = variables)
 
-  base_quantities <- summarise_draws(base_draws, posterior::default_summary_measures())
-
-
+  # transform if needed
+  if (transform == "spherize") {
+    base_draws_t <- spherize_draws(base_draws)
+  } else if (transform == "scale") {
+    base_draws_t <- scale_draws(base_draws)
+  } else {
+    base_draws_t <- base_draws
+  }
+  
   perturbed_draws_lower <- list(
     prior = NULL,
     likelihood = NULL
@@ -70,6 +77,10 @@ powerscale_gradients <- function(fit, variables = NA, component = c("prior", "li
   )
 
   out <- list(
+    multivariate_divergence = list(
+      prior = NULL,
+      likelihood = NULL
+    ),
     divergence = list(
       prior = NULL,
       likelihood = NULL
@@ -79,7 +90,7 @@ powerscale_gradients <- function(fit, variables = NA, component = c("prior", "li
       likelihood = NULL
     )
   )
-
+  
   for (comp in component) {
 
     # calculate the lower scaled draws
@@ -92,8 +103,10 @@ powerscale_gradients <- function(fit, variables = NA, component = c("prior", "li
       moment_match = moment_match,
       k_threshold = k_threshold,
       resample = resample,
+      transform = transform,
       joint_log_lik_fn = joint_log_lik_fn,
-      log_prior_fn = log_prior_fn
+      log_prior_fn = log_prior_fn,
+      ...
     )
 
     # calculate the upper scaled draws
@@ -105,15 +118,18 @@ powerscale_gradients <- function(fit, variables = NA, component = c("prior", "li
       is_method = is_method,
       moment_match = moment_match,
       k_threshold = k_threshold,
+      resample = resample,
+      transform = transform,
       joint_log_lik_fn = joint_log_lik_fn,
-      log_prior_fn = log_prior_fn
+      log_prior_fn = log_prior_fn,
+      ...
     )
-
+      
     if ("divergence" %in% type) {
-
+      
       # compute the divergence for lower draws
       lower_dist <- divergence_measures(
-        draws1 = base_draws,
+        draws1 = base_draws_t,
         draws2 = perturbed_draws_lower[[comp]]$draws,
         measure = div_measure,
         measure_args = measure_args,
@@ -122,7 +138,7 @@ powerscale_gradients <- function(fit, variables = NA, component = c("prior", "li
 
       # compute the divergence for upper draws
       upper_dist <- divergence_measures(
-        draws1 = base_draws,
+        draws1 = base_draws_t,
         draws2 = perturbed_draws_upper[[comp]]$draws,
         measure = div_measure,
         measure_args = measure_args,
@@ -140,6 +156,8 @@ powerscale_gradients <- function(fit, variables = NA, component = c("prior", "li
 
     if ("quantities" %in% type) {
 
+      base_quantities <- summarise_draws(base_draws, posterior::default_summary_measures())
+      
       # calculate lower quantities
       lower_quantities <- posterior::summarise_draws(
         .x = perturbed_draws_lower[[comp]]$draws,
@@ -176,6 +194,37 @@ powerscale_gradients <- function(fit, variables = NA, component = c("prior", "li
     }
   }
 
+  if ("multi_div" %in% type) {
+
+    upper_multi_kl <- c()
+    upper_multi_wasserstein <- c()
+    
+    for (comp in component) {
+      
+      upper_multi_kl[[comp]] <- sqrt(kl_multi_div(
+        weights = stats::weights(perturbed_draws_upper[[comp]]$draws)
+      )) / log(upper_alpha, base = 2)
+
+      upper_multi_wasserstein[[comp]] <- wasserstein_multi_dist(
+        draws1 = base_draws,
+        draws2 = perturbed_draws_upper[[comp]]$draws,
+        weights2 = stats::weights(perturbed_draws_upper[[comp]]$draws)
+      )
+      
+      upper_mw_dist[[comp]] <- wasserstein_multi_dist(
+        posterior::weight_draws(base_draws, rep(1/posterior::ndraws(base_draws), times = posterior::ndraws(base_draws)), perturbed_draws_upper[[comp]]$draws)
+      )
+
+      out$multivariate_divergence[[comp]] <- c(
+        KL = upper_multi_kl[[comp]],
+        wasserstein = upper_multi_wasserstein[[comp]],
+        mw_dist = upper_mw_dist
+      )
+      
+    }
+    
+  }
+  
   return(out)
 }
 
@@ -240,6 +289,9 @@ powerscale_divergence_gradients <- function(lower_divergences, upper_divergences
 
   # take max of gradients for each variable
   grad <- pmax(abs(upper_grad), abs(lower_grad))
+
+  #grad <- (subset(upper_divergences, select = -c(variable)) +
+  # subset(lower_divergences, select = -c(variable))) / (2 * log(upper_alpha, base = 2))
 
   return(tibble::as_tibble(cbind(variable, grad)))
 
