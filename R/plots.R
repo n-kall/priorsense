@@ -119,7 +119,6 @@ prepare_plot <- function(x, variables, resample, ...) {
       x = "value",
       weight = "exp(.log_weight)",
       group = "alpha",
-      color = "alpha",
       linetype = "pareto_k_value"
     )
   ) +
@@ -127,7 +126,17 @@ prepare_plot <- function(x, variables, resample, ...) {
       values = c("solid", "dashed", "dotted"),
       drop = FALSE
     ) +
-  ggplot2::scale_color_viridis_c(
+  ggplot2::scale_fill_viridis_c(
+    option = "plasma",
+    trans = "log",
+    limits = c(min(d$alpha) - 0.01, max(d$alpha) + 0.01),
+    breaks = c(min(d$alpha), 1, max(d$alpha)),
+    labels = c(
+      as.character(min(d$alpha), digits = 3),
+      "1",
+      as.character(max(d$alpha), digits = 3)
+    ) +
+        ggplot2::scale_color_viridis_c(
     option = "plasma",
     trans = "log",
     limits = c(min(d$alpha) - 0.01, max(d$alpha) + 0.01),
@@ -137,6 +146,8 @@ prepare_plot <- function(x, variables, resample, ...) {
       "1",
       as.character(max(d$alpha), digits = 3)
     )
+  )
+
   )
 
   return(p)
@@ -159,7 +170,7 @@ powerscale_plot_dens <- function(x, variables, resample = FALSE,
         title = "pareto-k"
       )
     ) +
-    ggplot2::stat_density(geom = "line", position = "identity") +
+    ggplot2::stat_density(ggplot2::aes_string(color = "alpha"), geom = "line", position = "identity") +
     ggplot2::facet_grid(
       component ~ variable,
       labeller = ggplot2::labeller(
@@ -173,6 +184,46 @@ powerscale_plot_dens <- function(x, variables, resample = FALSE,
 
   return(p)
 }
+
+##' @rdname powerscale_plots
+##' @export
+powerscale_plot_ridges <- function(x, variables, resample = FALSE,
+                                                      ...) {
+
+  # input checks
+  checkmate::assert_class(x, c("powerscaled_sequence"))
+  checkmate::assert_character(variables)
+  checkmate::assert_logical(resample)
+
+  p <- prepare_plot(x, variables, resample, ...) +
+    ggplot2::guides(
+      linetype = ggplot2::guide_legend(
+        title = "pareto-k"
+      )
+    ) +
+    ggplot2::scale_y_discrete(expand = c(0, 0)) +
+    ggridges::geom_density_ridges(
+      ggplot2::aes_string(
+        fill = "alpha",
+        y = "alpha",
+        height = "..density.."
+      ), stat = "density",
+      scale = 2
+    ) +
+    ggplot2::facet_grid(
+      component ~ variable,
+      labeller = ggplot2::labeller(
+        component = c(
+          likelihood = "Likelihood power-scaling",
+          prior = "Prior power-scaling"
+        )
+      ),
+      scales = "free"
+    )
+
+  return(p)
+}
+
 
 ##' @rdname powerscale_plots
 ##' @export
@@ -190,7 +241,7 @@ powerscale_plot_ecdf <- function(x, variables, resample = FALSE, ...) {
       )
     ) +
     ggplot2::ylab("Probability") +
-    stat_ewcdf() +
+    stat_ewcdf(ggplot2::aes_string(color = "alpha")) +
     ggplot2::facet_grid(
       component ~ variable,
       labeller = ggplot2::labeller(
