@@ -3,11 +3,14 @@
 \name{powerscale_plots}
 \alias{powerscale_plots}
 \alias{powerscale_plot_dens}
+\alias{powerscale_plot_ridges}
 \alias{powerscale_plot_ecdf}
 \alias{powerscale_plot_quantities}
 \title{Diagnostic plots for power-scaling sensitivity}
 \usage{
 powerscale_plot_dens(x, variables, resample = FALSE, ...)
+
+powerscale_plot_ridges(x, variables, resample = FALSE, ...)
 
 powerscale_plot_ecdf(x, variables, resample = FALSE, ...)
 

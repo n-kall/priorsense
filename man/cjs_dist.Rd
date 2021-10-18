@@ -4,7 +4,7 @@
 \alias{cjs_dist}
 \title{Cumulative Jensen-Shannon divergence}
 \usage{
-cjs_dist(x, y, x_weights, y_weights, ...)
+cjs_dist(x, y, x_weights, y_weights, metric = TRUE, ...)
 }
 \arguments{
 \item{x}{numeric vector of samples from first distribution}
@@ -14,6 +14,8 @@ cjs_dist(x, y, x_weights, y_weights, ...)
 \item{x_weights}{numeric vector of weights of first distribution}
 
 \item{y_weights}{numeric vector of weights of second distribution}
+
+\item{metric}{Logical; if TRUE, return square-root of CJS}
 
 \item{...}{unused}
 }

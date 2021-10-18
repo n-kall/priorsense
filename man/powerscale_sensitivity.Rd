@@ -16,6 +16,7 @@ powerscale_sensitivity(
   is_method = "psis",
   moment_match = FALSE,
   k_threshold = 0.5,
+  transform = "spherize",
   resample = FALSE,
   log_prior_fn = calculate_log_prior,
   joint_log_lik_fn = extract_joint_log_lik,
@@ -75,6 +76,9 @@ matching should be performed. Can only be TRUE if \code{is_method} is
 \item{k_threshold}{Threshold value for Pareto k values above which
 the moment matching algorithm is used. Default is 0.5.}
 
+\item{transform}{Indicate transformation of posterior
+draws. Either "scale" or "spherize".}
+
 \item{resample}{Logical; Indicate whether or not draws should be
 resampled based on calculated importance weights.}
 
@@ -82,8 +86,8 @@ resampled based on calculated importance weights.}
 and returns the log prior values. Provided functions are
 \code{calculate_log_prior} (requires model to be fit with rstan and
 in the same R session) and \code{extract_log_prior} (requires a
-variable in the Stan model code to correspond to the joint log prior,
-by default named "log_prior").}
+variable in the Stan model code to correspond to the joint log
+prior, by default named "log_prior").}
 
 \item{joint_log_lik_fn}{A function that takes as input the model
 fit and returns the joint log likelihood values.}
