@@ -35,7 +35,7 @@ powerscale_gradients <- function(fit, variables = NA, component = c("prior", "li
                                  k_threshold = 0.5,
                                  resample = FALSE,
                                  transform = FALSE,
-                                 scale = TRUE,
+                                 scale = FALSE,
                                  log_prior_fn = calculate_log_prior,
                                  joint_log_lik_fn = extract_joint_log_lik,
                                  ...
@@ -53,7 +53,7 @@ powerscale_gradients <- function(fit, variables = NA, component = c("prior", "li
   checkmate::assert_function(log_prior_fn)
   checkmate::assert_function(joint_log_lik_fn)
 
-  
+
   # extract the draws
   base_draws <- get_draws(fit, variables = variables)
 
@@ -65,7 +65,7 @@ powerscale_gradients <- function(fit, variables = NA, component = c("prior", "li
   } else {
     base_draws_t <- base_draws
   }
-  
+
   perturbed_draws_lower <- list(
     prior = NULL,
     likelihood = NULL
@@ -90,7 +90,7 @@ powerscale_gradients <- function(fit, variables = NA, component = c("prior", "li
       likelihood = NULL
     )
   )
-  
+
   for (comp in component) {
 
     # calculate the lower scaled draws
@@ -124,9 +124,9 @@ powerscale_gradients <- function(fit, variables = NA, component = c("prior", "li
       log_prior_fn = log_prior_fn,
       ...
     )
-      
+
     if ("divergence" %in% type) {
-      
+
       # compute the divergence for lower draws
       lower_dist <- divergence_measures(
         draws1 = base_draws_t,
@@ -157,28 +157,16 @@ powerscale_gradients <- function(fit, variables = NA, component = c("prior", "li
     if ("quantities" %in% type) {
 
       base_quantities <- summarise_draws(base_draws, posterior::default_summary_measures())
-      
+
       # calculate lower quantities
-      lower_quantities <- posterior::summarise_draws(
-        .x = perturbed_draws_lower[[comp]]$draws,
-        mean_weighted,
-        median_weighted,
-        sd_weighted,
-        mad_weighted,
-        quantile_weighted,
-        .args = list(weights = stats::weights(perturbed_draws_lower[[comp]]$draws))
-      )
+      lower_quantities <- summarise_draws(
+        perturbed_draws_lower[[comp]]
+      )$draws_summary
 
       # calculate upper quantities
-      upper_quantities <- posterior::summarise_draws(
-        .x = perturbed_draws_upper[[comp]]$draws,
-        mean_weighted,
-        median_weighted,
-        sd_weighted,
-        mad_weighted,
-        quantile_weighted,
-        .args = list(weights = stats::weights(perturbed_draws_upper[[comp]]$draws))
-      )
+      upper_quantities <- summarise_draws(
+        perturbed_draws_upper[[comp]]
+      )$draws_summary
 
       # calculate gradients of quantities
       out$quantities[[comp]] <- powerscale_quantities_gradients(
@@ -198,9 +186,9 @@ powerscale_gradients <- function(fit, variables = NA, component = c("prior", "li
 
     upper_multi_kl <- c()
     upper_multi_wasserstein <- c()
-    
+
     for (comp in component) {
-      
+
       upper_multi_kl[[comp]] <- sqrt(kl_multi_div(
         weights = stats::weights(perturbed_draws_upper[[comp]]$draws)
       )) / log(upper_alpha, base = 2)
@@ -210,7 +198,7 @@ powerscale_gradients <- function(fit, variables = NA, component = c("prior", "li
         draws2 = perturbed_draws_upper[[comp]]$draws,
         weights2 = stats::weights(perturbed_draws_upper[[comp]]$draws)
       )
-      
+
       upper_mw_dist[[comp]] <- wasserstein_multi_dist(
         posterior::weight_draws(base_draws, rep(1/posterior::ndraws(base_draws), times = posterior::ndraws(base_draws)), perturbed_draws_upper[[comp]]$draws)
       )
@@ -220,11 +208,11 @@ powerscale_gradients <- function(fit, variables = NA, component = c("prior", "li
         wasserstein = upper_multi_wasserstein[[comp]],
         mw_dist = upper_mw_dist
       )
-      
+
     }
-    
+
   }
-  
+
   return(out)
 }
 
@@ -249,12 +237,10 @@ powerscale_quantities_gradients <- function(base_quantities,
 
   variable <- base_quantities$variable
 
-  gradients_lower <- (subset(base_quantities, select = -c(variable)) -
-                        subset(lower_quantities, select = -c(variable))) /
+  gradients_lower <- (base_quantities[-1] - lower_quantities[-1]) /
     (0 - log(lower_alpha, base = 2))
 
-  gradients_upper <- (subset(upper_quantities, select = -c(variable)) -
-                        subset(base_quantities, select = -c(variable))) /
+  gradients_upper <- (upper_quantities[-1] - base_quantities[-1]) /
     (log(upper_alpha, base = 2))
 
   gradients <- ((gradients_upper + gradients_lower) / 2)
