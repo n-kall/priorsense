@@ -4,16 +4,14 @@
 \alias{spherize_matrix}
 \title{Transform matrix to be spherical}
 \usage{
-spherize_matrix(x, method = "ZCA-cor", ...)
+spherize_matrix(x, spherize_method = "PCA", ...)
 }
 \arguments{
 \item{x}{matrix to be transformed}
 
-\item{method}{transformation method}
-
 \item{...}{unused}
 
-\item{draws}{matrix to be transformed}
+\item{method}{transformation method}
 }
 \value{
 transformed matrix

@@ -177,7 +177,7 @@ weights.powerscaled_draws <- function(object, ...) {
 
   # get the weights if they exist
   if (!object$powerscaling$resampled) {
-    stats::weights(object$powerscaling$importance_sampling, normalize = FALSE, ...)
+    stats::weights(object$powerscaling$importance_sampling, ...)
   } else
     NULL
 }

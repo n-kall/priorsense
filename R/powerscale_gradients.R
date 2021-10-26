@@ -59,9 +59,9 @@ powerscale_gradients <- function(fit, variables = NA, component = c("prior", "li
 
   # transform if needed
   if (transform == "spherize") {
-    base_draws_t <- spherize_draws(base_draws)
+    base_draws_t <- spherize_draws(base_draws, ...)
   } else if (transform == "scale") {
-    base_draws_t <- scale_draws(base_draws)
+    base_draws_t <- scale_draws(base_draws, ...)
   } else {
     base_draws_t <- base_draws
   }
@@ -267,17 +267,17 @@ powerscale_divergence_gradients <- function(lower_divergences, upper_divergences
 
   variable <- lower_divergences$variable
 
-  lower_grad <- -1 * (subset(lower_divergences, select = -c(variable))) /
-    (0 - log(lower_alpha, base = 2))
+ # lower_grad <- -1 * (subset(lower_divergences, select = -c(variable))) /
+#    (0 - log(lower_alpha, base = 2))
 
-  upper_grad <- (subset(upper_divergences, select = -c(variable))) /
-    (log(upper_alpha, base = 2))
+#  upper_grad <- (subset(upper_divergences, select = -c(variable))) /
+  #  (log(upper_alpha, base = 2))
 
   # take max of gradients for each variable
-  grad <- pmax(abs(upper_grad), abs(lower_grad))
+ # grad <- pmax(abs(upper_grad), abs(lower_grad))
 
-  #grad <- (subset(upper_divergences, select = -c(variable)) +
-  # subset(lower_divergences, select = -c(variable))) / (2 * log(upper_alpha, base = 2))
+  grad <- (subset(upper_divergences, select = -c(variable)) +
+   subset(lower_divergences, select = -c(variable))) / (2 * log(upper_alpha, base = 2))
 
   return(tibble::as_tibble(cbind(variable, grad)))
 

@@ -16,7 +16,7 @@ powerscale_sensitivity(
   is_method = "psis",
   moment_match = FALSE,
   k_threshold = 0.5,
-  transform = "spherize",
+  transform = FALSE,
   resample = FALSE,
   log_prior_fn = calculate_log_prior,
   joint_log_lik_fn = extract_joint_log_lik,

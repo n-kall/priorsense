@@ -18,7 +18,7 @@ powerscale_gradients(
   k_threshold = 0.5,
   resample = FALSE,
   transform = FALSE,
-  scale = TRUE,
+  scale = FALSE,
   log_prior_fn = calculate_log_prior,
   joint_log_lik_fn = extract_joint_log_lik,
   ...
