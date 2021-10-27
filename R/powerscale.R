@@ -127,10 +127,21 @@ powerscale <- function(fit,
 
   # transform the draws if specified
   if (transform == "spherize") {
-    draws <- spherize_draws(draws, ...)
-  } else if (transform == "scale") {
-    draws <- scale_draws(draws, ...)
-  }
+    draws_tr <- spherize_draws(draws, ...)
+    transform_details = list(
+      transform = transform,
+      loadings = cor(
+        draws_tr[,1:posterior::nvariables(draws_tr)],
+        draws[,1:posterior::nvariables(draws)]
+      )
+    )
+    draws <- draws_tr
+    } else if (transform == "scale") {
+      draws <- scale_draws(draws, ...)
+      transform_details = list(transform = transform)
+    } else {
+      transform_details = list(transform = transform)
+    }
 
   # reweight the draws with the calculated importance weights
   new_draws <- posterior::weight_draws(
@@ -152,7 +163,8 @@ powerscale <- function(fit,
     component = component,
     importance_sampling = importance_sampling,
     moment_match = moment_match,
-    resampled = resample
+    resampled = resample,
+    transform_details = transform_details
   )
   class(powerscaling_details) <- "powerscaling_details"
 

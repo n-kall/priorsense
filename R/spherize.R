@@ -27,11 +27,15 @@ spherize_draws <- function(draws, spherize_method = "PCA-cor", ...) {
   draws_tr <- posterior::as_draws_df(draws_tr)
   posterior::variables(draws_tr) <- paste0("C", 1:posterior::nvariables(draws_tr))
 
+  # calculate correlations
+
+  loadings <- cor(draws_tr[,1:posterior::nvariables(draws_tr)], base_draws[,1:posterior::nvariables(base_draws)])
+  
   # add weights column back
   if (!(is.null(wei))) {
     draws_tr <- posterior::weight_draws(draws_tr, wei)
   }
-
+  
   return(draws_tr)
 }
 

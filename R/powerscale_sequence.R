@@ -43,9 +43,9 @@ powerscale_sequence <- function(fit, lower_alpha = 0.5,
   base_draws <- get_draws(fit, variables = variables)
 
   if (transform == "spherize") {
-    base_draws <- spherize_draws(base_draws)
+    base_draws <- spherize_draws(base_draws, ...)
   } else if (transform == "scale") {
-    base_draws <- scale_draws(base_draws)
+    base_draws <- scale_draws(base_draws, ...)
   }
 
   scaled_draws_list <- vector("list", length(alpha_seq))
@@ -70,7 +70,8 @@ powerscale_sequence <- function(fit, lower_alpha = 0.5,
         resample = resample,
         log_prior_fn = log_prior_fn,
         joint_log_lik_fn = joint_log_lik_fn,
-        transform = transform
+        transform = transform,
+        ...
       )
 
       prior_scaled <- list(
@@ -98,7 +99,8 @@ powerscale_sequence <- function(fit, lower_alpha = 0.5,
         resample = resample,
         log_prior_fn = log_prior_fn,
         joint_log_lik_fn = joint_log_lik_fn,
-        transform = transform
+        transform = transform,
+        ...
       )
 
       likelihood_scaled <- list(

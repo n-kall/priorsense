@@ -28,7 +28,8 @@ print.powerscaling_details <- function(x, ...) {
     paste("importance sampling method:", is_method, "\n"),
     pareto_k_print,
     paste("n_eff:", round(n_eff, digits = 3), "\n"),
-    paste("resampled:", x$resampled, "\n")
+    paste("resampled:", x$resampled, "\n"),
+    paste("transform:", x$transform_details$transform, "\n")
   )
 
   invisible(x)
