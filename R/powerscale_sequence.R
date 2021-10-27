@@ -6,7 +6,7 @@ powerscale_sequence <- function(fit, lower_alpha = 0.5,
                                 component = c("prior", "likelihood"),
                                 is_method = "psis",
                                 moment_match = FALSE,
-                                k_threshold = 0.5,                              
+                                k_threshold = 0.5,
                                 resample = FALSE,
                                 log_prior_fn = calculate_log_prior,
                                 joint_log_lik_fn = extract_joint_log_lik,
@@ -25,7 +25,7 @@ powerscale_sequence <- function(fit, lower_alpha = 0.5,
   checkmate::assert_logical(resample)
   checkmate::assert_function(log_prior_fn)
   checkmate::assert_function(joint_log_lik_fn)
-  
+
   if (moment_match & !(is_method == "psis")) {
     moment_match <- FALSE
     warning("Moment-matching only works with PSIS. Falling back to moment_match = FALSE")
@@ -35,7 +35,7 @@ powerscale_sequence <- function(fit, lower_alpha = 0.5,
     moment_match <- FALSE
     warning("Moment-matching does not yet work with fits created with cmdstanr. Falling back to moment_match = FALSE")
   }
-  
+
   alpha_seq <- seq(lower_alpha, 1 - alpha_step, alpha_step)
   alpha_seq <- c(alpha_seq, rev(1 / alpha_seq))
 
@@ -43,10 +43,24 @@ powerscale_sequence <- function(fit, lower_alpha = 0.5,
   base_draws <- get_draws(fit, variables = variables)
 
   if (transform == "spherize") {
-    base_draws <- spherize_draws(base_draws, ...)
-  } else if (transform == "scale") {
-    base_draws <- scale_draws(base_draws, ...)
-  }
+    base_draws_tr <- spherize_draws(base_draws, ...)
+    transform_details = list(
+      transform = transform,
+      loadings = cor(
+        base_draws_tr[,1:posterior::nvariables(base_draws_tr)],
+        base_draws[,1:posterior::nvariables(base_draws)]
+      )
+    )
+
+    base_draws <- base_draws_tr
+    } else if (transform == "scale") {
+      base_draws <- scale_draws(base_draws, ...)
+      transform_details = list(transform = transform)
+    } else {
+      transform_details = list(transform = transform)
+    }
+
+
 
   scaled_draws_list <- vector("list", length(alpha_seq))
 
@@ -116,7 +130,8 @@ powerscale_sequence <- function(fit, lower_alpha = 0.5,
     likelihood_scaled = likelihood_scaled,
     is_method = is_method,
     moment_match = moment_match,
-    resampled = resample
+    resampled = resample,
+    transform = transform_details
   )
 
   class(out) <- c("powerscaled_sequence", class(out))

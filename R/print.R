@@ -83,7 +83,8 @@ print.powerscaled_sequence <- function(x, ...) {
     paste0("alpha range: [", alpha_range[1], ", ",  alpha_range[2], "]\n"),
     paste("length of sequence:", min(length(x$prior_scaled$draws_sequence), length(x$likelihood_scaled$draws_sequence), na.rm = TRUE), "\n"),
     paste("scaled component:", component, "\n"),
-    paste("importance sampling method:", x$is_method, "\n")
+    paste("importance sampling method:", x$is_method, "\n"),
+    paste("transform:", x$transform$transform, "\n")
   )
 
   invisible(x)
