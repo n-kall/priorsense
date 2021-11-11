@@ -11,7 +11,7 @@
 
 priorsense provides tools for prior diagnostics and sensitivity analysis.
 
-It currently includes functions for performing power-scaling sensitivity analysis on Stan models. This way to check how sensitive a posterior is to perturbations of the prior and likelihood and diagnose the cause of sensitivity. For efficient computation, power-scaling sensitivity analysis relies on Pareto smoothed importance sampling (Vehtari et al., 2019) and importance weighted moment matching (Paananen et al., 2021).
+It currently includes functions for performing power-scaling sensitivity analysis on Stan models. This way to check how sensitive a posterior is to perturbations of the prior and likelihood and diagnose the cause of sensitivity. For efficient computation, power-scaling sensitivity analysis relies on Pareto smoothed importance sampling (Vehtari et al., 2021) and importance weighted moment matching (Paananen et al., 2021).
 
 Power-scaling sensitivity analysis and priorsense are described in Kallioinen et al. (2021).
 
