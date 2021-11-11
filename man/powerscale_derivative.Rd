@@ -13,6 +13,8 @@ powerscale_derivative(x, log_component, quantity = "mean", ...)
 
 \item{quantity}{Character specifying quantity of interest (default
 is "mean"). Options are "mean", "sd", "var".}
+
+\item{...}{unused}
 }
 \value{
 Derivative of the quantity with respect to log of the

@@ -9,9 +9,9 @@ spherize_draws(draws, spherize_method = "PCA-cor", ...)
 \arguments{
 \item{draws}{draws to be transformed}
 
-\item{...}{unused}
+\item{spherize_method}{transformation method}
 
-\item{method}{transformation method}
+\item{...}{unused}
 }
 \value{
 transformed draws

@@ -9,9 +9,9 @@ spherize_matrix(x, spherize_method = "PCA", ...)
 \arguments{
 \item{x}{matrix to be transformed}
 
-\item{...}{unused}
+\item{spherize_method}{transformation method}
 
-\item{method}{transformation method}
+\item{...}{unused}
 }
 \value{
 transformed matrix
