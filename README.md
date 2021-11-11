@@ -19,7 +19,10 @@ Power-scaling sensitivity analysis and priorsense are described in Kallioinen et
 
 Download the development version from [GitHub](https://github.com/) with:
 
-`r, eval = F # install.packages("remotes") remotes::install_github("n-kall/priorsense")`
+``` r
+# install.packages("remotes")
+remotes::install_github("n-kall/priorsense")
+```
 
 ## Usage
 
@@ -30,7 +33,9 @@ priorsense currently works best with Stan models created with rstan. However the
 Consider the following model (available via`example_powerscale_model("univariate_normal")`:
 
 *y* ∼ normal(*μ*, *σ*)
+
 *μ* ∼ normal(0, 1)
+
 *σ* ∼ normal<sup>+</sup>(0, 2.5)
 
 We have 100 data points for *y* We first fit the model using Stan:
@@ -99,4 +104,4 @@ Kallioinen, N., Paananen, T., Bürkner P-C., and Vehtari, A. (2021). Detecting a
 
 Paananen, T., Piironen, J., Bürkner P-C., and Vehtari, A. (2021). Implicitly adaptive importance sampling. Statistics and Computing 31, 16. <https://doi.org/10.1007/s11222-020-09982-2>
 
-Vehtari, A., Simpson, D., Gelman, A., Yao, Y., and Gabry, J. (2019). Pareto smoothed importance sampling. preprint [arXiv:1507.02646](https://arxiv.org/abs/1507.02646)
+Vehtari, A., Simpson, D., Gelman, A., Yao, Y., and Gabry, J. (2021). Pareto smoothed importance sampling. preprint [arXiv:1507.02646](https://arxiv.org/abs/1507.02646)
