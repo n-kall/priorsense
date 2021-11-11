@@ -46,7 +46,7 @@ powerscale_sequence <- function(fit, lower_alpha = 0.5,
     base_draws_tr <- spherize_draws(base_draws, ...)
     transform_details = list(
       transform = transform,
-      loadings = cor(
+      loadings = stats::cor(
         base_draws_tr[,1:posterior::nvariables(base_draws_tr)],
         base_draws[,1:posterior::nvariables(base_draws)]
       )

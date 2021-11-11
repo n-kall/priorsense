@@ -1,6 +1,6 @@
 ##' Transform draws to be spherical
 ##' @param draws draws to be transformed
-##' @param method transformation method
+##' @param spherize_method transformation method
 ##' @param ... unused
 ##' @return transformed draws
 spherize_draws <- function(draws, spherize_method = "PCA-cor", ...) {
@@ -21,15 +21,12 @@ spherize_draws <- function(draws, spherize_method = "PCA-cor", ...) {
     base_draws,
     center = TRUE,
     method = spherize_method
-  )
+    )
   
   # cleanup transformed draws
   draws_tr <- posterior::as_draws_df(draws_tr)
   posterior::variables(draws_tr) <- paste0("C", 1:posterior::nvariables(draws_tr))
 
-  # calculate correlations
-
-  loadings <- cor(draws_tr[,1:posterior::nvariables(draws_tr)], base_draws[,1:posterior::nvariables(base_draws)])
   
   # add weights column back
   if (!(is.null(wei))) {
@@ -41,7 +38,7 @@ spherize_draws <- function(draws, spherize_method = "PCA-cor", ...) {
 
 ##' Transform matrix to be spherical
 ##' @param x matrix to be transformed
-##' @param method transformation method
+##' @param spherize_method transformation method
 ##' @param ... unused
 ##' @return transformed matrix
 spherize_matrix <- function(x, spherize_method = "PCA", ...) {

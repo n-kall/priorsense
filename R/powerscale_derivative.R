@@ -7,6 +7,7 @@
 ##' @param log_component Log likelihood or log prior values.
 ##' @param quantity Character specifying quantity of interest (default
 ##'   is "mean"). Options are "mean", "sd", "var".
+##' @param ... unused
 ##' @return Derivative of the quantity with respect to log of the
 ##'   power-scaling factor (alpha).
 ##'
@@ -75,3 +76,11 @@ powerscale_derivative <- function(x,
 
   return(out)
 }
+
+
+
+
+
+
+
+

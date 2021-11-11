@@ -58,8 +58,12 @@ powerscale_gradients <- function(fit, variables = NA, component = c("prior", "li
   base_draws <- get_draws(fit, variables = variables)
 
   # transform if needed
+  loadings <- NULL
   if (transform == "spherize") {
     base_draws_t <- spherize_draws(base_draws, ...)
+
+    # correlation loadings
+    loadings <- t(stats::cor(base_draws[,1:posterior::nvariables(base_draws)], base_draws_t[,1:posterior::nvariables(base_draws_t)]))
   } else if (transform == "scale") {
     base_draws_t <- scale_draws(base_draws, ...)
   } else {
@@ -88,7 +92,8 @@ powerscale_gradients <- function(fit, variables = NA, component = c("prior", "li
     quantities = list(
       prior = NULL,
       likelihood = NULL
-    )
+    ),
+    loadings = loadings
   )
 
   for (comp in component) {

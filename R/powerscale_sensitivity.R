@@ -118,7 +118,8 @@ powerscale_sensitivity <- function(fit, variables = NA,
   out <- list(
     # order by largest value first
     sensitivity = sense,
-    div_measure = div_measure
+    div_measure = div_measure,
+    loadings = gradients$loadings
   )
 
   class(out) <- "powerscaled_sensitivity_summary"

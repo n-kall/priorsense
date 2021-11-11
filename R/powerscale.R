@@ -130,7 +130,7 @@ powerscale <- function(fit,
     draws_tr <- spherize_draws(draws, ...)
     transform_details = list(
       transform = transform,
-      loadings = cor(
+      loadings = stats::cor(
         draws_tr[,1:posterior::nvariables(draws_tr)],
         draws[,1:posterior::nvariables(draws)]
       )
