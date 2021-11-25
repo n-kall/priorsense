@@ -30,7 +30,7 @@
 ##'   \code{doi:10.1007/978-3-319-23525-7_11}
 ##' @export
 cjs_dist <- function(x, y, x_weights, y_weights, metric = TRUE, ...) {
-
+  
   # sort draws and weights
   x_idx <- order(x)
   x <- x[x_idx]
@@ -40,43 +40,32 @@ cjs_dist <- function(x, y, x_weights, y_weights, metric = TRUE, ...) {
   y <- y[y_idx]
   wq <- y_weights[y_idx]
 
-  # add end point of final step
-  x_v <- x[length(x)] + x[length(x)] - x[length(x) - 1]
-  y_v <- y[length(y)] + y[length(y)] - y[length(y) - 1]
-
-  # calculate widths of each step
-  x_diff <- diff(c(x, x_v))
-  y_diff <- diff(c(y, y_v))
-
+  # bins
+  nbins <- max(length(x), length(y))
+  bins <- seq(from = min(min(x), min(y)), to = max(max(x), max(y)), length.out = nbins)
+  binwidth <- bins[2] - bins[1]
+  
   # calculate required weighted ecdfs
-  Px <- spatstat.geom::ewcdf(x, weights = wp)(x)
-  Qx <- spatstat.geom::ewcdf(y, weights = wq)(x)
-
-  Py <- spatstat.geom::ewcdf(x, weights = wp)(y)
-  Qy <- spatstat.geom::ewcdf(y, weights = wq)(y)
+  Px <- spatstat.geom::ewcdf(x, weights = wp)(bins)
+  Qx <- spatstat.geom::ewcdf(y, weights = wq)(bins)
 
   # calculate integral of ecdfs
-  Px_int <- drop(Px %*% x_diff)
-  Qx_int <- drop(Qx %*% x_diff)
-
-  Py_int <- drop(Py %*% y_diff)
-  Qy_int <- drop(Qy %*% y_diff)
+  Px_int <- sum(Px * binwidth)
+  Qx_int <- sum(Qx * binwidth)
 
   # calculate cjs
-  cjs_PQ <-  x_diff %*% (
+  cjs_PQ <-  sum(binwidth * (
     Px * (log(Px, base = 2) -
             log(0.5 * Px + 0.5 * Qx, base = 2)
-    )
-  ) + 0.5 / log(2) * (Qx_int - Px_int)
+    )), na.rm = TRUE) + 0.5 / log(2) * (Qx_int - Px_int)
 
-  cjs_QP <- y_diff %*% (
-    Qy * (log(Qy, base = 2) -
-            log(0.5 * Qy + 0.5 * Py, base = 2)
-    )
-  ) + 0.5 / log(2) * (Py_int - Qy_int)
-
+  cjs_QP <- sum(binwidth * (
+    Qx * (log(Qx, base = 2) -
+            log(0.5 * Qx + 0.5 * Px, base = 2)
+    )), na.rm = TRUE) + 0.5 / log(2) * (Px_int - Qx_int)
+  
   # calculate upper bound
-  bound <- Px_int + Qy_int
+  bound <- Px_int + Qx_int
 
   # normalise with respect to upper bound
   out <- (cjs_PQ + cjs_QP) / bound
