@@ -41,7 +41,7 @@ spherize_draws <- function(draws, spherize_method = "PCA-cor", ...) {
 ##' @param spherize_method transformation method
 ##' @param ... unused
 ##' @return transformed matrix
-spherize_matrix <- function(x, spherize_method = "PCA", ...) {
+spherize_matrix <- function(x, spherize_method = "PCA-cor", ...) {
 
   # transform matrix
   m_tr <- whitening::whiten(

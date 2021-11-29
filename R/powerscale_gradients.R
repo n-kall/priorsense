@@ -161,7 +161,7 @@ powerscale_gradients <- function(fit, variables = NA, component = c("prior", "li
 
     if ("quantities" %in% type) {
 
-      base_quantities <- summarise_draws(base_draws, posterior::default_summary_measures())
+      base_quantities <- summarise_draws(base_draws_t, posterior::default_summary_measures())
 
       # calculate lower quantities
       lower_quantities <- summarise_draws(
@@ -199,13 +199,13 @@ powerscale_gradients <- function(fit, variables = NA, component = c("prior", "li
       )) / log(upper_alpha, base = 2)
 
       upper_multi_wasserstein[[comp]] <- wasserstein_multi_dist(
-        draws1 = base_draws,
+        draws1 = base_draws_t,
         draws2 = perturbed_draws_upper[[comp]]$draws,
         weights2 = stats::weights(perturbed_draws_upper[[comp]]$draws)
       )
 
       upper_mw_dist[[comp]] <- wasserstein_multi_dist(
-        posterior::weight_draws(base_draws, rep(1/posterior::ndraws(base_draws), times = posterior::ndraws(base_draws)), perturbed_draws_upper[[comp]]$draws)
+        posterior::weight_draws(base_draws_t, rep(1/posterior::ndraws(base_draws_t), times = posterior::ndraws(base_draws_t)), perturbed_draws_upper[[comp]]$draws)
       )
 
       out$multivariate_divergence[[comp]] <- c(
