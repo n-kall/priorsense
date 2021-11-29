@@ -32,7 +32,7 @@ extract_log_prior.stanfit <- function(x,
 
   log_prior <- posterior::subset_draws(
     posterior::merge_chains(
-      posterior::as_draws_array(x, pars = parameter_name)),
+      posterior::as_draws_array(x, variable = parameter_name)),
     variable = parameter_name
   )
 
