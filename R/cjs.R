@@ -40,10 +40,20 @@ cjs_dist <- function(x, y, x_weights, y_weights, metric = TRUE, ...) {
   y <- y[y_idx]
   wq <- y_weights[y_idx]
 
+  if (all(x == y)) {
+    # don't use equal bin widths when draws are the same
+    bins <- x[-length(x)]
+    binwidth <- diff(x)
+  } else {
   # bins
   nbins <- max(length(x), length(y))
-  bins <- seq(from = min(min(x), min(y)), to = max(max(x), max(y)), length.out = nbins)
-  binwidth <- bins[2] - bins[1]
+    bins <- seq(
+      from = min(min(x), min(y)),
+      to = max(max(x), max(y)),
+      length.out = nbins
+    )
+    binwidth <- bins[2] - bins[1]
+  }
   
   # calculate required weighted ecdfs
   Px <- spatstat.geom::ewcdf(x, weights = wp)(bins)
@@ -63,7 +73,7 @@ cjs_dist <- function(x, y, x_weights, y_weights, metric = TRUE, ...) {
     Qx * (log(Qx, base = 2) -
             log(0.5 * Qx + 0.5 * Px, base = 2)
     )), na.rm = TRUE) + 0.5 / log(2) * (Px_int - Qx_int)
-  
+
   # calculate upper bound
   bound <- Px_int + Qx_int
 
