@@ -314,7 +314,7 @@ powerscale_summary_plot <- function(x, variables, quantities = NULL, ...) {
     ggplot2::geom_line(ggplot2::aes_string(
       color = "pareto_k_value", group = "component")) +
   ggplot2::facet_wrap(
-    facets = quantity ~ variable,
+    facets = variable ~ quantity,
     scales = "free",
     ncol = length(quantities)
   ) +
