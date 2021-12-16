@@ -126,8 +126,8 @@ powerscale <- function(fit,
   }
 
   # transform the draws if specified
-  if (transform == "spherize") {
-    draws_tr <- spherize_draws(draws, ...)
+  if (transform == "whiten") {
+    draws_tr <- whiten_draws(draws, ...)
     transform_details = list(
       transform = transform,
       loadings = stats::cor(

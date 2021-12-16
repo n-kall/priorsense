@@ -59,8 +59,8 @@ powerscale_gradients <- function(fit, variables = NA, component = c("prior", "li
 
   # transform if needed
   loadings <- NULL
-  if (transform == "spherize") {
-    base_draws_t <- spherize_draws(base_draws, ...)
+  if (transform == "whiten") {
+    base_draws_t <- whiten_draws(base_draws, ...)
 
     # correlation loadings
     loadings <- t(stats::cor(base_draws[,1:posterior::nvariables(base_draws)], base_draws_t[,1:posterior::nvariables(base_draws_t)]))

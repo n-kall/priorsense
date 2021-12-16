@@ -1,9 +1,9 @@
 ##' Transform draws to be spherical
 ##' @param draws draws to be transformed
-##' @param spherize_method transformation method
+##' @param whitening_method transformation method
 ##' @param ... unused
 ##' @return transformed draws
-spherize_draws <- function(draws, spherize_method = "PCA-cor", ...) {
+whiten_draws <- function(draws, whitening_method = "PCA-cor", ...) {
 
   base_draws <- posterior::as_draws_matrix(
     posterior::merge_chains(draws)
@@ -20,7 +20,7 @@ spherize_draws <- function(draws, spherize_method = "PCA-cor", ...) {
   draws_tr <- whitening::whiten(
     base_draws,
     center = TRUE,
-    method = spherize_method
+    method = whitening_method
     )
   
   # cleanup transformed draws
@@ -38,16 +38,16 @@ spherize_draws <- function(draws, spherize_method = "PCA-cor", ...) {
 
 ##' Transform matrix to be spherical
 ##' @param x matrix to be transformed
-##' @param spherize_method transformation method
+##' @param whitening_method transformation method
 ##' @param ... unused
 ##' @return transformed matrix
-spherize_matrix <- function(x, spherize_method = "PCA-cor", ...) {
+whiten_matrix <- function(x, whitening_method = "PCA-cor", ...) {
 
   # transform matrix
   m_tr <- whitening::whiten(
     x,
     center = TRUE,
-    method = spherize_method
+    method = whitening_method
   )
 
   return(m_tr)

@@ -42,8 +42,8 @@ powerscale_sequence <- function(fit, lower_alpha = 0.5,
   # extract the base draws
   base_draws <- get_draws(fit, variables = variables)
 
-  if (transform == "spherize") {
-    base_draws_tr <- spherize_draws(base_draws, ...)
+  if (transform == "whiten") {
+    base_draws_tr <- whiten_draws(base_draws, ...)
     transform_details = list(
       transform = transform,
       loadings = stats::cor(
