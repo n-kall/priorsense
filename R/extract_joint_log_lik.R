@@ -19,7 +19,7 @@ extract_joint_log_lik.stanfit <- function(x, parameter_name = "log_lik", ...) {
   return(log_lik)
 }
 
-extract_joint_log_lik.brmsfit <- function(x, parameter_name = "log_lik", merge_chains = TRUE, ...) {
+extract_joint_log_lik.brmsfit <- function(x, parameter_name = "log_lik", ...) {
   if (!requireNamespace("brms", quietly = TRUE))
     stop("Please load the 'brms' package.", call. = FALSE)
 
