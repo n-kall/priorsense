@@ -2,6 +2,7 @@
 ##' Extract the draws in the form required for power-scaling
 ##' @param x model fit
 ##' @param variables which variables to extract draws from
+##' @param regex whether to use variables as regex
 ##' @param ... unused
 ##' @noRd
 ##' @return draws_df
@@ -9,12 +10,12 @@ get_draws <- function(x, variables, ...) {
   UseMethod("get_draws")
 }
 
-get_draws.brmsfit <- function(x, variables, ...) {
+get_draws.brmsfit <- function(x, variables,...) {
 
-  draws <- posterior::as_draws_df(as.array(x, pars = variables))
+  draws <- posterior::as_draws_df(x, variable = variables)
 
 
-  if (anyNA(variables)) {
+  if (is.null(variables)) {
     # remove unnecessary variables
     variables <- posterior::variables(draws)
     variables <- variables[!(variables %in% c("log_prior", "lp__")) &
