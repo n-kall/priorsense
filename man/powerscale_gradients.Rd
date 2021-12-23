@@ -6,7 +6,7 @@
 \usage{
 powerscale_gradients(
   fit,
-  variables = NA,
+  variables = NULL,
   component = c("prior", "likelihood"),
   type = c("quantities", "divergence"),
   lower_alpha = 0.99,

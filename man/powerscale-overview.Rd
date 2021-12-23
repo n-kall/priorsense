@@ -9,7 +9,8 @@
 powerscale(
   fit,
   alpha,
-  variables = NA,
+  variables = NULL,
+  regex = FALSE,
   component = "prior",
   is_method = "psis",
   moment_match = FALSE,

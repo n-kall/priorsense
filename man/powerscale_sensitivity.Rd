@@ -6,7 +6,7 @@
 \usage{
 powerscale_sensitivity(
   fit,
-  variables = NA,
+  variables = NULL,
   lower_alpha = 0.9,
   upper_alpha = 1.1,
   div_measure = "cjs_dist",
