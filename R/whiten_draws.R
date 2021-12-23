@@ -17,6 +17,13 @@ whiten_draws <- function(draws, whitening_method = "PCA-cor", ...) {
     base_draws <- base_draws[, -ncol(base_draws)]
   }
 
+  Sigma <- cov(scale(base_draws))
+  v <- diag(Sigma)
+  R <- cov2cor(Sigma)
+  eR <- eigen(R, symmetric = TRUE)
+  G <- eR$vectors
+  loadings <- G
+  
   draws_tr <- whitening::whiten(
     base_draws,
     center = TRUE,
@@ -27,13 +34,15 @@ whiten_draws <- function(draws, whitening_method = "PCA-cor", ...) {
   draws_tr <- posterior::as_draws_df(draws_tr)
   posterior::variables(draws_tr) <- paste0("C", 1:posterior::nvariables(draws_tr))
 
-  
   # add weights column back
   if (!(is.null(wei))) {
     draws_tr <- posterior::weight_draws(draws_tr, wei)
   }
+
+  colnames(loadings) <- variables(draws_tr)
+  rownames(loadings) <- variables(base_draws)
   
-  return(draws_tr)
+  return(list(draws = draws_tr, loadings = t(loadings)))
 }
 
 ##' Transform matrix to be spherical

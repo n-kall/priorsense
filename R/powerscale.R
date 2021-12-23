@@ -29,7 +29,8 @@
 ##' @export
 powerscale <- function(fit,
                        alpha,
-                       variables = NA,
+                       variables = NULL,
+                       regex = FALSE,
                        component = "prior",
                        is_method = "psis",
                        moment_match = FALSE,
@@ -121,19 +122,18 @@ powerscale <- function(fit,
     ## )
 
     importance_sampling <- mm$importance_sampling
-    draws <- get_draws(mm$x, variables = variables)
+    draws <- get_draws(mm$x, variables = variables, regex = regex)
 
   }
 
   # transform the draws if specified
   if (transform == "whiten") {
-    draws_tr <- whiten_draws(draws, ...)
+    whitened_draws <- whiten_draws(draws, ...)
+    draws_tr <- whitened_draws$draws
+    loadings <- whitened_draws$loadings
     transform_details = list(
       transform = transform,
-      loadings = stats::cor(
-        draws_tr[,1:posterior::nvariables(draws_tr)],
-        draws[,1:posterior::nvariables(draws)]
-      )
+      loadings = loadings
     )
     draws <- draws_tr
     } else if (transform == "scale") {

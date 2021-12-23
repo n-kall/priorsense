@@ -24,7 +24,7 @@
 ##' @return Maximum of the absolute derivatives above and below alpha
 ##'   = 1.
 ##' @export
-powerscale_gradients <- function(fit, variables = NA, component = c("prior", "likelihood"),
+powerscale_gradients <- function(fit, variables = NULL, component = c("prior", "likelihood"),
                                  type = c("quantities", "divergence"),
                                  lower_alpha = 0.99,
                                  upper_alpha = 1.01,
@@ -43,7 +43,6 @@ powerscale_gradients <- function(fit, variables = NA, component = c("prior", "li
 
   checkmate::assert_number(lower_alpha, lower = 0, upper = 1)
   checkmate::assert_number(upper_alpha, lower = 1, upper = Inf)
-  checkmate::assert_character(variables)
   checkmate::assert_character(div_measure)
   checkmate::assert_list(measure_args)
   checkmate::assert_number(k_threshold)
@@ -60,10 +59,12 @@ powerscale_gradients <- function(fit, variables = NA, component = c("prior", "li
   # transform if needed
   loadings <- NULL
   if (transform == "whiten") {
-    base_draws_t <- whiten_draws(base_draws, ...)
+    whitened_draws <- whiten_draws(base_draws, ...)
+    base_draws_t <- whitened_draws$draws
+    loadings <- whitened_draws$loadings
+        # correlation loadings
+    #    loadings <- t(stats::cor(base_draws[,1:posterior::nvariables(base_draws)], base_draws_t[,1:posterior::nvariables(base_draws_t)]))
 
-    # correlation loadings
-    loadings <- t(stats::cor(base_draws[,1:posterior::nvariables(base_draws)], base_draws_t[,1:posterior::nvariables(base_draws_t)]))
   } else if (transform == "scale") {
     base_draws_t <- scale_draws(base_draws, ...)
   } else {

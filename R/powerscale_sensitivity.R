@@ -16,7 +16,7 @@
 ##' @return Table of sensitivity values for each specified variable.
 ##' @template powerscale_references
 ##' @export
-powerscale_sensitivity <- function(fit, variables = NA,
+powerscale_sensitivity <- function(fit, variables = NULL,
                                    lower_alpha = 0.9,
                                    upper_alpha = 1.1,
                                    div_measure = "cjs_dist",
@@ -35,7 +35,6 @@ powerscale_sensitivity <- function(fit, variables = NA,
 
   checkmate::assert_number(lower_alpha, lower = 0, upper = 1)
   checkmate::assert_number(upper_alpha, lower = 1)
-  checkmate::assert_character(variables)
   checkmate::assert_choice(div_measure, all_divergence_measures())
   checkmate::assert_list(measure_args)
   checkmate::assert_number(sensitivity_threshold, lower = 0)
