@@ -3,26 +3,65 @@
 \name{powerscale-overview}
 \alias{powerscale-overview}
 \alias{powerscale}
+\alias{powerscale.brmsfit}
+\alias{powerscale.CmdStanFit}
+\alias{powerscale.stanfit}
 \alias{powerscale_sequence}
+\alias{powerscale_sequence.CmdStanFit}
+\alias{powerscale_sequence.stanfit}
+\alias{powerscale_sequence.brmsfit}
 \title{Prior/likelihood power-scaling perturbation}
 \usage{
-powerscale(
+powerscale(fit, ...)
+
+\method{powerscale}{brmsfit}(
   fit,
   alpha,
   variables = NULL,
-  regex = FALSE,
   component = "prior",
   is_method = "psis",
   moment_match = FALSE,
   k_threshold = 0.5,
   resample = FALSE,
   transform = FALSE,
-  log_prior_fn = calculate_log_prior,
-  joint_log_lik_fn = extract_joint_log_lik,
+  log_prior_fn = log_prior_brmsfit,
+  joint_log_lik_fn = joint_log_lik_brmsfit,
   ...
 )
 
-powerscale_sequence(
+\method{powerscale}{CmdStanFit}(
+  fit,
+  alpha,
+  variables = NULL,
+  component = "prior",
+  is_method = "psis",
+  moment_match = FALSE,
+  k_threshold = 0.5,
+  resample = FALSE,
+  transform = FALSE,
+  log_prior_fn = log_prior_CmdStanFit,
+  joint_log_lik_fn = joint_log_lik_CmdStanFit,
+  ...
+)
+
+\method{powerscale}{stanfit}(
+  fit,
+  alpha,
+  variables = NULL,
+  component = "prior",
+  is_method = "psis",
+  moment_match = FALSE,
+  k_threshold = 0.5,
+  resample = FALSE,
+  transform = FALSE,
+  log_prior_fn = log_prior_stanfit,
+  joint_log_lik_fn = joint_log_lik_stanfit,
+  ...
+)
+
+powerscale_sequence(fit, ...)
+
+\method{powerscale_sequence}{CmdStanFit}(
   fit,
   lower_alpha = 0.5,
   upper_alpha = 1/lower_alpha,
@@ -33,8 +72,42 @@ powerscale_sequence(
   moment_match = FALSE,
   k_threshold = 0.5,
   resample = FALSE,
-  log_prior_fn = calculate_log_prior,
-  joint_log_lik_fn = extract_joint_log_lik,
+  log_prior_fn = log_prior_CmdStanFit,
+  joint_log_lik_fn = joint_log_lik_CmdStanFit,
+  transform = FALSE,
+  ...
+)
+
+\method{powerscale_sequence}{stanfit}(
+  fit,
+  lower_alpha = 0.5,
+  upper_alpha = 1/lower_alpha,
+  alpha_step = 0.1,
+  variables = NA,
+  component = c("prior", "likelihood"),
+  is_method = "psis",
+  moment_match = FALSE,
+  k_threshold = 0.5,
+  resample = FALSE,
+  log_prior_fn = log_prior_stanfit,
+  joint_log_lik_fn = joint_log_lik_stanfit,
+  transform = FALSE,
+  ...
+)
+
+\method{powerscale_sequence}{brmsfit}(
+  fit,
+  lower_alpha = 0.5,
+  upper_alpha = 1/lower_alpha,
+  alpha_step = 0.1,
+  variables = NA,
+  component = c("prior", "likelihood"),
+  is_method = "psis",
+  moment_match = FALSE,
+  k_threshold = 0.5,
+  resample = FALSE,
+  log_prior_fn = log_prior_brmsfit,
+  joint_log_lik_fn = joint_log_lik_brmsfit,
   transform = FALSE,
   ...
 )
@@ -43,8 +116,10 @@ powerscale_sequence(
 \item{fit}{A fitted model object of class \code{stanfit}, \code{brmsfit} or
 \code{CmdStanFit}.}
 
-\item{alpha}{Value by which to power-scale specified component
-(likelihood/prior).}
+\item{...}{Further arguments passed to the custom functions
+documented above.}
+
+\item{alpha}{Value by which to power-scale specified component. (likelihood/prior).}
 
 \item{variables}{Vector of variable names to return estimated
 posterior draws for.}
@@ -87,9 +162,6 @@ prior, by default named "log_prior").}
 
 \item{joint_log_lik_fn}{A function that takes as input the model
 fit and returns the joint log likelihood values.}
-
-\item{...}{Further arguments passed to the custom functions
-documented above.}
 
 \item{lower_alpha}{Lower power-scaling alpha value in sequence.}
 

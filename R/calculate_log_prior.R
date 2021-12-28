@@ -3,21 +3,15 @@
 ##' Log prior calculation by subtracting log likelihood from log joint
 ##' density.
 ##'
-##' @name calculate_log_prior
+##' @name log_prior_calc
 ##' @param x Fitted model object.
 ##' @param ... Currently unused.
 ##' @return A draws_array object containing calculated log_prior values.
 NULL
 
-##' @rdname calculate_log_prior
+##' @rdname log_prior_calc
 ##' @export
-calculate_log_prior <- function(x, ...) {
-  UseMethod("calculate_log_prior")
-}
-
-##' @rdname calculate_log_prior
-##' @export
-calculate_log_prior.stanfit <- function(x, ...) {
+log_prior_calc_stanfit <- function(x, ...) {
   post_draws <- posterior::merge_chains(
     posterior::as_draws_array(x, ...)
   )
@@ -25,16 +19,16 @@ calculate_log_prior.stanfit <- function(x, ...) {
   upars <- unconstrain_pars(x, post_draws)
   lp <- log_prob_pars(x, upars)
 
-  log_prior <- lp - extract_joint_log_lik(x)
+  log_prior <- lp - joint_log_lik_stanfit(x)
 
   posterior::variables(log_prior) <- "log_prior"
 
   return(posterior::merge_chains(log_prior))
 }
 
-##' @rdname calculate_log_prior
+##' @rdname log_prior_calc
 ##' @export
-calculate_log_prior.brmsfit <- function(x, ...) {
+log_prior_calc_brmsfit <- function(x, ...) {
   post_draws <- posterior::merge_chains(
     posterior::as_draws_array(x$fit, ...)
   )
@@ -42,7 +36,7 @@ calculate_log_prior.brmsfit <- function(x, ...) {
   upars <- unconstrain_pars(x$fit, post_draws)
   lp <- log_prob_pars(x$fit, upars)
 
-  log_prior <- lp - extract_joint_log_lik(x)
+  log_prior <- lp - joint_log_lik_brmsfit(x)
 
   posterior::variables(log_prior) <- "log_prior"
 

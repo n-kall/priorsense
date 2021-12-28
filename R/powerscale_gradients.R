@@ -36,8 +36,6 @@ powerscale_gradients <- function(fit, variables = NULL, component = c("prior", "
                                  resample = FALSE,
                                  transform = FALSE,
                                  scale = FALSE,
-                                 log_prior_fn = calculate_log_prior,
-                                 joint_log_lik_fn = extract_joint_log_lik,
                                  ...
                                  ) {
 
@@ -49,9 +47,6 @@ powerscale_gradients <- function(fit, variables = NULL, component = c("prior", "
   checkmate::assert_character(component)
   checkmate::assert_logical(moment_match)
   checkmate::assert_logical(resample)
-  checkmate::assert_function(log_prior_fn)
-  checkmate::assert_function(joint_log_lik_fn)
-
 
   # extract the draws
   base_draws <- get_draws(fit, variables = variables)
@@ -110,8 +105,6 @@ powerscale_gradients <- function(fit, variables = NULL, component = c("prior", "
       k_threshold = k_threshold,
       resample = resample,
       transform = transform,
-      joint_log_lik_fn = joint_log_lik_fn,
-      log_prior_fn = log_prior_fn,
       ...
     )
 
@@ -126,8 +119,6 @@ powerscale_gradients <- function(fit, variables = NULL, component = c("prior", "
       k_threshold = k_threshold,
       resample = resample,
       transform = transform,
-      joint_log_lik_fn = joint_log_lik_fn,
-      log_prior_fn = log_prior_fn,
       ...
     )
 

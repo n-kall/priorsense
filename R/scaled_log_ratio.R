@@ -4,12 +4,12 @@
 ##' @param component component to scale
 ##' @param alpha scaling factor
 ##' @param log_prior_fn function to extract log_prior
-##' @param joint_log_lik_fn function to extract joing log lik
+##' @param joint_log_lik_fn function to extract joint log lik
 ##' @param ... other arguments
 ##' @return log ratio
 scaled_log_ratio <- function(x, component, alpha,
-                             log_prior_fn = calculate_log_prior,
-                             joint_log_lik_fn = extract_joint_log_lik,
+                             log_prior_fn,
+                             joint_log_lik_fn,
                              ...) {
 
   if (component == "prior") {

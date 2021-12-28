@@ -111,8 +111,7 @@ from the gradient of the Cumulative Jensen-Shannon distance between
 the base posterior and posteriors resulting from power-scaling.
 
 ```{r}
-powerscale_sensitivity(fit, variables = c("mu", "sigma"),
-                       log_prior_fn = extract_log_prior)
+powerscale_sensitivity(fit, variables = c("mu", "sigma"))
 ```
 
 Here, we see that the pattern of sensitivity indicates that there is
@@ -122,7 +121,7 @@ We first create a `powerscaled_sequence` object, which contains
 estimates of posteriors for a range of power-scaling amounts.
 
 ```{r}
-pss <- powerscale_sequence(fit, log_prior_fn = extract_log_prior)
+pss <- powerscale_sequence(fit)
 ```
 
 There are three plots currently available:

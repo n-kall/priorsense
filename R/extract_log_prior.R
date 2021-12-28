@@ -2,7 +2,7 @@
 ##'
 ##' Extract log prior from variable in fitted Stan model.
 ##'
-##' @name extract_log_prior
+##' @name log_prior
 ##' 
 ##' @param x Model fit.
 ##' @param parameter_name Name of parameter in Stan model
@@ -11,15 +11,9 @@
 ##' @return A draws_array object containing log_prior values.
 NULL
 
-##' @rdname extract_log_prior
+##' @rdname log_prior
 ##' @export
-extract_log_prior <- function(x, ...) {
-  UseMethod("extract_log_prior")
-}
-
-##' @rdname extract_log_prior
-##' @export
-extract_log_prior.stanfit <- function(x,
+log_prior_stanfit <- function(x,
                                       parameter_name = "log_prior", ...) {
 
   if (!inherits(x, "stanfit"))
@@ -39,9 +33,9 @@ extract_log_prior.stanfit <- function(x,
   return(log_prior)
 }
 
-##' @rdname extract_log_prior
+##' @rdname log_prior
 ##' @export
-extract_log_prior.brmsfit <- function(x,
+log_prior_brmsfit <- function(x,
                                       parameter_name = "log_prior", ...) {
 
   log_prior <- as.array(x, variable = parameter_name)
@@ -49,9 +43,9 @@ extract_log_prior.brmsfit <- function(x,
   return(log_prior)
 }
 
-##' @rdname extract_log_prior
+##' @rdname log_prior
 ##' @export
-extract_log_prior.CmdStanFit <- function(x,
+log_prior_CmdStanFit <- function(x,
                                          parameter_name = "log_prior", ...) {
 
   log_prior <- x$draws(variables = parameter_name)

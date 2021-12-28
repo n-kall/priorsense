@@ -4,14 +4,7 @@
 \alias{scaled_log_ratio}
 \title{Calculate importance ratios based on scaling of component}
 \usage{
-scaled_log_ratio(
-  x,
-  component,
-  alpha,
-  log_prior_fn = calculate_log_prior,
-  joint_log_lik_fn = extract_joint_log_lik,
-  ...
-)
+scaled_log_ratio(x, component, alpha, log_prior_fn, joint_log_lik_fn, ...)
 }
 \arguments{
 \item{x}{a model fit}
@@ -22,7 +15,7 @@ scaled_log_ratio(
 
 \item{log_prior_fn}{function to extract log_prior}
 
-\item{joint_log_lik_fn}{function to extract joing log lik}
+\item{joint_log_lik_fn}{function to extract joint log lik}
 
 \item{...}{other arguments}
 }

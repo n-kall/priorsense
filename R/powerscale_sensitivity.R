@@ -28,13 +28,12 @@ powerscale_sensitivity <- function(fit, variables = NULL,
                                    k_threshold = 0.5,
                                    transform = FALSE,
                                    resample = FALSE,
-                                   log_prior_fn = calculate_log_prior,
-                                   joint_log_lik_fn = extract_joint_log_lik,
                                    ...
                                    ) {
 
   checkmate::assert_number(lower_alpha, lower = 0, upper = 1)
   checkmate::assert_number(upper_alpha, lower = 1)
+  checkmate::assert_character(variables)
   checkmate::assert_choice(div_measure, all_divergence_measures())
   checkmate::assert_list(measure_args)
   checkmate::assert_number(sensitivity_threshold, lower = 0)
@@ -42,8 +41,6 @@ powerscale_sensitivity <- function(fit, variables = NULL,
   checkmate::assert_character(component)
   checkmate::assert_logical(moment_match)
   checkmate::assert_logical(resample)
-  checkmate::assert_function(log_prior_fn)
-  checkmate::assert_function(joint_log_lik_fn)
 
   
   if (is_method != "psis" & moment_match) {
@@ -71,8 +68,6 @@ powerscale_sensitivity <- function(fit, variables = NULL,
     measure_args = measure_args,
     transform = transform,
     resample = resample,
-    joint_log_lik_fn = joint_log_lik_fn,
-    log_prior_fn = log_prior_fn,
     ...
   )
   

@@ -19,8 +19,6 @@ powerscale_gradients(
   resample = FALSE,
   transform = FALSE,
   scale = FALSE,
-  log_prior_fn = calculate_log_prior,
-  joint_log_lik_fn = extract_joint_log_lik,
   ...
 )
 }
@@ -87,16 +85,6 @@ draws. Either "scale" or "spherize".}
 
 \item{scale}{logical scale quantity gradients by base posterior
 standard deviation.}
-
-\item{log_prior_fn}{A function that takes as input the model fit
-and returns the log prior values. Provided functions are
-\code{calculate_log_prior} (requires model to be fit with rstan and
-in the same R session) and \code{extract_log_prior} (requires a
-variable in the Stan model code to correspond to the joint log
-prior, by default named "log_prior").}
-
-\item{joint_log_lik_fn}{A function that takes as input the model
-fit and returns the joint log likelihood values.}
 
 \item{...}{Further arguments passed to functions.}
 }
