@@ -9,31 +9,30 @@ get_draws <- function(x, variables, ...) {
   UseMethod("get_draws")
 }
 
-get_draws.brmsfit <- function(x, variables, ...) {
+get_draws.brmsfit <- function(x, variables, excluded_variables = c("lprior", "lp__"), ...) {
 
-  draws <- posterior::as_draws_df(as.array(x, pars = variables))
+  draws <- posterior::as_draws_df(as.array(x, variables = variables))
 
-
-  if (anyNA(variables)) {
+  if (is.null(variables)) {
     # remove unnecessary variables
     variables <- posterior::variables(draws)
-    variables <- variables[!(variables %in% c("log_prior", "lp__")) &
+    variables <- variables[!(variables %in% excluded_variables) &
                              !(startsWith(variables, "log_lik"))]
-
+    
     draws <- posterior::subset_draws(draws, variable = variables)
   }
 
   return(draws)
 }
 
-get_draws.stanfit <- function(x, variables, ...) {
-  if (anyNA(variables)) {
+get_draws.stanfit <- function(x, variables, excluded_variables = c("log_prior", "lp__"), ...) {
+  if (is.null(variables)) {
 
     draws <- posterior::as_draws_df(as.array(x))
 
     # remove unnecessary variables
     variables <- posterior::variables(draws)
-    variables <- variables[!(variables %in% c("log_prior", "lp__")) &
+    variables <- variables[!(variables %in% excluded_variables) &
                              !(startsWith(variables, "log_lik"))]
     draws <- posterior::subset_draws(draws, variable = variables)
   } else {
@@ -43,14 +42,14 @@ get_draws.stanfit <- function(x, variables, ...) {
   return(draws)
 }
 
-get_draws.CmdStanFit <- function(x, variables, ...) {
+get_draws.CmdStanFit <- function(x, variables, excluded_variables = c("log_prior", "lp__"), ...) {
 
-  if (anyNA(variables)) {
+  if (is.null(variables)) {
     draws <- posterior::as_draws_df(x$draws())
 
     # remove unnecessary variables
     variables <- posterior::variables(draws)
-    variables <- variables[!(variables %in% c("log_prior", "lp__")) &
+    variables <- variables[!(variables %in% excluded_variables) &
                              !(startsWith(variables, "log_lik"))]
 
     draws <- posterior::subset_draws(draws, variable = variables)

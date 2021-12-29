@@ -25,7 +25,6 @@ powerscale_sequence.CmdStanFit <- function(fit, lower_alpha = 0.5,
   checkmate::assert_number(lower_alpha, lower = 0, upper = 1)
   checkmate::assert_number(upper_alpha, lower = 1)
   checkmate::assert_number(alpha_step, lower = 0.0001)
-  checkmate::assert_character(variables)
   checkmate::assert_number(k_threshold)
   checkmate::assert_character(component)
   checkmate::assert_logical(moment_match)
@@ -162,7 +161,6 @@ powerscale_sequence.stanfit <- function(fit, lower_alpha = 0.5,
   checkmate::assert_number(lower_alpha, lower = 0, upper = 1)
   checkmate::assert_number(upper_alpha, lower = 1)
   checkmate::assert_number(alpha_step, lower = 0.0001)
-  checkmate::assert_character(variables)
   checkmate::assert_number(k_threshold)
   checkmate::assert_character(component)
   checkmate::assert_logical(moment_match)
@@ -299,7 +297,6 @@ powerscale_sequence.brmsfit <- function(fit, lower_alpha = 0.5,
   checkmate::assert_number(lower_alpha, lower = 0, upper = 1)
   checkmate::assert_number(upper_alpha, lower = 1)
   checkmate::assert_number(alpha_step, lower = 0.0001)
-  checkmate::assert_character(variables)
   checkmate::assert_number(k_threshold)
   checkmate::assert_character(component)
   checkmate::assert_logical(moment_match)
@@ -307,11 +304,11 @@ powerscale_sequence.brmsfit <- function(fit, lower_alpha = 0.5,
   checkmate::assert_function(log_prior_fn)
   checkmate::assert_function(joint_log_lik_fn)
 
-  if (moment_match) {
+  if (moment_match & fit$backend == "cmdstanr") {
     moment_match <- FALSE
     warning("Moment-matching does not yet work with fits created with cmdstanr. Falling back to moment_match = FALSE")
   }
-
+  
   alpha_seq <- seq(lower_alpha, 1 - alpha_step, alpha_step)
   alpha_seq <- c(alpha_seq, rev(1 / alpha_seq))
 

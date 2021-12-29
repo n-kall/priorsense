@@ -35,8 +35,7 @@ log_prior_stanfit <- function(x,
 
 ##' @rdname log_prior
 ##' @export
-log_prior_brmsfit <- function(x,
-                                      parameter_name = "log_prior", ...) {
+log_prior_brmsfit <- function(x, parameter_name = "lprior", ...) {
 
   log_prior <- as.array(x, variable = parameter_name)
 
@@ -45,8 +44,7 @@ log_prior_brmsfit <- function(x,
 
 ##' @rdname log_prior
 ##' @export
-log_prior_CmdStanFit <- function(x,
-                                         parameter_name = "log_prior", ...) {
+log_prior_CmdStanFit <- function(x, parameter_name = "log_prior", ...) {
 
   log_prior <- x$draws(variables = parameter_name)
 

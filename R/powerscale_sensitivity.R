@@ -33,7 +33,6 @@ powerscale_sensitivity <- function(fit, variables = NULL,
 
   checkmate::assert_number(lower_alpha, lower = 0, upper = 1)
   checkmate::assert_number(upper_alpha, lower = 1)
-  checkmate::assert_character(variables)
   checkmate::assert_choice(div_measure, all_divergence_measures())
   checkmate::assert_list(measure_args)
   checkmate::assert_number(sensitivity_threshold, lower = 0)
@@ -50,7 +49,7 @@ powerscale_sensitivity <- function(fit, variables = NULL,
     warning("Moment-matching only works with PSIS. Falling back to moment_match = FALSE")
   }
 
-  if (inherits(fit, "CmdStanFit") & moment_match) {
+  if ((inherits(fit, "CmdStanFit") | (fit$backend == "cmdstanr")) & moment_match) {
     moment_match <- FALSE
     warning("Moment-matching does not yet work with fits created with cmdstanr. Falling back to moment_match = FALSE")
   }
