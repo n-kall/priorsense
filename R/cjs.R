@@ -30,58 +30,69 @@
 ##'   \code{doi:10.1007/978-3-319-23525-7_11}
 ##' @export
 cjs_dist <- function(x, y, x_weights, y_weights, metric = TRUE, ...) {
-  
-  # sort draws and weights
-  x_idx <- order(x)
-  x <- x[x_idx]
-  wp <- x_weights[x_idx]
 
-  y_idx <- order(y)
-  y <- y[y_idx]
-  wq <- y_weights[y_idx]
+  if (all(is.na(x)) | all(is.na(y)) | all(y_weights == 0)) {
 
-  if (all(x == y)) {
-    # don't use equal bin widths when draws are the same
-    bins <- x[-length(x)]
-    binwidth <- diff(x)
+    print(all(y_weights > 0))
+    print(all(x_weights > 0))
+    out <- NA
+
   } else {
-  # bins
-  nbins <- max(length(x), length(y))
-    bins <- seq(
-      from = min(min(x), min(y)),
-      to = max(max(x), max(y)),
-      length.out = nbins
-    )
-    binwidth <- bins[2] - bins[1]
-  }
-  
-  # calculate required weighted ecdfs
-  Px <- spatstat.geom::ewcdf(x, weights = wp)(bins)
-  Qx <- spatstat.geom::ewcdf(y, weights = wq)(bins)
 
-  # calculate integral of ecdfs
-  Px_int <- sum(Px * binwidth)
-  Qx_int <- sum(Qx * binwidth)
+    # sort draws and weights
+    x_idx <- order(x)
+    x <- x[x_idx]
+    wp <- x_weights[x_idx]
 
-  # calculate cjs
-  cjs_PQ <-  sum(binwidth * (
-    Px * (log(Px, base = 2) -
-            log(0.5 * Px + 0.5 * Qx, base = 2)
-    )), na.rm = TRUE) + 0.5 / log(2) * (Qx_int - Px_int)
+    y_idx <- order(y)
+    y <- y[y_idx]
+    wq <- y_weights[y_idx]
 
-  cjs_QP <- sum(binwidth * (
-    Qx * (log(Qx, base = 2) -
-            log(0.5 * Qx + 0.5 * Px, base = 2)
-    )), na.rm = TRUE) + 0.5 / log(2) * (Px_int - Qx_int)
+    if (all(x == y)) {
+      # don't use equal bin widths when x and y draws are the same but
+      # just different weights
+      bins <- x[-length(x)]
+      binwidth <- diff(x)
+    } else {
+      # bins
+      nbins <- max(length(x), length(y))
+      bins <- seq(
+        from = min(min(x), min(y)),
+        to = max(max(x), max(y)),
+        length.out = nbins
+      )
+      binwidth <- bins[2] - bins[1]
+    }
 
-  # calculate upper bound
-  bound <- Px_int + Qx_int
+    # calculate required weighted ecdfs
+    Px <- spatstat.geom::ewcdf(x, weights = wp)(bins)
+    Qx <- spatstat.geom::ewcdf(y, weights = wq)(bins)
 
-  # normalise with respect to upper bound
-  out <- (cjs_PQ + cjs_QP) / bound
+    # calculate integral of ecdfs
+    Px_int <- sum(Px * binwidth)
+    Qx_int <- sum(Qx * binwidth)
 
-  if (metric) {
-    out <- sqrt(out)
+    # calculate cjs
+    cjs_PQ <-  sum(binwidth * (
+      Px * (log(Px, base = 2) -
+              log(0.5 * Px + 0.5 * Qx, base = 2)
+      )), na.rm = TRUE) + 0.5 / log(2) * (Qx_int - Px_int)
+
+    cjs_QP <- sum(binwidth * (
+      Qx * (log(Qx, base = 2) -
+              log(0.5 * Qx + 0.5 * Px, base = 2)
+      )), na.rm = TRUE) + 0.5 / log(2) * (Px_int - Qx_int)
+
+    # calculate upper bound
+    bound <- Px_int + Qx_int
+
+    # normalise with respect to upper bound
+    out <- (cjs_PQ + cjs_QP) / bound
+
+    if (metric) {
+      out <- sqrt(out)
+    }
+
   }
 
   return(c(cjs = out))
