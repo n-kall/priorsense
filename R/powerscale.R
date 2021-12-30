@@ -69,7 +69,7 @@ powerscale.brmsfit <- function(fit,
   }
 
   # extract draws from fit
-  draws <- get_draws(fit, variables = variables)
+  draws <- get_draws(fit, variables = variables, ...)
 
   # get the correct importance sampling function
   if (is.character(is_method)) {
@@ -126,7 +126,7 @@ powerscale.brmsfit <- function(fit,
     ## )
 
     importance_sampling <- mm$importance_sampling
-    draws <- get_draws(mm$x, variables = variables)
+    draws <- get_draws(mm$x, variables = variables, ...)
 
   }
 
@@ -203,7 +203,7 @@ powerscale.CmdStanFit <- function(fit,
   }
 
   # extract draws from fit
-  draws <- get_draws(fit, variables = variables)
+  draws <- get_draws(fit, variables = variables, ...)
 
   # get the correct importance sampling function
   if (is.character(is_method)) {
@@ -314,7 +314,7 @@ powerscale.stanfit <- function(fit,
   }
 
   # extract draws from fit
-  draws <- get_draws(fit, variables = variables)
+  draws <- get_draws(fit, variables = variables, ...)
 
   # get the correct importance sampling function
   if (is.character(is_method)) {
@@ -371,7 +371,7 @@ powerscale.stanfit <- function(fit,
     ## )
 
     importance_sampling <- mm$importance_sampling
-    draws <- get_draws(mm$x, variables = variables)
+    draws <- get_draws(mm$x, variables = variables, ...)
 
   }
 

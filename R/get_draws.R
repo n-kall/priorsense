@@ -9,19 +9,19 @@ get_draws <- function(x, variables, ...) {
   UseMethod("get_draws")
 }
 
-get_draws.brmsfit <- function(x, variables, excluded_variables = c("lprior", "lp__"), ...) {
+get_draws.brmsfit <- function(x, variables, regex = FALSE, excluded_variables = c("lprior", "lp__"), ...) {
 
-  draws <- posterior::as_draws_df(as.array(x, variables = variables))
-
+  draws <- posterior::as_draws_df(x, variable = variables, regex = regex)
+  
   if (is.null(variables)) {
     # remove unnecessary variables
-    variables <- posterior::variables(draws)
+    variables <- posterior::variables(x)
     variables <- variables[!(variables %in% excluded_variables) &
                              !(startsWith(variables, "log_lik"))]
     
     draws <- posterior::subset_draws(draws, variable = variables)
   }
-
+    
   return(draws)
 }
 
@@ -42,10 +42,10 @@ get_draws.stanfit <- function(x, variables, excluded_variables = c("log_prior", 
   return(draws)
 }
 
-get_draws.CmdStanFit <- function(x, variables, excluded_variables = c("log_prior", "lp__"), ...) {
+get_draws.CmdStanFit <- function(x, variables, regex, excluded_variables = c("log_prior", "lp__"), ...) {
 
   if (is.null(variables)) {
-    draws <- posterior::as_draws_df(x$draws())
+    draws <- posterior::as_draws_df(x$draws(), variable = variables, regex = regex)
 
     # remove unnecessary variables
     variables <- posterior::variables(draws)

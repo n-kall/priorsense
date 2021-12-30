@@ -49,7 +49,7 @@ powerscale_gradients <- function(fit, variables = NULL, component = c("prior", "
   checkmate::assert_logical(resample)
 
   # extract the draws
-  base_draws <- get_draws(fit, variables = variables)
+  base_draws <- get_draws(fit, variables = variables, ...)
 
   # transform if needed
   loadings <- NULL
