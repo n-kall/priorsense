@@ -39,7 +39,6 @@ test_that("weighted quantities are close to resampled", {
       summarise_draws(
         powerscale(
           normal_example_sfit, variables = "mu", alpha = 0.5,
-          log_prior_fn = extract_log_prior
         )
       )$draws_summary[2:7]),
     as.vector(
@@ -47,7 +46,6 @@ test_that("weighted quantities are close to resampled", {
         resample_draws(
           powerscale(
             normal_example_sfit, variables = "mu", alpha = 0.5,
-            log_prior_fn = extract_log_prior
           )
         ), posterior::default_summary_measures()
       )$draws_summary[2:7]), tolerance = 0.08

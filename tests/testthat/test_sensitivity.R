@@ -9,7 +9,6 @@ test_that("powerscale_sensitivity runs without error for differnt component opti
       fit = normal_example_sfit,
       component = "prior",
       variables = "mu",
-      log_prior_fn = extract_log_prior
     ),
     NA
   )
@@ -18,7 +17,6 @@ test_that("powerscale_sensitivity runs without error for differnt component opti
       fit = normal_example_sfit,
       component = "likelihood",
       variables = "mu",
-      log_prior_fn = extract_log_prior
     ),
     NA
   )
@@ -27,7 +25,6 @@ test_that("powerscale_sensitivity runs without error for differnt component opti
       fit = normal_example_sfit,
       component = c("likelihood", "prior"),
       variables = "mu",
-      log_prior_fn = extract_log_prior
     ),
     NA
   )

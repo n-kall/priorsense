@@ -17,11 +17,7 @@
 ##'   and "likelihood".
 ##' @template powerscale_args
 ##' @param log_prior_fn A function that takes as input the model fit
-##'   and returns the log prior values. Provided functions are
-##'   `calculate_log_prior` (requires model to be fit with rstan and
-##'   in the same R session) and `extract_log_prior` (requires a
-##'   variable in the Stan model code to correspond to the joint log
-##'   prior, by default named "log_prior").
+##'   and returns the log prior values.
 ##' @param joint_log_lik_fn A function that takes as input the model
 ##'   fit and returns the joint log likelihood values.
 ##' @param ... Further arguments passed to the custom functions
@@ -115,7 +111,9 @@ powerscale.brmsfit <- function(fit,
       psis = importance_sampling,
       alpha = alpha,
       component = component,
-      k_threshold = k_threshold
+      k_threshold = k_threshold,
+      joint_log_lik_fn = joint_log_lik_fn,
+      log_prior_fn = log_prior_fn
     )
 
     # TODO: use iwmm package for moment_match
@@ -360,7 +358,9 @@ powerscale.stanfit <- function(fit,
       psis = importance_sampling,
       alpha = alpha,
       component = component,
-      k_threshold = k_threshold
+      k_threshold = k_threshold,
+      log_prior_fn = log_prior_fn,
+      joint_log_lik_fn = joint_log_lik_fn
     )
 
     # TODO: use iwmm package for moment_match

@@ -11,7 +11,6 @@ test_that("powerscale with resample actually resamples", {
       alpha = 0.5,
       variables = c("mu"),
       resample = TRUE,
-      log_prior_fn = extract_log_prior
     )$powerscaling$resampled,
     TRUE
   )
@@ -21,7 +20,6 @@ test_that("powerscale with resample actually resamples", {
       fit = normal_example_sfit,
       alpha = 0.5,
       variables = c("mu"),
-      log_prior_fn = extract_log_prior,
       resample = TRUE
     )),
     NULL
@@ -36,7 +34,6 @@ test_that("powerscale_sequence with resample actually resamples", {
       fit = normal_example_sfit,
       variables = c("mu"),
       resample = TRUE,
-      log_prior_fn = extract_log_prior
     )$resampled,
     TRUE
   )

@@ -17,9 +17,9 @@ whiten_draws <- function(draws, whitening_method = "PCA-cor", ...) {
     base_draws <- base_draws[, -ncol(base_draws)]
   }
 
-  Sigma <- cov(scale(base_draws))
+  Sigma <- stats::cov(scale(base_draws))
   v <- diag(Sigma)
-  R <- cov2cor(Sigma)
+  R <- stats::cov2cor(Sigma)
   eR <- eigen(R, symmetric = TRUE)
   G <- eR$vectors
   loadings <- G
