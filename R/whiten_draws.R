@@ -39,8 +39,8 @@ whiten_draws <- function(draws, whitening_method = "PCA-cor", ...) {
     draws_tr <- posterior::weight_draws(draws_tr, wei)
   }
 
-  colnames(loadings) <- variables(draws_tr)
-  rownames(loadings) <- variables(base_draws)
+  colnames(loadings) <- posterior::variables(draws_tr)
+  rownames(loadings) <- posterior::variables(base_draws)
   
   return(list(draws = draws_tr, loadings = t(loadings)))
 }
