@@ -6,7 +6,7 @@
 \usage{
 powerscale_sensitivity(
   fit,
-  variables = NULL,
+  variable = NULL,
   lower_alpha = 0.9,
   upper_alpha = 1.1,
   div_measure = "cjs_dist",
@@ -25,7 +25,7 @@ powerscale_sensitivity(
 \item{fit}{A fitted model object of class \code{stanfit}, \code{brmsfit} or
 \code{CmdStanFit}.}
 
-\item{variables}{Character vector of variables to check.}
+\item{variable}{Character vector of variables to check.}
 
 \item{lower_alpha}{Lower alpha value for gradient calculation.}
 

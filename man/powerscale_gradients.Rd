@@ -6,7 +6,7 @@
 \usage{
 powerscale_gradients(
   fit,
-  variables = NULL,
+  variable = NULL,
   component = c("prior", "likelihood"),
   type = c("quantities", "divergence"),
   lower_alpha = 0.99,
@@ -25,7 +25,7 @@ powerscale_gradients(
 \arguments{
 \item{fit}{Model fit of class brmsfit, stanfit or CmdStanFit}
 
-\item{variables}{Variables to compute sensitivity of. If NA
+\item{variable}{Variables to compute sensitivity of. If NA
 (default) sensitivity is computed for all variables.}
 
 \item{component}{Component to power-scale (prior or likelihood).}

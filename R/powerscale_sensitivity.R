@@ -49,9 +49,17 @@ powerscale_sensitivity <- function(fit, variable = NULL,
     warning("Moment-matching only works with PSIS. Falling back to moment_match = FALSE")
   }
 
-  if ((inherits(fit, "CmdStanFit") | (fit$backend == "cmdstanr")) & moment_match) {
-    moment_match <- FALSE
-    warning("Moment-matching does not yet work with fits created with cmdstanr. Falling back to moment_match = FALSE")
+  if (moment_match) {
+    if (inherits(fit, "CmdStanFit")) {
+      moment_match <- FALSE
+      warning("Moment-matching does not yet work with fits created with cmdstanr. Falling back to moment_match = FALSE")
+    }
+    if (inherits(fit, "brmsfit")) {
+      if (fit$backend == "cmdstanr") {
+        moment_match <- FALSE
+        warning("Moment-matching does not yet work with fits created with cmdstanr. Falling back to moment_match = FALSE")
+      }
+    }
   }
   
   gradients <- powerscale_gradients(
@@ -69,7 +77,7 @@ powerscale_sensitivity <- function(fit, variable = NULL,
     resample = resample,
     ...
   )
-  
+
   prior_sense <- gradients$divergence$prior[[2]]
   lik_sense <- gradients$divergence$likelihood[[2]]
 
@@ -84,7 +92,7 @@ powerscale_sensitivity <- function(fit, variable = NULL,
   mean_prior_sign <- gradients$quantities$prior$mean
   mean_lik_sign <- gradients$quantities$likelihood$mean
 
-  
+
   sense <- tibble::tibble(
     # TODO: more elegant way to extract variables
     variable = unique(
@@ -102,12 +110,12 @@ powerscale_sensitivity <- function(fit, variable = NULL,
   # likelihood
 
   sense$diagnosis <- ifelse(sense$prior >= sensitivity_threshold & sense$likelihood >= sensitivity_threshold, "prior-data conflict",
-                          ifelse(sense$prior > sensitivity_threshold & sense$likelihood < sensitivity_threshold,
-                                 "weak likelihood",
-                                 "-"
-                                 )
-                          )
-  
+                            ifelse(sense$prior > sensitivity_threshold & sense$likelihood < sensitivity_threshold,
+                                   "weak likelihood",
+                                   "-"
+                                   )
+                            )
+
   out <- list(
     # order by largest value first
     sensitivity = sense,

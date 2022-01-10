@@ -31,7 +31,7 @@ get_draws.stanfit <- function(x, variable, excluded_variables = c("log_prior", "
     draws <- posterior::as_draws_df(as.array(x))
 
     # remove unnecessary variables
-    variable <- posterior::variable(draws)
+    variable <- posterior::variables(draws)
     variable <- variables[!(variable %in% excluded_variables) &
                              !(startsWith(variable, "log_lik"))]
     draws <- posterior::subset_draws(draws, variable = variable)

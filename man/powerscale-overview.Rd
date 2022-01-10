@@ -17,7 +17,7 @@ powerscale(fit, ...)
 \method{powerscale}{brmsfit}(
   fit,
   alpha,
-  variables = NULL,
+  variable = NULL,
   component = "prior",
   is_method = "psis",
   moment_match = FALSE,
@@ -32,7 +32,7 @@ powerscale(fit, ...)
 \method{powerscale}{CmdStanFit}(
   fit,
   alpha,
-  variables = NULL,
+  variable = NULL,
   component = "prior",
   is_method = "psis",
   moment_match = FALSE,
@@ -47,7 +47,7 @@ powerscale(fit, ...)
 \method{powerscale}{stanfit}(
   fit,
   alpha,
-  variables = NULL,
+  variable = NULL,
   component = "prior",
   is_method = "psis",
   moment_match = FALSE,
@@ -66,7 +66,7 @@ powerscale_sequence(fit, ...)
   lower_alpha = 0.5,
   upper_alpha = 1/lower_alpha,
   alpha_step = 0.1,
-  variables = NA,
+  variable = NULL,
   component = c("prior", "likelihood"),
   is_method = "psis",
   moment_match = FALSE,
@@ -83,7 +83,7 @@ powerscale_sequence(fit, ...)
   lower_alpha = 0.5,
   upper_alpha = 1/lower_alpha,
   alpha_step = 0.1,
-  variables = NA,
+  variable = NULL,
   component = c("prior", "likelihood"),
   is_method = "psis",
   moment_match = FALSE,
@@ -100,7 +100,7 @@ powerscale_sequence(fit, ...)
   lower_alpha = 0.5,
   upper_alpha = 1/lower_alpha,
   alpha_step = 0.1,
-  variables = NA,
+  variable = NULL,
   component = c("prior", "likelihood"),
   is_method = "psis",
   moment_match = FALSE,
@@ -121,7 +121,7 @@ documented above.}
 
 \item{alpha}{Value by which to power-scale specified component. (likelihood/prior).}
 
-\item{variables}{Vector of variable names to return estimated
+\item{variable}{Vector of variable names to return estimated
 posterior draws for.}
 
 \item{component}{Component to be power-scaled (either "prior" or
