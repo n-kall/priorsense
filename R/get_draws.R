@@ -32,7 +32,7 @@ get_draws.stanfit <- function(x, variable, excluded_variables = c("log_prior", "
 
     # remove unnecessary variables
     variable <- posterior::variables(draws)
-    variable <- variables[!(variable %in% excluded_variables) &
+    variable <- variable[!(variable %in% excluded_variables) &
                              !(startsWith(variable, "log_lik"))]
     draws <- posterior::subset_draws(draws, variable = variable)
   } else {
@@ -44,12 +44,12 @@ get_draws.stanfit <- function(x, variable, excluded_variables = c("log_prior", "
 
 get_draws.CmdStanFit <- function(x, variable, regex, excluded_variables = c("log_prior", "lp__"), ...) {
 
-  if (is.null(variables)) {
+  if (is.null(variable)) {
     draws <- posterior::as_draws_df(x$draws(), variable = variable, regex = regex)
 
     # remove unnecessary variables
     variable <- posterior::variables(draws)
-    variable <- variables[!(variable %in% excluded_variables) &
+    variable <- variable[!(variable %in% excluded_variables) &
                              !(startsWith(variable, "log_lik"))]
 
     draws <- posterior::subset_draws(draws, variable = variable)
