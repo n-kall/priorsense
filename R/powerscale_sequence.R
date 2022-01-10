@@ -9,7 +9,7 @@ powerscale_sequence <- function(fit, ...) {
 ##' @export
 powerscale_sequence.CmdStanFit <- function(fit, lower_alpha = 0.5,
                                 upper_alpha = 1/lower_alpha,
-                                alpha_step = 0.1, variables = NA,
+                                alpha_step = 0.1, variable = NULL,
                                 component = c("prior", "likelihood"),
                                 is_method = "psis",
                                 moment_match = FALSE,
@@ -41,7 +41,7 @@ powerscale_sequence.CmdStanFit <- function(fit, lower_alpha = 0.5,
   alpha_seq <- c(alpha_seq, rev(1 / alpha_seq))
 
   # extract the base draws
-  base_draws <- get_draws(fit, variables = variables)
+  base_draws <- get_draws(fit, variable = variable)
 
   if (transform == "whiten") {
     base_draws_tr <- whiten_draws(base_draws, ...)
@@ -77,7 +77,7 @@ powerscale_sequence.CmdStanFit <- function(fit, lower_alpha = 0.5,
       # calculate the scaled draws
       scaled_draws_list[[i]] <- powerscale(
         fit = fit,
-        variables = variables,
+        variable = variable,
         component = scaled_component,
         alpha = alpha_seq[i],
         is_method = is_method,
@@ -105,7 +105,7 @@ powerscale_sequence.CmdStanFit <- function(fit, lower_alpha = 0.5,
       # calculate the scaled draws
       scaled_draws_list[[i]] <- powerscale(
         fit = fit,
-        variables = variables,
+        variable = variable,
         component = scaled_component,
         alpha = alpha_seq[i],
         is_method = is_method,
@@ -145,7 +145,7 @@ powerscale_sequence.CmdStanFit <- function(fit, lower_alpha = 0.5,
 ##' @export
 powerscale_sequence.stanfit <- function(fit, lower_alpha = 0.5,
                                 upper_alpha = 1/lower_alpha,
-                                alpha_step = 0.1, variables = NA,
+                                alpha_step = 0.1, variable = NULL,
                                 component = c("prior", "likelihood"),
                                 is_method = "psis",
                                 moment_match = FALSE,
@@ -177,7 +177,7 @@ powerscale_sequence.stanfit <- function(fit, lower_alpha = 0.5,
   alpha_seq <- c(alpha_seq, rev(1 / alpha_seq))
 
   # extract the base draws
-  base_draws <- get_draws(fit, variables = variables)
+  base_draws <- get_draws(fit, variable = variable)
 
   if (transform == "whiten") {
     base_draws_tr <- whiten_draws(base_draws, ...)
@@ -213,7 +213,7 @@ powerscale_sequence.stanfit <- function(fit, lower_alpha = 0.5,
       # calculate the scaled draws
       scaled_draws_list[[i]] <- powerscale(
         fit = fit,
-        variables = variables,
+        variable = variable,
         component = scaled_component,
         alpha = alpha_seq[i],
         is_method = is_method,
@@ -241,7 +241,7 @@ powerscale_sequence.stanfit <- function(fit, lower_alpha = 0.5,
       # calculate the scaled draws
       scaled_draws_list[[i]] <- powerscale(
         fit = fit,
-        variables = variables,
+        variable = variable,
         component = scaled_component,
         alpha = alpha_seq[i],
         is_method = is_method,
@@ -281,7 +281,7 @@ powerscale_sequence.stanfit <- function(fit, lower_alpha = 0.5,
 ##' @export
 powerscale_sequence.brmsfit <- function(fit, lower_alpha = 0.5,
                                 upper_alpha = 1/lower_alpha,
-                                alpha_step = 0.1, variables = NA,
+                                alpha_step = 0.1, variable = NULL,
                                 component = c("prior", "likelihood"),
                                 is_method = "psis",
                                 moment_match = FALSE,
@@ -313,7 +313,7 @@ powerscale_sequence.brmsfit <- function(fit, lower_alpha = 0.5,
   alpha_seq <- c(alpha_seq, rev(1 / alpha_seq))
 
   # extract the base draws
-  base_draws <- get_draws(fit, variables = variables)
+  base_draws <- get_draws(fit, variable = variable)
 
   if (transform == "whiten") {
     base_draws_tr <- whiten_draws(base_draws, ...)
@@ -349,7 +349,7 @@ powerscale_sequence.brmsfit <- function(fit, lower_alpha = 0.5,
       # calculate the scaled draws
       scaled_draws_list[[i]] <- powerscale(
         fit = fit,
-        variables = variables,
+        variable = variable,
         component = scaled_component,
         alpha = alpha_seq[i],
         is_method = is_method,
@@ -377,7 +377,7 @@ powerscale_sequence.brmsfit <- function(fit, lower_alpha = 0.5,
       # calculate the scaled draws
       scaled_draws_list[[i]] <- powerscale(
         fit = fit,
-        variables = variables,
+        variable = variable,
         component = scaled_component,
         alpha = alpha_seq[i],
         is_method = is_method,

@@ -10,7 +10,7 @@
 ##' @param lower_alpha Lower power-scaling alpha value in sequence.
 ##' @param upper_alpha Upper power-scaling alpha value in sequence.
 ##' @param alpha_step Step size of power-scaling alphas in sequence.
-##' @param variables Vector of variable names to return estimated
+##' @param variable Vector of variable names to return estimated
 ##'   posterior draws for.
 ##' @param component Component to be power-scaled (either "prior" or
 ##'   "likelihood"). For powerscale_sequence, this can be both "prior"
@@ -40,7 +40,7 @@ powerscale <- function(fit, ...) {
 ##' @export
 powerscale.brmsfit <- function(fit,
                                alpha,
-                               variables = NULL,
+                               variable = NULL,
                                component = "prior",
                                is_method = "psis",
                                moment_match = FALSE,
@@ -69,7 +69,7 @@ powerscale.brmsfit <- function(fit,
   }
 
   # extract draws from fit
-  draws <- get_draws(fit, variables = variables, ...)
+  draws <- get_draws(fit, variable = variable, ...)
 
   # get the correct importance sampling function
   if (is.character(is_method)) {
@@ -126,7 +126,7 @@ powerscale.brmsfit <- function(fit,
     ## )
 
     importance_sampling <- mm$importance_sampling
-    draws <- get_draws(mm$x, variables = variables, ...)
+    draws <- get_draws(mm$x, variable = variable, ...)
 
   }
 
@@ -186,7 +186,7 @@ powerscale.brmsfit <- function(fit,
 ##' @export
 powerscale.CmdStanFit <- function(fit,
                                   alpha,
-                                  variables = NULL,
+                                  variable = NULL,
                                   component = "prior",
                                   is_method = "psis",
                                   moment_match = FALSE,
@@ -203,7 +203,7 @@ powerscale.CmdStanFit <- function(fit,
   }
 
   # extract draws from fit
-  draws <- get_draws(fit, variables = variables, ...)
+  draws <- get_draws(fit, variable = variable, ...)
 
   # get the correct importance sampling function
   if (is.character(is_method)) {
@@ -285,7 +285,7 @@ powerscale.CmdStanFit <- function(fit,
 ##' @export
 powerscale.stanfit <- function(fit,
                                alpha,
-                               variables = NULL,
+                               variable = NULL,
                                component = "prior",
                                is_method = "psis",
                                moment_match = FALSE,
@@ -314,7 +314,7 @@ powerscale.stanfit <- function(fit,
   }
 
   # extract draws from fit
-  draws <- get_draws(fit, variables = variables, ...)
+  draws <- get_draws(fit, variable = variable, ...)
 
   # get the correct importance sampling function
   if (is.character(is_method)) {
@@ -371,7 +371,7 @@ powerscale.stanfit <- function(fit,
     ## )
 
     importance_sampling <- mm$importance_sampling
-    draws <- get_draws(mm$x, variables = variables, ...)
+    draws <- get_draws(mm$x, variable = variable, ...)
 
   }
 

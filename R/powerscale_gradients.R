@@ -6,7 +6,7 @@
 ##' to approximate the posteriors that result from power-scaling the
 ##' specified component distribution (prior or likelihood).
 ##' @param fit Model fit of class brmsfit, stanfit or CmdStanFit
-##' @param variables Variables to compute sensitivity of. If NA
+##' @param variable Variables to compute sensitivity of. If NA
 ##'   (default) sensitivity is computed for all variables.
 ##' @param component Component to power-scale (prior or likelihood).
 ##' @param type type of sensitivity to measure ("distance",
@@ -24,7 +24,7 @@
 ##' @return Maximum of the absolute derivatives above and below alpha
 ##'   = 1.
 ##' @export
-powerscale_gradients <- function(fit, variables = NULL, component = c("prior", "likelihood"),
+powerscale_gradients <- function(fit, variable = NULL, component = c("prior", "likelihood"),
                                  type = c("quantities", "divergence"),
                                  lower_alpha = 0.99,
                                  upper_alpha = 1.01,
@@ -49,7 +49,7 @@ powerscale_gradients <- function(fit, variables = NULL, component = c("prior", "
   checkmate::assert_logical(resample)
 
   # extract the draws
-  base_draws <- get_draws(fit, variables = variables, ...)
+  base_draws <- get_draws(fit, variable = variable, ...)
 
   # transform if needed
   loadings <- NULL
@@ -97,7 +97,7 @@ powerscale_gradients <- function(fit, variables = NULL, component = c("prior", "
     # calculate the lower scaled draws
     perturbed_draws_lower[[comp]] <- powerscale(
       fit = fit,
-      variables = variables,
+      variable = variable,
       component = comp,
       alpha = lower_alpha,
       is_method = is_method,
@@ -111,7 +111,7 @@ powerscale_gradients <- function(fit, variables = NULL, component = c("prior", "
     # calculate the upper scaled draws
     perturbed_draws_upper[[comp]] <- powerscale(
       fit = fit,
-      variables = variables,
+      variable = variable,
       component = comp,
       alpha = upper_alpha,
       is_method = is_method,

@@ -3,7 +3,7 @@
 ##' Prior/likelihood sensitivity analysis based on power-scaling perturbations.
 ##'
 ##' @template fit_arg
-##' @param variables Character vector of variables to check.
+##' @param variable Character vector of variables to check.
 ##' @param lower_alpha Lower alpha value for gradient calculation.
 ##' @param upper_alpha Upper alpha value for gradient calculation.
 ##' @param component Character vector specifying component(s) to scale (default is both "prior" and
@@ -16,7 +16,7 @@
 ##' @return Table of sensitivity values for each specified variable.
 ##' @template powerscale_references
 ##' @export
-powerscale_sensitivity <- function(fit, variables = NULL,
+powerscale_sensitivity <- function(fit, variable = NULL,
                                    lower_alpha = 0.9,
                                    upper_alpha = 1.1,
                                    div_measure = "cjs_dist",
@@ -56,7 +56,7 @@ powerscale_sensitivity <- function(fit, variables = NULL,
   
   gradients <- powerscale_gradients(
     fit = fit,
-    variables = variables,
+    variable = variable,
     component = component,
     type = c("quantities", "divergence"),
     lower_alpha = lower_alpha,
