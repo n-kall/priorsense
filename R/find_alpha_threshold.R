@@ -50,7 +50,7 @@ find_alpha_threshold <- function(fit,
         is_method = "psis",
         moment_match = moment_match
       )
-    )$power_scaling$importance_sampling$diagnostics$pareto_k
+    )$powerscaling$importance_sampling$diagnostics$pareto_k
 
     compare <- comparison(new_pareto_k, pareto_k, k_threshold, epsilon)
 
