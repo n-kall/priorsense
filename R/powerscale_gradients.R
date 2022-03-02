@@ -24,20 +24,26 @@
 ##' @return Maximum of the absolute derivatives above and below alpha
 ##'   = 1.
 ##' @export
-powerscale_gradients <- function(fit, variable = NULL, component = c("prior", "likelihood"),
-                                 type = c("quantities", "divergence"),
-                                 lower_alpha = 0.99,
-                                 upper_alpha = 1.01,
-                                 div_measure = "cjs_dist",
-                                 measure_args = list(),
-                                 is_method = "psis",
-                                 moment_match = FALSE,
-                                 k_threshold = 0.5,
-                                 resample = FALSE,
-                                 transform = FALSE,
-                                 scale = FALSE,
-                                 ...
-                                 ) {
+powerscale_gradients <- function(x, ...) {
+  UseMethod("powerscale_gradients")
+
+  }
+
+powerscale_gradients.default <- function(x, variable = NULL,
+                                         component = c("prior", "likelihood"),
+                                         type = c("quantities", "divergence"),
+                                         lower_alpha = 0.99,
+                                         upper_alpha = 1.01,
+                                         div_measure = "cjs_dist",
+                                         measure_args = list(),
+                                         is_method = "psis",
+                                         moment_match = FALSE,
+                                         k_threshold = 0.5,
+                                         resample = FALSE,
+                                         transform = FALSE,
+                                         scale = FALSE,
+                                         get_draws = get_draws,
+                                         ...) {
 
   checkmate::assert_number(lower_alpha, lower = 0, upper = 1)
   checkmate::assert_number(upper_alpha, lower = 1, upper = Inf)
@@ -49,7 +55,7 @@ powerscale_gradients <- function(fit, variable = NULL, component = c("prior", "l
   checkmate::assert_logical(resample)
 
   # extract the draws
-  base_draws <- get_draws(fit, variable = variable, ...)
+  base_draws <- get_draws(x, variable = variable, ...)
 
   # transform if needed
   loadings <- NULL
@@ -96,7 +102,7 @@ powerscale_gradients <- function(fit, variable = NULL, component = c("prior", "l
 
     # calculate the lower scaled draws
     perturbed_draws_lower[[comp]] <- powerscale(
-      fit = fit,
+      x = x,
       variable = variable,
       component = comp,
       alpha = lower_alpha,
@@ -105,12 +111,13 @@ powerscale_gradients <- function(fit, variable = NULL, component = c("prior", "l
       k_threshold = k_threshold,
       resample = resample,
       transform = transform,
+      get_draws = get_draws,
       ...
     )
 
     # calculate the upper scaled draws
     perturbed_draws_upper[[comp]] <- powerscale(
-      fit = fit,
+      x = x,
       variable = variable,
       component = comp,
       alpha = upper_alpha,
@@ -119,6 +126,7 @@ powerscale_gradients <- function(fit, variable = NULL, component = c("prior", "l
       k_threshold = k_threshold,
       resample = resample,
       transform = transform,
+      get_draws = get_draws,
       ...
     )
 

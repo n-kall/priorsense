@@ -16,20 +16,34 @@
 ##' @return Table of sensitivity values for each specified variable.
 ##' @template powerscale_references
 ##' @export
-powerscale_sensitivity <- function(fit, variable = NULL,
-                                   lower_alpha = 0.9,
-                                   upper_alpha = 1.1,
-                                   div_measure = "cjs_dist",
-                                   measure_args = list(),
-                                   component = c("prior", "likelihood"),
-                                   sensitivity_threshold = 0.05,
-                                   is_method = "psis",
-                                   moment_match = FALSE,
-                                   k_threshold = 0.5,
-                                   transform = FALSE,
-                                   resample = FALSE,
-                                   ...
-                                   ) {
+##'
+##' 
+powerscale_sensitivity <- function(x, ...) {
+  UseMethod("powerscale_sensitivity")
+}
+
+powerscale_sensitivity.default <- function(x,
+                                           variable = NULL,
+                                           lower_alpha = 0.9,
+                                           upper_alpha = 1.1,
+                                           div_measure = "cjs_dist",
+                                           measure_args = list(),
+                                           component = c("prior", "likelihood"),
+                                           sensitivity_threshold = 0.05,
+                                           
+                                           log_prior_fn,
+                                           joint_log_lik_fn,
+                                           get_draws,
+                                           unconstrain_pars,
+                                           log_prob_upars,
+                                           log_ratio_upars,
+                                           is_method = "psis",
+                                           moment_match = FALSE,
+                                           k_threshold = 0.5,
+                                           resample = FALSE,
+                                           transform = FALSE,
+                                           ...
+                                           ) {
 
   checkmate::assert_number(lower_alpha, lower = 0, upper = 1)
   checkmate::assert_number(upper_alpha, lower = 1)
@@ -49,21 +63,8 @@ powerscale_sensitivity <- function(fit, variable = NULL,
     warning("Moment-matching only works with PSIS. Falling back to moment_match = FALSE")
   }
 
-  if (moment_match) {
-    if (inherits(fit, "CmdStanFit")) {
-      moment_match <- FALSE
-      warning("Moment-matching does not yet work with fits created with cmdstanr. Falling back to moment_match = FALSE")
-    }
-    if (inherits(fit, "brmsfit")) {
-      if (fit$backend == "cmdstanr") {
-        moment_match <- FALSE
-        warning("Moment-matching does not yet work with fits created with cmdstanr. Falling back to moment_match = FALSE")
-      }
-    }
-  }
-  
   gradients <- powerscale_gradients(
-    fit = fit,
+    x = x,
     variable = variable,
     component = component,
     type = c("quantities", "divergence"),
@@ -75,6 +76,12 @@ powerscale_sensitivity <- function(fit, variable = NULL,
     measure_args = measure_args,
     transform = transform,
     resample = resample,
+    log_prior_fn = log_prior_fn,
+    joint_log_lik_fn = joint_log_lik_fn,
+    get_draws = get_draws,
+    unconstrain_pars = unconstrain_pars,
+    log_prob_upars = log_prob_upars,
+    log_ratio_upars = log_ratio_upars,
     ...
   )
 
@@ -126,5 +133,26 @@ powerscale_sensitivity <- function(fit, variable = NULL,
   class(out) <- "powerscaled_sensitivity_summary"
 
   return(out)
+}
+
+
+powerscale_sensitivity.powerscaling_data <- function(x,
+                                                     variable = NULL,
+                                                     component = c("prior", "likelihood"),
+                                                     ...
+                                                     ) {
+
+  powerscale_sensitivity.default(
+    x$fit,
+    variable = variable,
+    component = component,
+    log_prior_fn = x$log_prior_fn,
+    joint_log_lik_fn = x$joint_log_lik_fn,
+    get_draws = x$get_draws,
+    unconstrain_pars = x$unconstrain_pars,
+    log_prob_upars = x$log_prob_upars,
+    log_ratio_upars = x$log_ratio_upars,
+    ...
+  )
 }
 

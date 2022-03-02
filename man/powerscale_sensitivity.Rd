@@ -4,24 +4,11 @@
 \alias{powerscale_sensitivity}
 \title{Power-scaling sensitivity analysis}
 \usage{
-powerscale_sensitivity(
-  fit,
-  variable = NULL,
-  lower_alpha = 0.9,
-  upper_alpha = 1.1,
-  div_measure = "cjs_dist",
-  measure_args = list(),
-  component = c("prior", "likelihood"),
-  sensitivity_threshold = 0.05,
-  is_method = "psis",
-  moment_match = FALSE,
-  k_threshold = 0.5,
-  transform = FALSE,
-  resample = FALSE,
-  ...
-)
+powerscale_sensitivity(x, ...)
 }
 \arguments{
+\item{...}{Further arguments passed to functions.}
+
 \item{fit}{A fitted model object of class \code{stanfit}, \code{brmsfit} or
 \code{CmdStanFit}.}
 
@@ -30,6 +17,9 @@ powerscale_sensitivity(
 \item{lower_alpha}{Lower alpha value for gradient calculation.}
 
 \item{upper_alpha}{Upper alpha value for gradient calculation.}
+
+\item{component}{Character vector specifying component(s) to scale (default is both "prior" and
+"likelihood").}
 
 \item{div_measure}{The divergence measure to use. The
 following methods are implemented:
@@ -48,9 +38,6 @@ for a different order, where N is the order.
 }}
 
 \item{measure_args}{Named list of further arguments passed to divergence measure functions.}
-
-\item{component}{Character vector specifying component(s) to scale (default is both "prior" and
-"likelihood").}
 
 \item{sensitivity_threshold}{Threshold for flagging variable as
 sensitive to power-scaling.}
@@ -71,16 +58,14 @@ For further details, see the \code{loo} package.}
 matching should be performed. Can only be TRUE if \code{is_method} is
 "psis".}
 
-\item{k_threshold}{Threshold value for Pareto k values above which
-the moment matching algorithm is used. Default is 0.5.}
-
 \item{transform}{Indicate transformation of posterior
 draws. Either "scale" or "spherize".}
 
+\item{k_threshold}{Threshold value for Pareto k values above which
+the moment matching algorithm is used. Default is 0.5.}
+
 \item{resample}{Logical; Indicate whether or not draws should be
 resampled based on calculated importance weights.}
-
-\item{...}{Further arguments passed to functions.}
 }
 \value{
 Table of sensitivity values for each specified variable.

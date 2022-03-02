@@ -1,15 +1,5 @@
-##' Extract draws
-##' Extract the draws in the form required for power-scaling
-##' @param x model fit
-##' @param variable which variable(s) to extract draws from
-##' @param ... unused
-##' @noRd
-##' @return draws_df
-get_draws <- function(x, variable, ...) {
-  UseMethod("get_draws")
-}
-
-get_draws.brmsfit <- function(x, variable, regex = FALSE, excluded_variables = c("lprior", "lp__"), ...) {
+##' @export
+get_draws_brmsfit <- function(x, variable, regex = FALSE, excluded_variables = c("lprior", "lp__"), ...) {
 
   draws <- posterior::as_draws_df(x, variable = variable, regex = regex)
   
@@ -25,7 +15,8 @@ get_draws.brmsfit <- function(x, variable, regex = FALSE, excluded_variables = c
   return(draws)
 }
 
-get_draws.stanfit <- function(x, variable, excluded_variables = c("log_prior", "lp__"), ...) {
+##' @export
+get_draws_stanfit <- function(x, variable, excluded_variables = c("log_prior", "lp__"), ...) {
   if (is.null(variable)) {
 
     draws <- posterior::as_draws_df(as.array(x))
@@ -42,7 +33,8 @@ get_draws.stanfit <- function(x, variable, excluded_variables = c("log_prior", "
   return(draws)
 }
 
-get_draws.CmdStanFit <- function(x, variable, regex, excluded_variables = c("log_prior", "lp__"), ...) {
+##' @export
+get_draws_CmdStanFit <- function(x, variable, regex, excluded_variables = c("log_prior", "lp__"), ...) {
 
   if (is.null(variable)) {
     draws <- posterior::as_draws_df(x$draws(), variable = variable, regex = regex)

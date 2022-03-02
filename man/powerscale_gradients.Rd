@@ -4,25 +4,11 @@
 \alias{powerscale_gradients}
 \title{Power-scale gradients}
 \usage{
-powerscale_gradients(
-  fit,
-  variable = NULL,
-  component = c("prior", "likelihood"),
-  type = c("quantities", "divergence"),
-  lower_alpha = 0.99,
-  upper_alpha = 1.01,
-  div_measure = "cjs_dist",
-  measure_args = list(),
-  is_method = "psis",
-  moment_match = FALSE,
-  k_threshold = 0.5,
-  resample = FALSE,
-  transform = FALSE,
-  scale = FALSE,
-  ...
-)
+powerscale_gradients(x, ...)
 }
 \arguments{
+\item{...}{Further arguments passed to functions.}
+
 \item{fit}{Model fit of class brmsfit, stanfit or CmdStanFit}
 
 \item{variable}{Variables to compute sensitivity of. If NA
@@ -58,6 +44,9 @@ for a different order, where N is the order.
 
 \item{measure_args}{Named list of further arguments passed to divergence measure functions.}
 
+\item{scale}{logical scale quantity gradients by base posterior
+standard deviation.}
+
 \item{is_method}{The importance sampling method to use. The
 following methods are available:
 \itemize{
@@ -74,19 +63,14 @@ For further details, see the \code{loo} package.}
 matching should be performed. Can only be TRUE if \code{is_method} is
 "psis".}
 
+\item{transform}{Indicate transformation of posterior
+draws. Either "scale" or "spherize".}
+
 \item{k_threshold}{Threshold value for Pareto k values above which
 the moment matching algorithm is used. Default is 0.5.}
 
 \item{resample}{Logical; Indicate whether or not draws should be
 resampled based on calculated importance weights.}
-
-\item{transform}{Indicate transformation of posterior
-draws. Either "scale" or "spherize".}
-
-\item{scale}{logical scale quantity gradients by base posterior
-standard deviation.}
-
-\item{...}{Further arguments passed to functions.}
 }
 \value{
 Maximum of the absolute derivatives above and below alpha
