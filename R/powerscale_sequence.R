@@ -5,6 +5,8 @@ powerscale_sequence <- function(x, ...) {
 
 }
 
+##' @rdname powerscale-overview
+##' @export
 powerscale_sequence.powerscaling_data <- function(x, lower_alpha = 0.5,
                                 upper_alpha = 1/lower_alpha,
                                 alpha_step = 0.1, variable = NULL,
@@ -27,6 +29,8 @@ powerscale_sequence.powerscaling_data <- function(x, lower_alpha = 0.5,
 
 }
 
+##' @rdname powerscale-overview
+##' @export
 powerscale_sequence.default <- function(x, lower_alpha = 0.5,
                                 upper_alpha = 1/lower_alpha,
                                 alpha_step = 0.1, variable = NULL,

@@ -29,6 +29,8 @@ powerscale_gradients <- function(x, ...) {
 
   }
 
+##' @rdname powerscale-overview
+##' @export
 powerscale_gradients.default <- function(x, variable = NULL,
                                          component = c("prior", "likelihood"),
                                          type = c("quantities", "divergence"),

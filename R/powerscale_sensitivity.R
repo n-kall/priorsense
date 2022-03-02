@@ -17,11 +17,12 @@
 ##' @template powerscale_references
 ##' @export
 ##'
-##' 
 powerscale_sensitivity <- function(x, ...) {
   UseMethod("powerscale_sensitivity")
 }
 
+##' @rdname powerscale-overview
+##' @export
 powerscale_sensitivity.default <- function(x,
                                            variable = NULL,
                                            lower_alpha = 0.9,
@@ -135,7 +136,8 @@ powerscale_sensitivity.default <- function(x,
   return(out)
 }
 
-
+##' @rdname powerscale-overview
+##' @export
 powerscale_sensitivity.powerscaling_data <- function(x,
                                                      variable = NULL,
                                                      component = c("prior", "likelihood"),

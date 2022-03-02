@@ -2,6 +2,11 @@
 
 S3method(powerscale,default)
 S3method(powerscale,powerscaling_data)
+S3method(powerscale_gradients,default)
+S3method(powerscale_sensitivity,default)
+S3method(powerscale_sensitivity,powerscaling_data)
+S3method(powerscale_sequence,default)
+S3method(powerscale_sequence,powerscaling_data)
 S3method(powerscale_set,CmdStanFit)
 S3method(powerscale_set,brmsfit)
 S3method(powerscale_set,stanfit)
