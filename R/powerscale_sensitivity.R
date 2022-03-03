@@ -24,39 +24,39 @@ powerscale_sensitivity <- function(x, ...) {
 ##' @rdname powerscale-overview
 ##' @export
 powerscale_sensitivity.default <- function(x,
-                                           variable = NULL,
-                                           lower_alpha = 0.9,
-                                           upper_alpha = 1.1,
-                                           div_measure = "cjs_dist",
-                                           measure_args = list(),
-                                           component = c("prior", "likelihood"),
-                                           sensitivity_threshold = 0.05,
-                                           
-                                           log_prior_fn,
-                                           joint_log_lik_fn,
-                                           get_draws,
-                                           unconstrain_pars,
-                                           log_prob_upars,
-                                           log_ratio_upars,
-                                           is_method = "psis",
-                                           moment_match = FALSE,
-                                           k_threshold = 0.5,
-                                           resample = FALSE,
-                                           transform = FALSE,
                                            ...
                                            ) {
 
-  checkmate::assert_number(lower_alpha, lower = 0, upper = 1)
-  checkmate::assert_number(upper_alpha, lower = 1)
-  checkmate::assert_choice(div_measure, all_divergence_measures())
-  checkmate::assert_list(measure_args)
-  checkmate::assert_number(sensitivity_threshold, lower = 0)
-  checkmate::assert_number(k_threshold)
-  checkmate::assert_character(component)
-  checkmate::assert_logical(moment_match)
-  checkmate::assert_logical(resample)
+  psd <- create_powerscaling_data(
+    x = x,
+    ...
+  )
 
+  powerscale_sensitivity.powerscaling_data(
+    psd,
+    ...)
   
+}
+
+##' @rdname powerscale-overview
+##' @export
+powerscale_sensitivity.powerscaling_data <- function(x,
+                                                     variable = NULL,
+                                                     lower_alpha = 0.9,
+                                                     upper_alpha = 1.1,
+                                                     div_measure = "cjs_dist",
+                                                     measure_args = list(),
+                                                     component = c("prior", "likelihood"),
+                                                     sensitivity_threshold = 0.05,
+                                                     
+                                                     is_method = "psis",
+                                                     moment_match = FALSE,
+                                                     k_threshold = 0.5,
+                                                     resample = FALSE,
+                                                     transform = FALSE,
+                                                     ...
+                                                     ) {
+
   if (is_method != "psis" & moment_match) {
     # TODO: also allow moment_match if loo::psis function is given as
     # argument
@@ -77,12 +77,6 @@ powerscale_sensitivity.default <- function(x,
     measure_args = measure_args,
     transform = transform,
     resample = resample,
-    log_prior_fn = log_prior_fn,
-    joint_log_lik_fn = joint_log_lik_fn,
-    get_draws = get_draws,
-    unconstrain_pars = unconstrain_pars,
-    log_prob_upars = log_prob_upars,
-    log_ratio_upars = log_ratio_upars,
     ...
   )
 
@@ -136,25 +130,31 @@ powerscale_sensitivity.default <- function(x,
   return(out)
 }
 
+
 ##' @rdname powerscale-overview
 ##' @export
-powerscale_sensitivity.powerscaling_data <- function(x,
-                                                     variable = NULL,
-                                                     component = c("prior", "likelihood"),
-                                                     ...
-                                                     ) {
+powerscale_sensitivity.CmdStanFit <- function(x,
+                                              ...
+                                              ) {
 
-  powerscale_sensitivity.default(
-    x$fit,
-    variable = variable,
-    component = component,
-    log_prior_fn = x$log_prior_fn,
-    joint_log_lik_fn = x$joint_log_lik_fn,
-    get_draws = x$get_draws,
-    unconstrain_pars = x$unconstrain_pars,
-    log_prob_upars = x$log_prob_upars,
-    log_ratio_upars = x$log_ratio_upars,
+  psd <- create_powerscaling_data.CmdStanFit(x)
+  
+  powerscale_sensitivity.powerscaling_data(
+    psd,
     ...
   )
 }
 
+##' @rdname powerscale-overview
+##' @export
+powerscale_sensitivity.stanfit <- function(x,
+                                           ...
+                                           ) {
+
+  psd <- create_powerscaling_data.stanfit(x, ...)
+  
+  powerscale_sensitivity.powerscaling_data(
+    psd,
+    ...
+  )
+}

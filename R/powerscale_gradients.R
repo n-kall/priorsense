@@ -25,13 +25,47 @@
 ##'   = 1.
 ##' @export
 powerscale_gradients <- function(x, ...) {
+
   UseMethod("powerscale_gradients")
+}
+
+##' @rdname powerscale-overview
+##' @export
+powerscale_gradients.powerscaling_data <- function(x, ...) {
+
+
+  powerscale_gradients.default(
+    x$fit,
+    get_draws = x$get_draws,
+    unconstrain_pars = x$unconstrain_pars,
+    log_prob_upars = x$log_prob_upars,
+    log_ratio_upars = x$log_ratio_upars,
+    log_prior_fn = x$log_prior_fn,
+    joint_log_lik_fn = x$joint_log_lik_fn,
+    ...
+    )
+
+}
+
+##' @rdname powerscale-overview
+##' @export
+powerscale_gradients.CmdStanFit <- function(x, ...) {
+
+  psd <- create_powerscaling_data(x)
+
+  powerscale_gradients(psd, ...)
+
 
   }
 
 ##' @rdname powerscale-overview
 ##' @export
-powerscale_gradients.default <- function(x, variable = NULL,
+powerscale_gradients.default <- function(x,
+                                         get_draws,
+                                         unconstrain_pars,
+                                         log_prob_upars,
+                                         log_ratio_upars,
+                                         variable = NULL,
                                          component = c("prior", "likelihood"),
                                          type = c("quantities", "divergence"),
                                          lower_alpha = 0.99,
@@ -44,7 +78,6 @@ powerscale_gradients.default <- function(x, variable = NULL,
                                          resample = FALSE,
                                          transform = FALSE,
                                          scale = FALSE,
-                                         get_draws = get_draws,
                                          ...) {
 
   checkmate::assert_number(lower_alpha, lower = 0, upper = 1)
@@ -65,7 +98,7 @@ powerscale_gradients.default <- function(x, variable = NULL,
     whitened_draws <- whiten_draws(base_draws, ...)
     base_draws_t <- whitened_draws$draws
     loadings <- whitened_draws$loadings
-        # correlation loadings
+    # correlation loadings
     #    loadings <- t(stats::cor(base_draws[,1:posterior::nvariables(base_draws)], base_draws_t[,1:posterior::nvariables(base_draws_t)]))
 
   } else if (transform == "scale") {
@@ -103,7 +136,7 @@ powerscale_gradients.default <- function(x, variable = NULL,
   for (comp in component) {
 
     # calculate the lower scaled draws
-    perturbed_draws_lower[[comp]] <- powerscale(
+    perturbed_draws_lower[[comp]] <- powerscale.default(
       x = x,
       variable = variable,
       component = comp,
@@ -114,11 +147,14 @@ powerscale_gradients.default <- function(x, variable = NULL,
       resample = resample,
       transform = transform,
       get_draws = get_draws,
+      unconstrain_pars = unconstrain_pars,
+      log_prob_upars = log_prob_upars,
+      log_ratio_upars = log_ratio_upars,
       ...
     )
 
     # calculate the upper scaled draws
-    perturbed_draws_upper[[comp]] <- powerscale(
+    perturbed_draws_upper[[comp]] <- powerscale.default(
       x = x,
       variable = variable,
       component = comp,
@@ -129,6 +165,9 @@ powerscale_gradients.default <- function(x, variable = NULL,
       resample = resample,
       transform = transform,
       get_draws = get_draws,
+      unconstrain_pars = unconstrain_pars,
+      log_prob_upars = log_prob_upars,
+      log_ratio_upars = log_ratio_upars,
       ...
     )
 
@@ -274,17 +313,17 @@ powerscale_divergence_gradients <- function(lower_divergences, upper_divergences
 
   variable <- lower_divergences$variable
 
- # lower_grad <- -1 * (subset(lower_divergences, select = -c(variable))) /
-#    (0 - log(lower_alpha, base = 2))
+  # lower_grad <- -1 * (subset(lower_divergences, select = -c(variable))) /
+  #    (0 - log(lower_alpha, base = 2))
 
-#  upper_grad <- (subset(upper_divergences, select = -c(variable))) /
+  #  upper_grad <- (subset(upper_divergences, select = -c(variable))) /
   #  (log(upper_alpha, base = 2))
 
   # take max of gradients for each variable
- # grad <- pmax(abs(upper_grad), abs(lower_grad))
+  # grad <- pmax(abs(upper_grad), abs(lower_grad))
 
   grad <- (subset(upper_divergences, select = -c(variable)) +
-   subset(lower_divergences, select = -c(variable))) / (2 * log(upper_alpha, base = 2))
+             subset(lower_divergences, select = -c(variable))) / (2 * log(upper_alpha, base = 2))
 
   return(tibble::as_tibble(cbind(variable, grad)))
 

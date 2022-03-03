@@ -32,6 +32,32 @@ powerscale <- function(x, ...) {
   UseMethod("powerscale")
 }
 
+
+  
+##' @rdname powerscale-overview
+##' @export
+powerscale.powerscaling_data <- function(x,
+                                         alpha,
+                                         component = "prior",
+                                         variable = NULL,
+                                         ...
+                                         ) {
+  powerscale.default(
+    x = x$fit,
+    alpha = alpha,
+    variable = variable,
+    component = component,
+    log_prior_fn = x$log_prior_fn,
+    joint_log_lik_fn = x$joint_log_lik_fn,
+    get_draws = x$get_draws,
+    unconstrain_pars = x$unconstrain_pars,
+    log_prob_upars = x$log_prob_upars,
+    log_ratio_upars = x$log_ratio_upars,
+    ...
+  )
+}
+
+
 ##' @rdname powerscale-overview
 ##' @export
 powerscale.default <- function(x,
@@ -169,26 +195,32 @@ powerscale.default <- function(x,
   return(powerscaled_draws)
 }
 
-  
+
 ##' @rdname powerscale-overview
 ##' @export
-powerscale.powerscaling_data <- function(x,
-                                         alpha,
-                                         component = "prior",
-                                         variable = NULL,
-                                         ...
-                                         ) {
-  powerscale.default(
-    x = x$fit,
-    alpha = alpha,
-    variable = variable,
-    component = component,
-    log_prior_fn = x$log_prior_fn,
-    joint_log_lik_fn = x$joint_log_lik_fn,
-    get_draws = x$get_draws,
-    unconstrain_pars = x$unconstrain_pars,
-    log_prob_upars = x$log_prob_upars,
-    log_ratio_upars = x$log_ratio_upars,
-    ...
-  )
+powerscale.CmdStanFit <- function(x,
+                                  alpha,
+                                  component = "prior",
+                                  variable = NULL,
+                                  ...
+                                  ) {
+  psd <- create_powerscaling_data(x, ...)
+
+  powerscale.powerscaling_data(psd, alpha = alpha, component = component, variable = variable, ...)
+
+}
+
+##' @rdname powerscale-overview
+##' @export
+powerscale.stanfit <- function(x,
+                                  alpha,
+                                  component = "prior",
+                                  variable = NULL,
+                                  ...
+                                  ) {
+  
+  psd <- create_powerscaling_data.stanfit(x, ...)
+  
+  powerscale.powerscaling_data(psd, ...)
+
 }
