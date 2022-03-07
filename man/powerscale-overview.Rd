@@ -15,6 +15,7 @@
 \alias{powerscale_sensitivity.powerscaling_data}
 \alias{powerscale_sensitivity.CmdStanFit}
 \alias{powerscale_sensitivity.stanfit}
+\alias{powerscale_sensitivity.brmsfit}
 \alias{powerscale_sequence}
 \alias{powerscale_sequence.powerscaling_data}
 \alias{powerscale_sequence.CmdStanFit}
@@ -97,6 +98,8 @@ powerscale(x, ...)
 \method{powerscale_sensitivity}{CmdStanFit}(x, ...)
 
 \method{powerscale_sensitivity}{stanfit}(x, ...)
+
+\method{powerscale_sensitivity}{brmsfit}(x, ...)
 
 powerscale_sequence(x, ...)
 

@@ -50,3 +50,16 @@ create_powerscaling_data.CmdStanFit <- function(x, ...) {
     log_ratio_upars = NULL
   )
 }
+
+create_powerscaling_data.brmsfit <- function(x, ...) {
+
+  create_powerscaling_data.default(
+    x = x,
+    log_prior_fn = log_prior_brmsfit,
+    joint_log_lik_fn = joint_log_lik_brmsfit,
+    get_draws = get_draws_brmsfit,
+    unconstrain_pars = unconstrain_pars,
+    log_prob_upars = log_prob_upars,
+    log_ratio_upars = log_ratio_upars
+  )
+}
