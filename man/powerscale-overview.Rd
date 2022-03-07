@@ -7,6 +7,7 @@
 \alias{powerscale.powerscaling_data}
 \alias{powerscale.default}
 \alias{powerscale.CmdStanFit}
+\alias{powerscale.brmsfit}
 \alias{powerscale.stanfit}
 \alias{powerscale_gradients.powerscaling_data}
 \alias{powerscale_gradients.CmdStanFit}
@@ -47,6 +48,8 @@ powerscale(x, ...)
 )
 
 \method{powerscale}{CmdStanFit}(x, ...)
+
+\method{powerscale}{brmsfit}(x, ...)
 
 \method{powerscale}{stanfit}(x, ...)
 

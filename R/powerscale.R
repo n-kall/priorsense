@@ -197,11 +197,23 @@ powerscale.default <- function(x,
 powerscale.CmdStanFit <- function(x,
                                   ...
                                   ) {
-  psd <- create_powerscaling_data(x, ...)
+  psd <- create_powerscaling_data.CmdStanFit(x, ...)
 
   powerscale.powerscaling_data(psd, ...)
 
 }
+
+##' @rdname powerscale-overview
+##' @export
+powerscale.brmsfit <- function(x,
+                               ...
+                               ) {
+  psd <- create_powerscaling_data.brmsfit(x, ...)
+
+  powerscale.powerscaling_data(psd, ...)
+
+}
+
 
 ##' @rdname powerscale-overview
 ##' @export
