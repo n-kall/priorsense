@@ -12,9 +12,56 @@
 ##' @param moment_match moment match
 ##' @return numeric
 ##' @export
-find_alpha_threshold <- function(fit,
+##' 
+find_alpha_threshold <- function(x, ...) {
+  UseMethod("find_alpha_threshold")
+
+}
+
+##' @export
+find_alpha_threshold.CmdStanFit <- function(x, ...) {
+
+  psd <- create_powerscaling_data(x)
+
+  find_alpha_threshold(psd, ...)
+
+}
+
+##' @export
+find_alpha_threshold.stanfit <- function(x, ...) {
+
+  psd <- create_powerscaling_data(x)
+
+  find_alpha_threshold(psd, ...)
+
+}
+
+##' @export
+find_alpha_threshold.powerscaling_data <- function(x, ...) {
+
+  find_alpha_threshold.default(
+    x = x$fit,
+    log_prior_fn = x$log_prior_fn,
+    joint_log_lik_fn = x$joint_log_lik_fn,
+    get_draws = x$get_draws,
+    unconstrain_pars = x$unconstrain_pars,
+    log_prob_upars = x$log_prob_upars,
+    log_ratio_upars = x$log_ratio_upars,
+    ...
+  )
+
+}
+
+##' @export
+find_alpha_threshold.default <- function(x,
                                  component,
                                  range,
+                                 log_prior_fn,
+                                 joint_log_lik_fn,
+                                 get_draws,
+                                 unconstrain_pars,
+                                 log_prob_upars,
+                                 log_ratio_upars,
                                  variables = NA,
                                  k_threshold = 0.5,
                                  epsilon = 0.001,
@@ -42,12 +89,18 @@ find_alpha_threshold <- function(fit,
     
     # calculate criterion
     new_pareto_k <- suppressWarnings(
-      powerscale(
-        fit = fit,
-        variables = variables,
+      powerscale.default(
+        x = x,
+        variable = NULL,
         alpha = alpha,
         component = component,
         is_method = "psis",
+        log_prior_fn = log_prior_fn,
+        joint_log_lik_fn = joint_log_lik_fn,
+        get_draws = get_draws,
+        unconstrain_pars = unconstrain_pars,
+        log_prob_upars = log_prob_upars,
+        log_ratio_upars = log_ratio_upars,
         moment_match = moment_match
       )
     )$powerscaling$importance_sampling$diagnostics$pareto_k

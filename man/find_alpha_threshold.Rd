@@ -5,26 +5,18 @@
 \title{Find the value of alpha furthest from 1 which gives the specified
 pareto-k value}
 \usage{
-find_alpha_threshold(
-  fit,
-  component,
-  range,
-  variables = NA,
-  k_threshold = 0.5,
-  epsilon = 0.001,
-  moment_match = FALSE
-)
+find_alpha_threshold(x, ...)
 }
 \arguments{
 \item{fit}{a model fit of class \code{brmsfit}}
+
+\item{variables}{variables to report}
 
 \item{component}{string specifying which component to investigate,
 \code{likelihood} or \code{prior}.}
 
 \item{range}{vector of length 2 specifying the range of alphas to
 consider, both values must be less than 1 or greater than 1}
-
-\item{variables}{variables to report}
 
 \item{k_threshold}{highest acceptable pareto-k value}
 
