@@ -6,7 +6,8 @@
 ##' @name powerscale-overview
 ##'
 ##' @template fit_arg
-##' @param alpha Value by which to power-scale specified component. (likelihood/prior).
+##' @param alpha Value by which to power-scale specified
+##'   component. (likelihood/prior).
 ##' @param lower_alpha Lower power-scaling alpha value in sequence.
 ##' @param upper_alpha Upper power-scaling alpha value in sequence.
 ##' @param alpha_step Step size of power-scaling alphas in sequence.
@@ -20,6 +21,8 @@
 ##'   and returns the log prior values.
 ##' @param joint_log_lik_fn A function that takes as input the model
 ##'   fit and returns the joint log likelihood values.
+##' @param prediction Function taking the model fit and returning a
+##'   draws_df of predictions to be appended to the posterior draws
 ##' @param ... Further arguments passed to the custom functions
 ##'   documented above.
 ##' @return A `powerscaled_draws` or `powerscaled_sequence` object,
@@ -71,12 +74,21 @@ powerscale.default <- function(x,
                                k_threshold = 0.5,
                                resample = FALSE,
                                transform = FALSE,
+                               prediction = NULL,
                                ...
                                ) {
 
 
   # extract draws from fit
-  draws <- get_draws(x, variable = variable, ...)
+  draws <- get_draws(x, ...)
+  
+  if (!is.null(prediction)) {
+    
+    draws <- posterior::bind_draws(draws, prediction(x), along = "variable")
+  }
+
+  draws <- posterior::subset_draws(draws, variable = variable, ...)
+
   
   # get the correct importance sampling function
   if (is.character(is_method)) {

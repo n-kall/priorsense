@@ -77,6 +77,7 @@ powerscale_gradients.default <- function(x,
                                          k_threshold = 0.5,
                                          resample = FALSE,
                                          transform = FALSE,
+                                         prediction = NULL,
                                          scale = FALSE,
                                          ...) {
 
@@ -90,7 +91,15 @@ powerscale_gradients.default <- function(x,
   checkmate::assert_logical(resample)
 
   # extract the draws
-  base_draws <- get_draws(x, variable = variable, ...)
+  base_draws <- get_draws(x, ...)
+  
+  if (!is.null(prediction)) {
+
+    base_draws <- posterior::bind_draws(base_draws, prediction(x), along = "variable")
+  }
+
+  base_draws <- posterior::subset_draws(base_draws, variable = variable, ...)
+
 
   # transform if needed
   loadings <- NULL
@@ -150,6 +159,7 @@ powerscale_gradients.default <- function(x,
       unconstrain_pars = unconstrain_pars,
       log_prob_upars = log_prob_upars,
       log_ratio_upars = log_ratio_upars,
+      prediction = prediction,
       ...
     )
 
@@ -168,6 +178,7 @@ powerscale_gradients.default <- function(x,
       unconstrain_pars = unconstrain_pars,
       log_prob_upars = log_prob_upars,
       log_ratio_upars = log_ratio_upars,
+      prediction = prediction,
       ...
     )
 

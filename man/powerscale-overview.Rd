@@ -44,6 +44,7 @@ powerscale(x, ...)
   k_threshold = 0.5,
   resample = FALSE,
   transform = FALSE,
+  prediction = NULL,
   ...
 )
 
@@ -75,6 +76,7 @@ powerscale(x, ...)
   k_threshold = 0.5,
   resample = FALSE,
   transform = FALSE,
+  prediction = NULL,
   scale = FALSE,
   ...
 )
@@ -95,6 +97,7 @@ powerscale(x, ...)
   k_threshold = 0.5,
   resample = FALSE,
   transform = FALSE,
+  prediction = NULL,
   ...
 )
 
@@ -155,10 +158,14 @@ powerscale_sequence(x, ...)
 )
 }
 \arguments{
+\item{x}{A fitted model object of class \code{stanfit}, \code{brmsfit} or
+\code{CmdStanFit}.}
+
 \item{...}{Further arguments passed to the custom functions
 documented above.}
 
-\item{alpha}{Value by which to power-scale specified component. (likelihood/prior).}
+\item{alpha}{Value by which to power-scale specified
+component. (likelihood/prior).}
 
 \item{log_prior_fn}{A function that takes as input the model fit
 and returns the log prior values.}
@@ -198,14 +205,14 @@ resampled based on calculated importance weights.}
 \item{transform}{Indicate transformation of posterior
 draws. Either "scale" or "spherize".}
 
+\item{prediction}{Function taking the model fit and returning a
+draws_df of predictions to be appended to the posterior draws}
+
 \item{lower_alpha}{Lower power-scaling alpha value in sequence.}
 
 \item{upper_alpha}{Upper power-scaling alpha value in sequence.}
 
 \item{alpha_step}{Step size of power-scaling alphas in sequence.}
-
-\item{fit}{A fitted model object of class \code{stanfit}, \code{brmsfit} or
-\code{CmdStanFit}.}
 }
 \value{
 A \code{powerscaled_draws} or \code{powerscaled_sequence} object,

@@ -7,10 +7,10 @@
 powerscale_sensitivity(x, ...)
 }
 \arguments{
-\item{...}{Further arguments passed to functions.}
-
-\item{fit}{A fitted model object of class \code{stanfit}, \code{brmsfit} or
+\item{x}{A fitted model object of class \code{stanfit}, \code{brmsfit} or
 \code{CmdStanFit}.}
+
+\item{...}{Further arguments passed to functions.}
 
 \item{variable}{Character vector of variables to check.}
 

@@ -54,6 +54,7 @@ powerscale_sensitivity.powerscaling_data <- function(x,
                                                      k_threshold = 0.5,
                                                      resample = FALSE,
                                                      transform = FALSE,
+                                                     prediction = NULL,
                                                      ...
                                                      ) {
 
@@ -77,6 +78,7 @@ powerscale_sensitivity.powerscaling_data <- function(x,
     measure_args = measure_args,
     transform = transform,
     resample = resample,
+    prediction = prediction,
     ...
   )
 
