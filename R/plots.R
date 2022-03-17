@@ -1,7 +1,7 @@
 ##' Diagnostic plots for power-scaling sensitivity
 ##'
 ##' Various diagnostic plots for power-scaling sensitivity. See **Plot Descriptions** below for details.
-##' 
+##'
 ##' @name powerscale_plots
 ##'
 ##' @template plot_args
@@ -26,14 +26,14 @@ NULL
 
 prepare_plot <- function(x, variables, resample, ...) {
 
-  if (resample) {
-    base_draws <- x$base_draws
-  } else {
+  base_draws <- x$base_draws
+
+  if (!resample & !(x$resampled)) {
     base_draws <- posterior::weight_draws(
-      x = x$base_draws,
+      x = base_draws,
       weights = rep(
-        1/posterior::ndraws(x$base_draws),
-        posterior::ndraws(x$base_draws)
+        1/posterior::ndraws(base_draws),
+        posterior::ndraws(base_draws)
       )
     )
   }
@@ -49,7 +49,7 @@ prepare_plot <- function(x, variables, resample, ...) {
     for (i in 1:length(prior_scaled)) {
       prior_draws[[i]] <- prior_scaled[[i]]$draws
 
-      if (resample) {
+      if (resample & !x$resampled) {
         prior_draws[[i]]  <- posterior::resample_draws(prior_draws[[i]])
       }
 
@@ -71,7 +71,7 @@ prepare_plot <- function(x, variables, resample, ...) {
     for (i in 1:length(likelihood_scaled)) {
       likelihood_draws[[i]] <- likelihood_scaled[[i]]$draws
 
-      if (resample) {
+      if (resample & !x$resampled) {
         likelihood_draws[[i]]  <- posterior::resample_draws(likelihood_draws[[i]])
       }
 
@@ -113,15 +113,28 @@ prepare_plot <- function(x, variables, resample, ...) {
     timevar = "variable"
   )
 
-  p <- ggplot2::ggplot(
-    data = d,
-    ggplot2::aes_string(
-      x = "value",
-      weight = "exp(.log_weight)",
-      group = "alpha",
-      linetype = "pareto_k_value"
+  if (resample | x$resampled) {
+    p <- ggplot2::ggplot(
+      data = d,
+      ggplot2::aes_string(
+        x = "value",
+        group = "alpha",
+        linetype = "pareto_k_value"
+      )
     )
-  ) +
+  } else {
+    p <- ggplot2::ggplot(
+      data = d,
+      ggplot2::aes_string(
+        x = "value",
+        weight = "exp(.log_weight)",
+        group = "alpha",
+        linetype = "pareto_k_value"
+      )
+    )
+  }
+
+  p <- p +
     ggplot2::scale_linetype_manual(
       values = c("solid", "dashed", "dotted"),
       drop = FALSE
@@ -155,8 +168,7 @@ prepare_plot <- function(x, variables, resample, ...) {
 ##' @rdname powerscale_plots
 ##' @export
 powerscale_plot_dens <- function(x, variables, resample = FALSE,
-                                                      ...) {
-
+                                 ...) {
   # input checks
   checkmate::assert_class(x, c("powerscaled_sequence"))
   checkmate::assert_character(variables)
@@ -187,7 +199,7 @@ powerscale_plot_dens <- function(x, variables, resample = FALSE,
 ##' @rdname powerscale_plots
 ##' @export
 powerscale_plot_ridges <- function(x, variables, resample = FALSE,
-                                                      ...) {
+                                   ...) {
 
   # input checks
   checkmate::assert_class(x, c("powerscaled_sequence"))
@@ -239,18 +251,26 @@ powerscale_plot_ecdf <- function(x, variables, resample = FALSE, ...) {
         title = "pareto-k"
       )
     ) +
-    ggplot2::ylab("Probability") +
-    stat_ewcdf(ggplot2::aes_string(color = "alpha")) +
-    ggplot2::facet_grid(
-      component ~ variable,
-      labeller = ggplot2::labeller(
-        component = c(
-          likelihood = "Likelihood scaling",
-          prior = "Prior scaling"
-        )
-      ),
-      scales = "free_x"
-    )
+    ggplot2::ylab("Probability")
+
+  if (resample | x$resampled) {
+    p <- p +
+      ggplot2::stat_ecdf(ggplot2::aes_string(color = "alpha"))
+  } else {
+    p <- p +
+      stat_ewcdf(ggplot2::aes_string(color = "alpha"))
+  }
+
+  p <- p + ggplot2::facet_grid(
+    component ~ variable,
+    labeller = ggplot2::labeller(
+      component = c(
+        likelihood = "Likelihood scaling",
+        prior = "Prior scaling"
+      )
+    ),
+    scales = "free_x"
+  )
 
   return(p)
 
@@ -312,26 +332,26 @@ powerscale_summary_plot <- function(x, variables, quantities = NULL, ...) {
   ) +
     ggplot2::geom_line(ggplot2::aes_string(
       color = "pareto_k_value", group = "component")) +
-  ggplot2::facet_wrap(
-    facets = variable ~ quantity,
-    scales = "free",
-    ncol = length(quantities)
-  ) +
-  ggplot2::geom_point(
-    ggplot2::aes_string(x = "alpha", y = "value", shape = "component", color = "pareto_k_value"),
-    fill = "white",
-    size = 3,
-    data = points
-  ) +
-  ggplot2::scale_shape_manual(values = c("likelihood" = 22, "prior" = 15)) +
-  ggplot2::scale_color_viridis_d(drop = FALSE) +
-  ggplot2::guides(
-    color = ggplot2::guide_legend(
-      title = "pareto-k",
-      override.aes = list(shape = 15)
-    )
-  ) +
-  ggplot2::scale_x_continuous(trans = "log2")
+    ggplot2::facet_wrap(
+      facets = variable ~ quantity,
+      scales = "free",
+      ncol = length(quantities)
+    ) +
+    ggplot2::geom_point(
+      ggplot2::aes_string(x = "alpha", y = "value", shape = "component", color = "pareto_k_value"),
+      fill = "white",
+      size = 3,
+      data = points
+    ) +
+    ggplot2::scale_shape_manual(values = c("likelihood" = 22, "prior" = 15)) +
+    ggplot2::scale_color_viridis_d(drop = FALSE) +
+    ggplot2::guides(
+      color = ggplot2::guide_legend(
+        title = "pareto-k",
+        override.aes = list(shape = 15)
+      )
+    ) +
+    ggplot2::scale_x_continuous(trans = "log2")
 
   return(p)
 }
