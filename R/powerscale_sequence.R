@@ -8,11 +8,11 @@ powerscale_sequence <- function(x, ...) {
 ##' @rdname powerscale-overview
 ##' @export
 powerscale_sequence.powerscaling_data <- function(x, lower_alpha = 0.5,
-                                upper_alpha = 1/lower_alpha,
-                                alpha_step = 0.1, variable = NULL,
-                                component = c("prior", "likeliood"),
-                                ...
-                                ) {
+                                                  upper_alpha = 1/lower_alpha,
+                                                  alpha_step = 0.1, variable = NULL,
+                                                  component = c("prior", "likeliood"),
+                                                  ...
+                                                  ) {
 
   powerscale_sequence.default(
     x$fit,
@@ -32,11 +32,11 @@ powerscale_sequence.powerscaling_data <- function(x, lower_alpha = 0.5,
 ##' @rdname powerscale-overview
 ##' @export
 powerscale_sequence.CmdStanFit <- function(x, lower_alpha = 0.5,
-                                upper_alpha = 1/lower_alpha,
-                                alpha_step = 0.1, variable = NULL,
-                                component = c("prior", "likeliood"),
-                                ...
-                                ) {
+                                           upper_alpha = 1/lower_alpha,
+                                           alpha_step = 0.1, variable = NULL,
+                                           component = c("prior", "likeliood"),
+                                           ...
+                                           ) {
 
   psd <- powerscaling_data.CmdStanFit(x, ...)
   
@@ -50,11 +50,11 @@ powerscale_sequence.CmdStanFit <- function(x, lower_alpha = 0.5,
 ##' @rdname powerscale-overview
 ##' @export
 powerscale_sequence.stanfit <- function(x, lower_alpha = 0.5,
-                                upper_alpha = 1/lower_alpha,
-                                alpha_step = 0.1, variable = NULL,
-                                component = c("prior", "likelihood"),
-                                ...
-                                ) {
+                                        upper_alpha = 1/lower_alpha,
+                                        alpha_step = 0.1, variable = NULL,
+                                        component = c("prior", "likelihood"),
+                                        ...
+                                        ) {
 
   psd <- powerscaling_data.stanfit(x, ...)
   
@@ -66,23 +66,36 @@ powerscale_sequence.stanfit <- function(x, lower_alpha = 0.5,
 }
 
 
+##' @rdname powerscale-overview
+##' @export
+powerscale_sequence.brmsfit <- function(x,
+                                        ...
+                                        ) {
+  
+  psd <- create_powerscaling_data.brmsfit(x, ...)
+  
+  powerscale_sequence.powerscaling_data(psd, ...)
+
+}
+
+
 
 ##' @rdname powerscale-overview
 ##' @export
 powerscale_sequence.default <- function(x, lower_alpha = 0.5,
-                                upper_alpha = 1/lower_alpha,
-                                alpha_step = 0.1, variable = NULL,
-                                component = c("prior", "likelihood"),
-                                is_method = "psis",
-                                moment_match = FALSE,
-                                k_threshold = 0.5,
-                                resample = FALSE,
-                                log_prior_fn,
-                                joint_log_lik_fn,
-                                transform = FALSE,
-                                get_draws,
-                                ...
-                                ) {
+                                        upper_alpha = 1/lower_alpha,
+                                        alpha_step = 0.1, variable = NULL,
+                                        component = c("prior", "likelihood"),
+                                        is_method = "psis",
+                                        moment_match = FALSE,
+                                        k_threshold = 0.5,
+                                        resample = FALSE,
+                                        log_prior_fn,
+                                        joint_log_lik_fn,
+                                        transform = FALSE,
+                                        get_draws,
+                                        ...
+                                        ) {
   
   alpha_seq <- seq(lower_alpha, 1 - alpha_step, alpha_step)
   alpha_seq <- c(alpha_seq, rev(1 / alpha_seq))
@@ -101,12 +114,12 @@ powerscale_sequence.default <- function(x, lower_alpha = 0.5,
     )
 
     base_draws <- base_draws_tr
-    } else if (transform == "scale") {
-      base_draws <- scale_draws(base_draws, ...)
-      transform_details = list(transform = transform)
-    } else {
-      transform_details = list(transform = transform)
-    }
+  } else if (transform == "scale") {
+    base_draws <- scale_draws(base_draws, ...)
+    transform_details = list(transform = transform)
+  } else {
+    transform_details = list(transform = transform)
+  }
 
 
 
@@ -122,7 +135,7 @@ powerscale_sequence.default <- function(x, lower_alpha = 0.5,
     for (i in seq_along(alpha_seq)) {
 
       # calculate the scaled draws
-      scaled_draws_list[[i]] <- powerscale(
+      scaled_draws_list[[i]] <- powerscale.default(
         x = x,
         variable = variable,
         component = scaled_component,
@@ -151,7 +164,7 @@ powerscale_sequence.default <- function(x, lower_alpha = 0.5,
     for (i in seq_along(alpha_seq)) {
 
       # calculate the scaled draws
-      scaled_draws_list[[i]] <- powerscale(
+      scaled_draws_list[[i]] <- powerscale.default(
         x = x,
         variable = variable,
         component = scaled_component,

@@ -21,6 +21,7 @@
 \alias{powerscale_sequence.powerscaling_data}
 \alias{powerscale_sequence.CmdStanFit}
 \alias{powerscale_sequence.stanfit}
+\alias{powerscale_sequence.brmsfit}
 \alias{powerscale_sequence.default}
 \title{Prior/likelihood power-scaling perturbation}
 \usage{
@@ -138,6 +139,8 @@ powerscale_sequence(x, ...)
   component = c("prior", "likelihood"),
   ...
 )
+
+\method{powerscale_sequence}{brmsfit}(x, ...)
 
 \method{powerscale_sequence}{default}(
   x,
