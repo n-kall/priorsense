@@ -113,7 +113,7 @@ prepare_plot <- function(x, variables, resample, ...) {
     timevar = "variable"
   )
 
-  p <-  ggplot2::ggplot(
+  p <- ggplot2::ggplot(
     data = d,
     ggplot2::aes_string(
       x = "value",
@@ -126,29 +126,28 @@ prepare_plot <- function(x, variables, resample, ...) {
       values = c("solid", "dashed", "dotted"),
       drop = FALSE
     ) +
-  ggplot2::scale_fill_viridis_c(
-    option = "plasma",
-    trans = "log",
-    limits = c(min(d$alpha) - 0.01, max(d$alpha) + 0.01),
-    breaks = c(min(d$alpha), 1, max(d$alpha)),
-    labels = c(
-      as.character(min(d$alpha), digits = 3),
-      "1",
-      as.character(max(d$alpha), digits = 3)
-    ) +
-        ggplot2::scale_color_viridis_c(
-    option = "plasma",
-    trans = "log",
-    limits = c(min(d$alpha) - 0.01, max(d$alpha) + 0.01),
-    breaks = c(min(d$alpha), 1, max(d$alpha)),
-    labels = c(
-      as.character(min(d$alpha), digits = 3),
-      "1",
-      as.character(max(d$alpha), digits = 3)
+    ggplot2::scale_fill_viridis_c(
+      option = "plasma",
+      trans = "log",
+      limits = c(min(d$alpha) - 0.01, max(d$alpha) + 0.01),
+      breaks = c(min(d$alpha), 1, max(d$alpha)),
+      labels = c(
+        as.character(min(d$alpha), digits = 3),
+        "1",
+        as.character(max(d$alpha), digits = 3)
+      )
+    )+
+    ggplot2::scale_color_viridis_c(
+      option = "plasma",
+      trans = "log",
+      limits = c(min(d$alpha) - 0.01, max(d$alpha) + 0.01),
+      breaks = c(min(d$alpha), 1, max(d$alpha)),
+      labels = c(
+        as.character(min(d$alpha), digits = 3),
+        "1",
+        as.character(max(d$alpha), digits = 3)
+      )
     )
-  )
-
-  )
 
   return(p)
 }
