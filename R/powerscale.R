@@ -130,7 +130,7 @@ powerscale.default <- function(x,
     # stanfit from other session
 
     mm <- moment_match(
-      x = fit,
+      x = x,
       psis = importance_sampling,
       alpha = alpha,
       component = component,
