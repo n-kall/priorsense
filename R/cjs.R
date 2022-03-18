@@ -31,7 +31,7 @@
 ##' @export
 cjs_dist <- function(x, y, x_weights, y_weights, metric = TRUE, ...) {
 
-  if (all(is.na(x)) | all(is.na(y)) | all(y_weights == 0)) {
+  if (all(is.na(x)) | all(is.na(y)) | (all(y_weights == 0) & !is.null(y_weights))) {
 
     out <- NA
 
