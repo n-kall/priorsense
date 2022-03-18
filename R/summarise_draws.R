@@ -30,7 +30,7 @@ summarise_draws.powerscaled_draws <- function(.x,
   if (length(funs) == 0) {
     funs <- posterior::default_summary_measures()
   }
-  
+
   .args <- as.list(.args)
 
   if (resample & !(.x$powerscaling$resampled)) {
@@ -57,12 +57,12 @@ summarise_draws.powerscaled_draws <- function(.x,
 
   }
 
-    summ <- posterior::summarise_draws(
-      target_draws,
-      funs,
-      .args = .args
-    )
-  
+  summ <- posterior::summarise_draws(
+    target_draws,
+    funs,
+    .args = .args
+  )
+
   if (!is.null(base_draws)) {
     # calculate the divergences between the base and target draws
     divergences <- divergence_measures(
@@ -74,7 +74,7 @@ summarise_draws.powerscaled_draws <- function(.x,
 
     summ <- merge(summ, divergences, by = "variable")
   }
-  
+
   out <- list(
     draws_summary = summ,
     powerscaling = .x$powerscaling
@@ -104,12 +104,12 @@ summarise_draws.powerscaled_sequence <- function(.x,
                                                  div_measures = "cjs_dist",
                                                  measure_args = list(),
                                                  resample = FALSE) {
-  
+
   funs <- unname(c(...))
   if (length(funs) == 0) {
     funs <- posterior::default_summary_measures()
   }
-  
+
   base_draws <- .x$base_draws
 
   summaries <- data.frame()
@@ -125,9 +125,17 @@ summarise_draws.powerscaled_sequence <- function(.x,
         resample = resample
       )
 
-      summaries <- rbind(summaries, as.data.frame(quantities))
+      quant_df <- as.data.frame(quantities[[1]])
+
+      quant_df$alpha <- quantities$powerscaling$alpha
+      quant_df$component <- quantities$powerscaling$component
+      quant_df$pareto_k <- quantities$powerscaling$importance_sampling$diagnostics$pareto_k
+      quant_df$n_eff <- quantities$powerscaling$importance_sampling$diagnostics$n_eff
+
+      summaries <- rbind(summaries, quant_df)
 
     }
+
   }
 
   if (!is.null(.x$likelihood_scaled)) {
@@ -141,11 +149,18 @@ summarise_draws.powerscaled_sequence <- function(.x,
         resample = resample
       )
 
-      summaries <- rbind(summaries, as.data.frame(quantities))
+      quant_df <- as.data.frame(quantities[[1]])
+
+      quant_df$alpha <- quantities$powerscaling$alpha
+      quant_df$component <- quantities$powerscaling$component
+      quant_df$pareto_k <- quantities$powerscaling$importance_sampling$diagnostics$pareto_k
+      quant_df$n_eff <- quantities$powerscaling$importance_sampling$diagnostics$n_eff
+
+      summaries <- rbind(summaries, quant_df)
 
     }
   }
-  
+
   base_quantities <- posterior::summarise_draws(
     posterior::merge_chains(base_draws),
     funs
