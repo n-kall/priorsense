@@ -38,7 +38,7 @@ powerscale_sequence.CmdStanFit <- function(x, lower_alpha = 0.5,
                                            ...
                                            ) {
 
-  psd <- powerscaling_data.CmdStanFit(x, ...)
+  psd <- create_powerscaling_data.CmdStanFit(x, ...)
   
   powerscale_sequence.powerscaling_data(
     psd,
@@ -56,7 +56,7 @@ powerscale_sequence.stanfit <- function(x, lower_alpha = 0.5,
                                         ...
                                         ) {
 
-  psd <- powerscaling_data.stanfit(x, ...)
+  psd <- create_powerscaling_data.stanfit(x, ...)
   
   powerscale_sequence.powerscaling_data(
     psd,
