@@ -92,8 +92,8 @@ powerscale.powerscaling_data <- function(x,
       )
     )
 
-    mm <- moment_match.brmsfit(
-      x = x$fit,
+    mm <- moment_match(
+      x = x,
       psis = importance_sampling,
       alpha = alpha,
       component = component,

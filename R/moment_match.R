@@ -5,17 +5,9 @@ moment_match <- function(x, ...) {
 
 moment_match.powerscaling_data <- function(x, psis, ...) {
 
-  post_draws <- function(x) {
-    as.matrix(x)
-  }
-
   out <- moment_match(
     x = x$fit,
-    psis = psis, post_draws = post_draws,
-    unconstrain_pars = x$unconstrain_pars,
-    log_prob_upars = x$log_prob_upars,
-    log_ratio_upars = x$log_ratio_upars,
-    nchains = posterior::nchains(posterior::as_draws(x)),
+    psis = psis,
     ...
   )
   out
