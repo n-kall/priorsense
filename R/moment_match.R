@@ -8,8 +8,8 @@ moment_match.powerscaling_data <- function(x, psis, ...) {
   post_draws <- function(x) {
     as.matrix(x)
   }
-  
-  out <- moment_match.powerscaling_data(
+
+  out <- moment_match(
     x = x$fit,
     psis = psis, post_draws = post_draws,
     unconstrain_pars = x$unconstrain_pars,
@@ -102,7 +102,7 @@ moment_match.default <- function(
   orig_log_prob <- log_prob_upars(x, upars = upars, ...)
   # obtain original weights
   lw <- as.vector(stats::weights(psis))
-  
+
   # include information about number of MCMC chains
   r_eff <- loo::relative_eff(1/exp(lw), chain_id = rep(1:nchains, each = S / nchains))
 
@@ -170,7 +170,7 @@ moment_match.default <- function(
       )
       if (quantities$k < k) {
         upars <- trans$upars
-        
+
         lw <- quantities$lw
         k <- quantities$k
         iterind <- iterind + 1
@@ -442,14 +442,14 @@ log_ratio_upars <- function(x, ...) {
 
 log_ratio_upars.stanfit <- function(x, upars, ...) {
   x <- update_pars(x, upars = upars, ...)
-  scaled_log_ratio_mm(x, ...)
+  scaled_log_ratio_mm.stanfit(x, ...)
 }
 
 log_ratio_upars.brmsfit <- function(x, upars, samples = NULL,
                                     subset = NULL, ...) {
   # do not pass subset or nsamples further to avoid subsetting twice
   x <- update_pars(x, upars = upars, ...)
-  scaled_log_ratio(x, ...)
+  scaled_log_ratio_mm.brmsfit(x, ...)
 }
 
 # -------- will be imported from rstan at some point -------

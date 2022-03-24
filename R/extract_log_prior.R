@@ -25,8 +25,7 @@ log_prior_stanfit <- function(x,
     stop("Please load the 'rstan' package.", call. = FALSE)
 
   log_prior <- posterior::subset_draws(
-    posterior::merge_chains(
-      posterior::as_draws_array(x, variable = parameter_name)),
+    posterior::as_draws_array(x, variable = parameter_name),
     variable = parameter_name
   )
 
@@ -37,7 +36,7 @@ log_prior_stanfit <- function(x,
 ##' @export
 log_prior_brmsfit <- function(x, parameter_name = "lprior", ...) {
 
-  log_prior <- as.array(x, variable = parameter_name)
+  log_prior <- posterior::subset_draws(posterior::as_draws_array(x), variable = parameter_name)
 
   return(log_prior)
 }

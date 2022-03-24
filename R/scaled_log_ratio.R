@@ -11,7 +11,7 @@ scaled_log_ratio <- function(component_draws, alpha,
                              ...) {
 
   # calculate log ratios for power-scaling
-  return ((alpha - 1) * component_draws)
+  return ((alpha - 1) * posterior::as_draws_array(component_draws))
 
 }
 
@@ -20,13 +20,13 @@ scaled_log_ratio_mm.stanfit <- function(x, component, alpha, ...) {
   if (component == "prior") {
 
     component_draws <- log_prior_stanfit(x)
-    
+
   } else if (component == "likelihood") {
 
     component_draws <- joint_log_lik_stanfit(x)
-    
+
   }
-  
+
 }
 
 scaled_log_ratio_mm.brmsfit <- function(x, component, alpha, ...) {
@@ -34,7 +34,7 @@ scaled_log_ratio_mm.brmsfit <- function(x, component, alpha, ...) {
   if (component == "prior") {
 
     component_draws <- log_prior_brmsfit(x)
-    
+
   } else if (component == "likelihood") {
 
     component_draws <- joint_log_lik_brmsfit(x)

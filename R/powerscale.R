@@ -97,7 +97,7 @@ powerscale.powerscaling_data <- function(x,
       psis = importance_sampling,
       alpha = alpha,
       component = component,
-      k_threshold = k_threshold,
+      k_threshold = k_threshold
     )
 
     # TODO: use iwmm package for moment_match
