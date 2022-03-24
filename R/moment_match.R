@@ -14,6 +14,7 @@ moment_match.stanfit <- function(x, psis, ...) {
     unconstrain_pars = unconstrain_pars.stanfit,
     log_prob_upars = log_prob_upars.stanfit,
     log_ratio_upars = log_ratio_upars.stanfit,
+    nchains = posterior::nchains(posterior::as_draws(x)),
     ...
   )
   out
@@ -28,6 +29,7 @@ moment_match.brmsfit <- function(x, psis, ...) {
     unconstrain_pars = unconstrain_pars.brmsfit,
     log_prob_upars = log_prob_upars.brmsfit,
     log_ratio_upars = log_ratio_upars.brmsfit,
+    nchains = posterior::nchains(x),
     ...
   ))
   if (methods::is(out, "try-error")) {
@@ -50,6 +52,7 @@ moment_match.default <- function(
                                  max_iters = 30,
                                  k_threshold = 0.5,
                                  cov_transform = TRUE,
+                                 nchains,
                                  ...) {
 
   # input checks
@@ -81,9 +84,8 @@ moment_match.default <- function(
   # obtain original weights
   lw <- as.vector(stats::weights(psis))
   
-  # TODO: this would be a bit more accurate if we had
-  # information about number of MCMC chains
-  r_eff <- loo::relative_eff(1/exp(lw), chain_id = rep(1,S))
+  # include information about number of MCMC chains
+  r_eff <- loo::relative_eff(1/exp(lw), chain_id = rep(1:nchains, each = S / nchains))
 
   # try several transformations one by one
   # if one does not work, do not apply it and try another one
