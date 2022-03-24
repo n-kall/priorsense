@@ -92,7 +92,7 @@ powerscale_gradients.default <- function(x,
 
   # extract the draws
   base_draws <- get_draws(x, ...)
-  
+
   if (!is.null(prediction)) {
 
     base_draws <- posterior::bind_draws(base_draws, prediction(x), along = "variable")
@@ -324,17 +324,12 @@ powerscale_divergence_gradients <- function(lower_divergences, upper_divergences
 
   variable <- lower_divergences$variable
 
-  # lower_grad <- -1 * (subset(lower_divergences, select = -c(variable))) /
-  #    (0 - log(lower_alpha, base = 2))
-
-  #  upper_grad <- (subset(upper_divergences, select = -c(variable))) /
-  #  (log(upper_alpha, base = 2))
-
-  # take max of gradients for each variable
-  # grad <- pmax(abs(upper_grad), abs(lower_grad))
-
-  grad <- (subset(upper_divergences, select = -c(variable)) +
-             subset(lower_divergences, select = -c(variable))) / (2 * log(upper_alpha, base = 2))
+  ## second-order centered difference approximation
+  ## f''(x) = (f(x + dx) - 2f(x) + f(x - dx)) / dx^2
+  upper_diff <- subset(upper_divergences, select = -c(variable))
+  lower_diff <- subset(lower_divergences, select = -c(variable))
+  logdiffsquare <- 2 * log(upper_alpha, base = 2)n
+  grad <- (upper_diff + lower_diff) / logdiffsquare
 
   return(tibble::as_tibble(cbind(variable, grad)))
 

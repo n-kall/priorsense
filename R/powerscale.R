@@ -36,7 +36,7 @@ powerscale <- function(x, ...) {
 }
 
 
-  
+
 ##' @rdname powerscale-overview
 ##' @export
 powerscale.powerscaling_data <- function(x,
@@ -81,15 +81,15 @@ powerscale.default <- function(x,
 
   # extract draws from fit
   draws <- get_draws(x, ...)
-  
+
   if (!is.null(prediction)) {
-    
+
     draws <- posterior::bind_draws(draws, prediction(x), along = "variable")
   }
 
   draws <- posterior::subset_draws(draws, variable = variable, ...)
 
-  
+
   # get the correct importance sampling function
   if (is.character(is_method)) {
     is_method <- get(is_method, asNamespace("loo"))
@@ -103,7 +103,7 @@ powerscale.default <- function(x,
     log_prior = log_prior_fn,
     joint_log_lik = joint_log_lik_fn
   )
-  
+
   if (!moment_match) {
     # calculate the importance weights
     importance_sampling <- is_method(
@@ -126,9 +126,6 @@ powerscale.default <- function(x,
       )
     )
 
-    # TODO: give a warning if trying to use moment_matching with:
-    # stanfit from other session
-
     mm <- moment_match(
       x = x,
       psis = importance_sampling,
@@ -150,7 +147,7 @@ powerscale.default <- function(x,
     draws <- get_draws(mm$x, variable = variable, ...)
 
  }
-  
+
   # transform the draws if specified
   if (transform == "whiten") {
     whitened_draws <- whiten_draws(draws, ...)
@@ -232,9 +229,9 @@ powerscale.brmsfit <- function(x,
 powerscale.stanfit <- function(x,
                                ...
                                ) {
-  
+
   psd <- create_powerscaling_data.stanfit(x, ...)
-  
+
   powerscale.powerscaling_data(psd, ...)
 
 }
