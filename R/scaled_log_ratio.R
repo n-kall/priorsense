@@ -7,20 +7,38 @@
 ##' @param joint_log_lik_fn function to extract joint log lik
 ##' @param ... other arguments
 ##' @return log ratio
-scaled_log_ratio <- function(x, component, alpha,
-                             log_prior_fn,
-                             joint_log_lik_fn,
+scaled_log_ratio <- function(component_draws, alpha,
                              ...) {
 
-  if (component == "prior") {
-    # calculate log ratios for prior scaling
-    log_prior <- log_prior_fn(x, ...)
-    log_ratio <- (alpha - 1) * log_prior
+  # calculate log ratios for power-scaling
+  return ((alpha - 1) * component_draws)
 
+}
+
+scaled_log_ratio_mm.stanfit <- function(x, component, alpha, ...) {
+
+  if (component == "prior") {
+
+    component_draws <- log_prior_stanfit(x)
+    
   } else if (component == "likelihood") {
-    # calculate log ratios for likelihood scaling
-    log_lik <- joint_log_lik_fn(x, ...)
-    log_ratio <- (alpha - 1) * log_lik
+
+    component_draws <- joint_log_lik_stanfit(x)
+    
   }
-  return(log_ratio)
+  
+}
+
+scaled_log_ratio_mm.brmsfit <- function(x, component, alpha, ...) {
+
+  if (component == "prior") {
+
+    component_draws <- log_prior_brmsfit(x)
+    
+  } else if (component == "likelihood") {
+
+    component_draws <- joint_log_lik_brmsfit(x)
+  }
+
+  return(scaled_log_ratio(component_draws, alpha))
 }

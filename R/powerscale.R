@@ -41,67 +41,33 @@ powerscale <- function(x, ...) {
 ##' @export
 powerscale.powerscaling_data <- function(x,
                                          alpha,
-                                         ...
-                                         ) {
-  powerscale.default(
-    x = x$fit,
-    alpha = alpha,
-    log_prior_fn = x$log_prior_fn,
-    joint_log_lik_fn = x$joint_log_lik_fn,
-    get_draws = x$get_draws,
-    unconstrain_pars = x$unconstrain_pars,
-    log_prob_upars = x$log_prob_upars,
-    log_ratio_upars = x$log_ratio_upars,
-    ...
-  )
-}
+                                         component,
+                                         is_method = "psis",
+                                         moment_match = FALSE,
+                                         k_threshold = 0.5,
+                                         resample = FALSE,
+                                         transform = FALSE,
+                                         prediction = NULL,
+                                         variable = NULL,
+                                         ...) {
 
-
-##' @rdname powerscale-overview
-##' @export
-powerscale.default <- function(x,
-                               alpha,
-                               log_prior_fn,
-                               joint_log_lik_fn,
-                               get_draws,
-                               unconstrain_pars,
-                               log_prob_upars,
-                               log_ratio_upars,
-                               variable = NULL,
-                               component = "prior",
-                               is_method = "psis",
-                               moment_match = FALSE,
-                               k_threshold = 0.5,
-                               resample = FALSE,
-                               transform = FALSE,
-                               prediction = NULL,
-                               ...
-                               ) {
-
-
-  # extract draws from fit
-  draws <- get_draws(x, ...)
-
-  if (!is.null(prediction)) {
-
-    draws <- posterior::bind_draws(draws, prediction(x), along = "variable")
-  }
-
-  draws <- posterior::subset_draws(draws, variable = variable, ...)
-
+  draws <- posterior::subset_draws(x$draws, variable = variable, ...)
 
   # get the correct importance sampling function
   if (is.character(is_method)) {
     is_method <- get(is_method, asNamespace("loo"))
   }
-
+  
   # calculate the log density ratios
+  if (component == "prior") {
+    log_comp = "log_prior"
+  } else if (component == "likelihood") {
+    log_comp = "log_lik"
+  }
+  
   log_ratios <- scaled_log_ratio(
-    x = x,
-    alpha = alpha,
-    component = component,
-    log_prior = log_prior_fn,
-    joint_log_lik = joint_log_lik_fn
+    component_draws = x[[log_comp]],
+    alpha = alpha
   )
 
   if (!moment_match) {
@@ -126,27 +92,20 @@ powerscale.default <- function(x,
       )
     )
 
-    mm <- moment_match(
-      x = x,
+    mm <- moment_match.brmsfit(
+      x = x$fit,
       psis = importance_sampling,
       alpha = alpha,
       component = component,
       k_threshold = k_threshold,
-      joint_log_lik_fn = joint_log_lik_fn,
-      log_prior_fn = log_prior_fn
     )
 
     # TODO: use iwmm package for moment_match
-    ## mm <- iwmm::moment_match(
-    ##   x = fit,
-    ##   psis = importance_sampling,
-    ##   log_ratio_fun = log_ratios
-    ## )
 
     importance_sampling <- mm$importance_sampling
-    draws <- get_draws(mm$x, variable = variable, ...)
+    draws <- x$get_draws(mm$x)
 
- }
+  }
 
   # transform the draws if specified
   if (transform == "whiten") {
@@ -204,22 +163,35 @@ powerscale.default <- function(x,
 ##' @rdname powerscale-overview
 ##' @export
 powerscale.CmdStanFit <- function(x,
+                                  component,
+                                  alpha,
                                   ...
                                   ) {
   psd <- create_powerscaling_data.CmdStanFit(x, ...)
 
-  powerscale.powerscaling_data(psd, ...)
+  powerscale.powerscaling_data(
+    psd,
+    component = component,
+    alpha = alpha,
+    ...
+  )
 
 }
 
 ##' @rdname powerscale-overview
 ##' @export
 powerscale.brmsfit <- function(x,
+                               component,
+                               alpha,
                                ...
                                ) {
   psd <- create_powerscaling_data.brmsfit(x, ...)
 
-  powerscale.powerscaling_data(psd, ...)
+  powerscale.powerscaling_data(
+    psd,
+    component = component,
+    alpha = alpha,
+    ...)
 
 }
 
@@ -227,11 +199,18 @@ powerscale.brmsfit <- function(x,
 ##' @rdname powerscale-overview
 ##' @export
 powerscale.stanfit <- function(x,
+                               component,
+                               alpha,
                                ...
                                ) {
 
   psd <- create_powerscaling_data.stanfit(x, ...)
 
-  powerscale.powerscaling_data(psd, ...)
+  powerscale.powerscaling_data(
+    psd,
+    component = component,
+    alpha = alpha,
+    ...
+  )
 
 }

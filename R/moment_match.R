@@ -2,6 +2,25 @@ moment_match <- function(x, ...) {
   UseMethod("moment_match")
 }
 
+
+moment_match.powerscaling_data <- function(x, psis, ...) {
+
+  post_draws <- function(x) {
+    as.matrix(x)
+  }
+  
+  out <- moment_match.powerscaling_data(
+    x = x$fit,
+    psis = psis, post_draws = post_draws,
+    unconstrain_pars = x$unconstrain_pars,
+    log_prob_upars = x$log_prob_upars,
+    log_ratio_upars = x$log_ratio_upars,
+    nchains = posterior::nchains(posterior::as_draws(x)),
+    ...
+  )
+  out
+}
+
 moment_match.stanfit <- function(x, psis, ...) {
   # TODO: ensure compatibility with objects not created in the current R session
   post_draws <- function(x, ...) {
@@ -423,7 +442,7 @@ log_ratio_upars <- function(x, ...) {
 
 log_ratio_upars.stanfit <- function(x, upars, ...) {
   x <- update_pars(x, upars = upars, ...)
-  scaled_log_ratio(x, ...)
+  scaled_log_ratio_mm(x, ...)
 }
 
 log_ratio_upars.brmsfit <- function(x, upars, samples = NULL,

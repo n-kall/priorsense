@@ -36,7 +36,6 @@ powerscale_gradients.powerscaling_data <- function(x, ...) {
 
   powerscale_gradients.default(
     x$fit,
-    get_draws = x$get_draws,
     unconstrain_pars = x$unconstrain_pars,
     log_prob_upars = x$log_prob_upars,
     log_ratio_upars = x$log_ratio_upars,
@@ -60,8 +59,7 @@ powerscale_gradients.CmdStanFit <- function(x, ...) {
 
 ##' @rdname powerscale-overview
 ##' @export
-powerscale_gradients.default <- function(x,
-                                         get_draws,
+powerscale_gradients.powerscaling_data <- function(x,
                                          unconstrain_pars,
                                          log_prob_upars,
                                          log_ratio_upars,
@@ -91,15 +89,9 @@ powerscale_gradients.default <- function(x,
   checkmate::assert_logical(resample)
 
   # extract the draws
-  base_draws <- get_draws(x, ...)
-
-  if (!is.null(prediction)) {
-
-    base_draws <- posterior::bind_draws(base_draws, prediction(x), along = "variable")
-  }
+  base_draws <- x$draws
 
   base_draws <- posterior::subset_draws(base_draws, variable = variable, ...)
-
 
   # transform if needed
   loadings <- NULL
@@ -145,7 +137,7 @@ powerscale_gradients.default <- function(x,
   for (comp in component) {
 
     # calculate the lower scaled draws
-    perturbed_draws_lower[[comp]] <- powerscale.default(
+    perturbed_draws_lower[[comp]] <- powerscale(
       x = x,
       variable = variable,
       component = comp,
@@ -155,16 +147,12 @@ powerscale_gradients.default <- function(x,
       k_threshold = k_threshold,
       resample = resample,
       transform = transform,
-      get_draws = get_draws,
-      unconstrain_pars = unconstrain_pars,
-      log_prob_upars = log_prob_upars,
-      log_ratio_upars = log_ratio_upars,
       prediction = prediction,
       ...
     )
 
     # calculate the upper scaled draws
-    perturbed_draws_upper[[comp]] <- powerscale.default(
+    perturbed_draws_upper[[comp]] <- powerscale(
       x = x,
       variable = variable,
       component = comp,
@@ -174,10 +162,6 @@ powerscale_gradients.default <- function(x,
       k_threshold = k_threshold,
       resample = resample,
       transform = transform,
-      get_draws = get_draws,
-      unconstrain_pars = unconstrain_pars,
-      log_prob_upars = log_prob_upars,
-      log_ratio_upars = log_ratio_upars,
       prediction = prediction,
       ...
     )
@@ -328,7 +312,7 @@ powerscale_divergence_gradients <- function(lower_divergences, upper_divergences
   ## f''(x) = (f(x + dx) - 2f(x) + f(x - dx)) / dx^2
   upper_diff <- subset(upper_divergences, select = -c(variable))
   lower_diff <- subset(lower_divergences, select = -c(variable))
-  logdiffsquare <- 2 * log(upper_alpha, base = 2)n
+  logdiffsquare <- 2 * log(upper_alpha, base = 2)
   grad <- (upper_diff + lower_diff) / logdiffsquare
 
   return(tibble::as_tibble(cbind(variable, grad)))

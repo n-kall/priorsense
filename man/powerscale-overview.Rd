@@ -5,63 +5,71 @@
 \alias{powerscale-overview}
 \alias{powerscale}
 \alias{powerscale.powerscaling_data}
-\alias{powerscale.default}
 \alias{powerscale.CmdStanFit}
 \alias{powerscale.brmsfit}
 \alias{powerscale.stanfit}
 \alias{powerscale_gradients.powerscaling_data}
 \alias{powerscale_gradients.CmdStanFit}
-\alias{powerscale_gradients.default}
 \alias{powerscale_sensitivity.default}
 \alias{powerscale_sensitivity.powerscaling_data}
 \alias{powerscale_sensitivity.CmdStanFit}
 \alias{powerscale_sensitivity.stanfit}
 \alias{powerscale_sensitivity.brmsfit}
 \alias{powerscale_sequence}
-\alias{powerscale_sequence.powerscaling_data}
 \alias{powerscale_sequence.CmdStanFit}
 \alias{powerscale_sequence.stanfit}
 \alias{powerscale_sequence.brmsfit}
-\alias{powerscale_sequence.default}
+\alias{powerscale_sequence.powerscaling_data}
 \title{Prior/likelihood power-scaling perturbation}
 \usage{
 powerscale(x, ...)
 
-\method{powerscale}{powerscaling_data}(x, alpha, ...)
-
-\method{powerscale}{default}(
+\method{powerscale}{powerscaling_data}(
   x,
   alpha,
-  log_prior_fn,
-  joint_log_lik_fn,
-  get_draws,
-  unconstrain_pars,
-  log_prob_upars,
-  log_ratio_upars,
-  variable = NULL,
-  component = "prior",
+  component,
   is_method = "psis",
   moment_match = FALSE,
   k_threshold = 0.5,
   resample = FALSE,
   transform = FALSE,
   prediction = NULL,
+  variable = NULL,
   ...
 )
 
-\method{powerscale}{CmdStanFit}(x, ...)
+\method{powerscale}{CmdStanFit}(x, component, alpha, ...)
 
-\method{powerscale}{brmsfit}(x, ...)
+\method{powerscale}{brmsfit}(x, component, alpha, ...)
 
-\method{powerscale}{stanfit}(x, ...)
+\method{powerscale}{stanfit}(x, component, alpha, ...)
 
-\method{powerscale_gradients}{powerscaling_data}(x, ...)
+\method{powerscale_gradients}{powerscaling_data}(
+  x,
+  unconstrain_pars,
+  log_prob_upars,
+  log_ratio_upars,
+  variable = NULL,
+  component = c("prior", "likelihood"),
+  type = c("quantities", "divergence"),
+  lower_alpha = 0.99,
+  upper_alpha = 1.01,
+  div_measure = "cjs_dist",
+  measure_args = list(),
+  is_method = "psis",
+  moment_match = FALSE,
+  k_threshold = 0.5,
+  resample = FALSE,
+  transform = FALSE,
+  prediction = NULL,
+  scale = FALSE,
+  ...
+)
 
 \method{powerscale_gradients}{CmdStanFit}(x, ...)
 
-\method{powerscale_gradients}{default}(
+\method{powerscale_gradients}{powerscaling_data}(
   x,
-  get_draws,
   unconstrain_pars,
   log_prob_upars,
   log_ratio_upars,
@@ -110,16 +118,6 @@ powerscale(x, ...)
 
 powerscale_sequence(x, ...)
 
-\method{powerscale_sequence}{powerscaling_data}(
-  x,
-  lower_alpha = 0.5,
-  upper_alpha = 1/lower_alpha,
-  alpha_step = 0.1,
-  variable = NULL,
-  component = c("prior", "likeliood"),
-  ...
-)
-
 \method{powerscale_sequence}{CmdStanFit}(
   x,
   lower_alpha = 0.5,
@@ -142,7 +140,7 @@ powerscale_sequence(x, ...)
 
 \method{powerscale_sequence}{brmsfit}(x, ...)
 
-\method{powerscale_sequence}{default}(
+\method{powerscale_sequence}{powerscaling_data}(
   x,
   lower_alpha = 0.5,
   upper_alpha = 1/lower_alpha,
@@ -153,10 +151,7 @@ powerscale_sequence(x, ...)
   moment_match = FALSE,
   k_threshold = 0.5,
   resample = FALSE,
-  log_prior_fn,
-  joint_log_lik_fn,
   transform = FALSE,
-  get_draws,
   ...
 )
 }
@@ -169,15 +164,6 @@ documented above.}
 
 \item{alpha}{Value by which to power-scale specified
 component. (likelihood/prior).}
-
-\item{log_prior_fn}{A function that takes as input the model fit
-and returns the log prior values.}
-
-\item{joint_log_lik_fn}{A function that takes as input the model
-fit and returns the joint log likelihood values.}
-
-\item{variable}{Vector of variable names to return estimated
-posterior draws for.}
 
 \item{component}{Component to be power-scaled (either "prior" or
 "likelihood"). For powerscale_sequence, this can be both "prior"
@@ -211,11 +197,20 @@ draws. Either "scale" or "spherize".}
 \item{prediction}{Function taking the model fit and returning a
 draws_df of predictions to be appended to the posterior draws}
 
+\item{variable}{Vector of variable names to return estimated
+posterior draws for.}
+
 \item{lower_alpha}{Lower power-scaling alpha value in sequence.}
 
 \item{upper_alpha}{Upper power-scaling alpha value in sequence.}
 
 \item{alpha_step}{Step size of power-scaling alphas in sequence.}
+
+\item{log_prior_fn}{A function that takes as input the model fit
+and returns the log prior values.}
+
+\item{joint_log_lik_fn}{A function that takes as input the model
+fit and returns the joint log likelihood values.}
 }
 \value{
 A \code{powerscaled_draws} or \code{powerscaled_sequence} object,
