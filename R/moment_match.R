@@ -432,16 +432,18 @@ log_ratio_upars <- function(x, ...) {
   UseMethod("log_ratio_upars")
 }
 
-log_ratio_upars.stanfit <- function(x, upars, ...) {
+log_ratio_upars.stanfit <- function(x, upars, component_fn, ...) {
   x <- update_pars(x, upars = upars, ...)
-  scaled_log_ratio_mm.stanfit(x, ...)
+  component_draws <- component_fn(x)
+  scaled_log_ratio(component_draws, ...)
 }
 
-log_ratio_upars.brmsfit <- function(x, upars, samples = NULL,
+log_ratio_upars.brmsfit <- function(x, upars, component_fn, samples = NULL,
                                     subset = NULL, ...) {
   # do not pass subset or nsamples further to avoid subsetting twice
   x <- update_pars(x, upars = upars, ...)
-  scaled_log_ratio_mm.brmsfit(x, ...)
+  component_draws <- component_fn(x)
+  scaled_log_ratio(component_draws, ...)
 }
 
 # -------- will be imported from rstan at some point -------

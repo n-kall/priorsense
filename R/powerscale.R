@@ -92,11 +92,17 @@ powerscale.powerscaling_data <- function(x,
       )
     )
 
+    if (component == "prior") {
+      component_fn <- x$log_prior_fn
+    } else if (component == "likelihood") {
+      component_fn <- x$log_lik_fn
+    }
+    
     mm <- moment_match(
       x = x,
       psis = importance_sampling,
       alpha = alpha,
-      component = component,
+      component_fn = component_fn,
       k_threshold = k_threshold
     )
 

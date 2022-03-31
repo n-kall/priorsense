@@ -20,6 +20,8 @@ create_powerscaling_data.default <- function(x, draws, log_prior,
     log_prior = log_prior(x),
     log_lik = log_lik(x),
     get_draws = draws,
+    log_prior_fn = log_prior,
+    log_lik_fn = log_lik,
     unconstrain_pars = unconstrain_pars,
     log_prob_upars = log_prob_upars,
     log_ratio_upars = log_ratio_upars
