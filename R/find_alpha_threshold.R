@@ -89,18 +89,10 @@ find_alpha_threshold.default <- function(x,
     
     # calculate criterion
     new_pareto_k <- suppressWarnings(
-      powerscale.default(
+      powerscale(
         x = x,
-        variable = NULL,
         alpha = alpha,
         component = component,
-        is_method = "psis",
-        log_prior_fn = log_prior_fn,
-        joint_log_lik_fn = joint_log_lik_fn,
-        get_draws = get_draws,
-        unconstrain_pars = unconstrain_pars,
-        log_prob_upars = log_prob_upars,
-        log_ratio_upars = log_ratio_upars,
         moment_match = moment_match
       )
     )$powerscaling$importance_sampling$diagnostics$pareto_k

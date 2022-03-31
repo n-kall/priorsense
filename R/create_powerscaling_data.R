@@ -35,7 +35,7 @@ create_powerscaling_data.default <- function(x, draws, log_prior,
 create_powerscaling_data.stanfit <- function(x, ...) {
 
   create_powerscaling_data.default(
-    fit = x,
+    x = x,
     draws = get_draws_stanfit,
     log_prior = log_prior_stanfit,
     log_lik = joint_log_lik_stanfit,
