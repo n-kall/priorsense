@@ -94,10 +94,10 @@ prepare_plot <- function(x, variables, resample, ...) {
     base_draws_prior
   )
 
-  d$pareto_k_value <- ifelse(d$pareto_k > 0.7, "> 0.7",
-                             ifelse(d$pareto_k > 0.5, "0.5-0.7", "< 0.5"))
+  d$pareto_k_value <- ifelse(d$pareto_k > 0.5, "> 0.5",
+                             "< 0.5")
 
-  d$pareto_k_value <- factor(d$pareto_k_value, levels = c("< 0.5", "0.5-0.7", "> 0.7"))
+  d$pareto_k_value <- factor(d$pareto_k_value, levels = c("< 0.5", "> 0.5"))
 
   d$alpha_diff <- abs(log(d$alpha))
 
@@ -317,10 +317,10 @@ powerscale_summary_plot <- function(x, variables, quantities = NULL, ...) {
   )
 
   summaries$quantity <- factor(summaries$quantity, levels = quantities)
-  summaries$pareto_k_value <- ifelse(summaries$pareto_k > 0.7, "> 0.7",
-                                     ifelse(summaries$pareto_k > 0.5, "0.5-0.7", "< 0.5"))
+  summaries$pareto_k_value <- ifelse(summaries$pareto_k > 0.5, "> 0.5",
+                                     "< 0.5")
 
-  summaries$pareto_k_value <- factor(summaries$pareto_k_value, levels = c("< 0.5", "0.5-0.7", "> 0.7"))
+  summaries$pareto_k_value <- factor(summaries$pareto_k_value, levels = c("< 0.5", "> 0.5"))
 
   # subset for plotting points at ends of lines
   points <- summaries[summaries$alpha == min(summaries$alpha) |
