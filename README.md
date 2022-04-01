@@ -11,7 +11,7 @@
 
 priorsense provides tools for prior diagnostics and sensitivity analysis.
 
-It currently includes functions for performing power-scaling sensitivity analysis on Stan models. This way to check how sensitive a posterior is to perturbations of the prior and likelihood and diagnose the cause of sensitivity. For efficient computation, power-scaling sensitivity analysis relies on Pareto smoothed importance sampling (Vehtari et al., 2021) and importance weighted moment matching (Paananen et al., 2021).
+It currently includes functions for performing power-scaling sensitivity analysis on Stan models. This is a way to check how sensitive a posterior is to perturbations of the prior and likelihood and diagnose the cause of sensitivity. For efficient computation, power-scaling sensitivity analysis relies on Pareto smoothed importance sampling (Vehtari et al., 2021) and importance weighted moment matching (Paananen et al., 2021).
 
 Power-scaling sensitivity analysis and priorsense are described in Kallioinen et al. (2021).
 
@@ -22,23 +22,54 @@ Download the development version from [GitHub](https://github.com/) with:
 ``` r
 # install.packages("remotes")
 remotes::install_github("n-kall/priorsense")
+#> Downloading GitHub repo n-kall/priorsense@HEAD
+#>   
+   checking for file ‘/tmp/Rtmpdr5lq5/remotes2766771f5311/n-kall-priorsense-a858acf/DESCRIPTION’ ...
+  
+✔  checking for file ‘/tmp/Rtmpdr5lq5/remotes2766771f5311/n-kall-priorsense-a858acf/DESCRIPTION’
+#> 
+  
+─  preparing ‘priorsense’:
+#> 
+  
+   checking DESCRIPTION meta-information ...
+  
+✔  checking DESCRIPTION meta-information
+#> 
+  
+─  checking for LF line-endings in source and make files and shell scripts
+#> 
+  
+─  checking for empty or unneeded directories
+#>    Omitted ‘LazyData’ from DESCRIPTION
+#> 
+  
+─  building ‘priorsense_0.0.0.9000.tar.gz’
+#> 
+  
+   Warning in sprintf(gettext(fmt, domain = domain), ...) :
+#>      one argument not used by format 'invalid uid value replaced by that for user 'nobody''
+#> 
+  
+   Warning: invalid uid value replaced by that for user 'nobody'
+#>    Warning in sprintf(gettext(fmt, domain = domain), ...) :
+#>      one argument not used by format 'invalid gid value replaced by that for user 'nobody''
+#>    Warning: invalid gid value replaced by that for user 'nobody'
+#> 
+  
+   
+#> 
 ```
 
 ## Usage
 
-priorsense currently works best with Stan models created with rstan. However there is partial support for models fit with cmdstanr.
+priorsense currently works with models created with rstan, cmdstanr or brms. However, moment matching currently does not work with cmdstan models.
 
 ### Example
 
-Consider the following model (available via`example_powerscale_model("univariate_normal")`:
+Consider a simple univariate model with unknown mu and sigma fit to some data y (available via`example_powerscale_model("univariate_normal")`:
 
-*y* ∼ normal(*μ*, *σ*)
-
-*μ* ∼ normal(0, 1)
-
-*σ* ∼ normal<sup>+</sup>(0, 2.5)
-
-We have 100 data points for *y* We first fit the model using Stan:
+We first fit the model using Stan:
 
 ``` stan
 data {
@@ -61,7 +92,7 @@ generated quantities {
   // likelihood
   real log_prior;
   for (n in 1:N) log_lik[n] =  normal_lpdf(y[n] | mu, sigma);
-  // joint prior specification required for cmdstanr
+  // joint prior specification
   log_prior = normal_lpdf(mu | 0, 1) +
     normal_lpdf(sigma | 0, 2.5);
 }
@@ -69,34 +100,51 @@ generated quantities {
 
 ``` r
 library(priorsense)
+
 normal_model <- example_powerscale_model("univariate_normal")
 ```
 
-### Fitting with rstan and cmdstanr
+### Fitting with rstan
 
 ``` r
-rs_fit <- rstan::stan(
+fit <- rstan::stan(
   model_code = normal_model$model_code,
   data = normal_model$data,
   refresh = FALSE,
   seed = 123
 )
-
-cs_model <- cmdstanr::cmdstan_model(
-  stan_file = cmdstanr::write_stan_file(normal_model$model_code)
-)
-
-cs_fit <- cs_model$sample(data = normal_model$data, refresh = 0, seed = 123) 
 ```
 
-Once fit, a sensitivity analysis can be performed as follows. For cmdstanr models it is currently necessary to specify `log_prior_fn = extract_log_prior`and have the joint log prior specified in the Stan code (as above)
+Once fit, a sensitivity can be checked as follows:
 
 ``` r
-powerscale_sensitivity(rs_fit, variables = c("mu", "sigma"))
-
-
-powerscale_sensitivity(cs_fit, variables = c("mu", "sigma"), log_prior_fn = extract_log_prior)
+powerscale_sensitivity(fit, variables = c("mu", "sigma"))
+#> Sensitivity based on cjs_dist:
+#> # A tibble: 2 × 4
+#>   variable  prior likelihood diagnosis          
+#>   <chr>     <dbl>      <dbl> <chr>              
+#> 1 mu       0.161      0.233  prior-data conflict
+#> 2 sigma    0.0168     0.0637 -
 ```
+
+To visually inspect changes to the posterior, first create a power-scaling sequence and then use a plotting function. Here we use moment matching in order to arrive at more stable estimates.
+
+``` r
+pss <- powerscale_sequence(fit)
+powerscale_plot_ecdf(pss, variables = c("mu", "sigma"))
+```
+
+<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
+
+In case there are Pareto k values above 0.5, indicating that those estimates should not be trusted, moment matching may help at the expense of slightly more computation:
+
+``` r
+pss_mm <- powerscale_sequence(fit, moment_match = TRUE)
+
+powerscale_plot_ecdf(pss_mm, variables = c("mu", "sigma"))
+```
+
+<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
 
 ## References
 
