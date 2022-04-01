@@ -95,8 +95,8 @@ powerscale(x, ...)
 \method{powerscale_sensitivity}{powerscaling_data}(
   x,
   variable = NULL,
-  lower_alpha = 0.9,
-  upper_alpha = 1.1,
+  lower_alpha = 0.99,
+  upper_alpha = 1.01,
   div_measure = "cjs_dist",
   measure_args = list(),
   component = c("prior", "likelihood"),

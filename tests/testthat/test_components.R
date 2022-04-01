@@ -7,7 +7,7 @@ test_that("powerscale_sensitivity runs without error for different component opt
   
   expect_error(
     powerscale_sensitivity(
-      fit = normal_example_sfit,
+      x = normal_example_sfit,
       component = "prior",
       variables = "mu",
     ),
@@ -15,7 +15,7 @@ test_that("powerscale_sensitivity runs without error for different component opt
   )
   expect_error(
     powerscale_sensitivity(
-      fit = normal_example_sfit,
+      x = normal_example_sfit,
       component = "likelihood",
       variables = "mu",
     ),
@@ -23,58 +23,8 @@ test_that("powerscale_sensitivity runs without error for different component opt
   )
   expect_error(
     powerscale_sensitivity(
-      fit = normal_example_sfit,
+      x = normal_example_sfit,
       component = c("likelihood", "prior"),
-      variables = "mu",
-    ),
-    NA
-  )
-}
-)
-
-test_that("powerscale_gradients runs without error for different component options", {
-  
-  expect_error(
-    powerscale_gradients(
-      fit = normal_example_sfit,
-      component = "prior",
-      variables = "mu",
-    ),
-    NA
-  )
-  expect_error(
-    powerscale_gradients(
-      fit = normal_example_sfit,
-      component = "likelihood",
-      variables = "mu",
-    ),
-    NA
-  )
-  expect_error(
-    powerscale_sensitivity(
-      fit = normal_example_sfit,
-      component = c("likelihood", "prior"),
-      variables = "mu",
-    ),
-    NA
-  )
-}
-)
-
-test_that("powerscale runs without error for different component options", {
-  
-  expect_error(
-    powerscale_gradients(
-      fit = normal_example_sfit,
-      component = "prior",
-      variables = "mu",
-    ),
-    NA
-  )
-  expect_error(
-    powerscale_gradients(
-      fit = normal_example_sfit,
-      component = "likelihood",
       variables = "mu",
     ),
     NA

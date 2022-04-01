@@ -6,7 +6,7 @@ test_that("powerscale_sensitivity runs without error for differnt component opti
   
   expect_error(
     powerscale_sensitivity(
-      fit = normal_example_sfit,
+      x = normal_example_sfit,
       component = "prior",
       variables = "mu",
     ),
@@ -14,7 +14,7 @@ test_that("powerscale_sensitivity runs without error for differnt component opti
   )
   expect_error(
     powerscale_sensitivity(
-      fit = normal_example_sfit,
+      x = normal_example_sfit,
       component = "likelihood",
       variables = "mu",
     ),
@@ -22,7 +22,7 @@ test_that("powerscale_sensitivity runs without error for differnt component opti
   )
   expect_error(
     powerscale_sensitivity(
-      fit = normal_example_sfit,
+      x = normal_example_sfit,
       component = c("likelihood", "prior"),
       variables = "mu",
     ),

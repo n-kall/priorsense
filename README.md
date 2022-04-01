@@ -22,43 +22,6 @@ Download the development version from [GitHub](https://github.com/) with:
 ``` r
 # install.packages("remotes")
 remotes::install_github("n-kall/priorsense")
-#> Downloading GitHub repo n-kall/priorsense@HEAD
-#>   
-   checking for file ‘/tmp/Rtmpdr5lq5/remotes2766771f5311/n-kall-priorsense-a858acf/DESCRIPTION’ ...
-  
-✔  checking for file ‘/tmp/Rtmpdr5lq5/remotes2766771f5311/n-kall-priorsense-a858acf/DESCRIPTION’
-#> 
-  
-─  preparing ‘priorsense’:
-#> 
-  
-   checking DESCRIPTION meta-information ...
-  
-✔  checking DESCRIPTION meta-information
-#> 
-  
-─  checking for LF line-endings in source and make files and shell scripts
-#> 
-  
-─  checking for empty or unneeded directories
-#>    Omitted ‘LazyData’ from DESCRIPTION
-#> 
-  
-─  building ‘priorsense_0.0.0.9000.tar.gz’
-#> 
-  
-   Warning in sprintf(gettext(fmt, domain = domain), ...) :
-#>      one argument not used by format 'invalid uid value replaced by that for user 'nobody''
-#> 
-  
-   Warning: invalid uid value replaced by that for user 'nobody'
-#>    Warning in sprintf(gettext(fmt, domain = domain), ...) :
-#>      one argument not used by format 'invalid gid value replaced by that for user 'nobody''
-#>    Warning: invalid gid value replaced by that for user 'nobody'
-#> 
-  
-   
-#> 
 ```
 
 ## Usage
@@ -68,8 +31,6 @@ priorsense currently works with models created with rstan, cmdstanr or brms. How
 ### Example
 
 Consider a simple univariate model with unknown mu and sigma fit to some data y (available via`example_powerscale_model("univariate_normal")`:
-
-We first fit the model using Stan:
 
 ``` stan
 data {
@@ -98,15 +59,13 @@ generated quantities {
 }
 ```
 
+We first fit the model using Stan:
+
 ``` r
 library(priorsense)
 
 normal_model <- example_powerscale_model("univariate_normal")
-```
 
-### Fitting with rstan
-
-``` r
 fit <- rstan::stan(
   model_code = normal_model$model_code,
   data = normal_model$data,
@@ -115,7 +74,7 @@ fit <- rstan::stan(
 )
 ```
 
-Once fit, a sensitivity can be checked as follows:
+Once fit, sensitivity can be checked as follows:
 
 ``` r
 powerscale_sensitivity(fit, variables = c("mu", "sigma"))
@@ -123,8 +82,8 @@ powerscale_sensitivity(fit, variables = c("mu", "sigma"))
 #> # A tibble: 2 × 4
 #>   variable  prior likelihood diagnosis          
 #>   <chr>     <dbl>      <dbl> <chr>              
-#> 1 mu       0.161      0.233  prior-data conflict
-#> 2 sigma    0.0168     0.0637 -
+#> 1 mu       0.167      0.228  prior-data conflict
+#> 2 sigma    0.0233     0.0627 -
 ```
 
 To visually inspect changes to the posterior, first create a power-scaling sequence and then use a plotting function. Here we use moment matching in order to arrive at more stable estimates.
@@ -134,17 +93,16 @@ pss <- powerscale_sequence(fit)
 powerscale_plot_ecdf(pss, variables = c("mu", "sigma"))
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
+<img src="man/figures/README-sequence-nomm-1.png" width="50%" height="50%" />
 
 In case there are Pareto k values above 0.5, indicating that those estimates should not be trusted, moment matching may help at the expense of slightly more computation:
 
 ``` r
 pss_mm <- powerscale_sequence(fit, moment_match = TRUE)
-
 powerscale_plot_ecdf(pss_mm, variables = c("mu", "sigma"))
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
+<img src="man/figures/README-sequence-mm-1.png" width="50%" height="50%" />
 
 ## References
 

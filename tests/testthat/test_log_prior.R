@@ -5,8 +5,8 @@ normal_example_sfit <- rstan::stan(model_code = normal_example$model_code, data 
 test_that("two methods for log_prior give the same output",
 {  
   expect_equal(
-    log_prior_calc_stanfit(normal_example_sfit),
-    log_prior_stanfit(normal_example_sfit)
+    posterior::merge_chains(log_prior_calc_stanfit(normal_example_sfit)),
+    posterior::merge_chains(log_prior_stanfit(normal_example_sfit))
   )
 }
 )

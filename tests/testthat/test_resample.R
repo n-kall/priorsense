@@ -7,7 +7,8 @@ test_that("powerscale with resample actually resamples", {
   
   expect_equal(
     powerscale(
-      fit = normal_example_sfit,
+      x = normal_example_sfit,
+      component = "prior",
       alpha = 0.5,
       variables = c("mu"),
       resample = TRUE,
@@ -17,7 +18,8 @@ test_that("powerscale with resample actually resamples", {
 
   expect_equal(
     weights(powerscale(
-      fit = normal_example_sfit,
+      x = normal_example_sfit,
+      component = "prior",
       alpha = 0.5,
       variables = c("mu"),
       resample = TRUE
@@ -31,7 +33,7 @@ test_that("powerscale_sequence with resample actually resamples", {
   
   expect_equal(
     powerscale_sequence(
-      fit = normal_example_sfit,
+      x = normal_example_sfit,
       variables = c("mu"),
       resample = TRUE,
     )$resampled,

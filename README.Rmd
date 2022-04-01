@@ -43,7 +43,7 @@ Kallioinen et al. (2021).
 
 Download the development version from [GitHub](https://github.com/) with:
 
-```{r, eval = T}
+```{r, eval = F}
 # install.packages("remotes")
 remotes::install_github("n-kall/priorsense")
 ```
@@ -59,8 +59,6 @@ models.
 Consider a simple univariate model with unknown mu and sigma fit to
 some data y (available
 via`example_powerscale_model("univariate_normal")`:
-
-We first fit the model using Stan:
 
 ```{stan, eval = F, output.var = "stanmod"}
 data {
@@ -89,15 +87,13 @@ generated quantities {
 }
 ```
 
+We first fit the model using Stan:
+
 ```{r, eval = T}
 library(priorsense)
 
 normal_model <- example_powerscale_model("univariate_normal")
-```
 
-### Fitting with rstan
-
-```{r, eval = T}
 fit <- rstan::stan(
   model_code = normal_model$model_code,
   data = normal_model$data,
@@ -106,7 +102,7 @@ fit <- rstan::stan(
 )
 ```
 
-Once fit, a sensitivity can be checked as follows:
+Once fit, sensitivity can be checked as follows:
 ```{r, eval = T}
 powerscale_sensitivity(fit, variables = c("mu", "sigma"))
 ```
@@ -115,7 +111,7 @@ To visually inspect changes to the posterior, first create a
 power-scaling sequence and then use a plotting function. Here we use
 moment matching in order to arrive at more stable estimates.
 
-```{r, eval = T}
+```{r sequence-nomm, eval = T, out.width = '50%', out.height = '50%'}
 pss <- powerscale_sequence(fit)
 powerscale_plot_ecdf(pss, variables = c("mu", "sigma"))
 ```
@@ -124,9 +120,8 @@ In case there are Pareto k values above 0.5, indicating that those
 estimates should not be trusted, moment matching may help at the
 expense of slightly more computation:
 
-```{r, eval = T}
+```{r sequence-mm, eval = T, out.width = '50%', out.height = '50%'}
 pss_mm <- powerscale_sequence(fit, moment_match = TRUE)
-
 powerscale_plot_ecdf(pss_mm, variables = c("mu", "sigma"))
 ```
 

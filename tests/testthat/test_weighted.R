@@ -30,24 +30,3 @@ test_that("weighted quantities work when weights are 1", {
     c(var = var(x))
   )
 })
-
-
-test_that("weighted quantities are close to resampled", {
-  
-  expect_equal(
-    as.vector(
-      summarise_draws(
-        powerscale(
-          normal_example_sfit, variables = "mu", alpha = 0.5,
-        )
-      )$draws_summary[2:7]),
-    as.vector(
-      summarise_draws(
-        resample_draws(
-          powerscale(
-            normal_example_sfit, variables = "mu", alpha = 0.5,
-          )
-        ), posterior::default_summary_measures()
-      )$draws_summary[2:7]), tolerance = 0.08
-  )
-})

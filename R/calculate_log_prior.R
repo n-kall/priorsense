@@ -12,9 +12,7 @@ NULL
 ##' @rdname log_prior_calc
 ##' @export
 log_prior_calc_stanfit <- function(x, ...) {
-  post_draws <- posterior::merge_chains(
-    posterior::as_draws_array(x, ...)
-  )
+  post_draws <- posterior::as_draws_array(x, ...)
 
   upars <- unconstrain_pars(x, post_draws)
   lp <- log_prob_pars(x, upars)
@@ -23,7 +21,7 @@ log_prior_calc_stanfit <- function(x, ...) {
 
   posterior::variables(log_prior) <- "log_prior"
 
-  return(posterior::merge_chains(log_prior))
+  return(log_prior)
 }
 
 ##' @rdname log_prior_calc
