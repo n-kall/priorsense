@@ -30,7 +30,7 @@ priorsense currently works with models created with rstan, cmdstanr or brms. How
 
 ### Example
 
-Consider a simple univariate model with unknown mu and sigma fit to some data y (available via`example_powerscale_model("univariate_normal")`:
+Consider a simple univariate model with unknown mu and sigma fit to some data y (available via`example_powerscale_model("univariate_normal")`):
 
 ``` stan
 data {
@@ -70,7 +70,7 @@ fit <- rstan::stan(
   model_code = normal_model$model_code,
   data = normal_model$data,
   refresh = FALSE,
-  seed = 123
+  seed = 1234
 )
 ```
 
@@ -82,20 +82,21 @@ powerscale_sensitivity(fit, variables = c("mu", "sigma"))
 #> # A tibble: 2 × 4
 #>   variable  prior likelihood diagnosis          
 #>   <chr>     <dbl>      <dbl> <chr>              
-#> 1 mu       0.167      0.228  prior-data conflict
-#> 2 sigma    0.0233     0.0627 -
+#> 1 mu       0.152      0.219  prior-data conflict
+#> 2 sigma    0.0141     0.0612 -
 ```
 
-To visually inspect changes to the posterior, first create a power-scaling sequence and then use a plotting function. Here we use moment matching in order to arrive at more stable estimates.
+To visually inspect changes to the posterior, first create a power-scaling sequence and then use a plotting function.
 
 ``` r
 pss <- powerscale_sequence(fit)
+#> Warning: Some Pareto k diagnostic values are slightly high. See help('pareto-k-diagnostic') for details.
 powerscale_plot_ecdf(pss, variables = c("mu", "sigma"))
 ```
 
 <img src="man/figures/README-sequence-nomm-1.png" width="50%" height="50%" />
 
-In case there are Pareto k values above 0.5, indicating that those estimates should not be trusted, moment matching may help at the expense of slightly more computation:
+In case there are Pareto k values above 0.5, indicating that those estimates should not be trusted, moment matching (currently unavailable for models fit with `cmdstanr`) may help at the expense of slightly more computation:
 
 ``` r
 pss_mm <- powerscale_sequence(fit, moment_match = TRUE)

@@ -58,7 +58,7 @@ models.
 
 Consider a simple univariate model with unknown mu and sigma fit to
 some data y (available
-via`example_powerscale_model("univariate_normal")`:
+via`example_powerscale_model("univariate_normal")`):
 
 ```{stan, eval = F, output.var = "stanmod"}
 data {
@@ -98,7 +98,7 @@ fit <- rstan::stan(
   model_code = normal_model$model_code,
   data = normal_model$data,
   refresh = FALSE,
-  seed = 123
+  seed = 1234
 )
 ```
 
@@ -108,8 +108,7 @@ powerscale_sensitivity(fit, variables = c("mu", "sigma"))
 ```
 
 To visually inspect changes to the posterior, first create a
-power-scaling sequence and then use a plotting function. Here we use
-moment matching in order to arrive at more stable estimates.
+power-scaling sequence and then use a plotting function.
 
 ```{r sequence-nomm, eval = T, out.width = '50%', out.height = '50%'}
 pss <- powerscale_sequence(fit)
@@ -117,8 +116,9 @@ powerscale_plot_ecdf(pss, variables = c("mu", "sigma"))
 ```
 
 In case there are Pareto k values above 0.5, indicating that those
-estimates should not be trusted, moment matching may help at the
-expense of slightly more computation:
+estimates should not be trusted, moment matching (currently
+unavailable for models fit with `cmdstanr`) may help at the expense of
+slightly more computation:
 
 ```{r sequence-mm, eval = T, out.width = '50%', out.height = '50%'}
 pss_mm <- powerscale_sequence(fit, moment_match = TRUE)
