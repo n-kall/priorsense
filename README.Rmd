@@ -110,7 +110,7 @@ powerscale_sensitivity(fit, variables = c("mu", "sigma"))
 To visually inspect changes to the posterior, first create a
 power-scaling sequence and then use a plotting function.
 
-```{r sequence-nomm, eval = T, out.width = '50%', out.height = '50%'}
+```{r sequence-nomm, eval = T, out.width = '70%', out.height = '70%'}
 pss <- powerscale_sequence(fit)
 powerscale_plot_ecdf(pss, variables = c("mu", "sigma"))
 ```
@@ -120,7 +120,7 @@ estimates should not be trusted, moment matching (currently
 unavailable for models fit with `cmdstanr`) may help at the expense of
 slightly more computation:
 
-```{r sequence-mm, eval = T, out.width = '50%', out.height = '50%'}
+```{r sequence-mm, eval = T, out.width = '70%', out.height = '70%'}
 pss_mm <- powerscale_sequence(fit, moment_match = TRUE)
 powerscale_plot_ecdf(pss_mm, variables = c("mu", "sigma"))
 ```

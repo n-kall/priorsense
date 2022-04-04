@@ -82,8 +82,8 @@ powerscale_sensitivity(fit, variables = c("mu", "sigma"))
 #> # A tibble: 2 × 4
 #>   variable  prior likelihood diagnosis          
 #>   <chr>     <dbl>      <dbl> <chr>              
-#> 1 mu       0.152      0.219  prior-data conflict
-#> 2 sigma    0.0141     0.0612 -
+#> 1 mu       0.155      0.235  prior-data conflict
+#> 2 sigma    0.0142     0.0591 -
 ```
 
 To visually inspect changes to the posterior, first create a power-scaling sequence and then use a plotting function.
@@ -91,10 +91,12 @@ To visually inspect changes to the posterior, first create a power-scaling seque
 ``` r
 pss <- powerscale_sequence(fit)
 #> Warning: Some Pareto k diagnostic values are slightly high. See help('pareto-k-diagnostic') for details.
+
+#> Warning: Some Pareto k diagnostic values are slightly high. See help('pareto-k-diagnostic') for details.
 powerscale_plot_ecdf(pss, variables = c("mu", "sigma"))
 ```
 
-<img src="man/figures/README-sequence-nomm-1.png" width="50%" height="50%" />
+<img src="man/figures/README-sequence-nomm-1.png" width="70%" height="70%" />
 
 In case there are Pareto k values above 0.5, indicating that those estimates should not be trusted, moment matching (currently unavailable for models fit with `cmdstanr`) may help at the expense of slightly more computation:
 
@@ -103,7 +105,7 @@ pss_mm <- powerscale_sequence(fit, moment_match = TRUE)
 powerscale_plot_ecdf(pss_mm, variables = c("mu", "sigma"))
 ```
 
-<img src="man/figures/README-sequence-mm-1.png" width="50%" height="50%" />
+<img src="man/figures/README-sequence-mm-1.png" width="70%" height="70%" />
 
 ## References
 
