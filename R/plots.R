@@ -190,8 +190,11 @@ powerscale_plot_dens <- function(x, variables, resample = FALSE,
           prior = "Prior power-scaling"
         )
       ),
-      scales = "free"
-    )
+      scales = "free",
+      switch = "y"
+    ) +
+    ggplot2::xlab("") +
+    ggplot2::ggtitle(label = "Power-scaling sensitivity", subtitle = "Posterior density estimates depending on amount of power-scaling (alpha).\nOverlapping lines indicate low sensitivity, larger gaps between lines indicate greater sensitivity.\nEstimates with Pareto-k values > 0.5 may be inaccurate.")
 
   return(p)
 }
@@ -265,12 +268,13 @@ powerscale_plot_ecdf <- function(x, variables, resample = FALSE, ...) {
     component ~ variable,
     labeller = ggplot2::labeller(
       component = c(
-        likelihood = "Likelihood scaling",
-        prior = "Prior scaling"
+        likelihood = "Likelihood power-scaling",
+        prior = "Prior power-scaling"
       )
     ),
-    scales = "free_x"
-  )
+    scales = "free_x", switch = "y"
+  ) +
+    ggplot2::ggtitle(label = "Power-scaling sensitivity", subtitle = "Posterior ECDF depending on amount of power-scaling (alpha).\nOverlapping lines indicate low sensitivity, larger gaps between lines indicate greater sensitivity.\nEstimates with Pareto-k values > 0.5 may be inaccurate.")
 
   return(p)
 
@@ -351,7 +355,8 @@ powerscale_summary_plot <- function(x, variables, quantities = NULL, ...) {
         override.aes = list(shape = 15)
       )
     ) +
-    ggplot2::scale_x_continuous(trans = "log2")
+    ggplot2::scale_x_continuous(trans = "log2") +
+    ggplot2::ggtitle(label = "Power-scaling sensitivity", subtitle = "Posterior quantities depending on amount of power-scaling (alpha).\nHorizontal lines indicate low sensitivity, steeper lines indicate greater sensitivity.\nEstimates with Pareto-k values > 0.5 may be inaccurate.")
 
   return(p)
 }
