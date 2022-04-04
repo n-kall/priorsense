@@ -7,8 +7,7 @@
 powerscale_sensitivity(x, ...)
 }
 \arguments{
-\item{x}{A fitted model object of class \code{stanfit}, \code{brmsfit} or
-\code{CmdStanFit}.}
+\item{x}{A fitted model object.}
 
 \item{...}{Further arguments passed to functions.}
 

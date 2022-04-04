@@ -156,8 +156,7 @@ powerscale_sequence(x, ...)
 )
 }
 \arguments{
-\item{x}{A fitted model object of class \code{stanfit}, \code{brmsfit} or
-\code{CmdStanFit}.}
+\item{x}{A fitted model object.}
 
 \item{...}{Further arguments passed to the custom functions
 documented above.}
@@ -205,12 +204,6 @@ posterior draws for.}
 \item{upper_alpha}{Upper power-scaling alpha value in sequence.}
 
 \item{alpha_step}{Step size of power-scaling alphas in sequence.}
-
-\item{log_prior_fn}{A function that takes as input the model fit
-and returns the log prior values.}
-
-\item{joint_log_lik_fn}{A function that takes as input the model
-fit and returns the joint log likelihood values.}
 }
 \value{
 A \code{powerscaled_draws} or \code{powerscaled_sequence} object,

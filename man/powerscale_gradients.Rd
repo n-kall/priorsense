@@ -7,9 +7,9 @@
 powerscale_gradients(x, ...)
 }
 \arguments{
-\item{...}{Further arguments passed to functions.}
+\item{x}{Model fit of class brmsfit, stanfit or CmdStanFit}
 
-\item{fit}{Model fit of class brmsfit, stanfit or CmdStanFit}
+\item{...}{Further arguments passed to functions.}
 
 \item{variable}{Variables to compute sensitivity of. If NA
 (default) sensitivity is computed for all variables.}

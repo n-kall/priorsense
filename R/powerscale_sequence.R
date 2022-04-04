@@ -144,7 +144,6 @@ powerscale_sequence.powerscaling_data <- function(x, lower_alpha = 0.5,
         k_treshold = k_threshold,
         resample = resample,
         transform = transform,
-        get_draws = get_draws,
         ...
       )
 

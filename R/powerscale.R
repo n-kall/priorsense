@@ -17,10 +17,6 @@
 ##'   "likelihood"). For powerscale_sequence, this can be both "prior"
 ##'   and "likelihood".
 ##' @template powerscale_args
-##' @param log_prior_fn A function that takes as input the model fit
-##'   and returns the log prior values.
-##' @param joint_log_lik_fn A function that takes as input the model
-##'   fit and returns the joint log likelihood values.
 ##' @param prediction Function taking the model fit and returning a
 ##'   draws_df of predictions to be appended to the posterior draws
 ##' @param ... Further arguments passed to the custom functions

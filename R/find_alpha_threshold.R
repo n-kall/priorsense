@@ -1,8 +1,7 @@
 ##' Find the value of alpha furthest from 1 which gives the specified
 ##' pareto-k value
 ##'
-##' @param fit a model fit of class `brmsfit`
-##' @param variables variables to report
+##' @param x a fit object
 ##' @param component string specifying which component to investigate,
 ##'   `likelihood` or `prior`.
 ##' @param range vector of length 2 specifying the range of alphas to
@@ -10,7 +9,9 @@
 ##' @param k_threshold highest acceptable pareto-k value
 ##' @param epsilon value to define differences
 ##' @param moment_match moment match
-##' @return numeric
+##' @param ... other arguments passed to powerscale
+##' @return numeric alpha value furthest from 1 that leads to pareto-k
+##'   below threshold
 ##' @export
 ##' 
 find_alpha_threshold <- function(x, ...) {
@@ -65,7 +66,7 @@ find_alpha_threshold.default <- function(x,
                                  variables = NA,
                                  k_threshold = 0.5,
                                  epsilon = 0.001,
-                                 moment_match = FALSE) {
+                                 moment_match = FALSE, ...) {
   checkmate::assert_number(epsilon)
   checkmate::assert_number(k_threshold)
   checkmate::assert(epsilon > 0)

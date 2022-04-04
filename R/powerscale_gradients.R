@@ -5,7 +5,7 @@
 ##' is done using importance sampling (and optionally moment matching)
 ##' to approximate the posteriors that result from power-scaling the
 ##' specified component distribution (prior or likelihood).
-##' @param fit Model fit of class brmsfit, stanfit or CmdStanFit
+##' @param x Model fit of class brmsfit, stanfit or CmdStanFit
 ##' @param variable Variables to compute sensitivity of. If NA
 ##'   (default) sensitivity is computed for all variables.
 ##' @param component Component to power-scale (prior or likelihood).

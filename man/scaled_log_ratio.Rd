@@ -7,17 +7,11 @@
 scaled_log_ratio(component_draws, alpha, ...)
 }
 \arguments{
+\item{component_draws}{draws from component to powerscale}
+
 \item{alpha}{scaling factor}
 
-\item{...}{other arguments}
-
-\item{x}{a model fit}
-
-\item{component}{component to scale}
-
-\item{log_prior_fn}{function to extract log_prior}
-
-\item{joint_log_lik_fn}{function to extract joint log lik}
+\item{...}{unused}
 }
 \value{
 log ratio

@@ -1,4 +1,3 @@
-##' @export
 get_draws_brmsfit <- function(x, variable = NULL, regex = FALSE, excluded_variables = c("lprior", "lp__"), ...) {
 
   draws <- posterior::as_draws_df(x, variable = variable, regex = regex)
@@ -15,7 +14,6 @@ get_draws_brmsfit <- function(x, variable = NULL, regex = FALSE, excluded_variab
   return(draws)
 }
 
-##' @export
 get_draws_stanfit <- function(x, variable = NULL, excluded_variables = c("log_prior", "lp__"), ...) {
   if (is.null(variable)) {
 
@@ -33,7 +31,6 @@ get_draws_stanfit <- function(x, variable = NULL, excluded_variables = c("log_pr
   return(draws)
 }
 
-##' @export
 get_draws_CmdStanFit <- function(x, variable = NULL, regex, excluded_variables = c("log_prior", "lp__"), ...) {
 
   if (is.null(variable)) {

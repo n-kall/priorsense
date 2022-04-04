@@ -8,9 +8,9 @@ pareto-k value}
 find_alpha_threshold(x, ...)
 }
 \arguments{
-\item{fit}{a model fit of class \code{brmsfit}}
+\item{x}{a fit object}
 
-\item{variables}{variables to report}
+\item{...}{other arguments passed to powerscale}
 
 \item{component}{string specifying which component to investigate,
 \code{likelihood} or \code{prior}.}
@@ -25,7 +25,8 @@ consider, both values must be less than 1 or greater than 1}
 \item{moment_match}{moment match}
 }
 \value{
-numeric
+numeric alpha value furthest from 1 that leads to pareto-k
+below threshold
 }
 \description{
 Find the value of alpha furthest from 1 which gives the specified
