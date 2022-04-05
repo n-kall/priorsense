@@ -194,7 +194,10 @@ powerscale_plot_dens <- function(x, variables, resample = FALSE,
       switch = "y"
     ) +
     ggplot2::xlab("") +
-    ggplot2::ggtitle(label = "Power-scaling sensitivity", subtitle = "Posterior density estimates depending on amount of power-scaling (alpha).\nOverlapping lines indicate low sensitivity, larger gaps between lines indicate greater sensitivity.\nEstimates with Pareto-k values > 0.5 may be inaccurate.")
+    ggplot2::ggtitle(
+      label = "Power-scaling sensitivity",
+      subtitle = "Posterior density estimates depending on amount of power-scaling (alpha).\nOverlapping lines indicate low sensitivity, larger gaps between lines indicate greater sensitivity.\nEstimates with Pareto-k values > 0.5 may be inaccurate."
+    )
 
   return(p)
 }
@@ -275,7 +278,10 @@ powerscale_plot_ecdf <- function(x, variables, resample = FALSE, ...) {
     scales = "free_x", switch = "y"
   ) +
     ggplot2::xlab("") +
-    ggplot2::ggtitle(label = "Power-scaling sensitivity", subtitle = "Posterior ECDF depending on amount of power-scaling (alpha).\nOverlapping lines indicate low sensitivity, larger gaps between lines indicate greater sensitivity.\nEstimates with Pareto-k values > 0.5 may be inaccurate.")
+  ggplot2::ggtitle(
+    label = "Power-scaling sensitivity",
+    subtitle = "Posterior ECDF depending on amount of power-scaling (alpha).\nOverlapping lines indicate low sensitivity, larger gaps between lines indicate greater sensitivity.\nEstimates with Pareto-k values > 0.5 may be inaccurate."
+  )
 
   return(p)
 
@@ -357,8 +363,15 @@ powerscale_summary_plot <- function(x, variables, quantities = NULL, ...) {
       )
     ) +
     ggplot2::ylab("") +
-    ggplot2::scale_x_continuous(trans = "log2") +
-    ggplot2::ggtitle(label = "Power-scaling sensitivity", subtitle = "Posterior quantities depending on amount of power-scaling (alpha).\nHorizontal lines indicate low sensitivity, steeper lines indicate greater sensitivity.\nEstimates with Pareto-k values > 0.5 may be inaccurate.")
+    ggplot2::scale_x_continuous(
+      trans = "log2",
+      limits = c(min(summaries$alpha) - 0.01, max(summaries$alpha) + 0.01),
+      breaks = c(min(summaries$alpha),1 , max(summaries$alpha))
+    ) +
+    ggplot2::ggtitle(
+      label = "Power-scaling sensitivity",
+      subtitle = "Posterior quantities depending on amount of power-scaling (alpha).\nHorizontal lines indicate low sensitivity, steeper lines indicate greater sensitivity.\nEstimates with Pareto-k values > 0.5 may be inaccurate."
+    )
 
   return(p)
 }

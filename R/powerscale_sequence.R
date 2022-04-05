@@ -7,9 +7,9 @@ powerscale_sequence <- function(x, ...) {
 
 ##' @rdname powerscale-overview
 ##' @export
-powerscale_sequence.CmdStanFit <- function(x, lower_alpha = 0.5,
+powerscale_sequence.CmdStanFit <- function(x, lower_alpha = 0.8,
                                            upper_alpha = 1/lower_alpha,
-                                           alpha_step = 0.1, variable = NULL,
+                                           length = 9, variable = NULL,
                                            component = c("prior", "likeliood"),
                                            ...
                                            ) {
@@ -25,9 +25,9 @@ powerscale_sequence.CmdStanFit <- function(x, lower_alpha = 0.5,
 
 ##' @rdname powerscale-overview
 ##' @export
-powerscale_sequence.stanfit <- function(x, lower_alpha = 0.5,
+powerscale_sequence.stanfit <- function(x, lower_alpha = 0.8,
                                         upper_alpha = 1/lower_alpha,
-                                        alpha_step = 0.1, variable = NULL,
+                                        length = 9, variable = NULL,
                                         component = c("prior", "likelihood"),
                                         ...
                                         ) {
@@ -58,9 +58,9 @@ powerscale_sequence.brmsfit <- function(x,
 
 ##' @rdname powerscale-overview
 ##' @export
-powerscale_sequence.powerscaling_data <- function(x, lower_alpha = 0.5,
+powerscale_sequence.powerscaling_data <- function(x, lower_alpha = 0.8,
                                                   upper_alpha = 1/lower_alpha,
-                                                  alpha_step = 0.1, variable = NULL,
+                                                  length = 9, variable = NULL,
                                                   component = c("prior", "likelihood"),
                                                   is_method = "psis",
                                                   moment_match = FALSE,
@@ -70,7 +70,8 @@ powerscale_sequence.powerscaling_data <- function(x, lower_alpha = 0.5,
                                                   ...
                                                   ) {
 
-  alpha_seq <- seq(lower_alpha, 1 - alpha_step, alpha_step)
+  alpha_seq <- seq(lower_alpha, 1, length.out = (length - 1)/2)
+  alpha_seq <- alpha_seq[-length(alpha_seq)]
   alpha_seq <- c(alpha_seq, rev(1 / alpha_seq))
 
   # extract the base draws
