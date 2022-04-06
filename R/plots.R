@@ -149,16 +149,16 @@ prepare_plot <- function(x, variables, resample, ...) {
         "1",
         as.character(max(d$alpha), digits = 3)
       )
-    )+
+    ) +
     ggplot2::scale_color_viridis_c(
       option = "plasma",
       trans = "log",
       limits = c(min(d$alpha) - 0.01, max(d$alpha) + 0.01),
       breaks = c(min(d$alpha), 1, max(d$alpha)),
       labels = c(
-        as.character(min(d$alpha), digits = 3),
+        round(min(d$alpha), digits = 3),
         "1",
-        as.character(max(d$alpha), digits = 3)
+        round(max(d$alpha), digits = 3)
       )
     )
 
@@ -366,7 +366,8 @@ powerscale_summary_plot <- function(x, variables, quantities = NULL, ...) {
     ggplot2::scale_x_continuous(
       trans = "log2",
       limits = c(min(summaries$alpha) - 0.01, max(summaries$alpha) + 0.01),
-      breaks = c(min(summaries$alpha),1 , max(summaries$alpha))
+      breaks = c(min(summaries$alpha), 1 , max(summaries$alpha)),
+      labels = round(c(min(summaries$alpha), 1 , max(summaries$alpha)), digits = 3)
     ) +
     ggplot2::ggtitle(
       label = "Power-scaling sensitivity",

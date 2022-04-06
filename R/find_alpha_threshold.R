@@ -4,8 +4,7 @@
 ##' @param x a fit object
 ##' @param component string specifying which component to investigate,
 ##'   `likelihood` or `prior`.
-##' @param range vector of length 2 specifying the range of alphas to
-##'   consider, both values must be less than 1 or greater than 1
+##' @param alpha_bound alpha bound for search, must be less than 1 or greater than 1
 ##' @param k_threshold highest acceptable pareto-k value
 ##' @param epsilon value to define differences
 ##' @param moment_match moment match
@@ -56,25 +55,29 @@ find_alpha_threshold.powerscaling_data <- function(x, ...) {
 ##' @export
 find_alpha_threshold.default <- function(x,
                                  component,
-                                 range,
+                                 alpha_bound,
                                  log_prior_fn,
                                  joint_log_lik_fn,
                                  get_draws,
                                  unconstrain_pars,
                                  log_prob_upars,
                                  log_ratio_upars,
-                                 variables = NA,
                                  k_threshold = 0.5,
                                  epsilon = 0.001,
                                  moment_match = FALSE, ...) {
   checkmate::assert_number(epsilon)
+  checkmate::assert_number(alpha_bound)
   checkmate::assert_number(k_threshold)
   checkmate::assert(epsilon > 0)
-  checkmate::assert_vector(range)
   checkmate::assert_choice(component, c("prior", "likelihood"))
 
-  lower <- range[1]
-  upper <- range[2]
+  if (alpha_bound < 1) {
+    lower <- alpha_bound
+    upper <- 1 - epsilon
+  } else if (alpha_bound > 1) {
+    lower <- 1 + epsilon
+    upper <- alpha_bound
+  }
 
   if (lower < 1 & upper < 1) {
     comparison <- below_one_comparison
@@ -112,6 +115,9 @@ find_alpha_threshold.default <- function(x,
     }
     pareto_k <- new_pareto_k
   }
+
+  # be conservative to ensure pareto_k lower
+  alpha <- ifelse(alpha > 1, alpha - epsilon, alpha + epsilon)
 
   return(alpha)
 }

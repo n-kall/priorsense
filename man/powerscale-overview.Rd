@@ -120,9 +120,9 @@ powerscale_sequence(x, ...)
 
 \method{powerscale_sequence}{CmdStanFit}(
   x,
-  lower_alpha = 0.5,
+  lower_alpha = 0.8,
   upper_alpha = 1/lower_alpha,
-  alpha_step = 0.1,
+  length = 9,
   variable = NULL,
   component = c("prior", "likeliood"),
   ...
@@ -130,9 +130,9 @@ powerscale_sequence(x, ...)
 
 \method{powerscale_sequence}{stanfit}(
   x,
-  lower_alpha = 0.5,
+  lower_alpha = 0.8,
   upper_alpha = 1/lower_alpha,
-  alpha_step = 0.1,
+  length = 9,
   variable = NULL,
   component = c("prior", "likelihood"),
   ...
@@ -142,9 +142,9 @@ powerscale_sequence(x, ...)
 
 \method{powerscale_sequence}{powerscaling_data}(
   x,
-  lower_alpha = 0.5,
+  lower_alpha = 0.8,
   upper_alpha = 1/lower_alpha,
-  alpha_step = 0.1,
+  length = 9,
   variable = NULL,
   component = c("prior", "likelihood"),
   is_method = "psis",

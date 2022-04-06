@@ -7,10 +7,7 @@ powerscale_sequence <- function(x, ...) {
 
 ##' @rdname powerscale-overview
 ##' @export
-powerscale_sequence.CmdStanFit <- function(x, lower_alpha = 0.8,
-                                           upper_alpha = 1/lower_alpha,
-                                           length = 9, variable = NULL,
-                                           component = c("prior", "likeliood"),
+powerscale_sequence.CmdStanFit <- function(x,
                                            ...
                                            ) {
 
@@ -25,10 +22,7 @@ powerscale_sequence.CmdStanFit <- function(x, lower_alpha = 0.8,
 
 ##' @rdname powerscale-overview
 ##' @export
-powerscale_sequence.stanfit <- function(x, lower_alpha = 0.8,
-                                        upper_alpha = 1/lower_alpha,
-                                        length = 9, variable = NULL,
-                                        component = c("prior", "likelihood"),
+powerscale_sequence.stanfit <- function(x,
                                         ...
                                         ) {
 
@@ -67,12 +61,41 @@ powerscale_sequence.powerscaling_data <- function(x, lower_alpha = 0.8,
                                                   k_threshold = 0.5,
                                                   resample = FALSE,
                                                   transform = FALSE,
+                                                  auto_alpha_range = FALSE,
+                                                  symmetric = TRUE,
                                                   ...
                                                   ) {
 
-  alpha_seq <- seq(lower_alpha, 1, length.out = (length - 1)/2)
-  alpha_seq <- alpha_seq[-length(alpha_seq)]
-  alpha_seq <- c(alpha_seq, rev(1 / alpha_seq))
+  # adapt alpha range to ensure pareto-k < theshold
+  if (auto_alpha_range) {
+    alpha_range <- list(prior = NULL, likelihood = NULL)
+    for (comp in component) {
+      lower_alpha <- find_alpha_threshold(x, component = comp, alpha_bound = lower_alpha, k_threshold = k_threshold)
+      upper_alpha <- find_alpha_threshold(x, component = comp, alpha_bound = upper_alpha, k_threshold = k_threshold)
+      alpha_range[[comp]] <- list(lower_alpha, upper_alpha)
+    }
+    lower_alpha <- max(alpha_range[["prior"]][[1]], alpha_range[["likelihood"]][[1]], na.rm = TRUE)
+    upper_alpha <- min(alpha_range[["prior"]][[2]], alpha_range[["likelihood"]][[2]], na.rm = TRUE)
+  }
+
+  if (symmetric) {
+    if (abs(log(lower_alpha, 2)) < abs(log(upper_alpha, 2))) {
+      alpha_seq_l <- seq(lower_alpha, 1, length.out = (length - 1)/2)
+      alpha_seq_l <- alpha_seq_l[-length(alpha_seq_l)]
+      alpha_seq_u <- rev(1/alpha_seq_l)
+    } else {
+      alpha_seq_u <- seq(1, upper_alpha, length.out = (length - 1)/2)
+      alpha_seq_u <- alpha_seq_u[-1]
+      alpha_seq_l <- rev(1/alpha_seq_u)
+    }
+  } else {  
+    alpha_seq_l <- seq(lower_alpha, 1, length.out = (length - 1)/2)
+    alpha_seq_l <- alpha_seq_l[-length(alpha_seq_l)]
+    alpha_seq_u <- seq(1, upper_alpha, length.out = (length - 1)/2)
+    alpha_seq_u <- alpha_seq_u[-1]
+  }
+
+  alpha_seq <- c(alpha_seq_l, alpha_seq_u)
 
   # extract the base draws
   base_draws <- posterior::subset_draws(x$draws, variable = variable, ...)
