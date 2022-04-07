@@ -54,17 +54,17 @@ moment_match.brmsfit <- function(x, psis, ...) {
 
 # adapted from original moment matching implementation by Topi Paananen
 moment_match.default <- function(
-                                 x,
-                                 psis,
-                                 post_draws,
-                                 unconstrain_pars,
-                                 log_prob_upars,
-                                 log_ratio_upars,
-                                 max_iters = 30,
-                                 k_threshold = 0.5,
-                                 cov_transform = TRUE,
-                                 nchains,
-                                 ...) {
+				 x,
+				 psis,
+				 post_draws,
+				 unconstrain_pars,
+				 log_prob_upars,
+				 log_ratio_upars,
+				 max_iters = 30,
+				 k_threshold = 0.5,
+				 cov_transform = TRUE,
+				 nchains,
+				 ...) {
 
   # input checks
   checkmate::assertClass(psis, classes = "psis")
@@ -106,8 +106,8 @@ moment_match.default <- function(
   while (iterind <= max_iters && k > k_threshold) {
     if (iterind == max_iters) {
       warning(
-        "The maximum number of moment matching iterations ('max_iters' ",
-        "argument) was reached. Increasing the value may improve accuracy."
+	"The maximum number of moment matching iterations ('max_iters' ",
+	"argument) was reached. Increasing the value may improve accuracy."
       )
     }
 
@@ -200,7 +200,7 @@ update_quantities <- function(x, upars, orig_log_prob,
   psis_new <- SW(loo::psis(
     log_ratio_new + log_prob_new - orig_log_prob,
     r_eff = r_eff,
-  ))
+    ))
   lw_new <- as.vector(stats::weights(psis_new))
   k_new <- psis_new$diagnostics$pareto_k
 
@@ -293,20 +293,20 @@ shift_and_cov <- function(x, upars, lw, ...) {
   covv <- stats::cov(upars)
   wcovv <- stats::cov.wt(upars, wt = exp(lw))$cov
   chol1 <- tryCatch(
-    {
-      chol(wcovv)
-    },
-    error = function(cond) {
-      return(NULL)
-    }
+  {
+    chol(wcovv)
+  },
+  error = function(cond) {
+    return(NULL)
+  }
   )
   chol2 <- tryCatch(
-    {
-      chol(covv)
-    },
-    error = function(cond) {
-      return(NULL)
-    }
+  {
+    chol(covv)
+  },
+  error = function(cond) {
+    return(NULL)
+  }
   )
   if (is.null(chol1) || is.null(chol2)) {
     upars_new <- upars
@@ -356,9 +356,9 @@ log_prob_upars <- function(x, ...) {
 
 log_prob_upars.stanfit <- function(x, upars, ...) {
   apply(upars, 1, rstan::log_prob,
-    object = x,
-    adjust_transform = TRUE, gradient = FALSE
-  )
+        object = x,
+        adjust_transform = TRUE, gradient = FALSE
+        )
 }
 
 log_prob_upars.brmsfit <- function(x, upars, ...) {
@@ -379,7 +379,7 @@ update_pars.stanfit <- function(x, upars, save_old_pars = TRUE, ...) {
     x@sim$fnames_oi_old <- x@sim$fnames_oi
   }
   # list with one element per posterior draw
-  pars <- apply(upars, 1, rstan::constrain_pars, object = x)
+  pars <- apply(upars, 1, constrain_pars, object = x)
   parnames <- rep(names(pars[[1]]), lengths(pars[[1]]))
   # transform samples
   nsamples <- length(pars)

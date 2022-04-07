@@ -97,8 +97,8 @@ powerscale.powerscaling_data <- function(x,
     mm <- moment_match(
       x = x,
       psis = importance_sampling,
-      alpha = alpha,
       component_fn = component_fn,
+      alpha = alpha,
       k_threshold = k_threshold
     )
 

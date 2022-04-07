@@ -4,6 +4,7 @@ create_powerscaling_data <- function(x, ...) {
 
 create_powerscaling_data.default <- function(x, draws, log_prior,
                                              log_lik,
+                                             constrain_pars,
                                              unconstrain_pars,
                                              log_prob_upars,
                                              log_ratio_upars,
@@ -39,6 +40,7 @@ create_powerscaling_data.stanfit <- function(x, ...) {
     draws = get_draws_stanfit,
     log_prior = log_prior_stanfit,
     log_lik = joint_log_lik_stanfit,
+    constrain_pars = rstan::constrain_pars,
     unconstrain_pars = unconstrain_pars,
     log_prob_upars = log_prob_upars,
     log_ratio_upars = log_ratio_upars,
