@@ -196,7 +196,7 @@ powerscale_plot_dens <- function(x, variables, resample = FALSE,
     ggplot2::xlab("") +
     ggplot2::ggtitle(
       label = "Power-scaling sensitivity",
-      subtitle = "Posterior density estimates depending on amount of power-scaling (alpha).\nOverlapping lines indicate low sensitivity, larger gaps between lines indicate greater sensitivity.\nEstimates with Pareto-k values > 0.5 may be inaccurate."
+      subtitle = "Posterior density estimates depending on amount of power-scaling (alpha).\nOverlapping lines indicate low sensitivity.\nWider gaps between lines indicate greater sensitivity.\nEstimates with Pareto-k values > 0.5 may be inaccurate."
     )
 
   return(p)
@@ -280,7 +280,7 @@ powerscale_plot_ecdf <- function(x, variables, resample = FALSE, ...) {
     ggplot2::xlab("") +
   ggplot2::ggtitle(
     label = "Power-scaling sensitivity",
-    subtitle = "Posterior ECDF depending on amount of power-scaling (alpha).\nOverlapping lines indicate low sensitivity, larger gaps between lines indicate greater sensitivity.\nEstimates with Pareto-k values > 0.5 may be inaccurate."
+    subtitle = "Posterior ECDF depending on amount of power-scaling (alpha).\nOverlapping lines indicate low sensitivity.\nWider gaps between lines indicate greater sensitivity.\nEstimates with Pareto-k values > 0.5 may be inaccurate."
   )
 
   return(p)
@@ -371,7 +371,7 @@ powerscale_summary_plot <- function(x, variables, quantities = NULL, ...) {
     ) +
     ggplot2::ggtitle(
       label = "Power-scaling sensitivity",
-      subtitle = "Posterior quantities depending on amount of power-scaling (alpha).\nHorizontal lines indicate low sensitivity, steeper lines indicate greater sensitivity.\nEstimates with Pareto-k values > 0.5 may be inaccurate."
+      subtitle = "Posterior quantities depending on amount of power-scaling (alpha).\nHorizontal lines indicate low sensitivity.\nSteeper lines indicate greater sensitivity.\nEstimates with Pareto-k values > 0.5 may be inaccurate."
     )
 
   return(p)
