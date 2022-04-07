@@ -70,8 +70,8 @@ powerscale_sequence.powerscaling_data <- function(x, lower_alpha = 0.8,
   if (auto_alpha_range) {
     alpha_range <- list(prior = NULL, likelihood = NULL)
     for (comp in component) {
-      lower_alpha <- find_alpha_threshold(x, component = comp, alpha_bound = lower_alpha, k_threshold = k_threshold)
-      upper_alpha <- find_alpha_threshold(x, component = comp, alpha_bound = upper_alpha, k_threshold = k_threshold)
+      lower_alpha <- find_alpha_threshold(x, component = comp, alpha_bound = lower_alpha, k_threshold = k_threshold, moment_match = moment_match)
+      upper_alpha <- find_alpha_threshold(x, component = comp, alpha_bound = upper_alpha, k_threshold = k_threshold, moment_match = moment_match)
       alpha_range[[comp]] <- list(lower_alpha, upper_alpha)
     }
     lower_alpha <- max(alpha_range[["prior"]][[1]], alpha_range[["likelihood"]][[1]], na.rm = TRUE)
