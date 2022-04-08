@@ -54,17 +54,17 @@ moment_match.brmsfit <- function(x, psis, ...) {
 
 # adapted from original moment matching implementation by Topi Paananen
 moment_match.default <- function(
-				 x,
-				 psis,
-				 post_draws,
-				 unconstrain_pars,
-				 log_prob_upars,
-				 log_ratio_upars,
-				 max_iters = 30,
-				 k_threshold = 0.5,
-				 cov_transform = TRUE,
-				 nchains,
-				 ...) {
+                                 x,
+                                 psis,
+                                 post_draws,
+                                 unconstrain_pars,
+                                 log_prob_upars,
+                                 log_ratio_upars,
+                                 max_iters = 30,
+                                 k_threshold = 0.5,
+                                 cov_transform = TRUE,
+                                 nchains,
+                                 ...) {
 
   # input checks
   checkmate::assertClass(psis, classes = "psis")
@@ -106,8 +106,8 @@ moment_match.default <- function(
   while (iterind <= max_iters && k > k_threshold) {
     if (iterind == max_iters) {
       warning(
-	"The maximum number of moment matching iterations ('max_iters' ",
-	"argument) was reached. Increasing the value may improve accuracy."
+        "The maximum number of moment matching iterations ('max_iters' ",
+        "argument) was reached. Increasing the value may improve accuracy."
       )
     }
 
@@ -197,10 +197,12 @@ update_quantities <- function(x, upars, orig_log_prob,
   log_ratio_new <- log_ratio_upars(x, upars = upars, ...)
 
   # compute new log importance weights
-  psis_new <- SW(loo::psis(
-    log_ratio_new + log_prob_new - orig_log_prob,
-    r_eff = r_eff,
-    ))
+  psis_new <- SW(
+    loo::psis(
+      log_ratio_new + log_prob_new - orig_log_prob,
+      r_eff = r_eff,
+      )
+  )
   lw_new <- as.vector(stats::weights(psis_new))
   k_new <- psis_new$diagnostics$pareto_k
 
@@ -222,13 +224,25 @@ update_quantities <- function(x, upars, orig_log_prob,
 #' @param lw A vector representing the log-weight of each parameter
 #' @return List with the shift that was performed, and the new parameter matrix.
 #'
-shift <- function(x, upars, lw) {
+shift <- function(x, upars, lw, ...) {
+  w <- exp(lw) * length(lw)
   # compute moments using log weights
-  mean_original <- colMeans(upars)
-  mean_weighted <- colSums(exp(lw) * upars)
-  shift <- mean_weighted - mean_original
-  # transform posterior draws
-  upars_new <- sweep(upars, 2, shift, "+")
+  vars_original <- matrixStats::colVars(upars)
+  vars_weighted <- matrixStats::colWeightedVars(upars, w = w)
+  if (all(vars_original > 1e-12) && all(vars_weighted > 1e-12)) {
+    scaling <- sqrt(vars_weighted / vars_original)
+
+    mean_original <- colMeans(upars)
+    mean_weighted <- matrixStats::colWeightedMeans(upars, w = w)
+    shift <- mean_weighted - mean_original
+
+    upars_new <- sweep(upars, 2, mean_original, "-")
+    upars_new <- sweep(upars_new, 2, scaling, "*")
+    upars_new <-
+      sweep(upars_new, 2, mean_weighted, "+")
+  } else {
+    upars_new <- upars
+  }
   list(
     upars = upars_new
   )
@@ -248,31 +262,27 @@ shift <- function(x, upars, lw) {
 #' parameter matrix.
 #'
 #'
-shift_and_scale <- function(x, upars, lw) {
-  # compute moments using log weights
-  S <- dim(upars)[1]
-  npars <- dim(upars)[2]
-  vars_original <- matrixStats::colVars(upars)
-  if (all(vars_original > 1e-12) && max(lw) < -0.01) {
-    mean_original <- colMeans(upars)
-    mean_weighted <- colSums(exp(lw) * upars)
-    shift <- mean_weighted - mean_original
-    mii <- exp(lw) * upars^2
-    mii <- colSums(mii) - mean_weighted^2
-    mii <- mii * S / (S - 1)
-    scaling <- sqrt(mii / vars_original)
-    # transform posterior draws
-    upars_new <- sweep(upars, 2, mean_original, "-")
-    upars_new <- sweep(upars_new, 2, scaling, "*")
-    upars_new <- sweep(upars_new, 2, mean_weighted, "+")
-  }
-  else {
-    upars_new <- upars
-  }
+shift_and_scale <- function(x, upars, lw, ...) {
+w <- exp(lw) * length(lw)
+# compute moments using log weights
+vars_original <- matrixStats::colVars(upars)
+vars_weighted <- matrixStats::colWeightedVars(upars, w = w)
+if (all(vars_original > 1e-12) && all(vars_weighted > 1e-12)) {
+  scaling <- sqrt(vars_weighted / vars_original)
 
-  list(
-    upars = upars_new
-  )
+  mean_original <- colMeans(upars)
+  mean_weighted <- matrixStats::colWeightedMeans(upars, w = w)
+  shift <- mean_weighted - mean_original
+
+  upars_new <- sweep(upars, 2, mean_original, "-")
+  upars_new <- sweep(upars_new, 2, scaling, "*")
+  upars_new <- sweep(upars_new, 2, mean_weighted, "+")
+} else {
+  upars_new <- upars
+}
+list(
+  upars = upars_new
+)
 }
 
 #' Shift a matrix of parameters to their weighted mean and scale the covariance
@@ -289,20 +299,22 @@ shift_and_scale <- function(x, upars, lw) {
 #' parameter matrix.
 #'
 shift_and_cov <- function(x, upars, lw, ...) {
-  npars <- dim(upars)[2]
-  covv <- stats::cov(upars)
-  wcovv <- stats::cov.wt(upars, wt = exp(lw))$cov
+  w <- exp(lw) * length(lw)
+  # compute moments using log weights
+  covar_original <- stats::cov(upars)
+  covar_weighted <- stats::cov.wt(upars, wt = w)$cov
   chol1 <- tryCatch(
   {
-    chol(wcovv)
+    chol(covar_weighted)
   },
-  error = function(cond) {
+  error = function(cond)
+  {
     return(NULL)
   }
   )
   chol2 <- tryCatch(
   {
-    chol(covv)
+    chol(covar_original)
   },
   error = function(cond) {
     return(NULL)
@@ -310,13 +322,16 @@ shift_and_cov <- function(x, upars, lw, ...) {
   )
   if (is.null(chol1) || is.null(chol2)) {
     upars_new <- upars
-  }
-  else {
-    mean_original <- colMeans(upars)
-    mean_weighted <- colSums(exp(lw) * upars)
-    shift <- mean_weighted - mean_original
+    mapping <- diag(ncol(upars))
+    shift <- rep(0,ncol(upars))
+  } else {
     mapping <- t(chol1) %*% solve(t(chol2))
-    # transform posterior draws
+
+    mean_original <- colMeans(upars)
+    mean_weighted <- matrixStats::colWeightedMeans(upars, w = w)
+    shift <- mean_weighted - mean_original
+
+    # transform posterior upars
     upars_new <- sweep(upars, 2, mean_original, "-")
     upars_new <- tcrossprod(upars_new, mapping)
     upars_new <- sweep(upars_new, 2, mean_weighted, "+")
