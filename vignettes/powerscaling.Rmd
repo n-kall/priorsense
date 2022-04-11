@@ -51,7 +51,6 @@ the perturbed posteriors differ from the base posterior.
 ```{r, message = FALSE}
 library(priorsense)
 library(rstan)
-library(ggplot2)
 ```
 
 Consider the following model (available via
@@ -96,7 +95,7 @@ normal_model <- example_powerscale_model("univariate_normal")
 
 fit <- stan(
   model_code = normal_model$model_code,
-  data = normal_model$data,
+  data = c(normal_model$data, prior_alpha = 1, likelihood_alpha = 1),
   refresh = FALSE,
   seed = 123
 )
