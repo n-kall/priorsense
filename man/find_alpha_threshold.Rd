@@ -15,8 +15,7 @@ find_alpha_threshold(x, ...)
 \item{component}{string specifying which component to investigate,
 \code{likelihood} or \code{prior}.}
 
-\item{range}{vector of length 2 specifying the range of alphas to
-consider, both values must be less than 1 or greater than 1}
+\item{alpha_bound}{alpha bound for search, must be less than 1 or greater than 1}
 
 \item{k_threshold}{highest acceptable pareto-k value}
 

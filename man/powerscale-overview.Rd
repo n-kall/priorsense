@@ -118,25 +118,9 @@ powerscale(x, ...)
 
 powerscale_sequence(x, ...)
 
-\method{powerscale_sequence}{CmdStanFit}(
-  x,
-  lower_alpha = 0.8,
-  upper_alpha = 1/lower_alpha,
-  length = 9,
-  variable = NULL,
-  component = c("prior", "likeliood"),
-  ...
-)
+\method{powerscale_sequence}{CmdStanFit}(x, ...)
 
-\method{powerscale_sequence}{stanfit}(
-  x,
-  lower_alpha = 0.8,
-  upper_alpha = 1/lower_alpha,
-  length = 9,
-  variable = NULL,
-  component = c("prior", "likelihood"),
-  ...
-)
+\method{powerscale_sequence}{stanfit}(x, ...)
 
 \method{powerscale_sequence}{brmsfit}(x, ...)
 
@@ -152,6 +136,8 @@ powerscale_sequence(x, ...)
   k_threshold = 0.5,
   resample = FALSE,
   transform = FALSE,
+  auto_alpha_range = FALSE,
+  symmetric = TRUE,
   ...
 )
 }
