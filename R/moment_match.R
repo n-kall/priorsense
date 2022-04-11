@@ -2,12 +2,10 @@ moment_match <- function(x, ...) {
   UseMethod("moment_match")
 }
 
-
-moment_match.powerscaling_data <- function(x, psis, ...) {
+moment_match.powerscaling_data <- function(x, ...) {
 
   out <- moment_match(
     x = x$fit,
-    psis = psis,
     ...
   )
   out
@@ -263,26 +261,26 @@ shift <- function(x, upars, lw, ...) {
 #'
 #'
 shift_and_scale <- function(x, upars, lw, ...) {
-w <- exp(lw) * length(lw)
-# compute moments using log weights
-vars_original <- matrixStats::colVars(upars)
-vars_weighted <- matrixStats::colWeightedVars(upars, w = w)
-if (all(vars_original > 1e-12) && all(vars_weighted > 1e-12)) {
-  scaling <- sqrt(vars_weighted / vars_original)
+  w <- exp(lw) * length(lw)
+  # compute moments using log weights
+  vars_original <- matrixStats::colVars(upars)
+  vars_weighted <- matrixStats::colWeightedVars(upars, w = w)
+  if (all(vars_original > 1e-12) && all(vars_weighted > 1e-12)) {
+    scaling <- sqrt(vars_weighted / vars_original)
 
-  mean_original <- colMeans(upars)
-  mean_weighted <- matrixStats::colWeightedMeans(upars, w = w)
-  shift <- mean_weighted - mean_original
+    mean_original <- colMeans(upars)
+    mean_weighted <- matrixStats::colWeightedMeans(upars, w = w)
+    shift <- mean_weighted - mean_original
 
-  upars_new <- sweep(upars, 2, mean_original, "-")
-  upars_new <- sweep(upars_new, 2, scaling, "*")
-  upars_new <- sweep(upars_new, 2, mean_weighted, "+")
-} else {
-  upars_new <- upars
-}
-list(
-  upars = upars_new
-)
+    upars_new <- sweep(upars, 2, mean_original, "-")
+    upars_new <- sweep(upars_new, 2, scaling, "*")
+    upars_new <- sweep(upars_new, 2, mean_weighted, "+")
+  } else {
+    upars_new <- upars
+  }
+  list(
+    upars = upars_new
+  )
 }
 
 #' Shift a matrix of parameters to their weighted mean and scale the covariance

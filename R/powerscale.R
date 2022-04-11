@@ -102,8 +102,6 @@ powerscale.powerscaling_data <- function(x,
       k_threshold = k_threshold
     )
 
-    # TODO: use iwmm package for moment_match
-
     importance_sampling <- mm$importance_sampling
     draws <- x$get_draws(mm$x)
 
