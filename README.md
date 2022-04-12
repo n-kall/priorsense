@@ -82,20 +82,15 @@ powerscale_sensitivity(fit, variables = c("mu", "sigma"))
 #> # A tibble: 2 × 4
 #>   variable  prior likelihood diagnosis          
 #>   <chr>     <dbl>      <dbl> <chr>              
-#> 1 mu       0.169      0.242  prior-data conflict
-#> 2 sigma    0.0216     0.0615 -
+#> 1 mu       0.163      0.246  prior-data conflict
+#> 2 sigma    0.0222     0.0627 -
 ```
 
 To visually inspect changes to the posterior, first create a power-scaling sequence and then use a plotting function. Estimates that may be inaccurate (Pareto-k values &gt; 0.5) are indicated.
 
 ``` r
 pss <- powerscale_sequence(fit)
-#> Warning: Can't fit generalized Pareto distribution because all tail values are
-#> the same.
-#> Warning: Some Pareto k diagnostic values are too high. See help('pareto-k-diagnostic') for details.
-#> Warning: Can't fit generalized Pareto distribution because all tail values are
-#> the same.
-#> Warning: Some Pareto k diagnostic values are too high. See help('pareto-k-diagnostic') for details.
+
 powerscale_plot_ecdf(pss, variables = c("mu", "sigma"))
 ```
 
