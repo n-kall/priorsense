@@ -68,7 +68,7 @@ normal_model <- example_powerscale_model("univariate_normal")
 
 fit <- rstan::stan(
   model_code = normal_model$model_code,
-  data = normal_model$data,
+  data = c(normal_model$data, prior_alpha = 1, likelihood_alpha = 1),
   refresh = FALSE,
   seed = 1234
 )
@@ -82,35 +82,29 @@ powerscale_sensitivity(fit, variables = c("mu", "sigma"))
 #> # A tibble: 2 × 4
 #>   variable  prior likelihood diagnosis          
 #>   <chr>     <dbl>      <dbl> <chr>              
-#> 1 mu       0.155      0.235  prior-data conflict
-#> 2 sigma    0.0142     0.0591 -
+#> 1 mu       0.169      0.242  prior-data conflict
+#> 2 sigma    0.0216     0.0615 -
 ```
 
-To visually inspect changes to the posterior, first create a power-scaling sequence and then use a plotting function.
+To visually inspect changes to the posterior, first create a power-scaling sequence and then use a plotting function. Estimates that may be inaccurate (Pareto-k values &gt; 0.5) are indicated.
 
 ``` r
 pss <- powerscale_sequence(fit)
-#> Warning: Some Pareto k diagnostic values are slightly high. See help('pareto-k-diagnostic') for details.
-
-#> Warning: Some Pareto k diagnostic values are slightly high. See help('pareto-k-diagnostic') for details.
+#> Warning: Can't fit generalized Pareto distribution because all tail values are
+#> the same.
+#> Warning: Some Pareto k diagnostic values are too high. See help('pareto-k-diagnostic') for details.
+#> Warning: Can't fit generalized Pareto distribution because all tail values are
+#> the same.
+#> Warning: Some Pareto k diagnostic values are too high. See help('pareto-k-diagnostic') for details.
 powerscale_plot_ecdf(pss, variables = c("mu", "sigma"))
 ```
 
 <img src="man/figures/README-sequence-nomm-1.png" width="70%" height="70%" />
 
-In case there are Pareto k values above 0.5, indicating that those estimates should not be trusted, moment matching (currently unavailable for models fit with `cmdstanr`) may help at the expense of slightly more computation:
-
-``` r
-pss_mm <- powerscale_sequence(fit, moment_match = TRUE)
-powerscale_plot_ecdf(pss_mm, variables = c("mu", "sigma"))
-```
-
-<img src="man/figures/README-sequence-mm-1.png" width="70%" height="70%" />
-
 ## References
 
-Kallioinen, N., Paananen, T., Bürkner P-C., and Vehtari, A. (2021). Detecting and diagnosing prior and likelihood sensitivity with power-scaling. preprint [arXiv:2107.14054](https://arxiv.org/abs/2107.14054)
+Noa Kallioinen, Topi Paananen, Paul-Christian Bürkner, Aki Vehtari (2021). Detecting and diagnosing prior and likelihood sensitivity with power-scaling. preprint [arXiv:2107.14054](https://arxiv.org/abs/2107.14054)
 
-Paananen, T., Piironen, J., Bürkner P-C., and Vehtari, A. (2021). Implicitly adaptive importance sampling. Statistics and Computing 31, 16. <https://doi.org/10.1007/s11222-020-09982-2>
+Topi Paananen, Juho Piironen, Paul-Christian Bürkner, Aki Vehtari (2021). Implicitly adaptive importance sampling. Statistics and Computing 31, 16. <https://doi.org/10.1007/s11222-020-09982-2>
 
-Vehtari, A., Simpson, D., Gelman, A., Yao, Y., and Gabry, J. (2021). Pareto smoothed importance sampling. preprint [arXiv:1507.02646](https://arxiv.org/abs/1507.02646)
+Aki Vehtari, Daniel Simpson, Andrew Gelman, Yuling Yao, Jonah Gabry (2021). Pareto smoothed importance sampling. preprint [arXiv:1507.02646](https://arxiv.org/abs/1507.02646)
