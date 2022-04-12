@@ -91,7 +91,7 @@ powerscale_sequence.powerscaling_data <- function(x, lower_alpha = 0.8,
       alpha_seq_u <- alpha_seq_u[-1]
       alpha_seq_l <- rev(1/alpha_seq_u)
     }
-    alpha_seq <- c(alpha_seq_l, 1, alpha_seq_u)
+    alpha_seq <- c(alpha_seq_l, alpha_seq_u)
   }
 
 
@@ -129,6 +129,11 @@ powerscale_sequence.powerscaling_data <- function(x, lower_alpha = 0.8,
 
     for (i in seq_along(alpha_seq)) {
 
+      # skip alpha = 1
+      if (alpha_seq[i] == 1) {
+        next
+      }
+
       # calculate the scaled draws
       scaled_draws_list[[i]] <- powerscale(
         x = x,
@@ -155,6 +160,11 @@ powerscale_sequence.powerscaling_data <- function(x, lower_alpha = 0.8,
 
     for (i in seq_along(alpha_seq)) {
 
+      # skip alpha = 1
+      if (alpha_seq[i] == 1) {
+        next
+      }
+      
       # calculate the scaled draws
       scaled_draws_list[[i]] <- powerscale(
         x = x,

@@ -113,6 +113,7 @@ that may be inaccurate (Pareto-k values > 0.5) are indicated.
 
 ```{r sequence-nomm, eval = T, out.width = '70%', out.height = '70%'}
 pss <- powerscale_sequence(fit)
+
 powerscale_plot_ecdf(pss, variables = c("mu", "sigma"))
 ```
 
