@@ -6,19 +6,14 @@
 ##' @name powerscale-overview
 ##'
 ##' @template fit_arg
-##' @param alpha Value by which to power-scale specified
-##'   component. (likelihood/prior).
-##' @param lower_alpha Lower power-scaling alpha value in sequence.
-##' @param upper_alpha Upper power-scaling alpha value in sequence.
-##' @param alpha_step Step size of power-scaling alphas in sequence.
+##' @template alpha_args
 ##' @param variable Vector of variable names to return estimated
 ##'   posterior draws for.
 ##' @param component Component to be power-scaled (either "prior" or
 ##'   "likelihood"). For powerscale_sequence, this can be both "prior"
 ##'   and "likelihood".
 ##' @template powerscale_args
-##' @param prediction Function taking the model fit and returning a
-##'   draws_df of predictions to be appended to the posterior draws
+##' @template prediction_arg
 ##' @param ... Further arguments passed to the custom functions
 ##'   documented above.
 ##' @return A `powerscaled_draws` or `powerscaled_sequence` object,

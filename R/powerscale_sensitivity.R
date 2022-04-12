@@ -3,16 +3,20 @@
 ##' Prior/likelihood sensitivity analysis based on power-scaling perturbations.
 ##'
 ##' @template fit_arg
+##' @name powerscale-sensitivity
+##' @param x Model fit object or powerscaling_data object.
+##' @param ... Further arguments passed to functions.
 ##' @param variable Character vector of variables to check.
 ##' @param lower_alpha Lower alpha value for gradient calculation.
 ##' @param upper_alpha Upper alpha value for gradient calculation.
 ##' @param component Character vector specifying component(s) to scale (default is both "prior" and
 ##'   "likelihood").
-##' @template div_measure_arg
 ##' @param sensitivity_threshold Threshold for flagging variable as
 ##'   sensitive to power-scaling.
+##' @template div_measure_arg
 ##' @template powerscale_args
-##' @param ... Further arguments passed to functions.
+##' @template prediction_arg
+##' @template resample_arg
 ##' @return Table of sensitivity values for each specified variable.
 ##' @template powerscale_references
 ##' @export
@@ -21,7 +25,7 @@ powerscale_sensitivity <- function(x, ...) {
   UseMethod("powerscale_sensitivity")
 }
 
-##' @rdname powerscale-overview
+##' @rdname powerscale-sensitivity
 ##' @export
 powerscale_sensitivity.default <- function(x,
                                            ...
@@ -38,7 +42,7 @@ powerscale_sensitivity.default <- function(x,
   
 }
 
-##' @rdname powerscale-overview
+##' @rdname powerscale-sensitivity
 ##' @export
 powerscale_sensitivity.powerscaling_data <- function(x,
                                                      variable = NULL,
@@ -133,7 +137,7 @@ powerscale_sensitivity.powerscaling_data <- function(x,
 }
 
 
-##' @rdname powerscale-overview
+##' @rdname powerscale-sensitivity
 ##' @export
 powerscale_sensitivity.CmdStanFit <- function(x,
                                               ...
@@ -147,7 +151,7 @@ powerscale_sensitivity.CmdStanFit <- function(x,
   )
 }
 
-##' @rdname powerscale-overview
+##' @rdname powerscale-sensitivity
 ##' @export
 powerscale_sensitivity.stanfit <- function(x,
                                            ...
@@ -161,7 +165,7 @@ powerscale_sensitivity.stanfit <- function(x,
   )
 }
 
-##' @rdname powerscale-overview
+##' @rdname powerscale-sensitivity
 ##' @export
 powerscale_sensitivity.brmsfit <- function(x,
                                            ...

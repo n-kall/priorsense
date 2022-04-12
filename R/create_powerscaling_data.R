@@ -1,8 +1,30 @@
-##' @export
+##' Create power-scaling data structure
+##'
+##' Create a data structure that contains all required data and
+##' functions for powerscaling
+##' @name create-powerscaling-data
+##' @param x a fit object
+##' @param draws posterior draws
+##' @param log_prior draws from log prior
+##' @param log_lik draws from log likelihood
+##' @param constrain_pars function that transforms unconstrained
+##'   parameters to constrained space
+##' @param unconstrain_pars function that transforms constrained
+##'   parameters to unconstrained space
+##' @param log_prob_upars function that returns log density given
+##'   unconstrained parameter values
+##' @param log_ratio_upars function that returns log density ratio for
+##'   importance sampling given unconstrained parameter values
+##' @param prediction function that returns predictions from x to be
+##'   added to the draws
+##' @param ... arguments passed to methods
+##' @return A `powerscaling_data` object, which contains the data and
+##'   functions to run power-scaling sensitivity analyses.
 create_powerscaling_data <- function(x, ...) {
   UseMethod("create_powerscaling_data")
 }
 
+##' @rdname create-powerscaling-data
 ##' @export
 create_powerscaling_data.default <- function(x, draws, log_prior,
                                              log_lik,
@@ -36,6 +58,7 @@ create_powerscaling_data.default <- function(x, draws, log_prior,
   return(psd)
 }
 
+##' @rdname create-powerscaling-data
 ##' @export
 create_powerscaling_data.stanfit <- function(x, ...) {
 
@@ -52,6 +75,7 @@ create_powerscaling_data.stanfit <- function(x, ...) {
   )
 }
 
+##' @rdname create-powerscaling-data
 ##' @export
 create_powerscaling_data.CmdStanFit <- function(x, ...) {
   
@@ -68,6 +92,7 @@ create_powerscaling_data.CmdStanFit <- function(x, ...) {
   )
 }
 
+##' @rdname create-powerscaling-data
 #' @export
 create_powerscaling_data.brmsfit <- function(x, ...) {
   

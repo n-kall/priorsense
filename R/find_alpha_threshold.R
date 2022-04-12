@@ -1,24 +1,8 @@
-##' Find the value of alpha furthest from 1 which gives the specified
-##' pareto-k value
-##'
-##' @param x a fit object
-##' @param component string specifying which component to investigate,
-##'   `likelihood` or `prior`.
-##' @param alpha_bound alpha bound for search, must be less than 1 or greater than 1
-##' @param k_threshold highest acceptable pareto-k value
-##' @param epsilon value to define differences
-##' @param moment_match moment match
-##' @param ... other arguments passed to powerscale
-##' @return numeric alpha value furthest from 1 that leads to pareto-k
-##'   below threshold
-##' @export
-##' 
 find_alpha_threshold <- function(x, ...) {
   UseMethod("find_alpha_threshold")
 
 }
 
-##' @export
 find_alpha_threshold.CmdStanFit <- function(x, ...) {
 
   psd <- create_powerscaling_data(x)
@@ -27,7 +11,6 @@ find_alpha_threshold.CmdStanFit <- function(x, ...) {
 
 }
 
-##' @export
 find_alpha_threshold.stanfit <- function(x, ...) {
 
   psd <- create_powerscaling_data(x)
@@ -36,7 +19,6 @@ find_alpha_threshold.stanfit <- function(x, ...) {
 
 }
 
-##' @export
 find_alpha_threshold.powerscaling_data <- function(x, ...) {
 
   find_alpha_threshold.default(
@@ -52,7 +34,6 @@ find_alpha_threshold.powerscaling_data <- function(x, ...) {
 
 }
 
-##' @export
 find_alpha_threshold.default <- function(x,
                                  component,
                                  alpha_bound,

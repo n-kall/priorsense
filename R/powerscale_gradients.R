@@ -5,7 +5,8 @@
 ##' is done using importance sampling (and optionally moment matching)
 ##' to approximate the posteriors that result from power-scaling the
 ##' specified component distribution (prior or likelihood).
-##' @param x Model fit of class brmsfit, stanfit or CmdStanFit
+##' @name powerscale-gradients
+##' @param x Model fit object or a powerscaling_data object.
 ##' @param variable Variables to compute sensitivity of. If NA
 ##'   (default) sensitivity is computed for all variables.
 ##' @param component Component to power-scale (prior or likelihood).
@@ -20,6 +21,7 @@
 ##' @param scale logical scale quantity gradients by base posterior
 ##'   standard deviation.
 ##' @template powerscale_args
+##' @template prediction_arg
 ##' @param ... Further arguments passed to functions.
 ##' @return Maximum of the absolute derivatives above and below alpha
 ##'   = 1.
@@ -29,24 +31,7 @@ powerscale_gradients <- function(x, ...) {
   UseMethod("powerscale_gradients")
 }
 
-##' @rdname powerscale-overview
-##' @export
-powerscale_gradients.powerscaling_data <- function(x, ...) {
-
-
-  powerscale_gradients.default(
-    x$fit,
-    unconstrain_pars = x$unconstrain_pars,
-    log_prob_upars = x$log_prob_upars,
-    log_ratio_upars = x$log_ratio_upars,
-    log_prior_fn = x$log_prior_fn,
-    joint_log_lik_fn = x$joint_log_lik_fn,
-    ...
-    )
-
-}
-
-##' @rdname powerscale-overview
+##' @rdname powerscale-gradients
 ##' @export
 powerscale_gradients.CmdStanFit <- function(x, ...) {
 
@@ -57,12 +42,9 @@ powerscale_gradients.CmdStanFit <- function(x, ...) {
 
   }
 
-##' @rdname powerscale-overview
+##' @rdname powerscale-gradients
 ##' @export
 powerscale_gradients.powerscaling_data <- function(x,
-                                         unconstrain_pars,
-                                         log_prob_upars,
-                                         log_ratio_upars,
                                          variable = NULL,
                                          component = c("prior", "likelihood"),
                                          type = c("quantities", "divergence"),
