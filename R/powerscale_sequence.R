@@ -78,24 +78,22 @@ powerscale_sequence.powerscaling_data <- function(x, lower_alpha = 0.8,
     upper_alpha <- min(alpha_range[["prior"]][[2]], alpha_range[["likelihood"]][[2]], na.rm = TRUE)
   }
 
-  if (symmetric) {
+  if (!symmetric) {
+    alpha_seq <- seq(lower_alpha, upper_alpha, length.out = length)
+#    alpha_seq <- sort(c(1, alpha_seq))
+  } else {
     if (abs(log(lower_alpha, 2)) < abs(log(upper_alpha, 2))) {
-      alpha_seq_l <- seq(lower_alpha, 1, length.out = (length - 1)/2)
+      alpha_seq_l <- seq(lower_alpha, 1, length.out = length/2)
       alpha_seq_l <- alpha_seq_l[-length(alpha_seq_l)]
       alpha_seq_u <- rev(1/alpha_seq_l)
     } else {
-      alpha_seq_u <- seq(1, upper_alpha, length.out = (length - 1)/2)
+      alpha_seq_u <- seq(1, upper_alpha, length.out = length/2)
       alpha_seq_u <- alpha_seq_u[-1]
       alpha_seq_l <- rev(1/alpha_seq_u)
     }
-  } else {  
-    alpha_seq_l <- seq(lower_alpha, 1, length.out = (length - 1)/2)
-    alpha_seq_l <- alpha_seq_l[-length(alpha_seq_l)]
-    alpha_seq_u <- seq(1, upper_alpha, length.out = (length - 1)/2)
-    alpha_seq_u <- alpha_seq_u[-1]
+    alpha_seq <- c(alpha_seq_l, 1, alpha_seq_u)
   }
 
-  alpha_seq <- c(alpha_seq_l, alpha_seq_u)
 
   # extract the base draws
   base_draws <- posterior::subset_draws(x$draws, variable = variable, ...)
@@ -178,10 +176,12 @@ powerscale_sequence.powerscaling_data <- function(x, lower_alpha = 0.8,
 
     }
   }
+  
   out <- list(
     base_draws = base_draws,
     prior_scaled = prior_scaled,
     likelihood_scaled = likelihood_scaled,
+    alphas = alpha_seq,
     is_method = is_method,
     moment_match = moment_match,
     resampled = resample,

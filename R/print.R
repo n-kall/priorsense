@@ -54,18 +54,6 @@ print.powerscaled_draws_summary <- function(x, ...) {
 #' @export
 print.powerscaled_sequence <- function(x, ...) {
 
-  if (!is.null(x$prior_scaled)) {
-    alpha_range <- c(
-      x$prior_scaled$draws_sequence[[1]]$powerscaling$alpha,
-      x$prior_scaled$draws_sequence[[length(x$prior_scaled$draws_sequence)]]$powerscaling$alpha
-    )
-  } else {
-    alpha_range <- c(
-      x$likelihood_scaled$draws_sequence[[1]]$powerscaling$alpha,
-      x$likelihood_scaled$draws_sequence[[length(x$likelihood_scaled$draws_sequence)]]$powerscaling$alpha
-    )
-  }
-
   component <- c()
   if (!is.null(x$prior_scaled)) {
     component <- c("prior", component)
@@ -80,8 +68,8 @@ print.powerscaled_sequence <- function(x, ...) {
 
   cat(
     "\npower-scaling\n",
-    paste0("alpha range: [", round(alpha_range[1], 3), ", ",  round(alpha_range[2], 3), "]\n"),
-    paste("length of sequence:", min(length(x$prior_scaled$draws_sequence), length(x$likelihood_scaled$draws_sequence), na.rm = TRUE), "\n"),
+    paste0("alpha range: [", min(x$alphas), ", " , max(x$alphas), "]\n"),
+    paste("length of sequence:", length(x$alphas), "\n"),
     paste("scaled component:", component, "\n"),
     paste("importance sampling method:", x$is_method, "\n"),
     paste("transform:", x$transform$transform, "\n")

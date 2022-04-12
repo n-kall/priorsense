@@ -1,12 +1,5 @@
-library(priorsense)
-
 x <- c(1, 2, 3, 4, 5)
 w <- rep(1, length(x))
-
-set.seed(123)
-normal_example <- example_powerscale_model("univariate_normal")
-normal_example_sfit <- rstan::stan(model_code = normal_example$model_code, data = normal_example$data, refresh = FALSE, seed = 123, iter = 500, warmup = 100)
-
 
 test_that("weighted quantities work when weights are 1", {
   expect_equal(

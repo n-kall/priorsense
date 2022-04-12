@@ -1,7 +1,9 @@
+##' @export
 create_powerscaling_data <- function(x, ...) {
   UseMethod("create_powerscaling_data")
 }
 
+##' @export
 create_powerscaling_data.default <- function(x, draws, log_prior,
                                              log_lik,
                                              constrain_pars,
@@ -23,6 +25,7 @@ create_powerscaling_data.default <- function(x, draws, log_prior,
     get_draws = draws,
     log_prior_fn = log_prior,
     log_lik_fn = log_lik,
+    constrain_pars = constrain_pars,
     unconstrain_pars = unconstrain_pars,
     log_prob_upars = log_prob_upars,
     log_ratio_upars = log_ratio_upars
@@ -33,6 +36,7 @@ create_powerscaling_data.default <- function(x, draws, log_prior,
   return(psd)
 }
 
+##' @export
 create_powerscaling_data.stanfit <- function(x, ...) {
 
   create_powerscaling_data.default(
@@ -48,6 +52,7 @@ create_powerscaling_data.stanfit <- function(x, ...) {
   )
 }
 
+##' @export
 create_powerscaling_data.CmdStanFit <- function(x, ...) {
   
   create_powerscaling_data.default(
@@ -56,12 +61,14 @@ create_powerscaling_data.CmdStanFit <- function(x, ...) {
     log_prior = log_prior_CmdStanFit,
     log_lik = joint_log_lik_CmdStanFit,
     unconstrain_pars = NULL,
+    constrain_pars = NULL,
     log_prob_upars = NULL,
     log_ratio_upars = NULL,
     ...
   )
 }
 
+#' @export
 create_powerscaling_data.brmsfit <- function(x, ...) {
   
   create_powerscaling_data.default(

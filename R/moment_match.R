@@ -392,7 +392,7 @@ update_pars.stanfit <- function(x, upars, save_old_pars = TRUE, ...) {
     x@sim$fnames_oi_old <- x@sim$fnames_oi
   }
   # list with one element per posterior draw
-  pars <- apply(upars, 1, constrain_pars, object = x)
+  pars <- apply(upars, 1, rstan::constrain_pars, object = x)
   parnames <- rep(names(pars[[1]]), lengths(pars[[1]]))
   # transform samples
   nsamples <- length(pars)
