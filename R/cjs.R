@@ -20,7 +20,7 @@
 ##' @param x_weights numeric vector of weights of first distribution
 ##' @param y_weights numeric vector of weights of second distribution
 ##' @param metric Logical; if TRUE, return square-root of CJS
-##' @param symmetric Logical; if TRUE then return max of positive and
+##' @param unsigned Logical; if TRUE then return max of positive and
 ##'   negaive CJS
 ##' @param ... unused
 ##' @return distance value based on CJS computation.
@@ -31,7 +31,7 @@
 ##'   Notes in Computer Science, vol 9285.  Springer, Cham.
 ##'   \code{doi:10.1007/978-3-319-23525-7_11}
 ##' @export
-cjs_dist <- function(x, y, x_weights, y_weights, metric = TRUE, symmetric = TRUE, ...) {
+cjs_dist <- function(x, y, x_weights, y_weights, metric = TRUE, unsigned = TRUE, ...) {
 
   if (all(is.na(x)) | all(is.na(y)) | (all(y_weights == 0) & !is.null(y_weights))) {
 
@@ -39,7 +39,7 @@ cjs_dist <- function(x, y, x_weights, y_weights, metric = TRUE, symmetric = TRUE
 
   } else {
     cjs <- .cjs_dist(x, y, x_weights, y_weights, metric, ...)
-    if (symmetric) {
+    if (unsigned) {
       cjsm <- .cjs_dist(-x, -y, x_weights, y_weights, metric, ...)
       cjs <- max(cjs, cjsm)
     }
