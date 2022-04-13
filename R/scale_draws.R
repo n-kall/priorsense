@@ -1,13 +1,15 @@
 scale_draws <- function(draws, center = TRUE, scale = TRUE, ...) {
 
   draws <- posterior::as_draws_matrix(draws)
-  
+
   # keep track of weights
   wei <- stats::weights(draws)
 
   # remove weights
   if (!(is.null(wei))) {
-    draws <- draws[, -ncol(draws)]
+    base_draws <- posterior::mutate_variables(
+      base_draws,
+      .log_weight = NULL)
   }
 
   # center draws
@@ -17,7 +19,7 @@ scale_draws <- function(draws, center = TRUE, scale = TRUE, ...) {
   if (scale) {
    scale <- matrixStats::colMads(draws)
   }
-  draws_c <- scale(draws, center = center, scale = scale)
+  draws_c <- base::scale(draws, center = center, scale = scale)
 
   # add weights column back
   if (!(is.null(wei))) {
@@ -25,6 +27,6 @@ scale_draws <- function(draws, center = TRUE, scale = TRUE, ...) {
   }
 
   draws_c <- posterior::as_draws_df(draws_c)
-  
+
   return(draws_c)
 }

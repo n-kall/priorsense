@@ -81,9 +81,6 @@ powerscale_gradients.powerscaling_data <- function(x,
     whitened_draws <- whiten_draws(base_draws, ...)
     base_draws_t <- whitened_draws$draws
     loadings <- whitened_draws$loadings
-    # correlation loadings
-    #    loadings <- t(stats::cor(base_draws[,1:posterior::nvariables(base_draws)], base_draws_t[,1:posterior::nvariables(base_draws_t)]))
-
   } else if (transform == "scale") {
     base_draws_t <- scale_draws(base_draws, ...)
   } else {

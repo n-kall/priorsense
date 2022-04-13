@@ -14,22 +14,20 @@ whiten_draws <- function(draws, whitening_method = "PCA-cor", ...) {
 
   # remove weights
   if (!(is.null(wei))) {
-    base_draws <- base_draws[, -ncol(base_draws)]
+    base_draws <- posterior::mutate_variables(
+      base_draws,
+      .log_weight = NULL)
   }
 
-  Sigma <- stats::cov(scale(base_draws))
-  v <- diag(Sigma)
-  R <- stats::cov2cor(Sigma)
-  eR <- eigen(R, symmetric = TRUE)
-  G <- eR$vectors
-  loadings <- G
-  
   draws_tr <- whitening::whiten(
     base_draws,
     center = TRUE,
     method = whitening_method
-    )
-  
+  )
+
+  # correlation loadings
+  loadings <- stats::cor(base_draws, draws_tr)
+
   # cleanup transformed draws
   draws_tr <- posterior::as_draws_df(draws_tr)
   posterior::variables(draws_tr) <- paste0("C", 1:posterior::nvariables(draws_tr))
@@ -41,7 +39,7 @@ whiten_draws <- function(draws, whitening_method = "PCA-cor", ...) {
 
   colnames(loadings) <- posterior::variables(draws_tr)
   rownames(loadings) <- posterior::variables(base_draws)
-  
+
   return(list(draws = draws_tr, loadings = t(loadings)))
 }
 
