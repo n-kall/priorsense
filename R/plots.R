@@ -99,7 +99,6 @@ prepare_plot <- function(x, variables, resample, ...) {
 
   d$pareto_k_value <- factor(d$pareto_k_value, levels = c("< 0.5", "> 0.5"))
 
-  d$alpha_diff <- abs(log(d$alpha))
 
   d$component <- factor(d$component, levels = c("prior", "likelihood"))
 
@@ -139,19 +138,8 @@ prepare_plot <- function(x, variables, resample, ...) {
       values = c("solid", "dashed", "dotted"),
       drop = FALSE
     ) +
-    ggplot2::scale_fill_viridis_c(
-      option = "plasma",
-      trans = "log",
-      limits = c(min(d$alpha) - 0.01, max(d$alpha) + 0.01),
-      breaks = c(min(d$alpha), 1, max(d$alpha)),
-      labels = c(
-        as.character(min(d$alpha), digits = 3),
-        "1",
-        as.character(max(d$alpha), digits = 3)
-      )
-    ) +
-    ggplot2::scale_color_viridis_c(
-      option = "plasma",
+    ggplot2::scale_color_gradientn(
+      colours = cetcolor::cet_pal(3, "d8"),
       trans = "log",
       limits = c(min(d$alpha) - 0.01, max(d$alpha) + 0.01),
       breaks = c(min(d$alpha), 1, max(d$alpha)),
@@ -160,7 +148,19 @@ prepare_plot <- function(x, variables, resample, ...) {
         "1",
         round(max(d$alpha), digits = 3)
       )
-    )
+    ) +
+    ggplot2::scale_fill_gradientn(
+      colours = cetcolor::cet_pal(3, "d8"),
+      trans = "log",
+      limits = c(min(d$alpha) - 0.01, max(d$alpha) + 0.01),
+      breaks = c(min(d$alpha), 1, max(d$alpha)),
+      labels = c(
+        round(min(d$alpha), digits = 3),
+        "1",
+        round(max(d$alpha), digits = 3)
+      )
+    ) +
+    ggplot2::theme(aspect.ratio = 1)
 
   return(p)
 }
@@ -289,7 +289,7 @@ powerscale_plot_ecdf <- function(x, variables, resample = FALSE, ...) {
 
 ##' @rdname powerscale_plots
 ##' @export
-powerscale_plot_quantities <- function(x, variables, quantities = c("mean", "median", "sd", "mad", "quantile2"), div_measure = "cjs_dist", resample = FALSE, measure_args = NULL, ...) {
+powerscale_plot_quantities <- function(x, variables, quantities = c("mean", "median", "sd", "mad", "quantile2"), div_measure = "cjs_dist", resample = FALSE, measure_args = NULL, mcse = FALSE, ...) {
 
   summ <- summarise_draws(x, ... = quantities, resample = resample, div_measures = div_measure, measure_args = measure_args)
 
@@ -298,11 +298,57 @@ powerscale_plot_quantities <- function(x, variables, quantities = c("mean", "med
     posterior::subset_draws(x[[1]], variable = variables)
   )
 
-  return(powerscale_summary_plot(summ, variables = variables))
+  if (mcse) {
+    quants <- setdiff(
+      colnames(summ[[1]]),
+      c("variable", "alpha", "component",
+        "pareto_k", "pareto_kf", "n_eff")
+    )
+    base_quantities <- summ[[1]][which(summ[[1]]$alpha == 1),]
+    base_quantities <- unique(base_quantities[c("variable", quants)])
+    base_mcse <- posterior::summarise_draws(x$base_draws, posterior::default_mcse_measures())
+
+    base_mcse <- base_mcse[which(base_mcse$variable %in% variables), ]
+
+    base_mcse <- as.data.frame(base_mcse)
+    base_mcse <- stats::reshape(
+      data = base_mcse,
+      varying = c("mcse_mean", "mcse_median", "mcse_sd", "mcse_q5", "mcse_q95"),
+      direction = "long",
+      times = c("mean", "median", "sd", "q5", "q95"),
+      v.names = "mcse",
+      timevar = "quantity",
+      idvar = "variable"
+    )
+
+    base_q <- as.data.frame(base_quantities)
+    base_q <- stats::reshape(
+      data = base_q,
+      varying = quants,
+      direction = "long",
+      times = quants,
+      v.names = "value",
+      timevar = "quantity",
+      idvar = "variable"
+    )
+
+
+    base_mcse <- merge(base_q, base_mcse)
+
+    print(head(base_mcse))
+
+    base_mcse$mcse_min <- base_mcse$value - 2 * base_mcse$mcse
+    base_mcse$mcse_max <- base_mcse$value + 2 * base_mcse$mcse
+
+  } else {
+    base_mcse = NULL
+  }
+
+  return(powerscale_summary_plot(summ, variables = variables, base_mcse = base_mcse, ...))
 
 }
 
-powerscale_summary_plot <- function(x, variables, quantities = NULL, ...) {
+powerscale_summary_plot <- function(x, variables, quantities = NULL, scale = FALSE, base_mcse = NULL, ...) {
 
   if (is.null(quantities)) {
 
@@ -372,7 +418,16 @@ powerscale_summary_plot <- function(x, variables, quantities = NULL, ...) {
     ggplot2::ggtitle(
       label = "Power-scaling sensitivity",
       subtitle = "Posterior quantities depending on amount of power-scaling (alpha).\nHorizontal lines indicate low sensitivity.\nSteeper lines indicate greater sensitivity.\nEstimates with Pareto-k values > 0.5 may be inaccurate."
-    )
+    ) +
+    ggplot2::theme(aspect.ratio = 1)
+
+  if (!is.null(base_mcse)) {
+
+    p <- p +
+      ggplot2::scale_linetype_manual(values = "dashed", name = NULL) +
+      ggplot2::geom_hline(aes(yintercept = mcse_min, linetype = "+/-2MCSE"), data = base_mcse, color = "black") +
+      ggplot2::geom_hline(aes(yintercept = mcse_max, linetype = "+/-2MCSE"), data = base_mcse, color = "black")
+  }
 
   return(p)
 }
