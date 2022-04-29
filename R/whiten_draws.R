@@ -3,7 +3,7 @@
 ##' @param whitening_method transformation method
 ##' @param ... unused
 ##' @return transformed draws
-whiten_draws <- function(draws, whitening_method = "PCA-cor", ...) {
+whiten_draws <- function(draws, ...) {
 
   base_draws <- posterior::as_draws_matrix(
     posterior::merge_chains(draws)
@@ -19,14 +19,20 @@ whiten_draws <- function(draws, whitening_method = "PCA-cor", ...) {
       .log_weight = NULL)
   }
 
-  draws_tr <- whitening::whiten(
-    base_draws,
-    center = TRUE,
-    method = whitening_method
-  )
+  # code from whitening package (c) Korbinian Strimmer and Takoua
+  # Jendoubi and Agnan Kessy and Alex Lewin
+  Sigma <- cov(base_draws)
+  v <- diag(Sigma)
+  R <- cov2cor(Sigma)
+  eR <- eigen(R, symmetric = TRUE)
+  G <- eR$vectors
+  theta <- eR$values
+  G <- sweep(G, 2, sign(diag(G)), "*")
+  W <- diag(1/sqrt(theta)) %*% t(G) %*% diag(1/sqrt(v))
+  draws_tr <- tcrossprod(base_draws, W)
+  draws_tr <- sweep(draws_tr, 2, colMeans(draws_tr))
 
-  # correlation loadings
-  loadings <- stats::cor(base_draws, draws_tr)
+  loadings <- G
 
   # cleanup transformed draws
   draws_tr <- posterior::as_draws_df(draws_tr)
