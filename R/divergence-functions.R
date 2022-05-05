@@ -203,7 +203,7 @@ kl_div <- function(x, y, x_weights, y_weights, ...) {
   x_density <- stats::density(x, from = min(c(x, y)), to = max(c(x, y)), weights = x_weights)$y
   x_density <- x_density / sum(x_density)
 
-  div <- philentropy::kullback_leibler_distance(x_density, y_density, testNA = FALSE, unit = "log")
+  div <- philentropy::kullback_leibler_distance(x_density, y_density, testNA = FALSE, unit = "log", epsilon = 1e-05)
 
   return(c(kl_div = div))
 }

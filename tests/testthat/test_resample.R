@@ -1,43 +1,51 @@
 set.seed(123)
 normal_example <- example_powerscale_model("univariate_normal")
-normal_example_sfit <- rstan::stan(model_code = normal_example$model_code, data = normal_example$data, refresh = FALSE, seed = 123)
 
+sfit <- suppressWarnings(rstan::stan(
+  model_code = normal_example$model_code,
+  data = c(normal_example$data, prior_alpha = 1, likelihood_alpha = 1),
+  refresh = FALSE,
+  seed = 123,
+  iter = 1000,
+  warmup = 250,
+  chains = 1
+))
 
 test_that("powerscale with resample actually resamples", {
+
+  ps <- powerscale(
+    x = sfit,
+    component = "prior",
+    alpha = 0.5,
+    resample = TRUE
+  )
   
   expect_equal(
-    powerscale(
-      fit = normal_example_sfit,
-      alpha = 0.5,
-      variables = c("mu"),
-      resample = TRUE,
-      log_prior_fn = extract_log_prior
-    )$powerscaling$resampled,
+    ps$powerscaling$resampled,
     TRUE
   )
 
   expect_equal(
-    weights(powerscale(
-      fit = normal_example_sfit,
-      alpha = 0.5,
-      variables = c("mu"),
-      log_prior_fn = extract_log_prior,
-      resample = TRUE
-    )),
+    stats::weights(ps),
     NULL
   )
 })
 
 
 test_that("powerscale_sequence with resample actually resamples", {
-  
-  expect_equal(
-    powerscale_sequence(
-      fit = normal_example_sfit,
-      variables = c("mu"),
-      resample = TRUE,
-      log_prior_fn = extract_log_prior
-    )$resampled,
-    TRUE
-  )
-})
+
+  pss <- suppressWarnings(powerscale_sequence(
+    x = sfit,
+    variables = c("mu"),
+    resample = TRUE,
+    ))
+    expect_equal(
+      pss$resampled,
+      TRUE
+    )
+    expect_equal(
+      stats::weights(pss$prior_scaled$draws_sequence[[1]])
+     ,
+      NULL
+    )
+  })

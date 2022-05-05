@@ -1,2 +1,1 @@
-##' @param fit A fitted model object of class `stanfit`, `brmsfit` or
-##'   `CmdStanFit`.
+##' @param x A fitted model object.

@@ -1,8 +1,19 @@
-extract_joint_log_lik <- function(x, ...) {
-  UseMethod("extract_joint_log_lik")
-}
+##' Extract joint log likelihood from fitted model
+##'
+##' Extract joint log likelihood from fitted model
+##'
+##' @name joint_log_lik
+##' 
+##' @param x Model fit.
+##' @param parameter_name Name of parameter in Stan model
+##'   corresponding to log prior, default is "log_prior".
+##' @param ... Arguments passed to individual methods.
+##' @return A draws_array object containing log_prior values.
+NULL
 
-extract_joint_log_lik.stanfit <- function(x, parameter_name = "log_lik", ...) {
+##' @rdname joint_log_lik
+##' @export
+joint_log_lik_stanfit <- function(x, parameter_name = "log_lik", ...) {
   log_lik <- rowSums(
     x = loo::extract_log_lik(
       stanfit = x,
@@ -19,7 +30,9 @@ extract_joint_log_lik.stanfit <- function(x, parameter_name = "log_lik", ...) {
   return(log_lik)
 }
 
-extract_joint_log_lik.brmsfit <- function(x, parameter_name = "log_lik", ...) {
+##' @rdname joint_log_lik
+##' @export
+joint_log_lik_brmsfit <- function(x, parameter_name = "log_lik", ...) {
   if (!requireNamespace("brms", quietly = TRUE))
     stop("Please load the 'brms' package.", call. = FALSE)
 
@@ -35,7 +48,9 @@ extract_joint_log_lik.brmsfit <- function(x, parameter_name = "log_lik", ...) {
   return(log_lik)
 }
 
-extract_joint_log_lik.CmdStanFit <- function(x, parameter_name = "log_lik", ...) {
+##' @rdname joint_log_lik
+##' @export
+joint_log_lik_CmdStanFit <- function(x, parameter_name = "log_lik", ...) {
 
   # sum over correct dimension
   log_lik <- rowSums(x = x$draws(variables = parameter_name), dims = 2)
@@ -49,7 +64,3 @@ extract_joint_log_lik.CmdStanFit <- function(x, parameter_name = "log_lik", ...)
   
   return(log_lik)
 }
-
-
-# Notes:
-# check loo moment match how functions are handled rather than methods

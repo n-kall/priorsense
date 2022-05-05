@@ -5,8 +5,9 @@
 ##' is done using importance sampling (and optionally moment matching)
 ##' to approximate the posteriors that result from power-scaling the
 ##' specified component distribution (prior or likelihood).
-##' @param fit Model fit of class brmsfit, stanfit or CmdStanFit
-##' @param variables Variables to compute sensitivity of. If NA
+##' @name powerscale-gradients
+##' @param x Model fit object or a powerscaling_data object.
+##' @param variable Variables to compute sensitivity of. If NA
 ##'   (default) sensitivity is computed for all variables.
 ##' @param component Component to power-scale (prior or likelihood).
 ##' @param type type of sensitivity to measure ("distance",
@@ -20,26 +21,45 @@
 ##' @param scale logical scale quantity gradients by base posterior
 ##'   standard deviation.
 ##' @template powerscale_args
+##' @template prediction_arg
 ##' @param ... Further arguments passed to functions.
 ##' @return Maximum of the absolute derivatives above and below alpha
 ##'   = 1.
 ##' @export
-powerscale_gradients <- function(fit, variables = NULL, component = c("prior", "likelihood"),
-                                 type = c("quantities", "divergence"),
-                                 lower_alpha = 0.99,
-                                 upper_alpha = 1.01,
-                                 div_measure = "cjs_dist",
-                                 measure_args = list(),
-                                 is_method = "psis",
-                                 moment_match = FALSE,
-                                 k_threshold = 0.5,
-                                 resample = FALSE,
-                                 transform = FALSE,
-                                 scale = FALSE,
-                                 log_prior_fn = calculate_log_prior,
-                                 joint_log_lik_fn = extract_joint_log_lik,
-                                 ...
-                                 ) {
+powerscale_gradients <- function(x, ...) {
+
+  UseMethod("powerscale_gradients")
+}
+
+##' @rdname powerscale-gradients
+##' @export
+powerscale_gradients.CmdStanFit <- function(x, ...) {
+
+  psd <- create_powerscaling_data(x)
+
+  powerscale_gradients(psd, ...)
+
+
+  }
+
+##' @rdname powerscale-gradients
+##' @export
+powerscale_gradients.powerscaling_data <- function(x,
+                                         variable = NULL,
+                                         component = c("prior", "likelihood"),
+                                         type = c("quantities", "divergence"),
+                                         lower_alpha = 0.99,
+                                         upper_alpha = 1.01,
+                                         div_measure = "cjs_dist",
+                                         measure_args = list(),
+                                         is_method = "psis",
+                                         moment_match = FALSE,
+                                         k_threshold = 0.5,
+                                         resample = FALSE,
+                                         transform = FALSE,
+                                         prediction = NULL,
+                                         scale = FALSE,
+                                         ...) {
 
   checkmate::assert_number(lower_alpha, lower = 0, upper = 1)
   checkmate::assert_number(upper_alpha, lower = 1, upper = Inf)
@@ -49,12 +69,11 @@ powerscale_gradients <- function(fit, variables = NULL, component = c("prior", "
   checkmate::assert_character(component)
   checkmate::assert_logical(moment_match)
   checkmate::assert_logical(resample)
-  checkmate::assert_function(log_prior_fn)
-  checkmate::assert_function(joint_log_lik_fn)
-
 
   # extract the draws
-  base_draws <- get_draws(fit, variables = variables)
+  base_draws <- x$draws
+
+  base_draws <- posterior::subset_draws(base_draws, variable = variable, ...)
 
   # transform if needed
   loadings <- NULL
@@ -62,9 +81,6 @@ powerscale_gradients <- function(fit, variables = NULL, component = c("prior", "
     whitened_draws <- whiten_draws(base_draws, ...)
     base_draws_t <- whitened_draws$draws
     loadings <- whitened_draws$loadings
-        # correlation loadings
-    #    loadings <- t(stats::cor(base_draws[,1:posterior::nvariables(base_draws)], base_draws_t[,1:posterior::nvariables(base_draws_t)]))
-
   } else if (transform == "scale") {
     base_draws_t <- scale_draws(base_draws, ...)
   } else {
@@ -101,8 +117,8 @@ powerscale_gradients <- function(fit, variables = NULL, component = c("prior", "
 
     # calculate the lower scaled draws
     perturbed_draws_lower[[comp]] <- powerscale(
-      fit = fit,
-      variables = variables,
+      x = x,
+      variable = variable,
       component = comp,
       alpha = lower_alpha,
       is_method = is_method,
@@ -110,15 +126,14 @@ powerscale_gradients <- function(fit, variables = NULL, component = c("prior", "
       k_threshold = k_threshold,
       resample = resample,
       transform = transform,
-      joint_log_lik_fn = joint_log_lik_fn,
-      log_prior_fn = log_prior_fn,
+      prediction = prediction,
       ...
     )
 
     # calculate the upper scaled draws
     perturbed_draws_upper[[comp]] <- powerscale(
-      fit = fit,
-      variables = variables,
+      x = x,
+      variable = variable,
       component = comp,
       alpha = upper_alpha,
       is_method = is_method,
@@ -126,8 +141,7 @@ powerscale_gradients <- function(fit, variables = NULL, component = c("prior", "
       k_threshold = k_threshold,
       resample = resample,
       transform = transform,
-      joint_log_lik_fn = joint_log_lik_fn,
-      log_prior_fn = log_prior_fn,
+      prediction = prediction,
       ...
     )
 
@@ -273,17 +287,12 @@ powerscale_divergence_gradients <- function(lower_divergences, upper_divergences
 
   variable <- lower_divergences$variable
 
- # lower_grad <- -1 * (subset(lower_divergences, select = -c(variable))) /
-#    (0 - log(lower_alpha, base = 2))
-
-#  upper_grad <- (subset(upper_divergences, select = -c(variable))) /
-  #  (log(upper_alpha, base = 2))
-
-  # take max of gradients for each variable
- # grad <- pmax(abs(upper_grad), abs(lower_grad))
-
-  grad <- (subset(upper_divergences, select = -c(variable)) +
-   subset(lower_divergences, select = -c(variable))) / (2 * log(upper_alpha, base = 2))
+  ## second-order centered difference approximation
+  ## f''(x) = (f(x + dx) - 2f(x) + f(x - dx)) / dx^2
+  upper_diff <- subset(upper_divergences, select = -c(variable))
+  lower_diff <- subset(lower_divergences, select = -c(variable))
+  logdiffsquare <- 2 * log(upper_alpha, base = 2)
+  grad <- (upper_diff + lower_diff) / logdiffsquare
 
   return(tibble::as_tibble(cbind(variable, grad)))
 

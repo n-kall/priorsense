@@ -20,6 +20,8 @@
 ##' @param x_weights numeric vector of weights of first distribution
 ##' @param y_weights numeric vector of weights of second distribution
 ##' @param metric Logical; if TRUE, return square-root of CJS
+##' @param unsigned Logical; if TRUE then return max of positive and
+##'   negaive CJS
 ##' @param ... unused
 ##' @return distance value based on CJS computation.
 ##' @references Nguyen H-V., Vreeken J. (2015).  Non-parametric
@@ -29,8 +31,23 @@
 ##'   Notes in Computer Science, vol 9285.  Springer, Cham.
 ##'   \code{doi:10.1007/978-3-319-23525-7_11}
 ##' @export
-cjs_dist <- function(x, y, x_weights, y_weights, metric = TRUE, ...) {
-  
+cjs_dist <- function(x, y, x_weights, y_weights, metric = TRUE, unsigned = TRUE, ...) {
+
+  if (all(is.na(x)) | all(is.na(y)) | (all(y_weights == 0) & !is.null(y_weights))) {
+
+    cjs <- NA
+
+  } else {
+    cjs <- .cjs_dist(x, y, x_weights, y_weights, metric, ...)
+    if (unsigned) {
+      cjsm <- .cjs_dist(-x, -y, x_weights, y_weights, metric, ...)
+      cjs <- max(cjs, cjsm)
+    }
+  }
+  return(c(cjs = cjs))
+}
+
+.cjs_dist <- function(x, y, x_weights, y_weights, metric = TRUE, ...) {
   # sort draws and weights
   x_idx <- order(x)
   x <- x[x_idx]
@@ -41,12 +58,13 @@ cjs_dist <- function(x, y, x_weights, y_weights, metric = TRUE, ...) {
   wq <- y_weights[y_idx]
 
   if (all(x == y)) {
-    # don't use equal bin widths when draws are the same
+    # don't use equal bin widths when x and y draws are the same but
+    # just different weights
     bins <- x[-length(x)]
     binwidth <- diff(x)
   } else {
-  # bins
-  nbins <- max(length(x), length(y))
+    # bins
+    nbins <- max(length(x), length(y))
     bins <- seq(
       from = min(min(x), min(y)),
       to = max(max(x), max(y)),
@@ -54,7 +72,7 @@ cjs_dist <- function(x, y, x_weights, y_weights, metric = TRUE, ...) {
     )
     binwidth <- bins[2] - bins[1]
   }
-  
+
   # calculate required weighted ecdfs
   Px <- spatstat.geom::ewcdf(x, weights = wp)(bins)
   Qx <- spatstat.geom::ewcdf(y, weights = wq)(bins)
@@ -83,6 +101,5 @@ cjs_dist <- function(x, y, x_weights, y_weights, metric = TRUE, ...) {
   if (metric) {
     out <- sqrt(out)
   }
-
-  return(c(cjs = out))
+  out
 }

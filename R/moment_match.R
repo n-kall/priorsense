@@ -2,6 +2,15 @@ moment_match <- function(x, ...) {
   UseMethod("moment_match")
 }
 
+moment_match.powerscaling_data <- function(x, ...) {
+
+  out <- moment_match(
+    x = x$fit,
+    ...
+  )
+  out
+}
+
 moment_match.stanfit <- function(x, psis, ...) {
   # TODO: ensure compatibility with objects not created in the current R session
   post_draws <- function(x, ...) {
@@ -14,6 +23,7 @@ moment_match.stanfit <- function(x, psis, ...) {
     unconstrain_pars = unconstrain_pars.stanfit,
     log_prob_upars = log_prob_upars.stanfit,
     log_ratio_upars = log_ratio_upars.stanfit,
+    nchains = posterior::nchains(posterior::as_draws(x)),
     ...
   )
   out
@@ -28,6 +38,7 @@ moment_match.brmsfit <- function(x, psis, ...) {
     unconstrain_pars = unconstrain_pars.brmsfit,
     log_prob_upars = log_prob_upars.brmsfit,
     log_ratio_upars = log_ratio_upars.brmsfit,
+    nchains = posterior::nchains(x),
     ...
   ))
   if (methods::is(out, "try-error")) {
@@ -50,6 +61,7 @@ moment_match.default <- function(
                                  max_iters = 30,
                                  k_threshold = 0.5,
                                  cov_transform = TRUE,
+                                 nchains,
                                  ...) {
 
   # input checks
@@ -80,10 +92,9 @@ moment_match.default <- function(
   orig_log_prob <- log_prob_upars(x, upars = upars, ...)
   # obtain original weights
   lw <- as.vector(stats::weights(psis))
-  
-  # TODO: this would be a bit more accurate if we had
-  # information about number of MCMC chains
-  r_eff <- loo::relative_eff(1/exp(lw), chain_id = rep(1,S))
+
+  # include information about number of MCMC chains
+  r_eff <- loo::relative_eff(1/exp(lw), chain_id = rep(1:nchains, each = S / nchains))
 
   # try several transformations one by one
   # if one does not work, do not apply it and try another one
@@ -149,7 +160,7 @@ moment_match.default <- function(
       )
       if (quantities$k < k) {
         upars <- trans$upars
-        
+
         lw <- quantities$lw
         k <- quantities$k
         iterind <- iterind + 1
@@ -184,10 +195,12 @@ update_quantities <- function(x, upars, orig_log_prob,
   log_ratio_new <- log_ratio_upars(x, upars = upars, ...)
 
   # compute new log importance weights
-  psis_new <- SW(loo::psis(
-    log_ratio_new + log_prob_new - orig_log_prob,
-    r_eff = r_eff,
-  ))
+  psis_new <- SW(
+    loo::psis(
+      log_ratio_new + log_prob_new - orig_log_prob,
+      r_eff = r_eff,
+      )
+  )
   lw_new <- as.vector(stats::weights(psis_new))
   k_new <- psis_new$diagnostics$pareto_k
 
@@ -209,13 +222,25 @@ update_quantities <- function(x, upars, orig_log_prob,
 #' @param lw A vector representing the log-weight of each parameter
 #' @return List with the shift that was performed, and the new parameter matrix.
 #'
-shift <- function(x, upars, lw) {
+shift <- function(x, upars, lw, ...) {
+  w <- exp(lw) * length(lw)
   # compute moments using log weights
-  mean_original <- colMeans(upars)
-  mean_weighted <- colSums(exp(lw) * upars)
-  shift <- mean_weighted - mean_original
-  # transform posterior draws
-  upars_new <- sweep(upars, 2, shift, "+")
+  vars_original <- matrixStats::colVars(upars)
+  vars_weighted <- matrixStats::colWeightedVars(upars, w = w)
+  if (all(vars_original > 1e-12) && all(vars_weighted > 1e-12)) {
+    scaling <- sqrt(vars_weighted / vars_original)
+
+    mean_original <- colMeans(upars)
+    mean_weighted <- matrixStats::colWeightedMeans(upars, w = w)
+    shift <- mean_weighted - mean_original
+
+    upars_new <- sweep(upars, 2, mean_original, "-")
+    upars_new <- sweep(upars_new, 2, scaling, "*")
+    upars_new <-
+      sweep(upars_new, 2, mean_weighted, "+")
+  } else {
+    upars_new <- upars
+  }
   list(
     upars = upars_new
   )
@@ -235,28 +260,24 @@ shift <- function(x, upars, lw) {
 #' parameter matrix.
 #'
 #'
-shift_and_scale <- function(x, upars, lw) {
+shift_and_scale <- function(x, upars, lw, ...) {
+  w <- exp(lw) * length(lw)
   # compute moments using log weights
-  S <- dim(upars)[1]
-  npars <- dim(upars)[2]
   vars_original <- matrixStats::colVars(upars)
-  if (all(vars_original > 1e-12) && max(lw) < -0.01) {
+  vars_weighted <- matrixStats::colWeightedVars(upars, w = w)
+  if (all(vars_original > 1e-12) && all(vars_weighted > 1e-12)) {
+    scaling <- sqrt(vars_weighted / vars_original)
+
     mean_original <- colMeans(upars)
-    mean_weighted <- colSums(exp(lw) * upars)
+    mean_weighted <- matrixStats::colWeightedMeans(upars, w = w)
     shift <- mean_weighted - mean_original
-    mii <- exp(lw) * upars^2
-    mii <- colSums(mii) - mean_weighted^2
-    mii <- mii * S / (S - 1)
-    scaling <- sqrt(mii / vars_original)
-    # transform posterior draws
+
     upars_new <- sweep(upars, 2, mean_original, "-")
     upars_new <- sweep(upars_new, 2, scaling, "*")
     upars_new <- sweep(upars_new, 2, mean_weighted, "+")
-  }
-  else {
+  } else {
     upars_new <- upars
   }
-
   list(
     upars = upars_new
   )
@@ -276,34 +297,39 @@ shift_and_scale <- function(x, upars, lw) {
 #' parameter matrix.
 #'
 shift_and_cov <- function(x, upars, lw, ...) {
-  npars <- dim(upars)[2]
-  covv <- stats::cov(upars)
-  wcovv <- stats::cov.wt(upars, wt = exp(lw))$cov
+  w <- exp(lw) * length(lw)
+  # compute moments using log weights
+  covar_original <- stats::cov(upars)
+  covar_weighted <- stats::cov.wt(upars, wt = w)$cov
   chol1 <- tryCatch(
-    {
-      chol(wcovv)
-    },
-    error = function(cond) {
-      return(NULL)
-    }
+  {
+    chol(covar_weighted)
+  },
+  error = function(cond)
+  {
+    return(NULL)
+  }
   )
   chol2 <- tryCatch(
-    {
-      chol(covv)
-    },
-    error = function(cond) {
-      return(NULL)
-    }
+  {
+    chol(covar_original)
+  },
+  error = function(cond) {
+    return(NULL)
+  }
   )
   if (is.null(chol1) || is.null(chol2)) {
     upars_new <- upars
-  }
-  else {
-    mean_original <- colMeans(upars)
-    mean_weighted <- colSums(exp(lw) * upars)
-    shift <- mean_weighted - mean_original
+    mapping <- diag(ncol(upars))
+    shift <- rep(0,ncol(upars))
+  } else {
     mapping <- t(chol1) %*% solve(t(chol2))
-    # transform posterior draws
+
+    mean_original <- colMeans(upars)
+    mean_weighted <- matrixStats::colWeightedMeans(upars, w = w)
+    shift <- mean_weighted - mean_original
+
+    # transform posterior upars
     upars_new <- sweep(upars, 2, mean_original, "-")
     upars_new <- tcrossprod(upars_new, mapping)
     upars_new <- sweep(upars_new, 2, mean_weighted, "+")
@@ -343,9 +369,9 @@ log_prob_upars <- function(x, ...) {
 
 log_prob_upars.stanfit <- function(x, upars, ...) {
   apply(upars, 1, rstan::log_prob,
-    object = x,
-    adjust_transform = TRUE, gradient = FALSE
-  )
+        object = x,
+        adjust_transform = TRUE, gradient = FALSE
+        )
 }
 
 log_prob_upars.brmsfit <- function(x, upars, ...) {
@@ -419,16 +445,18 @@ log_ratio_upars <- function(x, ...) {
   UseMethod("log_ratio_upars")
 }
 
-log_ratio_upars.stanfit <- function(x, upars, ...) {
+log_ratio_upars.stanfit <- function(x, upars, component_fn, ...) {
   x <- update_pars(x, upars = upars, ...)
-  scaled_log_ratio(x, ...)
+  component_draws <- component_fn(x)
+  scaled_log_ratio(component_draws, ...)
 }
 
-log_ratio_upars.brmsfit <- function(x, upars, samples = NULL,
+log_ratio_upars.brmsfit <- function(x, upars, component_fn, samples = NULL,
                                     subset = NULL, ...) {
   # do not pass subset or nsamples further to avoid subsetting twice
   x <- update_pars(x, upars = upars, ...)
-  scaled_log_ratio(x, ...)
+  component_draws <- component_fn(x)
+  scaled_log_ratio(component_draws, ...)
 }
 
 # -------- will be imported from rstan at some point -------

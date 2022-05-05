@@ -1,46 +1,102 @@
 ##' @rdname powerscale-overview
 ##' @export
-powerscale_sequence <- function(fit, lower_alpha = 0.5,
-                                upper_alpha = 1/lower_alpha,
-                                alpha_step = 0.1, variables = NA,
-                                component = c("prior", "likelihood"),
-                                is_method = "psis",
-                                moment_match = FALSE,
-                                k_threshold = 0.5,
-                                resample = FALSE,
-                                log_prior_fn = calculate_log_prior,
-                                joint_log_lik_fn = extract_joint_log_lik,
-                                transform = FALSE,
-                                ...
-                                ) {
+powerscale_sequence <- function(x, ...) {
+  UseMethod("powerscale_sequence")
 
-  # input checks
-  checkmate::assert_number(lower_alpha, lower = 0, upper = 1)
-  checkmate::assert_number(upper_alpha, lower = 1)
-  checkmate::assert_number(alpha_step, lower = 0.0001)
-  checkmate::assert_character(variables)
-  checkmate::assert_number(k_threshold)
-  checkmate::assert_character(component)
-  checkmate::assert_logical(moment_match)
-  checkmate::assert_logical(resample)
-  checkmate::assert_function(log_prior_fn)
-  checkmate::assert_function(joint_log_lik_fn)
+}
 
-  if (moment_match & !(is_method == "psis")) {
-    moment_match <- FALSE
-    warning("Moment-matching only works with PSIS. Falling back to moment_match = FALSE")
+##' @rdname powerscale-overview
+##' @export
+powerscale_sequence.CmdStanFit <- function(x,
+                                           ...
+                                           ) {
+
+  psd <- create_powerscaling_data.CmdStanFit(x, ...)
+
+  powerscale_sequence.powerscaling_data(
+    psd,
+    ...
+  )
+
+}
+
+##' @rdname powerscale-overview
+##' @export
+powerscale_sequence.stanfit <- function(x,
+                                        ...
+                                        ) {
+
+  psd <- create_powerscaling_data.stanfit(x, ...)
+
+  powerscale_sequence.powerscaling_data(
+    psd,
+    ...
+  )
+
+}
+
+
+##' @rdname powerscale-overview
+##' @export
+powerscale_sequence.brmsfit <- function(x,
+                                        ...
+                                        ) {
+
+  psd <- create_powerscaling_data.brmsfit(x, ...)
+
+  powerscale_sequence.powerscaling_data(psd, ...)
+
+}
+
+
+
+##' @rdname powerscale-overview
+##' @export
+powerscale_sequence.powerscaling_data <- function(x, lower_alpha = 0.8,
+                                                  upper_alpha = 1/lower_alpha,
+                                                  length = 9, variable = NULL,
+                                                  component = c("prior", "likelihood"),
+                                                  is_method = "psis",
+                                                  moment_match = FALSE,
+                                                  k_threshold = 0.5,
+                                                  resample = FALSE,
+                                                  transform = FALSE,
+                                                  auto_alpha_range = FALSE,
+                                                  symmetric = TRUE,
+                                                  ...
+                                                  ) {
+
+  # adapt alpha range to ensure pareto-k < theshold
+  if (auto_alpha_range) {
+    alpha_range <- list(prior = NULL, likelihood = NULL)
+    for (comp in component) {
+      lower_alpha <- find_alpha_threshold(x, component = comp, alpha_bound = lower_alpha, k_threshold = k_threshold, moment_match = moment_match)
+      upper_alpha <- find_alpha_threshold(x, component = comp, alpha_bound = upper_alpha, k_threshold = k_threshold, moment_match = moment_match)
+      alpha_range[[comp]] <- list(lower_alpha, upper_alpha)
+    }
+    lower_alpha <- max(alpha_range[["prior"]][[1]], alpha_range[["likelihood"]][[1]], na.rm = TRUE)
+    upper_alpha <- min(alpha_range[["prior"]][[2]], alpha_range[["likelihood"]][[2]], na.rm = TRUE)
   }
 
-  if (inherits(fit, "CmdStanFit") & moment_match) {
-    moment_match <- FALSE
-    warning("Moment-matching does not yet work with fits created with cmdstanr. Falling back to moment_match = FALSE")
+  if (!symmetric) {
+    alpha_seq <- seq(lower_alpha, upper_alpha, length.out = length)
+#    alpha_seq <- sort(c(1, alpha_seq))
+  } else {
+    if (abs(log(lower_alpha, 2)) < abs(log(upper_alpha, 2))) {
+      alpha_seq_l <- seq(lower_alpha, 1, length.out = length/2)
+      alpha_seq_l <- alpha_seq_l[-length(alpha_seq_l)]
+      alpha_seq_u <- rev(1/alpha_seq_l)
+    } else {
+      alpha_seq_u <- seq(1, upper_alpha, length.out = length/2)
+      alpha_seq_u <- alpha_seq_u[-1]
+      alpha_seq_l <- rev(1/alpha_seq_u)
+    }
+    alpha_seq <- c(alpha_seq_l, alpha_seq_u)
   }
 
-  alpha_seq <- seq(lower_alpha, 1 - alpha_step, alpha_step)
-  alpha_seq <- c(alpha_seq, rev(1 / alpha_seq))
 
   # extract the base draws
-  base_draws <- get_draws(fit, variables = variables)
+  base_draws <- posterior::subset_draws(x$draws, variable = variable, ...)
 
   if (transform == "whiten") {
     base_draws_tr <- whiten_draws(base_draws, ...)
@@ -53,12 +109,12 @@ powerscale_sequence <- function(fit, lower_alpha = 0.5,
     )
 
     base_draws <- base_draws_tr
-    } else if (transform == "scale") {
-      base_draws <- scale_draws(base_draws, ...)
-      transform_details = list(transform = transform)
-    } else {
-      transform_details = list(transform = transform)
-    }
+  } else if (transform == "scale") {
+    base_draws <- scale_draws(base_draws, ...)
+    transform_details = list(transform = transform)
+  } else {
+    transform_details = list(transform = transform)
+  }
 
 
 
@@ -73,17 +129,20 @@ powerscale_sequence <- function(fit, lower_alpha = 0.5,
 
     for (i in seq_along(alpha_seq)) {
 
+      # skip alpha = 1
+      if (alpha_seq[i] == 1) {
+        next
+      }
+
       # calculate the scaled draws
       scaled_draws_list[[i]] <- powerscale(
-        fit = fit,
-        variables = variables,
+        x = x,
+        variable = variable,
         component = scaled_component,
         alpha = alpha_seq[i],
         is_method = is_method,
         moment_match = moment_match,
         resample = resample,
-        log_prior_fn = log_prior_fn,
-        joint_log_lik_fn = joint_log_lik_fn,
         transform = transform,
         ...
       )
@@ -101,18 +160,21 @@ powerscale_sequence <- function(fit, lower_alpha = 0.5,
 
     for (i in seq_along(alpha_seq)) {
 
+      # skip alpha = 1
+      if (alpha_seq[i] == 1) {
+        next
+      }
+      
       # calculate the scaled draws
       scaled_draws_list[[i]] <- powerscale(
-        fit = fit,
-        variables = variables,
+        x = x,
+        variable = variable,
         component = scaled_component,
         alpha = alpha_seq[i],
         is_method = is_method,
         moment_match = moment_match,
         k_treshold = k_threshold,
         resample = resample,
-        log_prior_fn = log_prior_fn,
-        joint_log_lik_fn = joint_log_lik_fn,
         transform = transform,
         ...
       )
@@ -124,10 +186,12 @@ powerscale_sequence <- function(fit, lower_alpha = 0.5,
 
     }
   }
+  
   out <- list(
     base_draws = base_draws,
     prior_scaled = prior_scaled,
     likelihood_scaled = likelihood_scaled,
+    alphas = alpha_seq,
     is_method = is_method,
     moment_match = moment_match,
     resampled = resample,

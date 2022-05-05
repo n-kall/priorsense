@@ -51,7 +51,6 @@ the perturbed posteriors differ from the base posterior.
 ```{r, message = FALSE}
 library(priorsense)
 library(rstan)
-library(ggplot2)
 ```
 
 Consider the following model (available via
@@ -96,7 +95,7 @@ normal_model <- example_powerscale_model("univariate_normal")
 
 fit <- stan(
   model_code = normal_model$model_code,
-  data = normal_model$data,
+  data = c(normal_model$data, prior_alpha = 1, likelihood_alpha = 1),
   refresh = FALSE,
   seed = 123
 )
@@ -111,8 +110,7 @@ from the gradient of the Cumulative Jensen-Shannon distance between
 the base posterior and posteriors resulting from power-scaling.
 
 ```{r}
-powerscale_sensitivity(fit, variables = c("mu", "sigma"),
-                       log_prior_fn = extract_log_prior)
+powerscale_sensitivity(fit, variables = c("mu", "sigma"))
 ```
 
 Here, we see that the pattern of sensitivity indicates that there is
@@ -122,7 +120,7 @@ We first create a `powerscaled_sequence` object, which contains
 estimates of posteriors for a range of power-scaling amounts.
 
 ```{r}
-pss <- powerscale_sequence(fit, log_prior_fn = extract_log_prior)
+pss <- powerscale_sequence(fit)
 ```
 
 There are three plots currently available:

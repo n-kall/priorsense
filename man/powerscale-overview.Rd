@@ -3,51 +3,72 @@
 \name{powerscale-overview}
 \alias{powerscale-overview}
 \alias{powerscale}
+\alias{powerscale.powerscaling_data}
+\alias{powerscale.CmdStanFit}
+\alias{powerscale.brmsfit}
+\alias{powerscale.stanfit}
 \alias{powerscale_sequence}
+\alias{powerscale_sequence.CmdStanFit}
+\alias{powerscale_sequence.stanfit}
+\alias{powerscale_sequence.brmsfit}
+\alias{powerscale_sequence.powerscaling_data}
 \title{Prior/likelihood power-scaling perturbation}
 \usage{
-powerscale(
-  fit,
+powerscale(x, ...)
+
+\method{powerscale}{powerscaling_data}(
+  x,
   alpha,
-  variables = NULL,
-  regex = FALSE,
-  component = "prior",
+  component,
   is_method = "psis",
   moment_match = FALSE,
   k_threshold = 0.5,
   resample = FALSE,
   transform = FALSE,
-  log_prior_fn = calculate_log_prior,
-  joint_log_lik_fn = extract_joint_log_lik,
+  prediction = NULL,
+  variable = NULL,
   ...
 )
 
-powerscale_sequence(
-  fit,
-  lower_alpha = 0.5,
+\method{powerscale}{CmdStanFit}(x, component, alpha, ...)
+
+\method{powerscale}{brmsfit}(x, component, alpha, ...)
+
+\method{powerscale}{stanfit}(x, component, alpha, ...)
+
+powerscale_sequence(x, ...)
+
+\method{powerscale_sequence}{CmdStanFit}(x, ...)
+
+\method{powerscale_sequence}{stanfit}(x, ...)
+
+\method{powerscale_sequence}{brmsfit}(x, ...)
+
+\method{powerscale_sequence}{powerscaling_data}(
+  x,
+  lower_alpha = 0.8,
   upper_alpha = 1/lower_alpha,
-  alpha_step = 0.1,
-  variables = NA,
+  length = 9,
+  variable = NULL,
   component = c("prior", "likelihood"),
   is_method = "psis",
   moment_match = FALSE,
   k_threshold = 0.5,
   resample = FALSE,
-  log_prior_fn = calculate_log_prior,
-  joint_log_lik_fn = extract_joint_log_lik,
   transform = FALSE,
+  auto_alpha_range = FALSE,
+  symmetric = TRUE,
   ...
 )
 }
 \arguments{
-\item{fit}{A fitted model object of class \code{stanfit}, \code{brmsfit} or
-\code{CmdStanFit}.}
+\item{x}{A fitted model object.}
 
-\item{alpha}{Value by which to power-scale specified component
-(likelihood/prior).}
+\item{...}{Further arguments passed to the custom functions
+documented above.}
 
-\item{variables}{Vector of variable names to return estimated
-posterior draws for.}
+\item{alpha}{Value by which to power-scale specified
+component. (likelihood/prior).}
 
 \item{component}{Component to be power-scaled (either "prior" or
 "likelihood"). For powerscale_sequence, this can be both "prior"
@@ -78,24 +99,23 @@ resampled based on calculated importance weights.}
 \item{transform}{Indicate transformation of posterior
 draws. Either "scale" or "spherize".}
 
-\item{log_prior_fn}{A function that takes as input the model fit
-and returns the log prior values. Provided functions are
-\code{calculate_log_prior} (requires model to be fit with rstan and
-in the same R session) and \code{extract_log_prior} (requires a
-variable in the Stan model code to correspond to the joint log
-prior, by default named "log_prior").}
+\item{prediction}{Function taking the model fit and returning a
+draws_df of predictions to be appended to the posterior draws}
 
-\item{joint_log_lik_fn}{A function that takes as input the model
-fit and returns the joint log likelihood values.}
-
-\item{...}{Further arguments passed to the custom functions
-documented above.}
+\item{variable}{Vector of variable names to return estimated
+posterior draws for.}
 
 \item{lower_alpha}{Lower power-scaling alpha value in sequence.}
 
 \item{upper_alpha}{Upper power-scaling alpha value in sequence.}
 
-\item{alpha_step}{Step size of power-scaling alphas in sequence.}
+\item{length}{Length of alpha sequence.}
+
+\item{auto_alpha_range}{Boolean. Restrict range to ensure Pareto-k
+values below threshold?}
+
+\item{symmetric}{Boolean. Should the alpha range be symmetrical
+around alpha = 1, on log-space?}
 }
 \value{
 A \code{powerscaled_draws} or \code{powerscaled_sequence} object,

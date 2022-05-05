@@ -9,27 +9,29 @@ example_powerscale_model <- function(model = "univariate_normal") {
   if (model == "univariate_normal") {
     str <- "data {
 int<lower=1> N;
-real y[N];
+array[N] real y;
+real<lower=0> prior_alpha;
+real<lower=0> likelihood_alpha;
 }
 parameters {
 real mu;
 real<lower=0> sigma;
 }
-model {
+transformed parameters {
+real log_prior = 0;
 // priors
-target += normal_lpdf(mu | 0, 1);
-target += normal_lpdf(sigma | 0, 2.5);
+log_prior += normal_lpdf(mu | 0, 1);
+log_prior += normal_lpdf(sigma | 0, 2.5);
+}
+model {
+target += prior_alpha * log_prior;
 // likelihood
-target += normal_lpdf(y | mu, sigma);
+target += likelihood_alpha * normal_lpdf(y | mu, sigma);
 }
 generated quantities {
 vector[N] log_lik;
 // likelihood
-real log_prior;
-// joint prior
 for (n in 1:N) log_lik[n] =  normal_lpdf(y[n] | mu, sigma);
-log_prior = normal_lpdf(mu | 0, 1)
-+ normal_lpdf(sigma | 0, 2.5);
 }
 "
     data <- list(y = stats::rnorm(100, 10, 1), N = 100)
@@ -38,7 +40,7 @@ log_prior = normal_lpdf(mu | 0, 1)
   if (model == "eight_schools") {
     str <- "data {
   int<lower=0> J;          // number of schools
-  real y[J];               // estimated treatment effects
+  array[N] real y;               // estimated treatment effects
   real<lower=0> sigma[J];  // s.e. of effect estimates
 }
 parameters {

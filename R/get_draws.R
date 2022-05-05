@@ -1,62 +1,49 @@
-##' Extract draws
-##' Extract the draws in the form required for power-scaling
-##' @param x model fit
-##' @param variables which variables to extract draws from
-##' @param regex whether to use variables as regex
-##' @param ... unused
-##' @noRd
-##' @return draws_df
-get_draws <- function(x, variables, ...) {
-  UseMethod("get_draws")
-}
+get_draws_brmsfit <- function(x, variable = NULL, regex = FALSE, excluded_variables = c("lprior", "lp__"), ...) {
 
-get_draws.brmsfit <- function(x, variables,...) {
-
-  draws <- posterior::as_draws_df(x, variable = variables)
-
-
-  if (is.null(variables)) {
+  draws <- posterior::as_draws_df(x, variable = variable, regex = regex)
+  
+  if (is.null(variable)) {
     # remove unnecessary variables
-    variables <- posterior::variables(draws)
-    variables <- variables[!(variables %in% c("log_prior", "lp__")) &
-                             !(startsWith(variables, "log_lik"))]
-
-    draws <- posterior::subset_draws(draws, variable = variables)
+    variable <- posterior::variables(x)
+    variable <- variable[!(variable %in% excluded_variables) &
+                             !(startsWith(variable, "log_lik"))]
+    
+    draws <- posterior::subset_draws(draws, variable = variable)
   }
-
+    
   return(draws)
 }
 
-get_draws.stanfit <- function(x, variables, ...) {
-  if (anyNA(variables)) {
+get_draws_stanfit <- function(x, variable = NULL, excluded_variables = c("log_prior", "lp__"), ...) {
+  if (is.null(variable)) {
 
     draws <- posterior::as_draws_df(as.array(x))
 
     # remove unnecessary variables
-    variables <- posterior::variables(draws)
-    variables <- variables[!(variables %in% c("log_prior", "lp__")) &
-                             !(startsWith(variables, "log_lik"))]
-    draws <- posterior::subset_draws(draws, variable = variables)
+    variable <- posterior::variables(draws)
+    variable <- variable[!(variable %in% excluded_variables) &
+                             !(startsWith(variable, "log_lik"))]
+    draws <- posterior::subset_draws(draws, variable = variable)
   } else {
-    draws <- posterior::as_draws_df(as.array(x, pars = variables))
+    draws <- posterior::as_draws_df(as.array(x, pars = variable))
   }
 
   return(draws)
 }
 
-get_draws.CmdStanFit <- function(x, variables, ...) {
+get_draws_CmdStanFit <- function(x, variable = NULL, regex, excluded_variables = c("log_prior", "lp__"), ...) {
 
-  if (anyNA(variables)) {
-    draws <- posterior::as_draws_df(x$draws())
+  if (is.null(variable)) {
+    draws <- posterior::as_draws_df(x$draws(), variable = variable, regex = regex)
 
     # remove unnecessary variables
-    variables <- posterior::variables(draws)
-    variables <- variables[!(variables %in% c("log_prior", "lp__")) &
-                             !(startsWith(variables, "log_lik"))]
+    variable <- posterior::variables(draws)
+    variable <- variable[!(variable %in% excluded_variables) &
+                             !(startsWith(variable, "log_lik"))]
 
-    draws <- posterior::subset_draws(draws, variable = variables)
+    draws <- posterior::subset_draws(draws, variable = variable)
   } else {
-    draws <- posterior::as_draws_df(x$draws(variables))
+    draws <- posterior::as_draws_df(x$draws(variable))
   }
   return(draws)
 }
