@@ -72,7 +72,7 @@ ewcdf <- function(x, weights = NULL, normalise = TRUE, adjust = 1)
   return(rval)
 }
 
-function (v, npoints = NULL, fatal = TRUE, things = "data points",
+check.nvector <- function (v, npoints = NULL, fatal = TRUE, things = "data points",
           naok = FALSE, warn = FALSE, vname, oneok = FALSE)
 {
   if (missing(vname))
