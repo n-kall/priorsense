@@ -31,7 +31,7 @@ mad_weighted <- function(x, weights, ...) {
     x = x,
     w = weights
   )
-  
+
   return(c(mad = weighted_mad))
 }
 
@@ -39,7 +39,7 @@ mad_weighted <- function(x, weights, ...) {
 ##' @rdname weighted_quantities
 var_weighted <- function(x, weights, ...) {
 
-  weighted_var <- Hmisc::wtd.var(
+  weighted_var <- wtd.var(
     x = x,
     weights = weights,
     normwt = TRUE
@@ -52,7 +52,7 @@ var_weighted <- function(x, weights, ...) {
 ##' @rdname weighted_quantities
 sd_weighted <- function(x, weights, ...) {
 
-  weighted_sd <- sqrt(Hmisc::wtd.var(
+  weighted_sd <- sqrt(wtd.var(
     x = x,
     weights = weights,
     normwt = TRUE
@@ -77,7 +77,7 @@ mean_weighted  <- function(x, weights, ...) {
 ##' @rdname weighted_quantities
 quantile_weighted <- function(x, weights, probs = c(0.05, 0.95), ...) {
 
-  quants <- Hmisc::wtd.quantile(
+  quants <- wtd.quantile(
     x = x,
     weights = weights,
     probs = probs,
@@ -104,7 +104,7 @@ n_eff_mean <- function(x, weights, ...) {
   lwf_mean <- c(log(weights) + log(abs(x)))
   lwf_mean <- lwf_mean - matrixStats::logSumExp(lwf_mean)
   n_eff <- 1.0 / sum(exp(2 * lwf_mean))
-  
+
   return(c(n_eff_mean = n_eff))
 }
 
@@ -119,7 +119,7 @@ n_eff_var <- function(x, weights, ...) {
   lwf_var <- c(log(weights) + log(abs(x^2)))
   lwf_var <- lwf_var - matrixStats::logSumExp(lwf_var)
   n_eff <- 1.0 / sum(exp(2 * lwf_var))
-  
+
   return(c(n_eff_var = n_eff))
 }
 
@@ -134,7 +134,7 @@ pareto_k_mean <- function(x, weights, ...) {
       log_ratios = c(log(weights) + log(abs(x))),
       r_eff = 1)
       )
-  
+
   return(c(pareto_k_mean = psis_f$diagnostics$pareto_k))
 }
 
@@ -149,7 +149,7 @@ pareto_k_var <- function(x, weights, ...) {
     log_ratios = c(log(weights) + log(abs(x^2))),
     r_eff = 1)
     )
-  
+
   return(c(pareto_k_var = psis_f$diagnostics$pareto_k))
 }
 
@@ -170,4 +170,69 @@ weighted_summary_measures <- function(x) {
     stats::as.formula(paste0("~quantile_weighted(.x, weights(", x, "))"))
   )
   return(funcs)
+}
+
+
+# code from Hmisc (c) Frank E Harrell Jr
+wtd.quantile <- function (x, weights = NULL, probs = c(0, 0.25, 0.5, 0.75, 1),
+    type = c("quantile", "(i-1)/(n-1)", "i/(n+1)", "i/n"), normwt = FALSE,
+    na.rm = TRUE)
+{
+    if (!length(weights))
+        return(quantile(x, probs = probs, na.rm = na.rm))
+    type <- match.arg(type)
+    if (any(probs < 0 | probs > 1))
+        stop("Probabilities must be between 0 and 1 inclusive")
+    nams <- paste(format(round(probs * 100, if (length(probs) >
+        1) 2 - log10(diff(range(probs))) else 2)), "%", sep = "")
+    i <- is.na(weights) | weights == 0
+    if (any(i)) {
+        x <- x[!i]
+        weights <- weights[!i]
+    }
+    if (type == "quantile") {
+        w <- wtd.table(x, weights, na.rm = na.rm, normwt = normwt,
+            type = "list")
+        x <- w$x
+        wts <- w$sum.of.weights
+        n <- sum(wts)
+        order <- 1 + (n - 1) * probs
+        low <- pmax(floor(order), 1)
+        high <- pmin(low + 1, n)
+        order <- order%%1
+        allq <- approx(cumsum(wts), x, xout = c(low, high), method = "constant",
+            f = 1, rule = 2)$y
+        k <- length(probs)
+        quantiles <- (1 - order) * allq[1:k] + order * allq[-(1:k)]
+        names(quantiles) <- nams
+        return(quantiles)
+    }
+    w <- wtd.Ecdf(x, weights, na.rm = na.rm, type = type, normwt = normwt)
+    structure(approx(w$ecdf, w$x, xout = probs, rule = 2)$y,
+        names = nams)
+}
+
+wtd.var <- function (x, weights = NULL, normwt = FALSE, na.rm = TRUE, method = c("unbiased",
+    "ML"))
+{
+    method <- match.arg(method)
+    if (!length(weights)) {
+        if (na.rm)
+            x <- x[!is.na(x)]
+        return(var(x))
+    }
+    if (na.rm) {
+        s <- !is.na(x + weights)
+        x <- x[s]
+        weights <- weights[s]
+    }
+    if (normwt)
+        weights <- weights * length(x)/sum(weights)
+    if (normwt || method == "ML")
+        return(as.numeric(stats::cov.wt(cbind(x), weights, method = method)$cov))
+    sw <- sum(weights)
+    if (sw <= 1)
+        warning("only one effective observation; variance estimate undefined")
+    xbar <- sum(weights * x)/sw
+    sum(weights * ((x - xbar)^2))/(sw - 1)
 }

@@ -47,20 +47,3 @@ whiten_draws <- function(draws, ...) {
 
   return(list(draws = draws_tr, loadings = t(loadings)))
 }
-
-##' Transform matrix to be spherical
-##' @param x matrix to be transformed
-##' @param whitening_method transformation method
-##' @param ... unused
-##' @return transformed matrix
-whiten_matrix <- function(x, whitening_method = "PCA-cor", ...) {
-
-  # transform matrix
-  m_tr <- whitening::whiten(
-    x,
-    center = TRUE,
-    method = whitening_method
-  )
-
-  return(m_tr)
-}

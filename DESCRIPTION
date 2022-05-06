@@ -17,17 +17,14 @@ Imports:
     checkmate,
     ggplot2,
     ggridges,
-    Hmisc,
     loo,
     matrixStats,
     methods,
     philentropy,
     posterior,
-    spatstat.geom,
     stats,
     tibble,
-    transport,
-    whitening
+    transport
 Suggests: 
     knitr,
     brms,

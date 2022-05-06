@@ -74,8 +74,8 @@ cjs_dist <- function(x, y, x_weights, y_weights, metric = TRUE, unsigned = TRUE,
   }
 
   # calculate required weighted ecdfs
-  Px <- spatstat.geom::ewcdf(x, weights = wp)(bins)
-  Qx <- spatstat.geom::ewcdf(y, weights = wq)(bins)
+  Px <- ewcdf(x, weights = wp)(bins)
+  Qx <- ewcdf(y, weights = wq)(bins)
 
   # calculate integral of ecdfs
   Px_int <- sum(Px * binwidth)
