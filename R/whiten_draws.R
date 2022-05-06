@@ -1,6 +1,5 @@
 ##' Transform draws to be spherical
 ##' @param draws draws to be transformed
-##' @param whitening_method transformation method
 ##' @param ... unused
 ##' @return transformed draws
 whiten_draws <- function(draws, ...) {
@@ -21,9 +20,9 @@ whiten_draws <- function(draws, ...) {
 
   # code from whitening package (c) Korbinian Strimmer and Takoua
   # Jendoubi and Agnan Kessy and Alex Lewin
-  Sigma <- cov(base_draws)
+  Sigma <- stats::cov(base_draws)
   v <- diag(Sigma)
-  R <- cov2cor(Sigma)
+  R <- stats::cov2cor(Sigma)
   eR <- eigen(R, symmetric = TRUE)
   G <- eR$vectors
   theta <- eR$values

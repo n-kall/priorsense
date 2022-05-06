@@ -80,7 +80,6 @@ powerscale_sequence.powerscaling_data <- function(x, lower_alpha = 0.8,
 
   if (!symmetric) {
     alpha_seq <- seq(lower_alpha, upper_alpha, length.out = length)
-#    alpha_seq <- sort(c(1, alpha_seq))
   } else {
     if (abs(log(lower_alpha, 2)) < abs(log(upper_alpha, 2))) {
       alpha_seq_l <- seq(lower_alpha, 1, length.out = length/2)

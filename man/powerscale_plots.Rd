@@ -21,6 +21,7 @@ powerscale_plot_quantities(
   div_measure = "cjs_dist",
   resample = FALSE,
   measure_args = NULL,
+  mcse = FALSE,
   ...
 )
 }
@@ -53,6 +54,8 @@ for a different order, where N is the order.
 }}
 
 \item{measure_args}{Named list of further arguments passed to divergence measure functions.}
+
+\item{mcse}{Boolean; If TRUE will plot +/- 2 * Monte Carlo standard error of the base quantity on the quantities plot}
 }
 \value{
 A ggplot object that can be further customized using the \strong{ggplot2} package.

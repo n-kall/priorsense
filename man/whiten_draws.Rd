@@ -4,12 +4,10 @@
 \alias{whiten_draws}
 \title{Transform draws to be spherical}
 \usage{
-whiten_draws(draws, whitening_method = "PCA-cor", ...)
+whiten_draws(draws, ...)
 }
 \arguments{
 \item{draws}{draws to be transformed}
-
-\item{whitening_method}{transformation method}
 
 \item{...}{unused}
 }
