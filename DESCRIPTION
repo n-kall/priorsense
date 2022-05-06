@@ -17,6 +17,7 @@ Imports:
     checkmate,
     ggplot2,
     ggridges,
+    Hmisc,
     loo,
     matrixStats,
     methods,

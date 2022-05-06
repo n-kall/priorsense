@@ -39,7 +39,7 @@ mad_weighted <- function(x, weights, ...) {
 ##' @rdname weighted_quantities
 var_weighted <- function(x, weights, ...) {
 
-  weighted_var <- wtd.var(
+  weighted_var <- Hmisc::wtd.var(
     x = x,
     weights = weights,
     normwt = TRUE
@@ -52,7 +52,7 @@ var_weighted <- function(x, weights, ...) {
 ##' @rdname weighted_quantities
 sd_weighted <- function(x, weights, ...) {
 
-  weighted_sd <- sqrt(wtd.var(
+  weighted_sd <- sqrt(Hmisc::wtd.var(
     x = x,
     weights = weights,
     normwt = TRUE
@@ -191,7 +191,7 @@ wtd.quantile <- function (x, weights = NULL, probs = c(0, 0.25, 0.5, 0.75, 1),
         weights <- weights[!i]
     }
     if (type == "quantile") {
-        w <- wtd.table(x, weights, na.rm = na.rm, normwt = normwt,
+        w <- Hmisc::wtd.table(x, weights, na.rm = na.rm, normwt = normwt,
             type = "list")
         x <- w$x
         wts <- w$sum.of.weights
