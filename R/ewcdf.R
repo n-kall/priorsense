@@ -25,7 +25,7 @@ ewcdf <- function(x, weights = NULL, normalise = TRUE, adjust = 1)
     x <- sort(x)
     w <- rep(1, n)
   } else {
-    ox <- fave.order(x)
+    ox <- sort.list(x, method = "quick", na.last = NA)
     x <- x[ox]
     w <- weights[ox]
   }
@@ -70,4 +70,34 @@ ewcdf <- function(x, weights = NULL, normalise = TRUE, adjust = 1)
   assign("w", w, envir = environment(rval))
   attr(rval, "call") <- sys.call()
   return(rval)
+}
+
+function (v, npoints = NULL, fatal = TRUE, things = "data points",
+          naok = FALSE, warn = FALSE, vname, oneok = FALSE)
+{
+  if (missing(vname))
+    vname <- sQuote(deparse(substitute(v)))
+  whinge <- NULL
+  nv <- length(v)
+  if (!is.numeric(v))
+    whinge <- paste(vname, "is not numeric")
+  else if (!is.atomic(v) || !is.null(dim(v)))
+    whinge <- paste(vname, "is not a vector")
+  else if (!(is.null(npoints) || (nv == npoints)) && !(oneok &&
+                                                         nv == 1))
+    whinge <- paste("The length of", vname, paren(paste0("=",
+                                                         nv)), "should equal the number of", things, paren(paste0("=",
+                                                                                                                  npoints)))
+  else if (!naok && anyNA(v))
+    whinge <- paste("Some values of", vname, "are NA or NaN")
+  if (!is.null(whinge)) {
+    if (fatal)
+      stop(whinge)
+    if (warn)
+      warning(whinge)
+    ans <- FALSE
+    attr(ans, "whinge") <- whinge
+    return(ans)
   }
+  return(TRUE)
+}
