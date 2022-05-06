@@ -199,7 +199,7 @@ test_that("powerscale_sequence gives symmetric range", {
   )
   expect_equal(
     length(pss$alphas),
-    9
+    8
   )
   expect_equal(
     abs(log(pss$alphas[1])),

@@ -24,9 +24,9 @@
 ##'
 NULL
 
-prepare_plot <- function(x, variables, resample, ...) {
+prepare_plot_data <- function(x, variables, resample, ...) {
 
-  base_draws <- x$base_draws
+  base_draws <- posterior::merge_chains(x$base_draws)
 
   if (!resample & !(x$resampled)) {
     base_draws <- posterior::weight_draws(
@@ -47,7 +47,7 @@ prepare_plot <- function(x, variables, resample, ...) {
     prior_scaled <- x$prior_scaled$draws_sequence
 
     for (i in 1:length(prior_scaled)) {
-      prior_draws[[i]] <- prior_scaled[[i]]$draws
+      prior_draws[[i]] <- posterior::merge_chains(prior_scaled[[i]]$draws)
 
       if (resample & !x$resampled) {
         prior_draws[[i]]  <- posterior::resample_draws(prior_draws[[i]])
@@ -69,7 +69,7 @@ prepare_plot <- function(x, variables, resample, ...) {
     likelihood_scaled <- x$likelihood_scaled$draws_sequence
 
     for (i in 1:length(likelihood_scaled)) {
-      likelihood_draws[[i]] <- likelihood_scaled[[i]]$draws
+      likelihood_draws[[i]] <- posterior::merge_chains(likelihood_scaled[[i]]$draws)
 
       if (resample & !x$resampled) {
         likelihood_draws[[i]]  <- posterior::resample_draws(likelihood_draws[[i]])
@@ -112,7 +112,11 @@ prepare_plot <- function(x, variables, resample, ...) {
     timevar = "variable"
   )
 
-  if (resample | x$resampled) {
+  return(d)
+}
+
+prepare_plot <- function(d, resample, ...) {
+  if (resample) {
     p <- ggplot2::ggplot(
       data = d,
       ggplot2::aes_string(
@@ -163,6 +167,7 @@ prepare_plot <- function(x, variables, resample, ...) {
     ggplot2::theme(aspect.ratio = 1)
 
   return(p)
+
 }
 
 ##' @rdname powerscale_plots
@@ -174,7 +179,12 @@ powerscale_plot_dens <- function(x, variables, resample = FALSE,
   checkmate::assert_character(variables)
   checkmate::assert_logical(resample)
 
-  p <- prepare_plot(x, variables, resample, ...) +
+  d <- prepare_plot_data(x, variables, resample, ...)
+
+  if (resample | x$resample) {
+    resample = TRUE
+  }
+  p <- prepare_plot(d, resample, ...) +
     ggplot2::ylab("Density") +
     ggplot2::guides(
       linetype = ggplot2::guide_legend(
@@ -212,7 +222,12 @@ powerscale_plot_ridges <- function(x, variables, resample = FALSE,
   checkmate::assert_character(variables)
   checkmate::assert_logical(resample)
 
-  p <- prepare_plot(x, variables, resample, ...) +
+  d <- prepare_plot_data(x, variables, resample, ...)
+
+  if (resample | x$resample) {
+    resample = TRUE
+  }
+  p <- prepare_plot(d, resample, ...) +
     ggplot2::guides(
       linetype = ggplot2::guide_legend(
         title = "pareto-k"
@@ -251,7 +266,12 @@ powerscale_plot_ecdf <- function(x, variables, resample = FALSE, ...) {
   checkmate::assert_character(variables)
   checkmate::assert_logical(resample)
 
-  p <- prepare_plot(x, variables, resample, ...) +
+  d <- prepare_plot_data(x, variables, resample, ...)
+
+  if (resample | x$resample) {
+    resample = TRUE
+  }
+  p <- prepare_plot(d, resample, ...) +
     ggplot2::guides(
       linetype = ggplot2::guide_legend(
         title = "pareto-k"
@@ -332,11 +352,7 @@ powerscale_plot_quantities <- function(x, variables, quantities = c("mean", "med
       idvar = "variable"
     )
 
-
     base_mcse <- merge(base_q, base_mcse)
-
-    print(head(base_mcse))
-
     base_mcse$mcse_min <- base_mcse$value - 2 * base_mcse$mcse
     base_mcse$mcse_max <- base_mcse$value + 2 * base_mcse$mcse
 
@@ -389,44 +405,44 @@ powerscale_summary_plot <- function(x, variables, quantities = NULL, scale = FAL
   ) +
     ggplot2::geom_line(ggplot2::aes_string(
       color = "pareto_k_value", group = "component")) +
-    ggplot2::facet_wrap(
-      facets = variable ~ quantity,
-      scales = "free",
-      ncol = length(quantities)
-    ) +
-    ggplot2::geom_point(
-      ggplot2::aes_string(x = "alpha", y = "value", shape = "component", color = "pareto_k_value"),
-      fill = "white",
-      size = 3,
-      data = points
-    ) +
-    ggplot2::scale_shape_manual(values = c("likelihood" = 22, "prior" = 15)) +
-    ggplot2::scale_color_viridis_d(drop = FALSE) +
-    ggplot2::guides(
-      color = ggplot2::guide_legend(
-        title = "pareto-k",
-        override.aes = list(shape = 15)
-      )
-    ) +
-    ggplot2::ylab("") +
-    ggplot2::scale_x_continuous(
-      trans = "log2",
-      limits = c(min(summaries$alpha) - 0.01, max(summaries$alpha) + 0.01),
-      breaks = c(min(summaries$alpha), 1 , max(summaries$alpha)),
-      labels = round(c(min(summaries$alpha), 1 , max(summaries$alpha)), digits = 3)
-    ) +
-    ggplot2::ggtitle(
-      label = "Power-scaling sensitivity",
-      subtitle = "Posterior quantities depending on amount of power-scaling (alpha).\nHorizontal lines indicate low sensitivity.\nSteeper lines indicate greater sensitivity.\nEstimates with Pareto-k values > 0.5 may be inaccurate."
-    ) +
-    ggplot2::theme(aspect.ratio = 1)
+  ggplot2::facet_wrap(
+    facets = variable ~ quantity,
+    scales = "free",
+    ncol = length(quantities)
+  ) +
+  ggplot2::geom_point(
+    ggplot2::aes_string(x = "alpha", y = "value", shape = "component", color = "pareto_k_value"),
+    fill = "white",
+    size = 3,
+    data = points
+  ) +
+  ggplot2::scale_shape_manual(values = c("likelihood" = 22, "prior" = 15)) +
+  ggplot2::scale_color_viridis_d(drop = FALSE) +
+  ggplot2::guides(
+    color = ggplot2::guide_legend(
+      title = "pareto-k",
+      override.aes = list(shape = 15)
+    )
+  ) +
+  ggplot2::ylab("") +
+  ggplot2::scale_x_continuous(
+    trans = "log2",
+    limits = c(min(summaries$alpha) - 0.01, max(summaries$alpha) + 0.01),
+    breaks = c(min(summaries$alpha), 1 , max(summaries$alpha)),
+    labels = round(c(min(summaries$alpha), 1 , max(summaries$alpha)), digits = 3)
+  ) +
+  ggplot2::ggtitle(
+    label = "Power-scaling sensitivity",
+    subtitle = "Posterior quantities depending on amount of power-scaling (alpha).\nHorizontal lines indicate low sensitivity.\nSteeper lines indicate greater sensitivity.\nEstimates with Pareto-k values > 0.5 may be inaccurate."
+  ) +
+  ggplot2::theme(aspect.ratio = 1)
 
   if (!is.null(base_mcse)) {
 
     p <- p +
       ggplot2::scale_linetype_manual(values = "dashed", name = NULL) +
-      ggplot2::geom_hline(aes(yintercept = mcse_min, linetype = "+/-2MCSE"), data = base_mcse, color = "black") +
-      ggplot2::geom_hline(aes(yintercept = mcse_max, linetype = "+/-2MCSE"), data = base_mcse, color = "black")
+      ggplot2::geom_hline(ggplot2::aes_string(yintercept = "mcse_min", linetype = "+/-2MCSE"), data = base_mcse, color = "black") +
+      ggplot2::geom_hline(ggplot2::aes_string(yintercept = "mcse_max", linetype = "+/-2MCSE"), data = base_mcse, color = "black")
   }
 
   return(p)
