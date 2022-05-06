@@ -77,7 +77,7 @@ mean_weighted  <- function(x, weights, ...) {
 ##' @rdname weighted_quantities
 quantile_weighted <- function(x, weights, probs = c(0.05, 0.95), ...) {
 
-  quants <- wtd.quantile(
+  quants <- Hmisc::wtd.quantile(
     x = x,
     weights = weights,
     probs = probs,
