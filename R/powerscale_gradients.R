@@ -294,6 +294,8 @@ powerscale_divergence_gradients <- function(lower_divergences, upper_divergences
   logdiffsquare <- 2 * log(upper_alpha, base = 2)
   grad <- (upper_diff + lower_diff) / logdiffsquare
 
+  print(lower_diff)
+  print(upper_diff)
   return(tibble::as_tibble(cbind(variable, grad)))
 
 }

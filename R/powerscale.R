@@ -173,22 +173,6 @@ powerscale.CmdStanFit <- function(x,
 
 }
 
-##' @rdname powerscale-overview
-##' @export
-powerscale.brmsfit <- function(x,
-                               component,
-                               alpha,
-                               ...
-                               ) {
-  psd <- create_powerscaling_data.brmsfit(x, ...)
-
-  powerscale.powerscaling_data(
-    psd,
-    component = component,
-    alpha = alpha,
-    ...)
-
-}
 
 
 ##' @rdname powerscale-overview

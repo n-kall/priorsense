@@ -32,24 +32,6 @@ joint_log_lik_stanfit <- function(x, parameter_name = "log_lik", ...) {
 
 ##' @rdname joint_log_lik
 ##' @export
-joint_log_lik_brmsfit <- function(x, parameter_name = "log_lik", ...) {
-  if (!requireNamespace("brms", quietly = TRUE))
-    stop("Please load the 'brms' package.", call. = FALSE)
-
-  log_lik <- rowSums(brms::log_lik(x))
-  names(log_lik) <- parameter_name
-  chains <- x$fit@sim$chains
-  
-  log_lik <- posterior::draws_array(
-    log_lik = log_lik,
-    .nchains = chains
-  )
-    
-  return(log_lik)
-}
-
-##' @rdname joint_log_lik
-##' @export
 joint_log_lik_CmdStanFit <- function(x, parameter_name = "log_lik", ...) {
 
   # sum over correct dimension

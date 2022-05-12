@@ -91,20 +91,3 @@ create_powerscaling_data.CmdStanFit <- function(x, ...) {
     ...
   )
 }
-
-##' @rdname create-powerscaling-data
-#' @export
-create_powerscaling_data.brmsfit <- function(x, ...) {
-  
-  create_powerscaling_data.default(
-    x = x,
-    log_prior = log_prior_brmsfit,
-    log_lik = joint_log_lik_brmsfit,
-    draws = get_draws_brmsfit,
-    unconstrain_pars = unconstrain_pars,
-    constrain_pars = rstan::constrain_pars,
-    log_prob_upars = log_prob_upars,
-    log_ratio_upars = log_ratio_upars,
-    ...
-  )
-}

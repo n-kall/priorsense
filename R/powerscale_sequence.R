@@ -35,21 +35,6 @@ powerscale_sequence.stanfit <- function(x,
 
 }
 
-
-##' @rdname powerscale-overview
-##' @export
-powerscale_sequence.brmsfit <- function(x,
-                                        ...
-                                        ) {
-
-  psd <- create_powerscaling_data.brmsfit(x, ...)
-
-  powerscale_sequence.powerscaling_data(psd, ...)
-
-}
-
-
-
 ##' @rdname powerscale-overview
 ##' @export
 powerscale_sequence.powerscaling_data <- function(x, lower_alpha = 0.8,

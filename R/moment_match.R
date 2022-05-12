@@ -29,27 +29,6 @@ moment_match.stanfit <- function(x, psis, ...) {
   out
 }
 
-moment_match.brmsfit <- function(x, psis, ...) {
-  # ensure compatibility with objects not created in the current R session
-  x$fit@.MISC <- suppressMessages(brms::brm(fit = x, chains = 0))$fit@.MISC
-  out <- try(moment_match.default(
-    x,
-    psis = psis, post_draws = as.matrix,
-    unconstrain_pars = unconstrain_pars.brmsfit,
-    log_prob_upars = log_prob_upars.brmsfit,
-    log_ratio_upars = log_ratio_upars.brmsfit,
-    nchains = posterior::nchains(x),
-    ...
-  ))
-  if (methods::is(out, "try-error")) {
-    stop(
-      "'moment_match' failed. Did you set 'save_all_pars' ",
-      "to TRUE when fitting your brms model?"
-    )
-  }
-  out
-}
-
 # adapted from original moment matching implementation by Topi Paananen
 moment_match.default <- function(
                                  x,

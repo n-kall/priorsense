@@ -164,17 +164,3 @@ powerscale_sensitivity.stanfit <- function(x,
     ...
   )
 }
-
-##' @rdname powerscale-sensitivity
-##' @export
-powerscale_sensitivity.brmsfit <- function(x,
-                                           ...
-                                           ) {
-
-  psd <- create_powerscaling_data.brmsfit(x, ...)
-  
-  powerscale_sensitivity.powerscaling_data(
-    psd,
-    ...
-  )
-}
