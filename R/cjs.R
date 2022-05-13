@@ -31,7 +31,7 @@
 ##'   Notes in Computer Science, vol 9285.  Springer, Cham.
 ##'   \code{doi:10.1007/978-3-319-23525-7_11}
 ##' @export
-cjs_dist <- function(x, y, x_weights, y_weights, metric = TRUE, unsigned = TRUE, ...) {
+cjs_dist <- function(x, y, x_weights, y_weights, metric = TRUE, unsigned = FALSE, ...) {
 
   if (all(is.na(x)) | all(is.na(y)) | (all(y_weights == 0) & !is.null(y_weights))) {
 
@@ -77,6 +77,15 @@ cjs_dist <- function(x, y, x_weights, y_weights, metric = TRUE, unsigned = TRUE,
   Px <- spatstat.geom::ewcdf(x, weights = wp)(bins)
   Qx <- spatstat.geom::ewcdf(y, weights = wq)(bins)
 
+  ## below works if x = y, and x is unweighted, but y is weighted
+  ## if (is.null(wp)) {
+  ##   wp <- rep(1, length(x))
+  ## }
+  ## Px <- cumsum(wp/sum(wp))
+  ## Px <- Px[-length(Px)]
+  ## Qx <- cumsum(wq/sum(wq))
+  ## Qx <- Qx[-length(Qx)]
+
   # calculate integral of ecdfs
   Px_int <- sum(Px * binwidth)
   Qx_int <- sum(Qx * binwidth)
@@ -102,4 +111,5 @@ cjs_dist <- function(x, y, x_weights, y_weights, metric = TRUE, unsigned = TRUE,
     out <- sqrt(out)
   }
   out
+
 }
