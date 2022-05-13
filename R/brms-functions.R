@@ -1,12 +1,14 @@
 ##' @rdname create-powerscaling-data
-#' @export
+##' @importFrom priorsense create_powerscaling_data
+##' @export create_powerscaling_data
+##' @export
 create_powerscaling_data.brmsfit <- function(x, ...) {
 
   create_powerscaling_data.default(
     x = x,
     log_prior = log_prior_brmsfit,
     log_lik = joint_log_lik_brmsfit,
-    draws = get_draws_brmsfit,
+    get_draws = get_draws_brmsfit,
     unconstrain_pars = unconstrain_pars,
     constrain_pars = rstan::constrain_pars,
     log_prob_upars = log_prob_upars,
@@ -16,6 +18,8 @@ create_powerscaling_data.brmsfit <- function(x, ...) {
 }
 
 ##' @rdname powerscale-overview
+##' @importFrom priorsense powerscale
+##' @export powerscale
 ##' @export
 powerscale.brmsfit <- function(x,
                                component,
@@ -28,11 +32,14 @@ powerscale.brmsfit <- function(x,
     psd,
     component = component,
     alpha = alpha,
-    ...)
+    ...
+  )
 
 }
 
 ##' @rdname powerscale-overview
+##' @importFrom priorsense powerscale_sequence
+##' @export powerscale_sequence
 ##' @export
 powerscale_sequence.brmsfit <- function(x,
                                         ...
@@ -45,6 +52,8 @@ powerscale_sequence.brmsfit <- function(x,
 }
 
 ##' @rdname powerscale-sensitivity
+##' @importFrom priorsense powerscale_sensitivity
+##' @exrpot powerscale_sensitivity
 ##' @export
 powerscale_sensitivity.brmsfit <- function(x,
                                            ...
@@ -61,12 +70,9 @@ powerscale_sensitivity.brmsfit <- function(x,
 
 ##' @rdname joint_log_lik
 ##' @export
-joint_log_lik_brmsfit <- function(x, parameter_name = "log_lik", ...) {
-  if (!requireNamespace("brms", quietly = TRUE))
-    stop("Please load the 'brms' package.", call. = FALSE)
+joint_log_lik_brmsfit <- function(x, ...) {
 
-  log_lik <- rowSums(brms::log_lik(x))
-  names(log_lik) <- parameter_name
+  log_lik <- rowSums(log_lik(x, ...))
   chains <- x$fit@sim$chains
 
   log_lik <- posterior::draws_array(
@@ -80,22 +86,22 @@ joint_log_lik_brmsfit <- function(x, parameter_name = "log_lik", ...) {
 
 ##' @rdname log_prior
 ##' @export
-log_prior_brmsfit <- function(x, parameter_name = "lprior", ...) {
+log_prior_brmsfit <- function(x, ...) {
 
-  log_prior <- posterior::subset_draws(posterior::as_draws_array(x), variable = parameter_name)
+  log_prior <- posterior::subset_draws(posterior::as_draws_array(x), variable = "lprior")
 
   return(log_prior)
 }
 
-get_draws_brmsfit <- function(x, variable = NULL, regex = FALSE, excluded_variables = c("lprior", "lp__"), ...) {
+get_draws_brmsfit <- function(x, variable = NULL, regex = FALSE, ...) {
 
+  excluded_variables <- c("lprior", "lp__")
   draws <- posterior::as_draws_df(x, variable = variable, regex = regex)
 
   if (is.null(variable)) {
     # remove unnecessary variables
     variable <- posterior::variables(x)
-    variable <- variable[!(variable %in% excluded_variables) &
-                             !(startsWith(variable, "log_lik"))]
+    variable <- variable[!(variable %in% excluded_variables)]
 
     draws <- posterior::subset_draws(draws, variable = variable)
   }
@@ -105,7 +111,7 @@ get_draws_brmsfit <- function(x, variable = NULL, regex = FALSE, excluded_variab
 
 moment_match.brmsfit <- function(x, psis, ...) {
   # ensure compatibility with objects not created in the current R session
-  x$fit@.MISC <- suppressMessages(brms::brm(fit = x, chains = 0))$fit@.MISC
+  x$fit@.MISC <- suppressMessages(brm(fit = x, chains = 0))$fit@.MISC
   out <- try(moment_match.default(
     x,
     psis = psis, post_draws = as.matrix,
