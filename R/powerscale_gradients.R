@@ -44,6 +44,18 @@ powerscale_gradients.CmdStanFit <- function(x, ...) {
 
 ##' @rdname powerscale-gradients
 ##' @export
+powerscale_gradients.stanfit <- function(x, ...) {
+
+  psd <- create_powerscaling_data(x)
+
+  powerscale_gradients(psd, ...)
+
+
+}
+
+
+##' @rdname powerscale-gradients
+##' @export
 powerscale_gradients.powerscaling_data <- function(x,
                                          variable = NULL,
                                          component = c("prior", "likelihood"),
@@ -176,7 +188,10 @@ powerscale_gradients.powerscaling_data <- function(x,
 
     if ("quantities" %in% type) {
 
-      base_quantities <- summarise_draws(base_draws_t, posterior::default_summary_measures())
+      base_quantities <- summarise_draws(
+        base_draws_t,
+        posterior::default_summary_measures()
+      )
 
       # calculate lower quantities
       lower_quantities <- summarise_draws(
@@ -281,7 +296,7 @@ powerscale_quantities_gradients <- function(base_quantities,
 ##' @param lower_alpha lower alpha
 ##' @param upper_alpha upper alpha
 ##' @noRd
-##' @return
+##' @return gradients
 powerscale_divergence_gradients <- function(lower_divergences, upper_divergences,
                                             lower_alpha, upper_alpha, ...) {
 
