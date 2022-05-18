@@ -214,51 +214,6 @@ powerscale_plot_dens <- function(x, variables, resample = FALSE,
 
 ##' @rdname powerscale_plots
 ##' @export
-powerscale_plot_ridges <- function(x, variables, resample = FALSE,
-                                   ...) {
-
-  # input checks
-  checkmate::assert_class(x, c("powerscaled_sequence"))
-  checkmate::assert_character(variables)
-  checkmate::assert_logical(resample)
-
-  d <- prepare_plot_data(x, variables, resample, ...)
-
-  if (resample | x$resample) {
-    resample = TRUE
-  }
-  p <- prepare_plot(d, resample, ...) +
-    ggplot2::guides(
-      linetype = ggplot2::guide_legend(
-        title = "pareto-k"
-      )
-    ) +
-    ggplot2::scale_y_discrete(expand = c(0, 0)) +
-    ggridges::geom_density_ridges(
-      ggplot2::aes_string(
-        fill = "alpha",
-        y = "alpha",
-        height = "..density.."
-      ), stat = "density",
-      scale = 2
-    ) +
-    ggplot2::facet_grid(
-      component ~ variable,
-      labeller = ggplot2::labeller(
-        component = c(
-          likelihood = "Likelihood power-scaling",
-          prior = "Prior power-scaling"
-        )
-      ),
-      scales = "free"
-    )
-
-  return(p)
-}
-
-
-##' @rdname powerscale_plots
-##' @export
 powerscale_plot_ecdf <- function(x, variables, resample = FALSE, ...) {
 
   # input checks
