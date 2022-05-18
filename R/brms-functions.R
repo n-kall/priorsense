@@ -1,6 +1,6 @@
+### These functions will be moved to brms
+
 ##' @rdname create-powerscaling-data
-##' @importFrom priorsense create_powerscaling_data
-##' @export create_powerscaling_data
 ##' @export
 create_powerscaling_data.brmsfit <- function(x, ...) {
 
@@ -18,8 +18,6 @@ create_powerscaling_data.brmsfit <- function(x, ...) {
 }
 
 ##' @rdname powerscale-overview
-##' @importFrom priorsense powerscale
-##' @export powerscale
 ##' @export
 powerscale.brmsfit <- function(x,
                                component,
@@ -38,8 +36,6 @@ powerscale.brmsfit <- function(x,
 }
 
 ##' @rdname powerscale-overview
-##' @importFrom priorsense powerscale_sequence
-##' @export powerscale_sequence
 ##' @export
 powerscale_sequence.brmsfit <- function(x,
                                         ...
@@ -52,8 +48,6 @@ powerscale_sequence.brmsfit <- function(x,
 }
 
 ##' @rdname powerscale-sensitivity
-##' @importFrom priorsense powerscale_sensitivity
-##' @exrpot powerscale_sensitivity
 ##' @export
 powerscale_sensitivity.brmsfit <- function(x,
                                            ...
@@ -111,7 +105,7 @@ get_draws_brmsfit <- function(x, variable = NULL, regex = FALSE, ...) {
 
 moment_match.brmsfit <- function(x, psis, ...) {
   # ensure compatibility with objects not created in the current R session
-  x$fit@.MISC <- suppressMessages(brm(fit = x, chains = 0))$fit@.MISC
+  x$fit@.MISC <- suppressMessages(brms::brm(fit = x, chains = 0))$fit@.MISC
   out <- try(moment_match.default(
     x,
     psis = psis, post_draws = as.matrix,
@@ -129,3 +123,26 @@ moment_match.brmsfit <- function(x, psis, ...) {
   }
   out
 }
+
+
+unconstrain_pars.brmsfit <- function(x, pars, ...) {
+  unconstrain_pars.stanfit(x$fit, pars = pars, ...)
+}
+
+log_prob_upars.brmsfit <- function(x, upars, ...) {
+  log_prob_upars.stanfit(x$fit, upars = upars, ...)
+}
+
+update_pars.brmsfit <- function(x, upars, ...) {
+  x$fit <- update_pars(x$fit, upars = upars, save_old_pars = FALSE, ...)
+  brms::rename_pars(x)
+}
+
+log_ratio_upars.brmsfit <- function(x, upars, component_fn, samples = NULL,
+                                    subset = NULL, ...) {
+  # do not pass subset or nsamples further to avoid subsetting twice
+  x <- update_pars(x, upars = upars, ...)
+  component_draws <- component_fn(x)
+  scaled_log_ratio(component_draws, ...)
+}
+

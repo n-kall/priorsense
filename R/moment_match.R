@@ -37,10 +37,10 @@ moment_match.default <- function(
                                  unconstrain_pars,
                                  log_prob_upars,
                                  log_ratio_upars,
+                                 nchains,
                                  max_iters = 30,
                                  k_threshold = 0.5,
                                  cov_transform = TRUE,
-                                 nchains,
                                  ...) {
 
   # input checks
@@ -337,9 +337,6 @@ unconstrain_pars.stanfit <- function(x, pars, ...) {
   t(upars)
 }
 
-unconstrain_pars.brmsfit <- function(x, pars, ...) {
-  unconstrain_pars.stanfit(x$fit, pars = pars, ...)
-}
 
 # compute log_prob for each posterior draws on the unconstrained space
 log_prob_upars <- function(x, ...) {
@@ -351,10 +348,6 @@ log_prob_upars.stanfit <- function(x, upars, ...) {
         object = x,
         adjust_transform = TRUE, gradient = FALSE
         )
-}
-
-log_prob_upars.brmsfit <- function(x, upars, ...) {
-  log_prob_upars.stanfit(x$fit, upars = upars, ...)
 }
 
 update_pars <- function(x, ...) {
@@ -414,25 +407,12 @@ update_pars.stanfit <- function(x, upars, save_old_pars = TRUE, ...) {
   x
 }
 
-update_pars.brmsfit <- function(x, upars, ...) {
-  x$fit <- update_pars(x$fit, upars = upars, save_old_pars = FALSE, ...)
-  brms::rename_pars(x)
-}
-
 # compute log_ratio values based on the unconstrained parameters
 log_ratio_upars <- function(x, ...) {
   UseMethod("log_ratio_upars")
 }
 
 log_ratio_upars.stanfit <- function(x, upars, component_fn, ...) {
-  x <- update_pars(x, upars = upars, ...)
-  component_draws <- component_fn(x)
-  scaled_log_ratio(component_draws, ...)
-}
-
-log_ratio_upars.brmsfit <- function(x, upars, component_fn, samples = NULL,
-                                    subset = NULL, ...) {
-  # do not pass subset or nsamples further to avoid subsetting twice
   x <- update_pars(x, upars = upars, ...)
   component_draws <- component_fn(x)
   scaled_log_ratio(component_draws, ...)

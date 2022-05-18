@@ -4,7 +4,7 @@
 ##' functions for powerscaling
 ##' @name create-powerscaling-data
 ##' @param x a fit object
-##' @param draws posterior draws
+##' @param get_draws function to extract posterior draws from fit
 ##' @param log_prior draws from log prior
 ##' @param log_lik draws from log likelihood
 ##' @param constrain_pars function that transforms unconstrained
@@ -20,6 +20,7 @@
 ##' @param ... arguments passed to methods
 ##' @return A `powerscaling_data` object, which contains the data and
 ##'   functions to run power-scaling sensitivity analyses.
+##' @export
 create_powerscaling_data <- function(x, ...) {
   UseMethod("create_powerscaling_data")
 }
