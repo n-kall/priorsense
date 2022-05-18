@@ -58,12 +58,23 @@ cjs_dist <- function(x, y, x_weights, y_weights, metric = TRUE, unsigned = FALSE
   wq <- y_weights[y_idx]
 
   if (all(x == y)) {
-    # don't use equal bin widths when x and y draws are the same but
-    # just different weights
+    # if all x and y are same, but y is a weighted version of x
+    # calculate weighted ecdf via cumsum of weights and use natural
+    # bins from stepfun
     bins <- x[-length(x)]
     binwidth <- diff(x)
+
+    if (is.null(wp)) {
+      wp <- rep(1, length(x))
+    }
+    Px <- cumsum(wp/sum(wp))
+    Px <- Px[-length(Px)]
+    Qx <- cumsum(wq/sum(wq))
+    Qx <- Qx[-length(Qx)]
   } else {
-    # bins
+    # otherwise if the draws are not the same (e.g. resampled) use
+    # approximation with bins and ewcdf there is a slight bias in this
+    # case which overestimates the cjs
     nbins <- max(length(x), length(y))
     bins <- seq(
       from = min(min(x), min(y)),
@@ -71,20 +82,11 @@ cjs_dist <- function(x, y, x_weights, y_weights, metric = TRUE, unsigned = FALSE
       length.out = nbins
     )
     binwidth <- bins[2] - bins[1]
+
+    # calculate required weighted ecdfs
+    Px <- ewcdf(x, wp)(bins)
+    Qx <- ewcdf(y, wq)(bins)
   }
-
-  # calculate required weighted ecdfs
-  Px <- spatstat.geom::ewcdf(x, weights = wp)(bins)
-  Qx <- spatstat.geom::ewcdf(y, weights = wq)(bins)
-
-  ## below works if x = y, and x is unweighted, but y is weighted
-  ## if (is.null(wp)) {
-  ##   wp <- rep(1, length(x))
-  ## }
-  ## Px <- cumsum(wp/sum(wp))
-  ## Px <- Px[-length(Px)]
-  ## Qx <- cumsum(wq/sum(wq))
-  ## Qx <- Qx[-length(Qx)]
 
   # calculate integral of ecdfs
   Px_int <- sum(Px * binwidth)

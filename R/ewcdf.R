@@ -5,25 +5,10 @@ ewcdf <- function(x, weights = NULL, normalise = TRUE, adjust = 1)
   nw <- length(weights)
   weighted <- (nw > 0)
 
-  if(weighted) {
-    check.nvector(weights, things = "entries of x", oneok = TRUE, vname = "weights")
-    stopifnot(all(weights >= 0))
-    if(nw == 1)
-      weights <- rep(weights, nx)
-  }
-
-  ## remove NA's
-  nbg <- is.na(x)
-  x <- x[!nbg]
-  if(weighted) weights <- weights[!nbg]
-  n <- length(x)
-  if (n < 1)
-    stop("'x' must have 1 or more non-missing values")
-
   ## sort in increasing order of x value
   if(!weighted) {
     x <- sort(x)
-    w <- rep(1, n)
+    w <- rep(1, nx)
   } else {
     ox <- sort.list(x, method = "quick", na.last = NA)
     x <- x[ox]
@@ -35,17 +20,8 @@ ewcdf <- function(x, weights = NULL, normalise = TRUE, adjust = 1)
   if(!weighted) {
     wmatch <- rl$lengths
   } else {
-    nv <- length(vals)
-    wmatch <- .C(
-      SG <- tabsumweight,
-      nx = as.integer(n),
-      x = as.double(x),
-      w = as.double(w),
-      nv = as.integer(nv),
-      v = as.double(vals),
-      z = as.double(numeric(nv)),
-      PACKAGE = "priorsense"
-    )$z
+    nv <- length(vals)    
+    wmatch <- tabsumweight(x, w)
   }
   ## cumulative weight in each interval
   cumwt <- cumsum(wmatch)
@@ -59,7 +35,7 @@ ewcdf <- function(x, weights = NULL, normalise = TRUE, adjust = 1)
     totwt <- adjust * totwt
   }
   ## make function
-  rval <- approxfun(
+  rval <- stats::approxfun(
     vals, cumwt,
     method = "constant", yleft = 0, yright = totwt,
     f = 0, ties = "ordered"
@@ -72,32 +48,14 @@ ewcdf <- function(x, weights = NULL, normalise = TRUE, adjust = 1)
   return(rval)
 }
 
-check.nvector <- function (v, npoints = NULL, fatal = TRUE, things = "data points",
-          naok = FALSE, warn = FALSE, vname, oneok = FALSE)
-{
-  if (missing(vname))
-    vname <- sQuote(deparse(substitute(v)))
-  whinge <- NULL
+tabsumweight <- function(x, w) {
+  v <- unique(sort(x))
+  nx <- length(x)
   nv <- length(v)
-  if (!is.numeric(v))
-    whinge <- paste(vname, "is not numeric")
-  else if (!is.atomic(v) || !is.null(dim(v)))
-    whinge <- paste(vname, "is not a vector")
-  else if (!(is.null(npoints) || (nv == npoints)) && !(oneok &&
-                                                         nv == 1))
-    whinge <- paste("The length of", vname, paren(paste0("=",
-                                                         nv)), "should equal the number of", things, paren(paste0("=",
-                                                                                                                  npoints)))
-  else if (!naok && anyNA(v))
-    whinge <- paste("Some values of", vname, "are NA or NaN")
-  if (!is.null(whinge)) {
-    if (fatal)
-      stop(whinge)
-    if (warn)
-      warning(whinge)
-    ans <- FALSE
-    attr(ans, "whinge") <- whinge
-    return(ans)
+  out <- rep(0, times = nv)
+  for (xi in x) {
+    vi <- min(which(v >= xi))
+    out[vi] <- out[vi] + w[vi]
   }
-  return(TRUE)
+  out
 }
