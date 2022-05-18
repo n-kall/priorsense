@@ -6,47 +6,63 @@
 ##' @export
 example_powerscale_model <- function(model = "univariate_normal") {
 
-  if (model == "univariate_normal") {
-    str <- "data {
-int<lower=1> N;
-array[N] real y;
-real<lower=0> prior_alpha;
-real<lower=0> likelihood_alpha;
+  examples <- powerscale_examples()
+
+  return(list(model_code = examples[[model]][["model_code"]], data = examples[[model]][["data"]]))
+}
+
+powerscale_examples <- function() {
+
+  list(
+    univariate_normal =
+      list(
+        model_code = "data {
+  int<lower=1> N;
+  array[N] real y;
+  real<lower=0> prior_alpha;
+  real<lower=0> likelihood_alpha;
 }
 parameters {
-real mu;
-real<lower=0> sigma;
+  real mu;
+  real<lower=0> sigma;
 }
 transformed parameters {
-real log_prior = 0;
-// priors
-log_prior += normal_lpdf(mu | 0, 1);
-log_prior += normal_lpdf(sigma | 0, 2.5);
+  real log_prior = 0;
+  // priors
+  log_prior += normal_lpdf(mu | 0, 1);
+  log_prior += normal_lpdf(sigma | 0, 2.5);
 }
 model {
-target += prior_alpha * log_prior;
-// likelihood
-target += likelihood_alpha * normal_lpdf(y | mu, sigma);
+  target += prior_alpha * log_prior;
+  // likelihood
+  target += likelihood_alpha * normal_lpdf(y | mu, sigma);
 }
 generated quantities {
-vector[N] log_lik;
-// likelihood
-for (n in 1:N) log_lik[n] =  normal_lpdf(y[n] | mu, sigma);
+  vector[N] log_lik;
+  // likelihood
+  for (n in 1:N) log_lik[n] = normal_lpdf(y[n] | mu, sigma);
 }
-"
-    data <- list(y = stats::rnorm(100, 10, 1), N = 100)
-  }
-  
-  if (model == "eight_schools") {
-    str <- "data {
+
+",
+data = list(
+  y = c(9.5, 10.2, 9.1, 9.1, 10.3, 10.9, 11.7, 10.3, 9.6, 8.6, 9.1,
+        11.1, 9.3, 10.5, 9.7),
+  N = 15
+)
+),
+eight_schools =
+  list(
+    model_code = "data {
   int<lower=0> J;          // number of schools
-  array[N] real y;               // estimated treatment effects
+  array[J] real y;         // estimated treatment effects
   real<lower=0> sigma[J];  // s.e. of effect estimates
+  real<lower=0> prior_alpha; // power-scaling
+  real<lower=0> likelihood_alpha; // power-scaling
 }
 parameters {
   vector[J] theta_trans; // transformation of theta
-  real mu; // hyper-parameter of mean
-  real<lower=0> tau; // hyper-parameter of sd
+  real mu;               // hyper-parameter of mean
+  real<lower=0> tau;     // hyper-parameter of sd
 }
 transformed parameters{
   vector[J] theta;
@@ -56,11 +72,11 @@ transformed parameters{
 model {
   // priors
   target += normal_lpdf(theta_trans | 0, 1);
-  target += normal_lpdf(mu | 0, 5);
-  target += cauchy_lpdf(tau | 0, 5);
+  target += prior_alpha * normal_lpdf(mu | 0, 5);
+  target += prior_alpha * cauchy_lpdf(tau | 0, 5);
 
   //likelihood
-  target += normal_lpdf(y | theta, sigma);
+  target += likelihood_alpha * normal_lpdf(y | theta, sigma);
 }
 generated quantities  {
   vector[J] log_lik;
@@ -73,13 +89,12 @@ generated quantities  {
     + normal_lpdf(mu | 0, 5);
 }
 
-"
-    data <- list(
-      J = 8,
-      y = c(28,  8, -3,  7, -1,  1, 18, 12),
-      sigma = c(15, 10, 16, 11,  9, 11, 10, 18)
-    )
-  }
-  
-  return(list(model_code = str, data = data))
+",
+data = list(
+  J = 8,
+  y = c(28,  8, -3,  7, -1,  1, 18, 12),
+  sigma = c(15, 10, 16, 11,  9, 11, 10, 18)
+)
+)
+)
 }
