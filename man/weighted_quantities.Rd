@@ -21,9 +21,9 @@ sd_weighted(x, weights, ...)
 
 mean_weighted(x, weights, ...)
 
-quantile_weighted(x, weights, probs = c(0.05, 0.95), ...)
+quantile_weighted(x, weights, probs = c(0.05, 0.95), type = "7", ...)
 
-quantile2_weighted(x, weights, probs = c(0.05, 0.95), ...)
+quantile2_weighted(x, weights, probs = c(0.05, 0.95), type = "7", ...)
 }
 \arguments{
 \item{x}{Numeric vector to calculate quantity from.}

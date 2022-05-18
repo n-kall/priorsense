@@ -1,5 +1,6 @@
 x <- c(1, 2, 3, 4, 5)
 w <- rep(1, length(x))
+w <- w/sum(w)
 
 test_that("weighted quantities work when weights are 1", {
   expect_equal(
@@ -21,5 +22,9 @@ test_that("weighted quantities work when weights are 1", {
   expect_equal(
     var_weighted(x = x, weights = w),
     c(var = var(x))
+  )
+  expect_equal(
+    quantile_weighted(x = x, weights = w),
+    posterior::quantile2(x = x)
   )
 })
