@@ -110,7 +110,7 @@ from the gradient of the Cumulative Jensen-Shannon distance between
 the base posterior and posteriors resulting from power-scaling.
 
 ```{r}
-powerscale_sensitivity(fit, variables = c("mu", "sigma"))
+powerscale_sensitivity(fit, variable = c("mu", "sigma"))
 ```
 
 Here, we see that the pattern of sensitivity indicates that there is
