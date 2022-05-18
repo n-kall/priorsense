@@ -160,7 +160,7 @@ powerscale_gradients.powerscaling_data <- function(x,
     if ("divergence" %in% type) {
 
       # compute the divergence for lower draws
-      lower_dist <- divergence_measures(
+      lower_dist <- measure_divergence(
         draws1 = base_draws_t,
         draws2 = perturbed_draws_lower[[comp]]$draws,
         measure = div_measure,
@@ -169,7 +169,7 @@ powerscale_gradients.powerscaling_data <- function(x,
       )
 
       # compute the divergence for upper draws
-      upper_dist <- divergence_measures(
+      upper_dist <- measure_divergence(
         draws1 = base_draws_t,
         draws2 = perturbed_draws_upper[[comp]]$draws,
         measure = div_measure,
