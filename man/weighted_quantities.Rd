@@ -33,6 +33,9 @@ quantile2_weighted(x, weights, probs = c(0.05, 0.95), type = "7", ...)
 \item{...}{Currently unused.}
 
 \item{probs}{Vector of probabilities for quantiles.}
+
+\item{type}{Character vector specifying type of quantiles (either
+"7" for Type 7 (default) or "hd" for Harrell-Davis)}
 }
 \value{
 Named vector of calculated quantity.

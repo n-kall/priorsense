@@ -4,12 +4,15 @@
 \alias{powerscale-gradients}
 \alias{powerscale_gradients}
 \alias{powerscale_gradients.CmdStanFit}
+\alias{powerscale_gradients.stanfit}
 \alias{powerscale_gradients.powerscaling_data}
 \title{Power-scale gradients}
 \usage{
 powerscale_gradients(x, ...)
 
 \method{powerscale_gradients}{CmdStanFit}(x, ...)
+
+\method{powerscale_gradients}{stanfit}(x, ...)
 
 \method{powerscale_gradients}{powerscaling_data}(
   x,

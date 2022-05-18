@@ -4,7 +4,7 @@
 \alias{cjs_dist}
 \title{Cumulative Jensen-Shannon divergence}
 \usage{
-cjs_dist(x, y, x_weights, y_weights, metric = TRUE, unsigned = TRUE, ...)
+cjs_dist(x, y, x_weights, y_weights, metric = TRUE, unsigned = FALSE, ...)
 }
 \arguments{
 \item{x}{numeric vector of samples from first distribution}
