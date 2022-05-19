@@ -6,21 +6,21 @@ test_that("powerscale_derivative gives 0 for uniform log_component", {
       x = seq(0, 1, 0.01),
       log_component = log(rep(1/length(seq(0, 1, 0.01)), length(seq(0, 1, 0.01)))),
       quantity = "mean"),
-    c(ps_sens_mean = 0)
+    c(psens_mean = 0)
   )
   expect_equal(
     priorsense::powerscale_derivative(
       x = seq(0, 1, 0.01),
       log_component = log(rep(1/length(seq(0, 1, 0.01)), length(seq(0, 1, 0.01)))),
       quantity = "sd"),
-    c(ps_sens_sd = 0)
+    c(psens_sd = 0)
   )
   expect_equal(
     priorsense::powerscale_derivative(
       x = seq(0, 1, 0.01),
       log_component = log(rep(1/length(seq(0, 1, 0.01)), length(seq(0, 1, 0.01)))),
       quantity = "var"),
-    c(ps_sens_var = 0)
+    c(psens_var = 0)
   )
 })
 
