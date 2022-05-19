@@ -2,9 +2,10 @@
 ##'
 ##' @param weights importance weights (unnormalized)
 ##' @param ... unused
-kl_multi_div <- function(weights, ...) {
+mv_kl_div <- function(weights, ...) {
+  
   return(-mean(log(weights, base = 2)))
-
+  
 }
 
 ###' Multivariate Wasserstein distance
@@ -15,7 +16,7 @@ kl_multi_div <- function(weights, ...) {
 ##' @param weights2 weights for second distribution
 ##' @param subsample_size size of subsamples
 ##' @param ... unused
-wasserstein_multi_dist <- function(draws1,
+mv_wasserstein_dist <- function(draws1,
                                    draws2,
                                    weights1 = NULL,
                                    weights2 = NULL,
@@ -72,7 +73,6 @@ js_div <- function(x, y, x_weights, y_weights, ...) {
 
   div <- philentropy::jensen_shannon(x_density, y_density, testNA = FALSE, unit = "log2")
 
-  # TODO: consider removing the names of the output
   return(c(js_div = div))
 }
 
@@ -116,7 +116,6 @@ hellinger_dist <- function(x, y, x_weights, y_weights, ...) {
 
   div <- philentropy::hellinger(x_density, y_density, testNA = FALSE)
 
-  # TODO: consider removing the names of the output
   return(c(hellinger_dist = div))
 }
 

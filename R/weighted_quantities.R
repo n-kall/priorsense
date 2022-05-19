@@ -114,7 +114,6 @@ pareto_k_mean <- function(x, weights, ...) {
     log_ratios = c(log(weights) + log(abs(x))),
     r_eff = 1)
     )
-
   return(c(pareto_k_mean = psis_f$diagnostics$pareto_k))
 }
 
@@ -129,7 +128,6 @@ pareto_k_var <- function(x, weights, ...) {
     log_ratios = c(log(weights) + log(abs(x^2))),
     r_eff = 1)
     )
-
   return(c(pareto_k_var = psis_f$diagnostics$pareto_k))
 }
 
@@ -152,7 +150,7 @@ weighted_summary_measures <- function(x) {
   return(funcs)
 }
 
-## Adapted from https://aakinshin.net/posts/weighted-quantiles/
+## Following is adapted from https://aakinshin.net/posts/weighted-quantiles/
 ##' @export
 ##' @rdname weighted_quantities
 quantile_weighted <- function(x, weights, probs = c(0.05, 0.95), type = "7", ...) {
