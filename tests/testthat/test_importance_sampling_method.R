@@ -3,7 +3,7 @@ normal_example <- example_powerscale_model("univariate_normal")
 
 sfit <- suppressWarnings(rstan::stan(
   model_code = normal_example$model_code,
-  data = c(normal_example$data, prior_alpha = 1, likelihood_alpha = 1),
+  data = normal_example$data,
   refresh = FALSE,
   seed = 123,
   iter = 500,

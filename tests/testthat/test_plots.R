@@ -3,7 +3,7 @@ eight_schools_example <- example_powerscale_model("eight_schools")
 
 sfit <- suppressWarnings(rstan::stan(
   model_code = eight_schools_example$model_code,
-  data = c(eight_schools_example$data, prior_alpha = 1, likelihood_alpha = 1),
+  data = eight_schools_example$data,
   refresh = FALSE,
   seed = 123,
   iter = 1000,
