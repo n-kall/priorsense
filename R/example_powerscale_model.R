@@ -47,7 +47,9 @@ generated quantities {
 data = list(
   y = c(9.5, 10.2, 9.1, 9.1, 10.3, 10.9, 11.7, 10.3, 9.6, 8.6, 9.1,
         11.1, 9.3, 10.5, 9.7),
-  N = 15
+  N = 15,
+  prior_alpha = 1,
+  likelihood_alpha = 1
 )
 ),
 eight_schools =
@@ -93,7 +95,9 @@ generated quantities  {
 data = list(
   J = 8,
   y = c(28,  8, -3,  7, -1,  1, 18, 12),
-  sigma = c(15, 10, 16, 11,  9, 11, 10, 18)
+  sigma = c(15, 10, 16, 11,  9, 11, 10, 18),
+  prior_alpha = 1,
+  likelihood_alpha = 1
 )
 )
 )

@@ -4,7 +4,7 @@
 \alias{cjs_dist}
 \title{Cumulative Jensen-Shannon divergence}
 \usage{
-cjs_dist(x, y, x_weights, y_weights, metric = TRUE, unsigned = FALSE, ...)
+cjs_dist(x, y, x_weights, y_weights, metric = TRUE, unsigned = TRUE, ...)
 }
 \arguments{
 \item{x}{numeric vector of samples from first distribution}
@@ -17,8 +17,9 @@ cjs_dist(x, y, x_weights, y_weights, metric = TRUE, unsigned = FALSE, ...)
 
 \item{metric}{Logical; if TRUE, return square-root of CJS}
 
-\item{unsigned}{Logical; if TRUE then return max of positive and
-negaive CJS}
+\item{unsigned}{Logical; if TRUE then return max of CJS(P(x) ||
+Q(x)) and CJS(P(-x) || Q(-x)). This ensures invariance to
+transformations such as PCA.}
 
 \item{...}{unused}
 }

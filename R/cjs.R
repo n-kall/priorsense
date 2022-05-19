@@ -20,8 +20,9 @@
 ##' @param x_weights numeric vector of weights of first distribution
 ##' @param y_weights numeric vector of weights of second distribution
 ##' @param metric Logical; if TRUE, return square-root of CJS
-##' @param unsigned Logical; if TRUE then return max of positive and
-##'   negaive CJS
+##' @param unsigned Logical; if TRUE then return max of CJS(P(x) ||
+##'   Q(x)) and CJS(P(-x) || Q(-x)). This ensures invariance to
+##'   transformations such as PCA.
 ##' @param ... unused
 ##' @return distance value based on CJS computation.
 ##' @references Nguyen H-V., Vreeken J. (2015).  Non-parametric
@@ -31,12 +32,10 @@
 ##'   Notes in Computer Science, vol 9285.  Springer, Cham.
 ##'   \code{doi:10.1007/978-3-319-23525-7_11}
 ##' @export
-cjs_dist <- function(x, y, x_weights, y_weights, metric = TRUE, unsigned = FALSE, ...) {
+cjs_dist <- function(x, y, x_weights, y_weights, metric = TRUE, unsigned = TRUE, ...) {
 
   if (all(is.na(x)) | all(is.na(y)) | (all(y_weights == 0) & !is.null(y_weights))) {
-
     cjs <- NA
-
   } else {
     cjs <- .cjs_dist(x, y, x_weights, y_weights, metric, ...)
     if (unsigned) {

@@ -1,7 +1,8 @@
 ##' Power-scaling sensitivity analysis
 ##'
-##' Prior/likelihood sensitivity analysis based on power-scaling perturbations.
-##'
+##' Calculates the prior/likelihood sensitivity based on power-scaling
+##' perturbations. This is done using importance sampling (and
+##' optionally moment matching).
 ##' @template fit_arg
 ##' @name powerscale-sensitivity
 ##' @param x Model fit object or powerscaling_data object.
@@ -9,8 +10,8 @@
 ##' @param variable Character vector of variables to check.
 ##' @param lower_alpha Lower alpha value for gradient calculation.
 ##' @param upper_alpha Upper alpha value for gradient calculation.
-##' @param component Character vector specifying component(s) to scale (default is both "prior" and
-##'   "likelihood").
+##' @param component Character vector specifying component(s) to scale
+##'   (default is both "prior" and "likelihood").
 ##' @param sensitivity_threshold Threshold for flagging variable as
 ##'   sensitive to power-scaling.
 ##' @template div_measure_arg
