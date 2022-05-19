@@ -9,6 +9,7 @@
   ...,
   .args = list(),
   base_draws = NULL,
+  diagnostics = FALSE,
   div_measures = "cjs_dist",
   measure_args = list(),
   resample = FALSE
@@ -22,6 +23,9 @@
 \item{.args}{arguments for summary functions}
 
 \item{base_draws}{base draws}
+
+\item{diagnostics}{boolean, if TRUE included diagnostics for mean
+and variance}
 
 \item{div_measures}{divergence measures}
 

@@ -65,7 +65,6 @@ powerscale.powerscaling_data <- function(x,
     # calculate the importance weights
     importance_sampling <- is_method(
       log_ratios = log_ratios,
-      # TODO: check if r_eff specification is correct
       r_eff = loo::relative_eff(
         x = exp(-log_ratios)
       )
@@ -76,7 +75,6 @@ powerscale.powerscaling_data <- function(x,
     importance_sampling <- SW(
       is_method(
         log_ratios = log_ratios,
-        # TODO: check if r_eff specification is correct
         r_eff = loo::relative_eff(
           x = exp(-log_ratios)
         )
@@ -102,6 +100,9 @@ powerscale.powerscaling_data <- function(x,
 
   }
 
+  # keep track of base log-ratios for diagnostics
+  importance_sampling$orig_log_ratios <- log_ratios
+  
   # transform the draws if specified
   if (transform == "whiten") {
     whitened_draws <- whiten_draws(draws, ...)
@@ -172,8 +173,6 @@ powerscale.CmdStanFit <- function(x,
   )
 
 }
-
-
 
 ##' @rdname powerscale-overview
 ##' @export

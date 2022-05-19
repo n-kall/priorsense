@@ -15,6 +15,8 @@ summary.powerscaled_draws <- function(object, ...) {
 ##' @param ... summary functions
 ##' @param .args arguments for summary functions
 ##' @param base_draws base draws
+##' @param diagnostics boolean, if TRUE included diagnostics for mean
+##'   and variance
 ##' @param div_measures divergence measures
 ##' @param measure_args arguments for divergence measures
 ##' @param resample resample draws
@@ -22,6 +24,7 @@ summarise_draws.powerscaled_draws <- function(.x,
                                               ...,
                                               .args = list(),
                                               base_draws = NULL,
+                                              diagnostics = FALSE,
                                               div_measures = "cjs_dist",
                                               measure_args = list(),
                                               resample = FALSE) {
@@ -53,7 +56,14 @@ summarise_draws.powerscaled_draws <- function(.x,
       list(weights = stats::weights(.x$draws)),
       .args
     )
+
+    if (diagnostics) {
+      funs <- c(funs, "n_eff_mean", "pareto_k_mean", "n_eff_var", "pareto_k_var")
+      .args <- c(.args, log_ratios = .x$powerscaling$importance_sampling$orig_log_ratios)
+    }
+    
   }
+
 
   summ <- posterior::summarise_draws(
     target_draws,
@@ -133,8 +143,11 @@ summarise_draws.powerscaled_sequence <- function(.x,
     measure = div_measures,
     measure_args = measure_args
   )
-  base_summary <- merge(base_quantities, base_distance,
-                        by = "variable")
+  base_summary <- merge(
+    x = base_quantities,
+    y = base_distance,
+    by = "variable"
+  )
   
   base_summary_prior <- c()
   base_summary_likelihood <- c()
