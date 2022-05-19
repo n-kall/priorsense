@@ -39,7 +39,6 @@ powerscale_gradients.CmdStanFit <- function(x, ...) {
 
   powerscale_gradients(psd, ...)
 
-
   }
 
 ##' @rdname powerscale-gradients
@@ -177,6 +176,7 @@ powerscale_gradients.powerscaling_data <- function(x,
         ...
       )
 
+      # calculate the gradients
       out$divergence[[comp]] <- powerscale_divergence_gradients(
         lower_divergences = lower_dist,
         upper_divergences = upper_dist,
@@ -188,6 +188,7 @@ powerscale_gradients.powerscaling_data <- function(x,
 
     if ("quantities" %in% type) {
 
+      # summarise base posterior
       base_quantities <- summarise_draws(
         base_draws_t,
         posterior::default_summary_measures()
@@ -224,17 +225,17 @@ powerscale_gradients.powerscaling_data <- function(x,
 
     for (comp in component) {
 
-      upper_multi_kl[[comp]] <- sqrt(kl_multi_div(
+      upper_multi_kl[[comp]] <- sqrt(mv_kl_div(
         weights = stats::weights(perturbed_draws_upper[[comp]]$draws)
       )) / log(upper_alpha, base = 2)
 
-      upper_multi_wasserstein[[comp]] <- wasserstein_multi_dist(
+      upper_multi_wasserstein[[comp]] <- mv_wasserstein_dist(
         draws1 = base_draws_t,
         draws2 = perturbed_draws_upper[[comp]]$draws,
         weights2 = stats::weights(perturbed_draws_upper[[comp]]$draws)
       )
 
-      upper_mw_dist[[comp]] <- wasserstein_multi_dist(
+      upper_mw_dist[[comp]] <- mv_wasserstein_dist(
         posterior::weight_draws(base_draws_t, rep(1/posterior::ndraws(base_draws_t), times = posterior::ndraws(base_draws_t)), perturbed_draws_upper[[comp]]$draws)
       )
 
@@ -243,11 +244,8 @@ powerscale_gradients.powerscaling_data <- function(x,
         wasserstein = upper_multi_wasserstein[[comp]],
         mw_dist = upper_mw_dist
       )
-
     }
-
   }
-
   return(out)
 }
 
@@ -285,7 +283,6 @@ powerscale_quantities_gradients <- function(base_quantities,
   }
 
   return(tibble::as_tibble(cbind(variable, gradients)))
-
 }
 
 
@@ -304,6 +301,7 @@ powerscale_divergence_gradients <- function(lower_divergences, upper_divergences
 
   ## second-order centered difference approximation
   ## f''(x) = (f(x + dx) - 2f(x) + f(x - dx)) / dx^2
+  ## here it is wrt log_2 alpha
   upper_diff <- subset(upper_divergences, select = -c(variable))
   lower_diff <- subset(lower_divergences, select = -c(variable))
   logdiffsquare <- 2 * log(upper_alpha, base = 2)

@@ -44,7 +44,6 @@ summarise_draws.powerscaled_draws <- function(.x,
 
   if (!resample & !.x$powerscaling$resampled) {
     # without resampling, only weighted quantities used
-
     funs <- as.list(
       paste0(funs, "_weighted")
     )
@@ -54,7 +53,6 @@ summarise_draws.powerscaled_draws <- function(.x,
       list(weights = stats::weights(.x$draws)),
       .args
     )
-
   }
 
   summ <- posterior::summarise_draws(
@@ -65,7 +63,7 @@ summarise_draws.powerscaled_draws <- function(.x,
 
   if (!is.null(base_draws)) {
     # calculate the divergences between the base and target draws
-    divergences <- divergence_measures(
+    divergences <- measure_divergence(
       draws1 = posterior::merge_chains(base_draws),
       draws2 = posterior::merge_chains(target_draws),
       measure = div_measures,
@@ -104,17 +102,50 @@ summarise_draws.powerscaled_sequence <- function(.x,
                                                  div_measures = "cjs_dist",
                                                  measure_args = list(),
                                                  resample = FALSE) {
-
+  # handle quantity functions
   funs <- unname(c(...))
+  # use default functions if unspecified
   if (length(funs) == 0) {
     funs <- posterior::default_summary_measures()
   }
 
+  # extract base draws
   base_draws <- .x$base_draws
 
+  # create summaries for all power-scaled posteriors
   summaries <- data.frame()
 
+  # for base posterior
+  base_quantities <- posterior::summarise_draws(
+    posterior::merge_chains(base_draws),
+    funs
+  )
+  base_quantities$alpha <- 1
+  base_quantities$n_eff <- NA
+  if (.x$is_method == "psis") {
+    base_quantities$pareto_k <- -Inf
+  } else {
+    base_quantities$pareto_k <- NA
+  }
+  base_distance <- measure_divergence(
+    draws1 = posterior::merge_chains(base_draws),
+    draws2 = posterior::merge_chains(base_draws),
+    measure = div_measures,
+    measure_args = measure_args
+  )
+  base_summary <- merge(base_quantities, base_distance,
+                        by = "variable")
+  
+  base_summary_prior <- c()
+  base_summary_likelihood <- c()
+  
+  # for prior-scaled
   if (!is.null(.x$prior_scaled)) {
+
+    base_summary_prior <- base_summary
+    base_summary_prior$component <- "prior"
+
+    # loop over and summarise set of power-scaled posteriors
     for (scaled in .x$prior_scaled$draws_sequence) {
 
       quantities <- summarise_draws(
@@ -133,12 +164,16 @@ summarise_draws.powerscaled_sequence <- function(.x,
       quant_df$n_eff <- quantities$powerscaling$importance_sampling$diagnostics$n_eff
 
       summaries <- rbind(summaries, quant_df)
-
     }
-
   }
 
+  # for likelihood-scaled
   if (!is.null(.x$likelihood_scaled)) {
+    
+    base_summary_likelihood <- base_summary
+    base_summary_likelihood$component <- "likelihood"
+
+    # loop over and summarise set of power-scaled posteriors    
     for (scaled in .x$likelihood_scaled$draws_sequence) {
 
       quantities <- summarise_draws(
@@ -150,54 +185,24 @@ summarise_draws.powerscaled_sequence <- function(.x,
       )
 
       quant_df <- as.data.frame(quantities[[1]])
-
+      
       quant_df$alpha <- quantities$powerscaling$alpha
       quant_df$component <- quantities$powerscaling$component
       quant_df$pareto_k <- quantities$powerscaling$importance_sampling$diagnostics$pareto_k
       quant_df$n_eff <- quantities$powerscaling$importance_sampling$diagnostics$n_eff
 
       summaries <- rbind(summaries, quant_df)
-
     }
   }
 
-  base_quantities <- posterior::summarise_draws(
-    posterior::merge_chains(base_draws),
-    funs
-  )
-  base_quantities$alpha <- 1
-  base_quantities$n_eff <- NA
-  if (.x$is_method == "psis") {
-    base_quantities$pareto_k <- -Inf
-  } else {
-    base_quantities$pareto_k <- NA
-  }
-
-  base_distance <- divergence_measures(
-    draws1 = posterior::merge_chains(base_draws),
-    draws2 = posterior::merge_chains(base_draws),
-    measure = div_measures,
-    measure_args = measure_args
-  )
-
-  base_summary <- merge(base_quantities, base_distance, by = "variable")
-
-  base_summary_prior <- c()
-  base_summary_likelihood <- c()
-
-  if (!is.null(.x$prior_scaled)) {
-    base_summary_prior <- base_summary
-    base_summary_prior$component <- "prior"
-  }
-
-  if (!is.null(.x$likelihood_scaled)) {
-    base_summary_likelihood <- base_summary
-    base_summary_likelihood$component <- "likelihood"
-  }
-
+  # join base and perturbed summaries
   summaries <- list(rbind(base_summary_prior, base_summary_likelihood, summaries))
 
-  summaries[[1]][["component"]] <- factor(summaries[[1]][["component"]], levels = c("prior", "likelihood"))
+  # correctly specify types of variables
+  summaries[[1]][["component"]] <- factor(
+    summaries[[1]][["component"]],
+    levels = c("prior", "likelihood")
+  )
 
   class(summaries) <- c("powerscaled_sequence_summary", class(summaries))
 

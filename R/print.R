@@ -1,4 +1,4 @@
-#' @export
+##' @export
 print.powerscaling_details <- function(x, ...) {
 
   pareto_k <- x$importance_sampling$diagnostics$pareto_k
@@ -51,7 +51,7 @@ print.powerscaled_draws_summary <- function(x, ...) {
   invisible(x)
 }
 
-#' @export
+##' @export
 print.powerscaled_sequence <- function(x, ...) {
 
   component <- c()
@@ -79,7 +79,7 @@ print.powerscaled_sequence <- function(x, ...) {
 }
 
 
-#' @export
+##' @export
 print.powerscaled_sensitivity_summary <- function(x, ...) {
 
   cat(paste0("Sensitivity based on ", x$div_measure, ":\n"))
