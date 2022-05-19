@@ -3,7 +3,7 @@ print.powerscaling_details <- function(x, ...) {
 
   pareto_k <- x$importance_sampling$diagnostics$pareto_k
   pareto_kf <- x$importance_sampling$diagnostics$pareto_kf
-  n_eff <- x$importance_sampling$diagnostics$n_eff
+  ess <- x$importance_sampling$diagnostics$n_eff
   is_method <- class(x$importance_sampling)[[1]]
 
   pareto_k_print <- c()
@@ -27,7 +27,7 @@ print.powerscaling_details <- function(x, ...) {
     paste("scaled component:", x$component, "\n"),
     paste("importance sampling method:", is_method, "\n"),
     pareto_k_print,
-    paste("n_eff:", round(n_eff, digits = 3), "\n"),
+    paste("ESS:", round(ess, digits = 3), "\n"),
     paste("resampled:", x$resampled, "\n"),
     paste("transform:", x$transform_details$transform, "\n")
   )
