@@ -13,7 +13,7 @@ priorsense provides tools for prior diagnostics and sensitivity analysis.
 
 It currently includes functions for performing power-scaling sensitivity analysis on Stan models. This is a way to check how sensitive a posterior is to perturbations of the prior and likelihood and diagnose the cause of sensitivity. For efficient computation, power-scaling sensitivity analysis relies on Pareto smoothed importance sampling (Vehtari et al., 2021) and importance weighted moment matching (Paananen et al., 2021).
 
-Power-scaling sensitivity analysis and priorsense are described in Kallioinen et al. (2021).
+Power-scaling sensitivity analysis and priorsense are described in Kallioinen et al. (2022).
 
 ## Installation
 
@@ -68,7 +68,7 @@ normal_model <- example_powerscale_model("univariate_normal")
 
 fit <- rstan::stan(
   model_code = normal_model$model_code,
-  data = c(normal_model$data, prior_alpha = 1, likelihood_alpha = 1),
+  data = normal_model$data,
   refresh = FALSE,
   seed = 1234
 )
@@ -77,28 +77,44 @@ fit <- rstan::stan(
 Once fit, sensitivity can be checked as follows:
 
 ``` r
-powerscale_sensitivity(fit, variables = c("mu", "sigma"))
+powerscale_sensitivity(fit)
 #> Sensitivity based on cjs_dist:
 #> # A tibble: 2 × 4
-#>   variable  prior likelihood diagnosis          
-#>   <chr>     <dbl>      <dbl> <chr>              
-#> 1 mu       0.163      0.246  prior-data conflict
-#> 2 sigma    0.0222     0.0627 -
+#>   variable prior likelihood diagnosis          
+#>   <chr>    <dbl>      <dbl> <chr>              
+#> 1 mu       0.368      0.519 prior-data conflict
+#> 2 sigma    0.266      0.512 prior-data conflict
 ```
 
-To visually inspect changes to the posterior, first create a power-scaling sequence and then use a plotting function. Estimates that may be inaccurate (Pareto-k values &gt; 0.5) are indicated.
+To visually inspect changes to the posterior, first create a power-scaling sequence.
 
 ``` r
 pss <- powerscale_sequence(fit)
+#> Warning: Some Pareto k diagnostic values are slightly high. See help('pareto-k-diagnostic') for details.
+```
 
+Then use a plotting function. Estimates that may be inaccurate (Pareto-k values &gt; 0.5) are indicated.
+
+``` r
 powerscale_plot_ecdf(pss, variables = c("mu", "sigma"))
 ```
 
-<img src="man/figures/README-sequence-nomm-1.png" width="70%" height="70%" />
+<img src="man/figures/README-ecdf_plot-1.png" width="70%" height="70%" />
+
+``` r
+powerscale_plot_quantities(
+  pss,
+  quantities = c("mean", "sd"),
+  div_measure = "cjs_dist",
+  variables = c("mu", "sigma")
+)
+```
+
+<img src="man/figures/README-quants_plot-1.png" width="70%" height="70%" />
 
 ## References
 
-Noa Kallioinen, Topi Paananen, Paul-Christian Bürkner, Aki Vehtari (2021). Detecting and diagnosing prior and likelihood sensitivity with power-scaling. preprint [arXiv:2107.14054](https://arxiv.org/abs/2107.14054)
+Noa Kallioinen, Topi Paananen, Paul-Christian Bürkner, Aki Vehtari (2022). Detecting and diagnosing prior and likelihood sensitivity with power-scaling. preprint [arXiv:2107.14054](https://arxiv.org/abs/2107.14054)
 
 Topi Paananen, Juho Piironen, Paul-Christian Bürkner, Aki Vehtari (2021). Implicitly adaptive importance sampling. Statistics and Computing 31, 16. <https://doi.org/10.1007/s11222-020-09982-2>
 
