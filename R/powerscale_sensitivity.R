@@ -40,7 +40,7 @@ powerscale_sensitivity.default <- function(x,
   powerscale_sensitivity.powerscaling_data(
     psd,
     ...)
-  
+
 }
 
 ##' @rdname powerscale-sensitivity
@@ -53,7 +53,6 @@ powerscale_sensitivity.powerscaling_data <- function(x,
                                                      measure_args = list(),
                                                      component = c("prior", "likelihood"),
                                                      sensitivity_threshold = 0.05,
-                                                     
                                                      is_method = "psis",
                                                      moment_match = FALSE,
                                                      k_threshold = 0.5,
@@ -62,6 +61,23 @@ powerscale_sensitivity.powerscaling_data <- function(x,
                                                      prediction = NULL,
                                                      ...
                                                      ) {
+  # input checks
+  checkmate::assertClass(x, classes = "powerscaling_data")
+  checkmate::assertCharacter(variable, null.ok = TRUE)
+  checkmate::assertNumeric(lower_alpha, lower = 0, upper = 1)
+  checkmate::assertNumeric(upper_alpha, lower = 1)
+  checkmate::assertCharacter(div_measure)
+  checkmate::assertList(measure_args)
+  checkmate::assertLogical(moment_match)
+  checkmate::assertSubset(component, c("prior", "likelihood"))
+  checkmate::assertNumber(sensitivity_threshold, lower = 0)
+  checkmate::assertCharacter(is_method)
+  checkmate::assertNumber(k_threshold)
+  checkmate::assertLogical(resample)
+  checkmate::assertLogical(transform)
+  checkmate::assertFunction(prediction, null.ok = TRUE)
+
+
 
   if (is_method != "psis" & moment_match) {
     # TODO: also allow moment_match if loo::psis function is given as
@@ -96,7 +112,7 @@ powerscale_sensitivity.powerscaling_data <- function(x,
 
   if (is.null(prior_sense)) {
     prior_sense <- NA
-  }  
+  }
 
   mean_prior_sign <- gradients$quantities$prior$mean
   mean_lik_sign <- gradients$quantities$likelihood$mean
@@ -145,7 +161,7 @@ powerscale_sensitivity.CmdStanFit <- function(x,
                                               ) {
 
   psd <- create_powerscaling_data.CmdStanFit(x)
-  
+
   powerscale_sensitivity.powerscaling_data(
     psd,
     ...
@@ -159,7 +175,7 @@ powerscale_sensitivity.stanfit <- function(x,
                                            ) {
 
   psd <- create_powerscaling_data.stanfit(x, ...)
-  
+
   powerscale_sensitivity.powerscaling_data(
     psd,
     ...

@@ -71,14 +71,21 @@ powerscale_gradients.powerscaling_data <- function(x,
                                          scale = FALSE,
                                          ...) {
 
-  checkmate::assert_number(lower_alpha, lower = 0, upper = 1)
-  checkmate::assert_number(upper_alpha, lower = 1, upper = Inf)
-  checkmate::assert_character(div_measure)
-  checkmate::assert_list(measure_args)
-  checkmate::assert_number(k_threshold)
-  checkmate::assert_character(component)
-  checkmate::assert_logical(moment_match)
-  checkmate::assert_logical(resample)
+  # input checks
+  checkmate::assertClass(x, classes = "powerscaling_data")
+  checkmate::assertSubset(type, c("quantities", "divergence"))
+  checkmate::assertCharacter(variable, null.ok = TRUE)
+  checkmate::assertNumeric(lower_alpha, lower = 0, upper = 1)
+  checkmate::assertNumeric(upper_alpha, lower = 1)
+  checkmate::assertCharacter(div_measure)
+  checkmate::assertList(measure_args)
+  checkmate::assertSubset(component, c("prior", "likelihood"))
+  checkmate::assertCharacter(is_method)
+  checkmate::assertNumber(k_threshold)
+  checkmate::assertLogical(resample)
+  checkmate::assertLogical(transform)
+  checkmate::assertFunction(prediction, null.ok = TRUE)
+  checkmate::assertLogical(scale)
 
   # extract the draws
   base_draws <- x$draws

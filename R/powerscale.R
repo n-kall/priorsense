@@ -42,20 +42,32 @@ powerscale.powerscaling_data <- function(x,
                                          variable = NULL,
                                          ...) {
 
+  # input checks
+  checkmate::assertClass(x, classes = "powerscaling_data")
+  checkmate::assertNumeric(alpha, lower = 0)
+  checkmate::assertSubset(component, c("prior", "likelihood"))
+  checkmate::assertCharacter(is_method)
+  checkmate::assertLogical(moment_match)
+  checkmate::assertNumber(k_threshold)
+  checkmate::assertLogical(resample)
+  checkmate::assertLogical(transform)
+  checkmate::assertFunction(prediction, null.ok = TRUE)
+  checkmate::assertCharacter(variable, null.ok = TRUE)
+
   draws <- posterior::subset_draws(x$draws, variable = variable, ...)
 
   # get the correct importance sampling function
   if (is.character(is_method)) {
     is_method <- get(is_method, asNamespace("loo"))
   }
-  
+
   # calculate the log density ratios
   if (component == "prior") {
     log_comp = "log_prior"
   } else if (component == "likelihood") {
     log_comp = "log_lik"
   }
-  
+
   log_ratios <- scaled_log_ratio(
     component_draws = x[[log_comp]],
     alpha = alpha
@@ -86,7 +98,7 @@ powerscale.powerscaling_data <- function(x,
     } else if (component == "likelihood") {
       component_fn <- x$log_lik_fn
     }
-    
+
     mm <- moment_match(
       x = x,
       psis = importance_sampling,
@@ -102,7 +114,7 @@ powerscale.powerscaling_data <- function(x,
 
   # keep track of base log-ratios for diagnostics
   importance_sampling$orig_log_ratios <- log_ratios
-  
+
   # transform the draws if specified
   if (transform == "whiten") {
     whitened_draws <- whiten_draws(draws, ...)
