@@ -1,10 +1,9 @@
 ##' Power-scale gradients
 ##'
-##' Calculate the numerical derivative of the posterior to the
-##' specified component (prior or likelihood) of the model fit. This
-##' is done using importance sampling (and optionally moment matching)
-##' to approximate the posteriors that result from power-scaling the
-##' specified component distribution (prior or likelihood).
+##' Calculate the numerical derivative of posterior
+##' quantities/divergence with respect to power-scaling the specified
+##' component (prior or likelihood). This is done using importance
+##' sampling (and optionally moment matching).
 ##' @name powerscale-gradients
 ##' @param x Model fit object or a powerscaling_data object.
 ##' @param variable Variables to compute sensitivity of. If NA

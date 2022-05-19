@@ -93,8 +93,8 @@ the moment matching algorithm is used. Default is 0.5.}
 \item{resample}{Logical; Indicate whether or not draws should be
 resampled based on calculated importance weights.}
 
-\item{transform}{Indicate transformation of posterior
-draws. Either "scale" or "spherize".}
+\item{transform}{Indicate a transformation of posterior
+draws to perform before sensitivity analysis. Either "scale" or "whiten".}
 
 \item{prediction}{Function taking the model fit and returning a
 draws_df of predictions to be appended to the posterior draws}
@@ -107,9 +107,8 @@ Maximum of the absolute derivatives above and below alpha
 = 1.
 }
 \description{
-Calculate the numerical derivative of the posterior to the
-specified component (prior or likelihood) of the model fit. This
-is done using importance sampling (and optionally moment matching)
-to approximate the posteriors that result from power-scaling the
-specified component distribution (prior or likelihood).
+Calculate the numerical derivative of posterior
+quantities/divergence with respect to power-scaling the specified
+component (prior or likelihood). This is done using importance
+sampling (and optionally moment matching).
 }

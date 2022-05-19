@@ -67,8 +67,8 @@ for a different order, where N is the order.
 
 \item{measure_args}{Named list of further arguments passed to divergence measure functions.}
 
-\item{component}{Character vector specifying component(s) to scale (default is both "prior" and
-"likelihood").}
+\item{component}{Character vector specifying component(s) to scale
+(default is both "prior" and "likelihood").}
 
 \item{sensitivity_threshold}{Threshold for flagging variable as
 sensitive to power-scaling.}
@@ -95,8 +95,8 @@ the moment matching algorithm is used. Default is 0.5.}
 \item{resample}{Logical; Indicate whether or not draws should be
 resampled based on calculated importance weights.}
 
-\item{transform}{Indicate transformation of posterior
-draws. Either "scale" or "spherize".}
+\item{transform}{Indicate a transformation of posterior
+draws to perform before sensitivity analysis. Either "scale" or "whiten".}
 
 \item{prediction}{Function taking the model fit and returning a
 draws_df of predictions to be appended to the posterior draws}
@@ -105,7 +105,9 @@ draws_df of predictions to be appended to the posterior draws}
 Table of sensitivity values for each specified variable.
 }
 \description{
-Prior/likelihood sensitivity analysis based on power-scaling perturbations.
+Calculates the prior/likelihood sensitivity based on power-scaling
+perturbations. This is done using importance sampling (and
+optionally moment matching).
 }
 \references{
 Kallioinen, N., Paananen, T., Bürkner, P-C., Vehtari, A. (in

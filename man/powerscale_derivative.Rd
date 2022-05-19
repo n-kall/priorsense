@@ -17,23 +17,19 @@ is "mean"). Options are "mean", "sd", "var".}
 \item{...}{unused}
 }
 \value{
-Derivative of the quantity with respect to log of the
+Derivative of the quantity with respect to log2 of the
 power-scaling factor (alpha).
 }
 \description{
-Calculate the derivative of a quantity with respect to
+Calculate the analytical derivative of a quantity with respect to
 power-scaling prior or likelihood.
 }
 \examples{
 \dontrun{
 example_model <- example_powerscale_model()
-
 fit <- rstan::stan(model_code = example_model$model_code, data = example_model$data)
-
 draws <- posterior::subset_draws(posterior::as_draws_df(fit), variable = c("mu", "sigma"))
-
-log_prior <- as.numeric(calculate_log_prior(fit))
-
+log_prior <- log_prior_stanfit(fit)
 posterior::summarise_draws(draws, mean, ~powerscale_derivative(.x, log_prior, quantity = "mean"))
 }
 }
