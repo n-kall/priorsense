@@ -51,7 +51,9 @@ jobs:
             rcmdcheck
             stan-dev/cmdstanr
             rstan
-
+            testthat
+            rmarkdown
+            knitr
       - name: Build Cmdstan
         run: |
           cmdstanr::check_cmdstan_toolchain(fix = TRUE)
