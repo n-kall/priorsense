@@ -50,12 +50,14 @@ jobs:
           extra-packages: |
             rcmdcheck
             stan-dev/cmdstanr
-            rstan
-            StanHeaders
             testthat
             rmarkdown
             knitr
             brms
+
+        name: Install Latest rstan
+        run: |
+          install.packages(c("rstan", "StanHeaders"), repos = c("https://mc-stan.org/r-packages", getOption("repos")))      shell: Rscript {0}
 
       - name: Build Cmdstan
         run: |
