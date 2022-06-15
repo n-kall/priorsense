@@ -48,19 +48,10 @@ jobs:
         with:
           dependencies: NA
           extra-packages: |
-            cetcolor
-	    checkmate
-	    ggplot2
-    	    loo
-    	    matrixStats
-    	    methods
-    	    philentropy
-    	    posterior
-  	    stats
-    	    tibble
-    	    transport
-    	    utils
-	    
+            rcmdcheck
+            stan-dev/cmdstanr
+	    rstan
+
       - name: Build Cmdstan
         run: |
           cmdstanr::check_cmdstan_toolchain(fix = TRUE)
