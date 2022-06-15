@@ -50,7 +50,7 @@ jobs:
           extra-packages: |
             rcmdcheck
             stan-dev/cmdstanr
-	    stan-dev/rstan@experimental
+            stan-dev/rstan@experimental
             rstan
             testthat
             rmarkdown
