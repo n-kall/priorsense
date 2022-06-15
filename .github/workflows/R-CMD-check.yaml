@@ -50,8 +50,8 @@ jobs:
           extra-packages: |
             rcmdcheck
             stan-dev/cmdstanr
-	    rstan
-	    StanHeaders
+            rstan
+            StanHeaders
             testthat
             rmarkdown
             knitr
