@@ -55,7 +55,7 @@ jobs:
             knitr
             brms
 
-        name: Install Latest rstan
+      - name: Install Latest rstan
         run: |
           install.packages(c("rstan", "StanHeaders"), repos = c("https://mc-stan.org/r-packages", getOption("repos")))      shell: Rscript {0}
 
