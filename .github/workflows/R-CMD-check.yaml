@@ -50,22 +50,11 @@ jobs:
           extra-packages: |
             rcmdcheck
             stan-dev/cmdstanr
-            stan-dev/rstan/rstan/rstan@experimental
-            stan-dev/rstan/StanHeaders@experimental
+	    rstan
+	    StanHeaders
             testthat
             rmarkdown
             knitr
-            cetcolor
-            checkmate
-            ggplot2
-            loo
-            matrixStats
-            philentropy
-            posterior
-            stats
-            tibble
-            transport
-            utils
 
       - name: Build Cmdstan
         run: |
