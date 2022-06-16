@@ -57,7 +57,7 @@ eight_schools =
   list(
     model_code = "data {
   int<lower=0> J;          // number of schools
-  real y[N];         // estimated treatment effects
+  real y[J];         // estimated treatment effects
   real<lower=0> sigma[J];  // s.e. of effect estimates
   real<lower=0> prior_alpha; // power-scaling
   real<lower=0> likelihood_alpha; // power-scaling
