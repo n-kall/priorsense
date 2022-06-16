@@ -40,6 +40,7 @@ jobs:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
+          rtools-version: '42'
 
       # As cmdstanr is not yet on CRAN, configure the action to only install the
       # 'Depends' packages by default and then manually specify the 'Suggests'
@@ -53,11 +54,8 @@ jobs:
             testthat
             rmarkdown
             knitr
-
-      - name: Install Latest rstan
-        run: |
-          install.packages("rstan", repos = c("https://mc-stan.org/r-packages", getOption("repos"))); install.packages("StanHeaders", repos = c("https://mc-stan.org/r-packages", getOption("repos"))); install.packages("brms");
-        shell: Rscript {0}
+	    brms
+	    rstan
 
       - name: Build Cmdstan
         run: |
