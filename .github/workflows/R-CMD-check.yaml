@@ -54,8 +54,8 @@ jobs:
             testthat
             rmarkdown
             knitr
-	    brms
-	    rstan
+            brms
+            rstan
 
       - name: Build Cmdstan
         run: |
