@@ -1,6 +1,6 @@
 library(testthat)
 library(priorsense)
 library(rstan)
-library(cmdstanr)
+#library(cmdstanr)
 
 test_check("priorsense")
