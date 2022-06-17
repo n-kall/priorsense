@@ -46,6 +46,7 @@ jobs:
         with:
           extra-packages: |
             rcmdcheck
+            stan-dev/cmdstanr
             checkmate
             jsonlite
             posterior
@@ -62,7 +63,6 @@ jobs:
 
       - name: Build Cmdstan
         run: |
-          remotes::install_github("stan-dev/cmdstanr")
           cmdstanr::check_cmdstan_toolchain(fix = TRUE)
           cmdstanr::install_cmdstan(cores = parallel::detectCores())
         shell: Rscript {0}
