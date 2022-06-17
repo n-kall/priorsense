@@ -53,6 +53,9 @@ jobs:
             processx
             R6
             BH
+            RcppEigen
+            StanHeaders
+            RcppParallel
             withr
             stan-dev/cmdstanr
             testthat
