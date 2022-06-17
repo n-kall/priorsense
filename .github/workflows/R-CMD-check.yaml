@@ -47,7 +47,9 @@ jobs:
       # packages that are needed for R CMD CHECK
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          dependencies: NA
+          dependencies:
+            rstan
+            brms
           extra-packages: |
             BH
             rcmdcheck
@@ -55,8 +57,6 @@ jobs:
             testthat
             rmarkdown
             knitr
-            brms
-            rstan
 
       - name: Build Cmdstan
         run: |
