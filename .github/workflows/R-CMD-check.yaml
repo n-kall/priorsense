@@ -42,16 +42,10 @@ jobs:
           use-public-rspm: true
           rtools-version: '42'
 
-      # As cmdstanr is not yet on CRAN, configure the action to only install the
-      # 'Depends' packages by default and then manually specify the 'Suggests'
       # packages that are needed for R CMD CHECK
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          dependencies:
-            rstan
-            brms
           extra-packages: |
-            BH
             rcmdcheck
             stan-dev/cmdstanr
             testthat
