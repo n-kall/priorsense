@@ -9,7 +9,6 @@ summary.powerscaled_draws <- function(object, ...) {
 ##' Summarise draws
 ##'
 ##' Summarise power-scaled draws
-##' @export
 ##' @importFrom posterior summarise_draws
 ##' @param .x An object of class powerscaled_draws
 ##' @param ... summary functions
@@ -20,6 +19,7 @@ summary.powerscaled_draws <- function(object, ...) {
 ##' @param div_measures divergence measures
 ##' @param measure_args arguments for divergence measures
 ##' @param resample resample draws
+##' @export
 summarise_draws.powerscaled_draws <- function(.x,
                                               ...,
                                               .args = list(),
