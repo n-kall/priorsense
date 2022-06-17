@@ -47,6 +47,13 @@ jobs:
         with:
           extra-packages: |
             rcmdcheck
+	    checkmate
+	    jsonlite
+	    posterior
+	    processx
+	    R6
+            BH
+	    withr
             stan-dev/cmdstanr
             testthat
             rmarkdown
