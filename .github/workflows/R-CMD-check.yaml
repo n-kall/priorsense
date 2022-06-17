@@ -56,13 +56,13 @@ jobs:
             StanHeaders
             RcppParallel
             withr
-            stan-dev/cmdstanr
             testthat
             rmarkdown
             knitr
 
       - name: Build Cmdstan
         run: |
+          remotes::install_github("stan-dev/cmdstanr")
           cmdstanr::check_cmdstan_toolchain(fix = TRUE)
           cmdstanr::install_cmdstan(cores = parallel::detectCores())
         shell: Rscript {0}
