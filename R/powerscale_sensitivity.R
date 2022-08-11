@@ -117,19 +117,14 @@ powerscale_sensitivity.powerscaling_data <- function(x,
   mean_prior_sign <- gradients$quantities$prior$mean
   mean_lik_sign <- gradients$quantities$likelihood$mean
 
+  varnames <- unique(c(as.character(gradients$divergence$prior$variable),
+                as.character(gradients$divergence$likelihood$variable)))
 
   sense <- tibble::tibble(
-    # TODO: more elegant way to extract variables
-    variable = unique(
-      c(
-        gradients$divergence$prior$variable,
-        gradients$divergence$likelihood$variable
-      )
-    ),
+    variable = varnames,
     prior = prior_sense,
     likelihood = lik_sense
   )
-
 
   # categorise variables has prior-data conflict or uninformative
   # likelihood
