@@ -1,7 +1,8 @@
 # code adapted from spatstat.geom (c) Adrian Baddeley, Rolf Turner, Ege Rubak
 ewcdf <- function(x, weights = NULL) {
-  # assumes x and w are sorted wrt x
-  # assumes w is normalized (sums to 1)
+  x_idx <- order(x)
+  x <- x[x_idx]
+  weights <- weights[x_idx]
 
   nw <- length(weights)
   weighted <- (nw > 0)
