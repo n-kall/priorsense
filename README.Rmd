@@ -21,6 +21,7 @@ knitr::opts_chunk$set(
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![CRAN status](https://www.r-pkg.org/badges/version/priorsense)](https://CRAN.R-project.org/package=priorsense)
 [![R-CMD-check](https://github.com/n-kall/priorsense/workflows/R-CMD-check/badge.svg)](https://github.com/n-kall/priorsense/actions)
+[![Codecov test coverage](https://codecov.io/gh/n-kall/priorsense/branch/master/graph/badge.svg)](https://app.codecov.io/gh/n-kall/priorsense?branch=master)
 <!-- badges: end -->
 
 ## Overview
