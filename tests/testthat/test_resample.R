@@ -19,7 +19,7 @@ test_that("powerscale with resample actually resamples", {
     alpha = 0.5,
     resample = TRUE
   )
-  
+
   expect_equal(
     ps$powerscaling$resampled,
     TRUE

@@ -38,12 +38,18 @@ create_powerscaling_data.default <- function(x, get_draws, log_prior,
 
   # add predictions to draws if specified
   if (!is.null(prediction)) {
-    draws <- posterior::bind_draws(get_draws(x), prediction(x), along = "variable")
+    draws <- posterior::bind_draws(
+      get_draws(x),
+      prediction(x),
+      along = "variable"
+    )
+  } else {
+    draws <- get_draws(x)
   }
   psd <- list(
     fit = x,
     get_draws = get_draws,
-    draws = get_draws(x),
+    draws = draws,
     log_prior = log_prior(x),
     log_lik = log_lik(x),
     log_prior_fn = log_prior,
@@ -79,7 +85,7 @@ create_powerscaling_data.stanfit <- function(x, ...) {
 ##' @rdname create-powerscaling-data
 ##' @export
 create_powerscaling_data.CmdStanFit <- function(x, ...) {
-  
+
   create_powerscaling_data.default(
     x = x,
     get_draws = get_draws_CmdStanFit,

@@ -1,6 +1,6 @@
 x <- c(1, 2, 3, 4, 5)
 w <- rep(1, length(x))
-w <- w/sum(w)
+w <- w / sum(w)
 
 test_that("weighted quantities work when weights are 1", {
   expect_equal(

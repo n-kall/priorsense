@@ -73,7 +73,10 @@ moment_match.default <- function(
   lw <- as.vector(stats::weights(psis))
 
   # include information about number of MCMC chains
-  r_eff <- loo::relative_eff(1/exp(lw), chain_id = rep(1:nchains, each = S / nchains))
+  r_eff <- loo::relative_eff(
+    1 / exp(lw),
+    chain_id = rep(1:nchains, each = S / nchains)
+  )
 
   # try several transformations one by one
   # if one does not work, do not apply it and try another one
@@ -211,7 +214,6 @@ shift <- function(x, upars, lw, ...) {
 
     mean_original <- colMeans(upars)
     mean_weighted <- matrixStats::colWeightedMeans(upars, w = w)
-    shift <- mean_weighted - mean_original
 
     upars_new <- sweep(upars, 2, mean_original, "-")
     upars_new <- sweep(upars_new, 2, scaling, "*")
@@ -249,7 +251,6 @@ shift_and_scale <- function(x, upars, lw, ...) {
 
     mean_original <- colMeans(upars)
     mean_weighted <- matrixStats::colWeightedMeans(upars, w = w)
-    shift <- mean_weighted - mean_original
 
     upars_new <- sweep(upars, 2, mean_original, "-")
     upars_new <- sweep(upars_new, 2, scaling, "*")
@@ -284,8 +285,7 @@ shift_and_cov <- function(x, upars, lw, ...) {
   {
     chol(covar_weighted)
   },
-  error = function(cond)
-  {
+  error = function(cond) {
     return(NULL)
   }
   )
@@ -300,13 +300,11 @@ shift_and_cov <- function(x, upars, lw, ...) {
   if (is.null(chol1) || is.null(chol2)) {
     upars_new <- upars
     mapping <- diag(ncol(upars))
-    shift <- rep(0,ncol(upars))
   } else {
     mapping <- t(chol1) %*% solve(t(chol2))
 
     mean_original <- colMeans(upars)
     mean_weighted <- matrixStats::colWeightedMeans(upars, w = w)
-    shift <- mean_weighted - mean_original
 
     # transform posterior upars
     upars_new <- sweep(upars, 2, mean_original, "-")

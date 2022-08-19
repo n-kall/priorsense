@@ -3,7 +3,7 @@
 ##' Extract log prior from variable in fitted Stan model.
 ##'
 ##' @name log_prior
-##' 
+##'
 ##' @param x Model fit.
 ##' @param parameter_name Name of parameter in Stan model
 ##'   corresponding to log prior, default is "log_prior".
@@ -14,7 +14,7 @@ NULL
 ##' @rdname log_prior
 ##' @export
 log_prior_stanfit <- function(x,
-                                      parameter_name = "log_prior", ...) {
+                              parameter_name = "log_prior", ...) {
 
   if (!inherits(x, "stanfit"))
     stop("Not a stanfit object.", call. = FALSE)

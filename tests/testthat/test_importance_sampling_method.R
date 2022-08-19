@@ -11,7 +11,7 @@ sfit <- suppressWarnings(rstan::stan(
   chains = 1
 ))
 
-test_that("powerscale importance sampling methods are properly recorded", {  
+test_that("powerscale importance sampling methods are properly recorded", {
   expect_s3_class(
     suppressWarnings(powerscale(
       x = sfit,
@@ -43,7 +43,7 @@ test_that("powerscale importance sampling methods are properly recorded", {
 })
 
 test_that("powerscale_sequence importance sampling methods are properly recorded", {
-  
+
   expect_equal(
     powerscale_sequence(
       x = sfit,

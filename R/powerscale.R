@@ -1,7 +1,8 @@
 ##' Prior/likelihood power-scaling perturbation
 ##'
 ##' Estimate posterior draws based on power-scaling perturbations of
-##' prior or likelihood using importance sampling (and optionally moment matching).
+##' prior or likelihood using importance sampling (and optionally
+##' moment matching).
 ##'
 ##' @name powerscale-overview
 ##'
@@ -57,17 +58,14 @@ powerscale.powerscaling_data <- function(x,
   draws <- posterior::subset_draws(x$draws, variable = variable, ...)
 
   # get the correct importance sampling function
-  if (is.character(is_method)) {
-    is_method <- get(is_method, asNamespace("loo"))
-  }
+  is_method <- get(is_method, asNamespace("loo"))
 
   # calculate the log density ratios
   if (component == "prior") {
-    log_comp = "log_prior"
+    log_comp <- "log_prior"
   } else if (component == "likelihood") {
-    log_comp = "log_lik"
+    log_comp <- "log_lik"
   }
-
   log_ratios <- scaled_log_ratio(
     component_draws = x[[log_comp]],
     alpha = alpha
@@ -120,16 +118,16 @@ powerscale.powerscaling_data <- function(x,
     whitened_draws <- whiten_draws(draws, ...)
     draws_tr <- whitened_draws$draws
     loadings <- whitened_draws$loadings
-    transform_details = list(
+    transform_details <- list(
       transform = transform,
       loadings = loadings
     )
     draws <- draws_tr
   } else if (transform == "scale") {
     draws <- scale_draws(draws, ...)
-    transform_details = list(transform = transform)
+    transform_details <- list(transform = transform)
   } else {
-    transform_details = list(transform = transform)
+    transform_details <- list(transform = transform)
   }
 
   # reweight the draws with the calculated importance weights

@@ -3,9 +3,8 @@
 ##' @param weights importance weights (unnormalized)
 ##' @param ... unused
 mv_kl_div <- function(weights, ...) {
-  
+
   return(-mean(log(weights, base = 2)))
-  
 }
 
 ###' Multivariate Wasserstein distance
@@ -26,7 +25,7 @@ mv_wasserstein_dist <- function(draws1,
 
   if (is.null(weights1)) {
     weights1 <- rep(
-      1/posterior::ndraws(draws1),
+      1 / posterior::ndraws(draws1),
       times = posterior::ndraws(draws1)
     )
     draws1 <- posterior::weight_draws(x = draws1, weights = weights1)
@@ -34,25 +33,30 @@ mv_wasserstein_dist <- function(draws1,
 
   if (is.null(weights2)) {
     weights2 <- rep(
-      1/posterior::ndraws(draws2),
+      1 / posterior::ndraws(draws2),
       times = posterior::ndraws(draws2)
     )
     draws2 <- posterior::weight_draws(x = draws2, weights = weights2)
   }
 
   d1 <- transport::wpp(
-    posterior::as_draws_matrix(draws1, merge_chains = TRUE)[, 1:posterior::nvariables(draws1)],
+    posterior::as_draws_matrix(
+      x = draws1,
+      merge_chains = TRUE
+    )[, 1:posterior::nvariables(draws1)],
     mass = weights1
   )
   d2 <- transport::wpp(
-    posterior::as_draws_matrix(draws2, merge_chains = TRUE)[, 1:posterior::nvariables(draws2)],
+    posterior::as_draws_matrix(
+      x = draws2,
+      merge_chains = TRUE
+    )[, 1:posterior::nvariables(draws2)],
     mass = weights2
   )
 
   dist <- transport::subwasserstein(d1, d2, S = subsample_size)
 
   return(dist)
-
 }
 
 ##' Jensen-Shannon divergence
@@ -65,13 +69,29 @@ mv_wasserstein_dist <- function(draws1,
 ##' @return numeric
 js_div <- function(x, y, x_weights, y_weights, ...) {
 
-  y_density <- stats::density(y, from = min(c(x, y)), to = max(c(x, y)), weights = y_weights)$y
+  y_density <- stats::density(
+    x = y,
+    from = min(c(x, y)),
+    to = max(c(x, y)),
+    weights = y_weights
+  )$y
   y_density <- y_density / sum(y_density)
 
-  x_density <- stats::density(x, from = min(c(x, y)), to = max(c(x, y)), weights = x_weights)$y
+  x_density <- stats::density(
+    x = x,
+    from = min(c(x, y)),
+    to = max(c(x, y)),
+    weights = x_weights
+  )$y
+
   x_density <- x_density / sum(x_density)
 
-  div <- philentropy::jensen_shannon(x_density, y_density, testNA = FALSE, unit = "log2")
+  div <- philentropy::jensen_shannon(
+    P = x_density,
+    Q = y_density,
+    testNA = FALSE,
+    unit = "log2"
+  )
 
   return(c(js_div = div))
 }
@@ -95,7 +115,6 @@ js_dist <- function(x, y, x_weights, y_weights, ...) {
     )[[1]])
 
   return(c(js_dist = dist))
-
 }
 
 ##' Hellinger distance
@@ -108,18 +127,29 @@ js_dist <- function(x, y, x_weights, y_weights, ...) {
 ##' @return numeric
 hellinger_dist <- function(x, y, x_weights, y_weights, ...) {
 
-  y_density <- stats::density(y, from = min(c(x, y)), to = max(c(x, y)), weights = y_weights)$y
+  y_density <- stats::density(
+    x = y,
+    from = min(c(x, y)),
+    to = max(c(x, y)), weights = y_weights
+  )$y
   y_density <- y_density / sum(y_density)
 
-  x_density <- stats::density(x, from = min(c(x, y)), to = max(c(x, y)), weights = x_weights)$y
+  x_density <- stats::density(
+    x = x,
+    from = min(c(x, y)),
+    to = max(c(x, y)),
+    weights = x_weights
+  )$y
   x_density <- x_density / sum(x_density)
 
-  div <- philentropy::hellinger(x_density, y_density, testNA = FALSE)
+  div <- philentropy::hellinger(
+    P = x_density,
+    Q = y_density,
+    testNA = FALSE
+  )
 
   return(c(hellinger_dist = div))
 }
-
-
 
 ##' Kullback-Leibler divergence
 ##'
@@ -132,13 +162,29 @@ hellinger_dist <- function(x, y, x_weights, y_weights, ...) {
 ##'   estimated densitites
 kl_div <- function(x, y, x_weights, y_weights, ...) {
 
-  y_density <- stats::density(y, from = min(c(x, y)), to = max(c(x, y)), weights = y_weights)$y
+  y_density <- stats::density(
+    x = y,
+    from = min(c(x, y)),
+    to = max(c(x, y)),
+    weights = y_weights
+  )$y
   y_density <- y_density / sum(y_density)
 
-  x_density <- stats::density(x, from = min(c(x, y)), to = max(c(x, y)), weights = x_weights)$y
+  x_density <- stats::density(
+    x = x,
+    from = min(c(x, y)),
+    to = max(c(x, y)),
+    weights = x_weights
+  )$y
   x_density <- x_density / sum(x_density)
 
-  div <- philentropy::kullback_leibler_distance(x_density, y_density, testNA = FALSE, unit = "log", epsilon = 1e-05)
+  div <- philentropy::kullback_leibler_distance(
+    P = x_density,
+    Q = y_density,
+    testNA = FALSE,
+    unit = "log",
+    epsilon = 1e-05
+  )
 
   return(c(kl_div = div))
 }
@@ -165,8 +211,6 @@ kl_dist <- function(x, y, x_weights, y_weights, ...) {
 
   return(c(kl_dist = dist))
 }
-
-
 
 ##' Kolmogorov-Smirnov distance
 ##' @param x vector

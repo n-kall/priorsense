@@ -37,7 +37,7 @@ test_that("powerscale returns powerscaled_draws", {
       alpha = 0.8
     ),
     "powerscaled_draws"
-  )  
+  )
 }
 )
 
@@ -71,7 +71,7 @@ test_that("powerscale_sequence uses input alphas correctly", {
     symmetric = FALSE,
     length = 10
   ))
-  
+
   expect_equal(
     pss$alphas[1],
     0.5
@@ -120,8 +120,8 @@ test_that("powerscale_sequence adapts alphas and keeps pareto-k low", {
   expect_lt(
     pss$prior_scaled$draws_sequence[[length(pss$prior_scaled$draws_sequence)]]$powerscaling$importance_sampling$diagnostics$pareto_k,
     k_threshold
-  )  
-  
+  )
+
 }
 )
 
@@ -144,11 +144,11 @@ test_that("powerscale_sequence gives symmetric range", {
   )
   expect_equal(
     pss$alphas[length(pss$alphas)],
-    1/lower_alpha
+    1 / lower_alpha
   )
   expect_equal(
     pss$prior_scaled$draws_sequence[[length(pss$alphas)]]$powerscaling$alpha,
-    1/lower_alpha
+    1 / lower_alpha
   )
   expect_equal(
     length(pss$alphas),
@@ -160,4 +160,3 @@ test_that("powerscale_sequence gives symmetric range", {
   )
 }
 )
-

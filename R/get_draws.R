@@ -1,4 +1,6 @@
-get_draws_stanfit <- function(x, variable = NULL, excluded_variables = c("log_prior", "lp__"), ...) {
+get_draws_stanfit <- function(x, variable = NULL,
+                              excluded_variables = c("log_prior", "lp__"),
+                              ...) {
   if (is.null(variable)) {
 
     draws <- posterior::as_draws_df(as.array(x))
@@ -15,10 +17,16 @@ get_draws_stanfit <- function(x, variable = NULL, excluded_variables = c("log_pr
   return(draws)
 }
 
-get_draws_CmdStanFit <- function(x, variable = NULL, regex, excluded_variables = c("log_prior", "lp__"), ...) {
+get_draws_CmdStanFit <- function(x, variable = NULL, regex,
+                                 excluded_variables = c("log_prior", "lp__"),
+                                 ...) {
 
   if (is.null(variable)) {
-    draws <- posterior::as_draws_df(x$draws(), variable = variable, regex = regex)
+    draws <- posterior::as_draws_df(
+      x$draws(),
+      variable = variable,
+      regex = regex
+    )
 
     # remove unnecessary variables
     variable <- posterior::variables(draws)

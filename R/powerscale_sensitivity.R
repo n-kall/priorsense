@@ -51,7 +51,10 @@ powerscale_sensitivity.powerscaling_data <- function(x,
                                                      upper_alpha = 1.01,
                                                      div_measure = "cjs_dist",
                                                      measure_args = list(),
-                                                     component = c("prior", "likelihood"),
+                                                     component = c(
+                                                       "prior",
+                                                       "likelihood"
+                                                     ),
                                                      sensitivity_threshold = 0.05,
                                                      is_method = "psis",
                                                      moment_match = FALSE,
@@ -59,8 +62,7 @@ powerscale_sensitivity.powerscaling_data <- function(x,
                                                      resample = FALSE,
                                                      transform = FALSE,
                                                      prediction = NULL,
-                                                     ...
-                                                     ) {
+                                                     ...) {
   # input checks
   checkmate::assertClass(x, classes = "powerscaling_data")
   checkmate::assertCharacter(variable, null.ok = TRUE)
@@ -79,7 +81,7 @@ powerscale_sensitivity.powerscaling_data <- function(x,
 
 
 
-  if (is_method != "psis" & moment_match) {
+  if (is_method != "psis" && moment_match) {
     # TODO: also allow moment_match if loo::psis function is given as
     # argument
     moment_match <- FALSE
@@ -114,9 +116,6 @@ powerscale_sensitivity.powerscaling_data <- function(x,
     prior_sense <- NA
   }
 
-  mean_prior_sign <- gradients$quantities$prior$mean
-  mean_lik_sign <- gradients$quantities$likelihood$mean
-
   varnames <- unique(c(as.character(gradients$divergence$prior$variable),
                 as.character(gradients$divergence$likelihood$variable)))
 
@@ -129,12 +128,13 @@ powerscale_sensitivity.powerscaling_data <- function(x,
   # categorise variables has prior-data conflict or uninformative
   # likelihood
 
-  sense$diagnosis <- ifelse(sense$prior >= sensitivity_threshold & sense$likelihood >= sensitivity_threshold, "prior-data conflict",
-                            ifelse(sense$prior > sensitivity_threshold & sense$likelihood < sensitivity_threshold,
-                                   "weak likelihood",
-                                   "-"
-                                   )
-                            )
+  sense$diagnosis <- ifelse(
+    sense$prior >= sensitivity_threshold & sense$likelihood >= sensitivity_threshold, "prior-data conflict",
+    ifelse(sense$prior > sensitivity_threshold & sense$likelihood < sensitivity_threshold,
+           "weak likelihood",
+           "-"
+           )
+  )
 
   out <- list(
     # order by largest value first

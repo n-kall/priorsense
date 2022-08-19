@@ -242,7 +242,12 @@ powerscale_gradients.powerscaling_data <- function(x,
       )
 
       upper_mw_dist[[comp]] <- mv_wasserstein_dist(
-        posterior::weight_draws(base_draws_t, rep(1/posterior::ndraws(base_draws_t), times = posterior::ndraws(base_draws_t)), perturbed_draws_upper[[comp]]$draws)
+        posterior::weight_draws(
+          base_draws_t,
+          rep(1 / posterior::ndraws(base_draws_t),
+              times = posterior::ndraws(base_draws_t)),
+          perturbed_draws_upper[[comp]]$draws
+        )
       )
 
       out$multivariate_divergence[[comp]] <- c(
@@ -300,8 +305,10 @@ powerscale_quantities_gradients <- function(base_quantities,
 ##' @param upper_alpha upper alpha
 ##' @noRd
 ##' @return gradients
-powerscale_divergence_gradients <- function(lower_divergences, upper_divergences,
-                                            lower_alpha, upper_alpha, ...) {
+powerscale_divergence_gradients <- function(lower_divergences,
+                                            upper_divergences,
+                                            lower_alpha, upper_alpha,
+                                            ...) {
 
   variable <- lower_divergences$variable
 

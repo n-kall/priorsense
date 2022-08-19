@@ -95,19 +95,24 @@ weighted_summary_measures <- function(x) {
 ## Following is adapted from https://aakinshin.net/posts/weighted-quantiles/
 ##' @export
 ##' @rdname weighted_quantities
-quantile_weighted <- function(x, weights, probs = c(0.05, 0.95), type = "7", ...) {
+quantile_weighted <- function(x, weights, probs = c(0.05, 0.95),
+                              type = "7", ...) {
   if (type == "7") {
     # Weighted Type 7 quantile estimator
-    cdf_fun <- function(n, p) return(function(cdf_probs) {
-      h <- p * (n - 1) + 1
-      u <- pmax((h - 1) / n, pmin(h / n, cdf_probs))
-      u * n - h + 1
-    })
+    cdf_fun <- function(n, p) {
+      return(function(cdf_probs) {
+        h <- p * (n - 1) + 1
+        u <- pmax((h - 1) / n, pmin(h / n, cdf_probs))
+        u * n - h + 1
+      })
+    }
   } else if (type == "hd") {
     # Weighted Harrell-Davis quantile estimator
-    cdf_fun <- function(n, p) return(function(cdf_probs) {
-      stats::pbeta(cdf_probs, (n + 1) * p, (n + 1) * (1 - p))
-    })
+    cdf_fun <- function(n, p) {
+      return(function(cdf_probs) {
+        stats::pbeta(cdf_probs, (n + 1) * p, (n + 1) * (1 - p))
+      })
+    }
   }
   quants <- .quantile_weighted(
     x = x,

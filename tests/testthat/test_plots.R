@@ -36,6 +36,3 @@ test_that("diagnostic plots give no errors", {
     NA
   )
 })
-
-
-

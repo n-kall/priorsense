@@ -38,7 +38,7 @@ powerscale_sequence.stanfit <- function(x,
 ##' @rdname powerscale-overview
 ##' @export
 powerscale_sequence.powerscaling_data <- function(x, lower_alpha = 0.8,
-                                                  upper_alpha = 1/lower_alpha,
+                                                  upper_alpha = 1 / lower_alpha,
                                                   length = 9, variable = NULL,
                                                   component = c("prior", "likelihood"),
                                                   is_method = "psis",
@@ -55,49 +55,76 @@ powerscale_sequence.powerscaling_data <- function(x, lower_alpha = 0.8,
   if (auto_alpha_range) {
     alpha_range <- list(prior = NULL, likelihood = NULL)
     for (comp in component) {
-      lower_alpha <- find_alpha_threshold(x, component = comp, alpha_bound = lower_alpha, k_threshold = k_threshold, moment_match = moment_match)
-      upper_alpha <- find_alpha_threshold(x, component = comp, alpha_bound = upper_alpha, k_threshold = k_threshold, moment_match = moment_match)
+      lower_alpha <- find_alpha_threshold(
+        x,
+        component = comp,
+        alpha_bound = lower_alpha,
+        k_threshold = k_threshold,
+        moment_match = moment_match
+      )
+      upper_alpha <- find_alpha_threshold(
+        x,
+        component = comp,
+        alpha_bound = upper_alpha,
+        k_threshold = k_threshold,
+        moment_match = moment_match
+      )
       alpha_range[[comp]] <- list(lower_alpha, upper_alpha)
     }
-    lower_alpha <- max(alpha_range[["prior"]][[1]], alpha_range[["likelihood"]][[1]], na.rm = TRUE)
-    upper_alpha <- min(alpha_range[["prior"]][[2]], alpha_range[["likelihood"]][[2]], na.rm = TRUE)
+    lower_alpha <- max(
+      alpha_range[["prior"]][[1]],
+      alpha_range[["likelihood"]][[1]],
+      na.rm = TRUE
+    )
+    upper_alpha <- min(
+      alpha_range[["prior"]][[2]],
+      alpha_range[["likelihood"]][[2]],
+      na.rm = TRUE
+    )
   }
 
   if (!symmetric) {
-    alpha_seq <- seq(lower_alpha, upper_alpha, length.out = length)
+    alpha_seq <- seq(
+      lower_alpha,
+      upper_alpha,
+      length.out = length
+    )
   } else {
     if (abs(log(lower_alpha, 2)) < abs(log(upper_alpha, 2))) {
-      alpha_seq_l <- seq(lower_alpha, 1, length.out = length/2)
+      alpha_seq_l <- seq(lower_alpha, 1, length.out = length / 2)
       alpha_seq_l <- alpha_seq_l[-length(alpha_seq_l)]
-      alpha_seq_u <- rev(1/alpha_seq_l)
+      alpha_seq_u <- rev(1 / alpha_seq_l)
     } else {
-      alpha_seq_u <- seq(1, upper_alpha, length.out = length/2)
+      alpha_seq_u <- seq(1, upper_alpha, length.out = length / 2)
       alpha_seq_u <- alpha_seq_u[-1]
-      alpha_seq_l <- rev(1/alpha_seq_u)
+      alpha_seq_l <- rev(1 / alpha_seq_u)
     }
     alpha_seq <- c(alpha_seq_l, alpha_seq_u)
   }
 
 
   # extract the base draws
-  base_draws <- posterior::subset_draws(x$draws, variable = variable, ...)
+  base_draws <- posterior::subset_draws(
+    x$draws,
+    variable = variable,
+    ...)
 
   if (transform == "whiten") {
     base_draws_tr <- whiten_draws(base_draws, ...)
-    transform_details = list(
+    transform_details <- list(
       transform = transform,
       loadings = stats::cor(
-        base_draws_tr[,1:posterior::nvariables(base_draws_tr)],
-        base_draws[,1:posterior::nvariables(base_draws)]
+        base_draws_tr[, 1:posterior::nvariables(base_draws_tr)],
+        base_draws[, 1:posterior::nvariables(base_draws)]
       )
     )
 
     base_draws <- base_draws_tr
   } else if (transform == "scale") {
     base_draws <- scale_draws(base_draws, ...)
-    transform_details = list(transform = transform)
+    transform_details <- list(transform = transform)
   } else {
-    transform_details = list(transform = transform)
+    transform_details <- list(transform = transform)
   }
 
 
@@ -148,7 +175,7 @@ powerscale_sequence.powerscaling_data <- function(x, lower_alpha = 0.8,
       if (alpha_seq[i] == 1) {
         next
       }
-      
+
       # calculate the scaled draws
       scaled_draws_list[[i]] <- powerscale(
         x = x,
@@ -170,7 +197,7 @@ powerscale_sequence.powerscaling_data <- function(x, lower_alpha = 0.8,
 
     }
   }
-  
+
   out <- list(
     base_draws = base_draws,
     prior_scaled = prior_scaled,

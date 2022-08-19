@@ -1,14 +1,18 @@
 ##' Example Stan model for power-scaling
 ##'
-##' Provides example models (with data) that are ready for use with power-scaling.
-##' @param model Character specifying which model code to return. Currently "univariate_normal" and "eight_schools" are implemented.
+##' Provides example models (with data) that are ready for use with
+##' power-scaling.
+##' @param model Character specifying which model code to
+##'   return. Currently "univariate_normal" and "eight_schools" are
+##'   implemented.
 ##' @return List containing model code and corresponding data.
 ##' @export
 example_powerscale_model <- function(model = "univariate_normal") {
 
   examples <- powerscale_examples()
 
-  return(list(model_code = examples[[model]][["model_code"]], data = examples[[model]][["data"]]))
+  return(list(model_code = examples[[model]][["model_code"]],
+              data = examples[[model]][["data"]]))
 }
 
 powerscale_examples <- function() {

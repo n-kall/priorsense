@@ -60,9 +60,9 @@ find_alpha_threshold.default <- function(x,
     upper <- alpha_bound
   }
 
-  if (lower < 1 & upper < 1) {
+  if (lower < 1 && upper < 1) {
     comparison <- below_one_comparison
-  } else if (lower > 1 & upper > 1) {
+  } else if (lower > 1 && upper > 1) {
     comparison <- above_one_comparison
   }
 
@@ -71,7 +71,7 @@ find_alpha_threshold.default <- function(x,
   continue <- TRUE
 
   while (continue) {
-    
+
     # calculate criterion
     new_pareto_k <- suppressWarnings(
       powerscale(

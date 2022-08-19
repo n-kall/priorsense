@@ -4,10 +4,11 @@
 ##' samples.
 ##'
 ##' The Cumulative Jensen-Shannon distance is a symmetric metric based
-##' on the cumulative Jensen-Shannon divergence. The divergence CJS(P || Q) between
-##' two cumulative distribution functions P and Q is defined as:
+##' on the cumulative Jensen-Shannon divergence. The divergence CJS(P || Q)
+##' between two cumulative distribution functions P and Q is defined as:
 ##'
-##' \deqn{CJS(P || Q) = \sum P(x) \log \frac{P(x)}{0.5 (P(x) + Q(x))} + \frac{1}{2 \ln 2} \sum (Q(x) - P(x))}
+##' \deqn{CJS(P || Q) = \sum P(x) \log \frac{P(x)}{0.5 (P(x) + Q(x))} +
+##' \frac{1}{2 \ln 2} \sum (Q(x) - P(x))}
 ##'
 ##' The symmetric metric is defined as:
 ##'
@@ -32,9 +33,19 @@
 ##'   Notes in Computer Science, vol 9285.  Springer, Cham.
 ##'   \code{doi:10.1007/978-3-319-23525-7_11}
 ##' @export
-cjs_dist <- function(x, y, x_weights, y_weights, metric = TRUE, unsigned = TRUE, ...) {
+cjs_dist <- function(x,
+                     y,
+                     x_weights,
+                     y_weights,
+                     metric = TRUE,
+                     unsigned = TRUE,
+                     ...) {
 
-  if (all(is.na(x)) | all(is.na(y)) | (all(y_weights == 0) & !is.null(y_weights))) {
+  if (
+    all(is.na(x)) ||
+      all(is.na(y)) ||
+      (all(y_weights == 0) && !is.null(y_weights))
+  ) {
     cjs <- NA
   } else {
     cjs <- .cjs_dist(x, y, x_weights, y_weights, metric, ...)
@@ -57,10 +68,10 @@ cjs_dist <- function(x, y, x_weights, y_weights, metric = TRUE, unsigned = TRUE,
   wq <- y_weights[y_idx]
 
   if (is.null(wp)) {
-    wp <- rep(1/length(x), length(x))
+    wp <- rep(1 / length(x), length(x))
   }
   if (is.null(wq)) {
-    wq <- rep(1/length(y), length(y))
+    wq <- rep(1 / length(y), length(y))
   }
 
   if (all(x == y)) {
@@ -69,10 +80,10 @@ cjs_dist <- function(x, y, x_weights, y_weights, metric = TRUE, unsigned = TRUE,
     # bins from stepfun
     bins <- x[-length(x)]
     binwidth <- diff(x)
-    Px <- cumsum(wp/sum(wp))
-    Px <- Px[-length(Px)]
-    Qx <- cumsum(wq/sum(wq))
-    Qx <- Qx[-length(Qx)]
+    px <- cumsum(wp / sum(wp))
+    px <- px[-length(px)]
+    qx <- cumsum(wq / sum(wq))
+    qx <- qx[-length(qx)]
   } else {
     # otherwise the draws are not the same (e.g. resampled) we use
     # approximation with bins and ewcdf. There is a slight bias in
@@ -87,30 +98,30 @@ cjs_dist <- function(x, y, x_weights, y_weights, metric = TRUE, unsigned = TRUE,
     binwidth <- bins[2] - bins[1]
 
     # calculate required weighted ecdfs
-    Px <- ewcdf(x, wp)(bins)
-    Qx <- ewcdf(y, wq)(bins)
+    px <- ewcdf(x, wp)(bins)
+    qx <- ewcdf(y, wq)(bins)
   }
 
   # calculate integral of ecdfs
-  Px_int <- sum(Px * binwidth)
-  Qx_int <- sum(Qx * binwidth)
+  px_int <- sum(px * binwidth)
+  qx_int <- sum(qx * binwidth)
 
   # calculate cjs
-  cjs_PQ <-  sum(binwidth * (
-    Px * (log(Px, base = 2) -
-            log(0.5 * Px + 0.5 * Qx, base = 2)
-    )), na.rm = TRUE) + 0.5 / log(2) * (Qx_int - Px_int)
+  cjs_pq <-  sum(binwidth * (
+    px * (log(px, base = 2) -
+            log(0.5 * px + 0.5 * qx, base = 2)
+    )), na.rm = TRUE) + 0.5 / log(2) * (qx_int - px_int)
 
-  cjs_QP <- sum(binwidth * (
-    Qx * (log(Qx, base = 2) -
-            log(0.5 * Qx + 0.5 * Px, base = 2)
-    )), na.rm = TRUE) + 0.5 / log(2) * (Px_int - Qx_int)
+  cjs_qp <- sum(binwidth * (
+    qx * (log(qx, base = 2) -
+            log(0.5 * qx + 0.5 * px, base = 2)
+    )), na.rm = TRUE) + 0.5 / log(2) * (px_int - qx_int)
 
   # calculate upper bound
-  bound <- Px_int + Qx_int
+  bound <- px_int + qx_int
 
   # normalise with respect to upper bound
-  out <- (cjs_PQ + cjs_QP) / bound
+  out <- (cjs_pq + cjs_qp) / bound
 
   if (metric) {
     out <- sqrt(out)

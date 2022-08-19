@@ -7,5 +7,5 @@
 scaled_log_ratio <- function(component_draws, alpha,
                              ...) {
   # calculate log ratios for power-scaling
-  return ((alpha - 1) * component_draws)
+  return((alpha - 1) * component_draws)
 }

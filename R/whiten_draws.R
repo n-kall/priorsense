@@ -27,7 +27,7 @@ whiten_draws <- function(draws, ...) {
   G <- eR$vectors
   theta <- eR$values
   G <- sweep(G, 2, sign(diag(G)), "*")
-  W <- diag(1/sqrt(theta)) %*% t(G) %*% diag(1/sqrt(v))
+  W <- diag(1 / sqrt(theta)) %*% t(G) %*% diag(1 / sqrt(v))
   draws_tr <- tcrossprod(base_draws, W)
   draws_tr <- sweep(draws_tr, 2, colMeans(draws_tr))
 
@@ -35,7 +35,10 @@ whiten_draws <- function(draws, ...) {
 
   # cleanup transformed draws
   draws_tr <- posterior::as_draws_df(draws_tr)
-  posterior::variables(draws_tr) <- paste0("C", 1:posterior::nvariables(draws_tr))
+  posterior::variables(draws_tr) <- paste0(
+    "C",
+    1:posterior::nvariables(draws_tr)
+  )
 
   # add weights column back
   if (!(is.null(wei))) {

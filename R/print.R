@@ -62,13 +62,13 @@ print.powerscaled_sequence <- function(x, ...) {
   if (!is.null(x$likelihood_scaled)) {
     component <- c("likelihood", component)
   }
-  
+
   cat("base draws:\n")
   print(x$base_draws)
 
   cat(
     "\npower-scaling\n",
-    paste0("alpha range: [", min(x$alphas), ", " , max(x$alphas), "]\n"),
+    paste0("alpha range: [", min(x$alphas), ", ", max(x$alphas), "]\n"),
     paste("length of sequence:", length(x$alphas), "\n"),
     paste("scaled component:", component, "\n"),
     paste("importance sampling method:", x$is_method, "\n"),
@@ -83,7 +83,7 @@ print.powerscaled_sequence <- function(x, ...) {
 print.powerscaled_sensitivity_summary <- function(x, ...) {
 
   cat(paste0("Sensitivity based on ", x$div_measure, ":\n"))
-  
+
   print(x$sensitivity)
   if (!is.null(x$loadings)) {
     cat("Factor loadings:\n")

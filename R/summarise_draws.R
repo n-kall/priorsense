@@ -36,7 +36,7 @@ summarise_draws.powerscaled_draws <- function(.x,
 
   .args <- as.list(.args)
 
-  if (resample & !(.x$powerscaling$resampled)) {
+  if (resample && !(.x$powerscaling$resampled)) {
     # only resample if specified and draws are not already resampled
     target_draws <- posterior::resample_draws(
       posterior::merge_chains(.x$draws)
@@ -45,7 +45,7 @@ summarise_draws.powerscaled_draws <- function(.x,
     target_draws <- .x$draws
   }
 
-  if (!resample & !.x$powerscaling$resampled) {
+  if (!resample && !.x$powerscaling$resampled) {
     # without resampling, only weighted quantities used
     funs <- as.list(
       paste0(funs, "_weighted")
@@ -58,12 +58,19 @@ summarise_draws.powerscaled_draws <- function(.x,
     )
 
     if (diagnostics) {
-      funs <- c(funs, "n_eff_mean", "pareto_k_mean", "n_eff_var", "pareto_k_var")
-      .args <- c(.args, log_ratios = .x$powerscaling$importance_sampling$orig_log_ratios)
+      funs <- c(
+        funs,
+        "n_eff_mean",
+        "pareto_k_mean",
+        "n_eff_var",
+        "pareto_k_var"
+      )
+      .args <- c(
+        .args,
+        log_ratios = .x$powerscaling$importance_sampling$orig_log_ratios
+      )
     }
-    
   }
-
 
   summ <- posterior::summarise_draws(
     target_draws,
@@ -148,10 +155,10 @@ summarise_draws.powerscaled_sequence <- function(.x,
     y = base_distance,
     by = "variable"
   )
-  
+
   base_summary_prior <- c()
   base_summary_likelihood <- c()
-  
+
   # for prior-scaled
   if (!is.null(.x$prior_scaled)) {
 
@@ -182,11 +189,11 @@ summarise_draws.powerscaled_sequence <- function(.x,
 
   # for likelihood-scaled
   if (!is.null(.x$likelihood_scaled)) {
-    
+
     base_summary_likelihood <- base_summary
     base_summary_likelihood$component <- "likelihood"
 
-    # loop over and summarise set of power-scaled posteriors    
+    # loop over and summarise set of power-scaled posteriors
     for (scaled in .x$likelihood_scaled$draws_sequence) {
 
       quantities <- summarise_draws(
@@ -198,7 +205,7 @@ summarise_draws.powerscaled_sequence <- function(.x,
       )
 
       quant_df <- as.data.frame(quantities[[1]])
-      
+
       quant_df$alpha <- quantities$powerscaling$alpha
       quant_df$component <- quantities$powerscaling$component
       quant_df$pareto_k <- quantities$powerscaling$importance_sampling$diagnostics$pareto_k

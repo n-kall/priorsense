@@ -3,7 +3,7 @@
 ##' Extract joint log likelihood from fitted model
 ##'
 ##' @name joint_log_lik
-##' 
+##'
 ##' @param x Model fit.
 ##' @param parameter_name Name of parameter in Stan model
 ##'   corresponding to log prior, default is "log_prior".
@@ -43,6 +43,6 @@ joint_log_lik_CmdStanFit <- function(x, parameter_name = "log_lik", ...) {
   # back to draws_array
   log_lik <- posterior::as_draws_array(log_lik)
   posterior::variables(log_lik) <- parameter_name
-  
+
   return(log_lik)
 }

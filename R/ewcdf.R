@@ -1,26 +1,23 @@
 # code adapted from spatstat.geom (c) Adrian Baddeley, Rolf Turner, Ege Rubak
-ewcdf <- function(x, weights = NULL)
-{
+ewcdf <- function(x, weights = NULL) {
   # assumes x and w are sorted wrt x
   # assumes w is normalized (sums to 1)
 
-  nx <- length(x)
   nw <- length(weights)
   weighted <- (nw > 0)
 
   rl <- rle(x)
   vals <- rl$values
-  if(!weighted) {
+  if (!weighted) {
     wmatch <- rl$lengths
   } else {
-    nv <- length(vals)
     wmatch <- tabsumweight(x, weights)
   }
   ## cumulative weight in each interval
   cumwt <- cumsum(wmatch)
   totwt <- sum(wmatch)
-  ## rescale ?
-  cumwt <- cumwt/totwt
+  ## rescale
+  cumwt <- cumwt / totwt
   totwt <- 1
   ## make function
   rval <- stats::approxfun(
@@ -38,12 +35,11 @@ ewcdf <- function(x, weights = NULL)
 
 tabsumweight <- function(x, weights) {
   v <- unique(sort(x))
-  nx <- length(x)
   nv <- length(v)
   out <- rep(0, times = nv)
   for (xi in x) {
     vi <- min(which(v >= xi))
     out[vi] <- out[vi] + weights[vi]
   }
-  out
+  return(out)
 }
