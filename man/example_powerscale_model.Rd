@@ -7,11 +7,14 @@
 example_powerscale_model(model = "univariate_normal")
 }
 \arguments{
-\item{model}{Character specifying which model code to return. Currently "univariate_normal" and "eight_schools" are implemented.}
+\item{model}{Character specifying which model code to
+return. Currently "univariate_normal" and "eight_schools" are
+implemented.}
 }
 \value{
 List containing model code and corresponding data.
 }
 \description{
-Provides example models (with data) that are ready for use with power-scaling.
+Provides example models (with data) that are ready for use with
+power-scaling.
 }

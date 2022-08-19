@@ -27,9 +27,19 @@ power-scaling prior or likelihood.
 \examples{
 \dontrun{
 example_model <- example_powerscale_model()
-fit <- rstan::stan(model_code = example_model$model_code, data = example_model$data)
-draws <- posterior::subset_draws(posterior::as_draws_df(fit), variable = c("mu", "sigma"))
+fit <- rstan::stan(
+    model_code = example_model$model_code,
+    data = example_model$data
+)
+draws <- posterior::subset_draws(
+    posterior::as_draws_df(fit),
+    variable = c("mu", "sigma")
+)
 log_prior <- log_prior_stanfit(fit)
-posterior::summarise_draws(draws, mean, ~powerscale_derivative(.x, log_prior, quantity = "mean"))
+posterior::summarise_draws(
+    draws,
+    mean,
+    ~powerscale_derivative(.x, log_prior, quantity = "mean")
+)
 }
 }
