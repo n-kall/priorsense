@@ -67,7 +67,7 @@ StatEwcdf <- ggplot2::ggproto(
       data_ecdf <- stats::ecdf(data$x)(x)
     } else {
       data_ecdf <-
-        spatstat.geom::ewcdf(
+        ewcdf(
           data$x,
           weights = data$weight / sum(data$weight)
         )(x)
