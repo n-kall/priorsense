@@ -31,10 +31,10 @@ parameters {
   real<lower=0> sigma;
 }
 transformed parameters {
-  real log_prior = 0;
+  real lprior = 0;
   // priors
-  log_prior += normal_lpdf(mu | 0, 1);
-  log_prior += normal_lpdf(sigma | 0, 2.5);
+  lprior += normal_lpdf(mu | 0, 1);
+  lprior += normal_lpdf(sigma | 0, 2.5);
 }
 model {
   target += prior_alpha * log_prior;
@@ -87,12 +87,12 @@ model {
 }
 generated quantities  {
   vector[J] log_lik;
-  real log_prior;
+  real lprior;
   for (j in 1:J)
     log_lik[j] = normal_lpdf(y[j] | theta[j], sigma[j]);
 
   // priors to power-scale
-  log_prior = cauchy_lpdf(tau | 0, 5)
+  lprior = cauchy_lpdf(tau | 0, 5)
     + normal_lpdf(mu | 0, 5);
 }
 

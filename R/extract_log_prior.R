@@ -5,16 +5,15 @@
 ##' @name log_prior
 ##'
 ##' @param x Model fit.
-##' @param parameter_name Name of parameter in Stan model
-##'   corresponding to log prior, default is "log_prior".
+##' @param log_prior_name Name of parameter in Stan model
+##'   corresponding to log prior, default is "lprior".
 ##' @param ... Arguments passed to individual methods.
 ##' @return A draws_array object containing log_prior values.
 NULL
 
 ##' @rdname log_prior
 ##' @export
-log_prior_stanfit <- function(x,
-                              parameter_name = "log_prior", ...) {
+log_prior_stanfit <- function(x, log_prior_name, ...) {
 
   if (!inherits(x, "stanfit"))
     stop("Not a stanfit object.", call. = FALSE)
@@ -25,8 +24,8 @@ log_prior_stanfit <- function(x,
     stop("Please load the 'rstan' package.", call. = FALSE)
 
   log_prior <- posterior::subset_draws(
-    posterior::as_draws_array(x, variable = parameter_name),
-    variable = parameter_name
+    posterior::as_draws_array(x, variable = log_prior_name),
+    variable = "lprior"
   )
 
   return(log_prior)
@@ -34,9 +33,9 @@ log_prior_stanfit <- function(x,
 
 ##' @rdname log_prior
 ##' @export
-log_prior_CmdStanFit <- function(x, parameter_name = "log_prior", ...) {
+log_prior_CmdStanFit <- function(x, log_prior_name = "lprior", ...) {
 
-  log_prior <- x$draws(variables = parameter_name)
+  log_prior <- x$draws(variables = log_prior_name)
 
   return(log_prior)
 }
