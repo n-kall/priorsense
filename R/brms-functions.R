@@ -64,7 +64,7 @@ powerscale_sensitivity.brmsfit <- function(x,
 ##' @export
 joint_log_lik_brmsfit <- function(x, ...) {
 
-  log_lik <- rowSums(log_lik(x, ...))
+  log_lik <- rowSums(brms::log_lik(x, ...))
   chains <- x$fit@sim$chains
 
   log_lik <- posterior::draws_array(
