@@ -17,7 +17,7 @@ joint_log_lik_stanfit <- function(x, log_lik_name = "log_lik", ...) {
   log_lik <- rowSums(
     x = loo::extract_log_lik(
       stanfit = x,
-      log_lik_name = log_lik_name,
+      parameter_name = log_lik_name,
       merge_chains = FALSE
     ),
     dims = 2

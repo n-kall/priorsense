@@ -37,7 +37,7 @@ transformed parameters {
   lprior += normal_lpdf(sigma | 0, 2.5);
 }
 model {
-  target += prior_alpha * log_prior;
+  target += prior_alpha * lprior;
   // likelihood
   target += likelihood_alpha * normal_lpdf(y | mu, sigma);
 }
