@@ -82,10 +82,10 @@ model {
 generated quantities {
   vector[N] log_lik;
   // likelihood
-  real log_prior;
+  real lprior;
   // joint prior
   for (n in 1:N) log_lik[n] =  normal_lpdf(y[n] | mu, sigma);
-  log_prior = normal_lpdf(mu | 0, 1)
+  lprior = normal_lpdf(mu | 0, 1) +
 	normal_lpdf(sigma | 0, 2.5);
 }
 ```
