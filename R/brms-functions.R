@@ -1,10 +1,8 @@
 ##' @rdname create-powerscaling-data
-##' @importFrom priorsense create_powerscaling_data
-##' @export create_powerscaling_data
 ##' @export
 create_powerscaling_data.brmsfit <- function(x, ...) {
 
-  priorsense::create_powerscaling_data.default(
+  create_powerscaling_data.default(
     x = x,
     log_prior = log_prior_brmsfit,
     log_lik = joint_log_lik_brmsfit,
@@ -18,8 +16,6 @@ create_powerscaling_data.brmsfit <- function(x, ...) {
 }
 
 ##' @rdname powerscale-overview
-##' @importFrom priorsense powerscale
-##' @export powerscale
 ##' @export
 powerscale.brmsfit <- function(x,
                                component,
@@ -28,7 +24,7 @@ powerscale.brmsfit <- function(x,
                                ) {
   psd <- create_powerscaling_data.brmsfit(x, ...)
 
-  priorsense::powerscale.powerscaling_data(
+  powerscale.powerscaling_data(
     psd,
     component = component,
     alpha = alpha,
@@ -38,8 +34,6 @@ powerscale.brmsfit <- function(x,
 }
 
 ##' @rdname powerscale-overview
-##' @importFrom priorsense powerscale_sequence
-##' @export powerscale_sequence
 ##' @export
 powerscale_sequence.brmsfit <- function(x,
                                         ...
@@ -47,13 +41,11 @@ powerscale_sequence.brmsfit <- function(x,
 
   psd <- create_powerscaling_data.brmsfit(x, ...)
 
-  priorsense::powerscale_sequence.powerscaling_data(psd, ...)
+  powerscale_sequence.powerscaling_data(psd, ...)
 
 }
 
 ##' @rdname powerscale-sensitivity
-##' @importFrom priorsense powerscale_sensitivity
-##' @exrpot powerscale_sensitivity
 ##' @export
 powerscale_sensitivity.brmsfit <- function(x,
                                            ...
@@ -61,7 +53,7 @@ powerscale_sensitivity.brmsfit <- function(x,
 
   psd <- create_powerscaling_data.brmsfit(x, ...)
 
-  priorsense::powerscale_sensitivity.powerscaling_data(
+  powerscale_sensitivity.powerscaling_data(
     psd,
     ...
   )
