@@ -8,6 +8,8 @@ get_draws_stanfit <- function(x, variable = NULL,
     draws <- posterior::as_draws_df(as.array(x))
 
     # remove unnecessary variables
+    variable <- posterior::variables(draws)
+
     has_prefix <- sapply(
       excluded_variables,
       function(p) startsWith(variable, p)
