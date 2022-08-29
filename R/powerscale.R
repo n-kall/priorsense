@@ -41,8 +41,7 @@ powerscale.powerscaling_data <- function(x,
                                          transform = FALSE,
                                          prediction = NULL,
                                          variable = NULL,
-                                         prior_selection = NULL,
-                                         likelihood_selection = NULL,
+                                         selection = NULL,
                                          ...) {
 
   # input checks
@@ -56,46 +55,40 @@ powerscale.powerscaling_data <- function(x,
   checkmate::assertLogical(transform)
   checkmate::assertFunction(prediction, null.ok = TRUE)
   checkmate::assertCharacter(variable, null.ok = TRUE)
-  checkmate::assertNumeric(prior_selection, null.ok = TRUE)
-  checkmate::assertNumeric(likelihood_selection, null.ok = TRUE)
+  checkmate::assertNumeric(selection, null.ok = TRUE)
 
   draws <- posterior::subset_draws(x$draws, variable = variable, ...)
 
   # get the correct importance sampling function
   is_method <- get(is_method, asNamespace("loo"))
 
-  # calculate the log density ratios
+  # select the appropriate component draws
   if (component == "prior") {
-    if (!(is.null(prior_selection))) {
-      log_comp_draws <- rowSums(posterior::as_draws_matrix(x[["log_prior"]])[, prior_selection])
-    } else {
-      log_comp_draws <- rowSums(
-        posterior::as_draws_matrix(x[["log_prior"]])
-      )
-    }
+      log_comp_draws <- x[["log_prior"]]
   } else if (component == "likelihood") {
-    if (!(is.null(likelihood_selection))) {
-      log_comp_draws <- rowSums(posterior::as_draws_matrix(x[["log_lik"]])[, likelihood_selection])
-    } else {
-      log_comp_draws <- rowSums(
-        posterior::as_draws_matrix(x[["log_lik"]])
-      )
-    }
+    log_comp_draws <- x[["log_lik"]]
   }
+
+  # subset component draws if specified
+  if (!(is.null(selection))) {
+    log_comp_draws <- log_comp_draws[, , selection]
+  }
+
+  # sum component draws
+  log_comp_draws <- rowsums_draws(log_comp_draws)
+
+  # calculate the log weights
   log_ratios <- scaled_log_ratio(
     component_draws = log_comp_draws,
-    alpha = alpha    
+    alpha = alpha
   )
-
-  log_ratios <- posterior::as_draws_matrix(as.matrix(log_ratios))
 
   if (!moment_match) {
     # calculate the importance weights
     importance_sampling <- is_method(
       log_ratios = log_ratios,
       r_eff = loo::relative_eff(
-        x = exp(-log_ratios),
-        chain_id = rep(posterior::chain_ids(log_ratios), length.out = posterior::ndraws(log_ratios))
+        x = exp(-log_ratios)
       )
     )
   } else {
@@ -121,7 +114,8 @@ powerscale.powerscaling_data <- function(x,
       psis = importance_sampling,
       component_fn = component_fn,
       alpha = alpha,
-      k_threshold = k_threshold
+      k_threshold = k_threshold,
+      selection = selection
     )
 
     importance_sampling <- mm$importance_sampling

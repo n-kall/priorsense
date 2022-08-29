@@ -74,7 +74,7 @@ moment_match.default <- function(
 
   # include information about number of MCMC chains
   r_eff <- loo::relative_eff(
-    1 / exp(lw),
+    exp(-lw),
     chain_id = rep(1:nchains, each = S / nchains)
   )
 
@@ -410,9 +410,15 @@ log_ratio_upars <- function(x, ...) {
   UseMethod("log_ratio_upars")
 }
 
-log_ratio_upars.stanfit <- function(x, upars, component_fn, ...) {
+log_ratio_upars.stanfit <- function(x, upars, component_fn, selection, ...) {
   x <- update_pars(x, upars = upars, ...)
   component_draws <- component_fn(x)
+  if (!(is.null(selection))) {
+    component_draws <- component_draws[, selection]
+  }
+
+  component_draws <- rowsums_draws(component_draws)
+  
   scaled_log_ratio(component_draws, ...)
 }
 
