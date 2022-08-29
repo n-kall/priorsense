@@ -7,19 +7,19 @@
 \alias{log_prior_CmdStanFit}
 \title{Extract log prior from fitted model}
 \usage{
-log_prior_brmsfit(x, ...)
+log_prior_brmsfit(x, log_prior_name = "lprior", ...)
 
-log_prior_stanfit(x, log_prior_name, ...)
+log_prior_stanfit(x, log_prior_name = "lprior", ...)
 
 log_prior_CmdStanFit(x, log_prior_name = "lprior", ...)
 }
 \arguments{
 \item{x}{Model fit.}
 
-\item{...}{Arguments passed to individual methods.}
-
 \item{log_prior_name}{Name of parameter in Stan model
 corresponding to log prior, default is "lprior".}
+
+\item{...}{Arguments passed to individual methods.}
 }
 \value{
 A draws_array object containing log_prior values.

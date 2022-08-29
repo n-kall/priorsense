@@ -32,6 +32,8 @@ powerscale(x, ...)
   transform = FALSE,
   prediction = NULL,
   variable = NULL,
+  prior_selection = NULL,
+  likelihood_selection = NULL,
   ...
 )
 
