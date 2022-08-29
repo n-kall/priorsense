@@ -55,7 +55,7 @@ powerscale.powerscaling_data <- function(x,
   checkmate::assertLogical(transform)
   checkmate::assertFunction(prediction, null.ok = TRUE)
   checkmate::assertCharacter(variable, null.ok = TRUE)
-  checkmate::assertNumber(prior_selection, null.ok = TRUE)
+  checkmate::assertNumeric(prior_selection, null.ok = TRUE)
 
   draws <- posterior::subset_draws(x$draws, variable = variable, ...)
 
@@ -65,7 +65,7 @@ powerscale.powerscaling_data <- function(x,
   # calculate the log density ratios
   if (component == "prior") {
     if (!(is.null(prior_selection))) {
-      log_comp_draws <- posterior::as_draws_matrix(x[["log_prior"]])[, prior_selection]
+      log_comp_draws <- rowSums(posterior::as_draws_matrix(x[["log_prior"]])[, prior_selection])
     } else {
       log_comp_draws <- rowSums(
         posterior::as_draws_matrix(x[["log_prior"]])
