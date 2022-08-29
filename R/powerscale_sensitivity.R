@@ -62,6 +62,8 @@ powerscale_sensitivity.powerscaling_data <- function(x,
                                                      resample = FALSE,
                                                      transform = FALSE,
                                                      prediction = NULL,
+                                                     prior_selection = NULL,
+                                                     likelihood_selection = NULL,
                                                      ...) {
   # input checks
   checkmate::assertClass(x, classes = "powerscaling_data")
@@ -78,6 +80,8 @@ powerscale_sensitivity.powerscaling_data <- function(x,
   checkmate::assertLogical(resample)
   checkmate::assertLogical(transform)
   checkmate::assertFunction(prediction, null.ok = TRUE)
+  checkmate::assertNumeric(prior_selection, null.ok = TRUE)
+  checkmate::assertNumeric(likelihood_selection, null.ok = TRUE)
 
 
 
@@ -102,6 +106,8 @@ powerscale_sensitivity.powerscaling_data <- function(x,
     transform = transform,
     resample = resample,
     prediction = prediction,
+    prior_selection = prior_selection,
+    likelihood_selection = likelihood_selection,
     ...
   )
 

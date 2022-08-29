@@ -69,6 +69,8 @@ powerscale_gradients.powerscaling_data <- function(x,
                                          transform = FALSE,
                                          prediction = NULL,
                                          scale = FALSE,
+                                         prior_selection = NULL,
+                                         likelihood_selection = NULL,
                                          ...) {
 
   # input checks
@@ -91,6 +93,9 @@ powerscale_gradients.powerscaling_data <- function(x,
   base_draws <- x$draws
 
   base_draws <- posterior::subset_draws(base_draws, variable = variable, ...)
+
+  # specify selection
+  selection <- list(prior = prior_selection, likelihood = likelihood_selection)
 
   # transform if needed
   loadings <- NULL
@@ -144,6 +149,7 @@ powerscale_gradients.powerscaling_data <- function(x,
       resample = resample,
       transform = transform,
       prediction = prediction,
+      selection = selection[[comp]],
       ...
     )
 
@@ -159,6 +165,7 @@ powerscale_gradients.powerscaling_data <- function(x,
       resample = resample,
       transform = transform,
       prediction = prediction,
+      selection = selection[[comp]],
       ...
     )
 
