@@ -37,7 +37,7 @@ transformed parameters {
   lprior[2] = normal_lpdf(sigma | 0, 2.5);
 }
 model {
-  target += sum(prior_alpha .* lprior);
+  target += dot_product(prior_alpha, lprior);
   // likelihood
   target += likelihood_alpha * normal_lpdf(y | mu, sigma);
 }
