@@ -78,16 +78,16 @@ joint_log_lik_brmsfit <- function(x, ...) {
 
 ##' @rdname log_prior
 ##' @export
-log_prior_brmsfit <- function(x, ...) {
+log_prior_brmsfit <- function(x, log_prior_name = "lprior", ...) {
 
-  log_prior <- posterior::subset_draws(posterior::as_draws_array(x), variable = "lprior")
+  log_prior <- posterior::subset_draws(posterior::as_draws_array(x), variable = log_prior_name)
 
   return(log_prior)
 }
 
-get_draws_brmsfit <- function(x, variable = NULL, regex = FALSE, ...) {
+get_draws_brmsfit <- function(x, variable = NULL, regex = FALSE, log_prior_name = "lprior", ...) {
 
-  excluded_variables <- c("lprior", "lp__")
+  excluded_variables <- c(log_prior_name, "lp__")
   draws <- posterior::as_draws_df(x, variable = variable, regex = regex)
 
   if (is.null(variable)) {

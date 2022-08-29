@@ -13,7 +13,7 @@ NULL
 
 ##' @rdname log_prior
 ##' @export
-log_prior_stanfit <- function(x, log_prior_name, ...) {
+log_prior_stanfit <- function(x, log_prior_name = "lprior", ...) {
 
   if (!inherits(x, "stanfit"))
     stop("Not a stanfit object.", call. = FALSE)
@@ -25,7 +25,7 @@ log_prior_stanfit <- function(x, log_prior_name, ...) {
 
   log_prior <- posterior::subset_draws(
     posterior::as_draws_array(x, variable = log_prior_name),
-    variable = "lprior"
+    variable = log_prior_name
   )
 
   return(log_prior)

@@ -31,13 +31,13 @@ parameters {
   real<lower=0> sigma;
 }
 transformed parameters {
-  real lprior = 0;
+  real lprior[2];
   // priors
-  lprior += normal_lpdf(mu | 0, 1);
-  lprior += normal_lpdf(sigma | 0, 2.5);
+  lprior[1] = normal_lpdf(mu | 0, 1);
+  lprior[2] = normal_lpdf(sigma | 0, 2.5);
 }
 model {
-  target += prior_alpha * lprior;
+  target += prior_alpha * sum(lprior);
   // likelihood
   target += likelihood_alpha * normal_lpdf(y | mu, sigma);
 }

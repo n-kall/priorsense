@@ -41,6 +41,7 @@ powerscale.powerscaling_data <- function(x,
                                          transform = FALSE,
                                          prediction = NULL,
                                          variable = NULL,
+                                         prior_selection = NULL,
                                          ...) {
 
   # input checks
@@ -54,6 +55,7 @@ powerscale.powerscaling_data <- function(x,
   checkmate::assertLogical(transform)
   checkmate::assertFunction(prediction, null.ok = TRUE)
   checkmate::assertCharacter(variable, null.ok = TRUE)
+  checkmate::assertNumber(prior_selection, null.ok = TRUE)
 
   draws <- posterior::subset_draws(x$draws, variable = variable, ...)
 
@@ -62,21 +64,30 @@ powerscale.powerscaling_data <- function(x,
 
   # calculate the log density ratios
   if (component == "prior") {
-    log_comp <- "log_prior"
+    if (!(is.null(prior_selection))) {
+      log_comp_draws <- posterior::as_draws_matrix(x[["log_prior"]])[, prior_selection]
+    } else {
+      log_comp_draws <- rowSums(
+        posterior::as_draws_matrix(x[["log_prior"]])
+      )
+    }
   } else if (component == "likelihood") {
-    log_comp <- "log_lik"
+    log_comp_draws <- x[["log_lik"]]
   }
   log_ratios <- scaled_log_ratio(
-    component_draws = x[[log_comp]],
-    alpha = alpha
+    component_draws = log_comp_draws,
+    alpha = alpha    
   )
+
+  log_ratios <- posterior::as_draws_matrix(as.matrix(log_ratios))
 
   if (!moment_match) {
     # calculate the importance weights
     importance_sampling <- is_method(
       log_ratios = log_ratios,
       r_eff = loo::relative_eff(
-        x = exp(-log_ratios)
+        x = exp(-log_ratios),
+        chain_id = rep(posterior::chain_ids(log_ratios), length.out = posterior::ndraws(log_ratios))
       )
     )
   } else {
