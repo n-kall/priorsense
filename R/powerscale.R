@@ -42,6 +42,7 @@ powerscale.powerscaling_data <- function(x,
                                          prediction = NULL,
                                          variable = NULL,
                                          prior_selection = NULL,
+                                         likelihood_selection = NULL,
                                          ...) {
 
   # input checks
@@ -56,6 +57,7 @@ powerscale.powerscaling_data <- function(x,
   checkmate::assertFunction(prediction, null.ok = TRUE)
   checkmate::assertCharacter(variable, null.ok = TRUE)
   checkmate::assertNumeric(prior_selection, null.ok = TRUE)
+  checkmate::assertNumeric(likelihood_selection, null.ok = TRUE)
 
   draws <- posterior::subset_draws(x$draws, variable = variable, ...)
 
@@ -72,7 +74,13 @@ powerscale.powerscaling_data <- function(x,
       )
     }
   } else if (component == "likelihood") {
-    log_comp_draws <- x[["log_lik"]]
+    if (!(is.null(likelihood_selection))) {
+      log_comp_draws <- rowSums(posterior::as_draws_matrix(x[["log_lik"]])[, likelihood_selection])
+    } else {
+      log_comp_draws <- rowSums(
+        posterior::as_draws_matrix(x[["log_lik"]])
+      )
+    }
   }
   log_ratios <- scaled_log_ratio(
     component_draws = log_comp_draws,
