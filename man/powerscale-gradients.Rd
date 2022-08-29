@@ -30,6 +30,8 @@ powerscale_gradients(x, ...)
   transform = FALSE,
   prediction = NULL,
   scale = FALSE,
+  prior_selection = NULL,
+  likelihood_selection = NULL,
   ...
 )
 }

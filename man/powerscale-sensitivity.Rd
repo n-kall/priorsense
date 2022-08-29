@@ -31,6 +31,8 @@ powerscale_sensitivity(x, ...)
   resample = FALSE,
   transform = FALSE,
   prediction = NULL,
+  prior_selection = NULL,
+  likelihood_selection = NULL,
   ...
 )
 
@@ -100,6 +102,10 @@ draws to perform before sensitivity analysis. Either "scale" or "whiten".}
 
 \item{prediction}{Function taking the model fit and returning a
 draws_df of predictions to be appended to the posterior draws}
+
+\item{prior_selection}{Numeric vector of prior partitions to include in power-scaling. Default is NULL, which takes all partitions.}
+
+\item{likelihood_selection}{Numeric vector of likelihood partitions to include in power-scaling. Default is NULL, which takes all partitions.}
 }
 \value{
 Table of sensitivity values for each specified variable.

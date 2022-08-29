@@ -18,6 +18,7 @@
 ##' @template powerscale_args
 ##' @template prediction_arg
 ##' @template resample_arg
+##' @template selection_arg
 ##' @return Table of sensitivity values for each specified variable.
 ##' @template powerscale_references
 ##' @export
