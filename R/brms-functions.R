@@ -5,7 +5,7 @@ create_powerscaling_data.brmsfit <- function(x, ...) {
   create_powerscaling_data.default(
     x = x,
     log_prior = log_prior_brmsfit,
-    log_lik = joint_log_lik_brmsfit,
+    log_lik = log_lik_brmsfit,
     get_draws = get_draws_brmsfit,
     unconstrain_pars = unconstrain_pars,
     constrain_pars = rstan::constrain_pars,
