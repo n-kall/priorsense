@@ -64,13 +64,20 @@ powerscale_sensitivity.brmsfit <- function(x,
 ##' @export
 log_lik_brmsfit <- function(x, ...) {
 
-  log_lik <- brms::log_lik(x, ...)
-  chains <- x$fit@sim$chains
+  nc <- posterior::nchains(x)
+  ndrw <- posterior::ndraws(x)/nc
 
-  log_lik <- posterior::draws_array(
-    log_lik = log_lik,
-    .nchains = chains
+  log_lik <- brms::log_lik(x, ...)
+
+  nobs <- ncol(log_lik)
+
+  log_lik <- array(log_lik, dim = c(ndrw, nc, nobs))
+
+  log_lik <- posterior::as_draws_array(
+    log_lik,
   )
+
+  posterior::variables(log_lik) <- paste0("log_lik[", 1:nobs, "]")
 
   return(log_lik)
 }
@@ -142,4 +149,3 @@ log_ratio_upars.brmsfit <- function(x, upars, component_fn, samples = NULL,
   component_draws <- component_fn(x)
   scaled_log_ratio(component_draws, ...)
 }
-
