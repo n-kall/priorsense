@@ -103,7 +103,7 @@ get_draws_brmsfit <- function(x, variable = NULL, regex = FALSE, ...) {
 
 moment_match.brmsfit <- function(x, psis, ...) {
   # ensure compatibility with objects not created in the current R session
-  x$fit@.MISC <- suppressMessages(brm(fit = x, chains = 0))$fit@.MISC
+  x$fit@.MISC <- suppressMessages(brms::brm(fit = x, chains = 0))$fit@.MISC
   mm <- try(moment_match.default(
     x,
     psis = psis, post_draws = as.matrix,
@@ -113,7 +113,7 @@ moment_match.brmsfit <- function(x, psis, ...) {
     nchains = posterior::nchains(x),
     ...
   ))
-  if (methods::is(out, "try-error")) {
+  if (methods::is(mm, "try-error")) {
     stop(
       "'moment_match' failed. Did you set 'save_all_pars' ",
       "to TRUE when fitting your brms model?"

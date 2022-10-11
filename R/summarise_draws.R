@@ -9,7 +9,6 @@ summary.powerscaled_draws <- function(object, ...) {
 ##' Summarise draws
 ##'
 ##' Summarise power-scaled draws
-##' @importFrom posterior summarise_draws
 ##' @param .x An object of class powerscaled_draws
 ##' @param ... summary functions
 ##' @param .args arguments for summary functions

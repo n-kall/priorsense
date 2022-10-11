@@ -1,5 +1,5 @@
 Package: priorsense
-Title: Prior diagnostics and sensitivity analysis
+Title: Prior Diagnostics and Sensitivity Analysis
 Version: 0.0.0.9000
 Authors@R: c(person("Noa", "Kallioinen", email = "noa.kallioinen@aalto.fi", role = c("aut", "cre")),
              person("Paul-Christian", "Bürkner", role = c("aut")),
@@ -23,7 +23,9 @@ Imports:
     stats,
     tibble,
     transport,
-    utils
+    utils,
+    methods,
+    brms
 Suggests:
     knitr,
     rstan,
@@ -31,6 +33,6 @@ Suggests:
     rmarkdown,
     covr
 Config/testthat/edition: 3
-Depends: 
+Depends:
     R (>= 3.6.0)
 VignetteBuilder: knitr

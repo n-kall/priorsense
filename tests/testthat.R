@@ -3,4 +3,6 @@ library(priorsense)
 library(rstan)
 #library(cmdstanr)
 
-test_check("priorsense")
+if (identical(Sys.getenv("NOT_CRAN"), "true") && !(.Platform$OS.type == "windows")) {
+  test_check("priorsense")
+}
