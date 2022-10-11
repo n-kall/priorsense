@@ -64,7 +64,8 @@ jobs:
             any::XML
             any::textshaping
 
-      - name: Install Development RStan
+      - name: Install Development RStan on Windows
+        if: matrix.os == 'windows-latest'
         run: |
           Sys.setenv(MAKEFLAGS=paste0("-j",parallel::detectCores()))
           install.packages(c("StanHeaders", "rstan"), repos = c("https://mc-stan.org/r-packages/", getOption("repos")))
