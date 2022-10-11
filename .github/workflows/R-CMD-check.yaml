@@ -28,6 +28,7 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
+      NOT_CRAN: true
 
     steps:
       - uses: actions/checkout@v2
@@ -65,7 +66,7 @@ jobs:
             any::textshaping
 
       - name: Install Development RStan on Windows
-        if: matrix.os == 'windows-latest'
+        if: ${{ matrix.config.os }} == 'windows-latest'
         run: |
           Sys.setenv(MAKEFLAGS=paste0("-j",parallel::detectCores()))
           install.packages(c("StanHeaders", "rstan"), repos = c("https://mc-stan.org/r-packages/", getOption("repos")))
