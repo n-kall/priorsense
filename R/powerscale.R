@@ -32,8 +32,8 @@ powerscale <- function(x, ...) {
 ##' @rdname powerscale-overview
 ##' @export
 powerscale.powerscaling_data <- function(x,
-                                         alpha,
                                          component,
+                                         alpha,
                                          is_method = "psis",
                                          moment_match = FALSE,
                                          k_threshold = 0.5,
