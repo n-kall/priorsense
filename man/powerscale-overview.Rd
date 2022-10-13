@@ -23,8 +23,8 @@ powerscale(x, ...)
 
 \method{powerscale}{powerscaling_data}(
   x,
-  alpha,
   component,
+  alpha,
   is_method = "psis",
   moment_match = FALSE,
   k_threshold = 0.5,

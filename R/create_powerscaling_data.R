@@ -29,10 +29,10 @@ create_powerscaling_data <- function(x, ...) {
 ##' @export
 create_powerscaling_data.default <- function(x, get_draws, log_prior,
                                              log_lik,
-                                             constrain_pars,
-                                             unconstrain_pars,
-                                             log_prob_upars,
-                                             log_ratio_upars,
+  #                                           constrain_pars,
+ #                                            unconstrain_pars,
+#                                             log_prob_upars,
+ #                                            log_ratio_upars,
                                              prediction = NULL, ...) {
 
 
@@ -53,11 +53,11 @@ create_powerscaling_data.default <- function(x, get_draws, log_prior,
     log_prior = log_prior(x, ...),
     log_lik = log_lik(x, ...),
     log_prior_fn = log_prior,
-    log_lik_fn = log_lik,
-    constrain_pars = constrain_pars,
-    unconstrain_pars = unconstrain_pars,
-    log_prob_upars = log_prob_upars,
-    log_ratio_upars = log_ratio_upars
+    log_lik_fn = log_lik#,
+ #   constrain_pars = constrain_pars,
+#    unconstrain_pars = unconstrain_pars,
+#    log_prob_upars = log_prob_upars,
+#    log_ratio_upars = log_ratio_upars
   )
 
   class(psd) <- c("powerscaling_data", class(psd))
@@ -74,10 +74,10 @@ create_powerscaling_data.stanfit <- function(x, ...) {
     get_draws = get_draws_stanfit,
     log_prior = log_prior_stanfit,
     log_lik = log_lik_stanfit,
-    constrain_pars = rstan::constrain_pars,
-    unconstrain_pars = unconstrain_pars,
-    log_prob_upars = log_prob_upars,
-    log_ratio_upars = log_ratio_upars,
+    constrain_pars = iwmm::constrain_pars,
+#    unconstrain_pars = iwmm::unconstrain_pars,
+#    log_prob_upars = log_prob_upars,
+#    log_ratio_upars = log_ratio_upars,
     ...
   )
 }
@@ -91,10 +91,10 @@ create_powerscaling_data.CmdStanFit <- function(x, ...) {
     get_draws = get_draws_CmdStanFit,
     log_prior = log_prior_CmdStanFit,
     log_lik = log_lik_CmdStanFit,
-    unconstrain_pars = NULL,
-    constrain_pars = NULL,
-    log_prob_upars = NULL,
-    log_ratio_upars = NULL,
+    unconstrain_pars = NA,
+    constrain_pars = x$constrain_pars,
+#    log_prob_upars = NA,
+#    log_ratio_upars = NA,
     ...
   )
 }

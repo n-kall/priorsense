@@ -94,14 +94,12 @@ powerscale.powerscaling_data <- function(x,
   } else {
     # perform moment matching if specified
     # calculate the importance weights
-    importance_sampling <- SW(
-      is_method(
+    importance_sampling <- is_method(
         log_ratios = log_ratios,
         r_eff = loo::relative_eff(
           x = exp(-log_ratios)
         )
       )
-    )
 
     if (component == "prior") {
       component_fn <- x$log_prior_fn
@@ -109,18 +107,31 @@ powerscale.powerscaling_data <- function(x,
       component_fn <- x$log_lik_fn
     }
 
-    mm <- moment_match(
+    ## mm <- moment_match(
+    ##   x = x,
+    ##   psis = importance_sampling,
+    ##   component_fn = component_fn,
+    ##   alpha = alpha,
+    ##   k_threshold = k_threshold,
+    ##   selection = selection
+    ## )
+
+    mm <- iwmm::moment_match(
       x = x,
-      psis = importance_sampling,
-      component_fn = component_fn,
       alpha = alpha,
-      k_threshold = k_threshold,
-      selection = selection
+      component_draws = log_comp_draws,
+      log_ratio_fun = powerscale_log_ratio_fun,
+      component = component,
+      fit = x$fit,
+      ...
     )
 
-    importance_sampling <- mm$importance_sampling
-    draws <- x$get_draws(mm$x)
+    importance_sampling <- list(diagnostics = list(pareto_k = mm$pareto_k, n_eff = NA), log_weights = mm$log_weights)
+    class(importance_sampling) <- c("psis", "importance_sampling", class(importance_sampling))
 
+    draws <- remove_unwanted_vars(posterior::as_draws_df(mm$draws))
+                                 
+    
   }
 
   # keep track of base log-ratios for diagnostics
