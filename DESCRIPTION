@@ -16,6 +16,7 @@ Imports:
     cetcolor,
     checkmate,
     ggplot2,
+    iwmm,
     loo,
     matrixStats,
     philentropy,
@@ -27,6 +28,7 @@ Imports:
 Suggests:
     knitr,
     rstan,
+    cmdstanr,
     testthat (>= 3.0.0),
     rmarkdown,
     covr

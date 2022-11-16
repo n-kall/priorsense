@@ -7,10 +7,10 @@ create_powerscaling_data.brmsfit <- function(x, ...) {
     log_prior = log_prior_brmsfit,
     log_lik = log_lik_brmsfit,
     get_draws = get_draws_brmsfit,
-    unconstrain_pars = unconstrain_pars,
-    constrain_pars = rstan::constrain_pars,
-    log_prob_upars = log_prob_upars,
-    log_ratio_upars = log_ratio_upars,
+ #   unconstrain_pars = unconstrain_pars,
+#    constrain_pars = rstan::constrain_pars,
+ #   log_prob_upars = log_prob_upars,
+  #  log_ratio_upars = log_ratio_upars,
     ...
   )
 }
