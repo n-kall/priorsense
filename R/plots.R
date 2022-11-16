@@ -435,16 +435,16 @@ powerscale_summary_plot <- function(x, variables, quantities = NULL,
     p <- p +
       ggplot2::scale_linetype_manual(values = "dashed", name = NULL) +
       ggplot2::geom_hline(
-        ggplot2::aes_string(
-          yintercept = "mcse_min",
+        ggplot2::aes(
+          yintercept = mcse_min,
           linetype = "+/-2MCSE"
         ),
         data = base_mcse,
         color = "black"
       ) +
       ggplot2::geom_hline(
-        ggplot2::aes_string(
-          yintercept = "mcse_max",
+        ggplot2::aes(
+          yintercept = mcse_max,
           linetype = "+/-2MCSE"
         ),
         data = base_mcse,
