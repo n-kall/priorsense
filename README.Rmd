@@ -46,7 +46,8 @@ Download the development version from [GitHub](https://github.com/) with:
 
 ```{r, eval = F}
 # install.packages("remotes")
-remotes::install_github("n-kall/priorsense")
+# remotes::install_github("n-kall/iwmm")
+remotes::install_github("n-kall/priorsense", ref = "separate_scaling")
 ```
 
 ## Usage

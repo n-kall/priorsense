@@ -5,7 +5,7 @@
 # priorsense
 
 <!-- badges: start -->
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental) [![CRAN status](https://www.r-pkg.org/badges/version/priorsense)](https://CRAN.R-project.org/package=priorsense) [![R-CMD-check](https://github.com/n-kall/priorsense/workflows/R-CMD-check/badge.svg)](https://github.com/n-kall/priorsense/actions) <!-- badges: end -->
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental) [![CRAN status](https://www.r-pkg.org/badges/version/priorsense)](https://CRAN.R-project.org/package=priorsense) [![R-CMD-check](https://github.com/n-kall/priorsense/workflows/R-CMD-check/badge.svg)](https://github.com/n-kall/priorsense/actions) [![Codecov test coverage](https://codecov.io/gh/n-kall/priorsense/branch/master/graph/badge.svg)](https://app.codecov.io/gh/n-kall/priorsense?branch=master) <!-- badges: end -->
 
 ## Overview
 
@@ -21,7 +21,8 @@ Download the development version from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("n-kall/priorsense")
+# remotes::install_github("n-kall/iwmm")
+remotes::install_github("n-kall/priorsense", ref = "separate_scaling")
 ```
 
 ## Usage
@@ -51,10 +52,10 @@ model {
 generated quantities {
   vector[N] log_lik;
   // likelihood
-  real log_prior;
+  real lprior;
   for (n in 1:N) log_lik[n] =  normal_lpdf(y[n] | mu, sigma);
   // joint prior specification
-  log_prior = normal_lpdf(mu | 0, 1) +
+  lprior = normal_lpdf(mu | 0, 1) +
     normal_lpdf(sigma | 0, 2.5);
 }
 ```
@@ -78,6 +79,7 @@ Once fit, sensitivity can be checked as follows:
 
 ``` r
 powerscale_sensitivity(fit)
+#> Loading required namespace: testthat
 #> Sensitivity based on cjs_dist:
 #> # A tibble: 2 × 4
 #>   variable prior likelihood diagnosis          
@@ -97,6 +99,18 @@ Then use a plotting function. Estimates that may be inaccurate (Pareto-k values 
 
 ``` r
 powerscale_plot_ecdf(pss, variables = c("mu", "sigma"))
+#> Warning: The following aesthetics were dropped during statistical transformation: weight
+#> ℹ This can happen when ggplot fails to infer the correct grouping structure in the data.
+#> ℹ Did you forget to specify a `group` aesthetic or to convert a numerical variable into a factor?
+#> The following aesthetics were dropped during statistical transformation: weight
+#> ℹ This can happen when ggplot fails to infer the correct grouping structure in the data.
+#> ℹ Did you forget to specify a `group` aesthetic or to convert a numerical variable into a factor?
+#> The following aesthetics were dropped during statistical transformation: weight
+#> ℹ This can happen when ggplot fails to infer the correct grouping structure in the data.
+#> ℹ Did you forget to specify a `group` aesthetic or to convert a numerical variable into a factor?
+#> The following aesthetics were dropped during statistical transformation: weight
+#> ℹ This can happen when ggplot fails to infer the correct grouping structure in the data.
+#> ℹ Did you forget to specify a `group` aesthetic or to convert a numerical variable into a factor?
 ```
 
 <img src="man/figures/README-ecdf_plot-1.png" width="70%" height="70%" />
