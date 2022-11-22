@@ -126,20 +126,20 @@ prepare_plot <- function(d, resample, ...) {
   if (resample) {
     p <- ggplot2::ggplot(
       data = d,
-      ggplot2::aes_string(
-        x = "value",
-        group = "alpha",
-        linetype = "pareto_k_value"
+      ggplot2::aes(
+        x = value,
+        group = alpha,
+        linetype = pareto_k_value
       )
     )
   } else {
     p <- ggplot2::ggplot(
       data = d,
-      ggplot2::aes_string(
-        x = "value",
-        weight = "exp(.log_weight)",
-        group = "alpha",
-        linetype = "pareto_k_value"
+      ggplot2::aes(
+        x = value,
+        weight = exp(.log_weight),
+        group = alpha,
+        linetype = pareto_k_value
       )
     )
   }
@@ -199,7 +199,7 @@ powerscale_plot_dens <- function(x, variables, resample = FALSE,
       )
     ) +
     ggplot2::stat_density(
-      ggplot2::aes_string(color = "alpha"),
+      ggplot2::aes(color = alpha),
       geom = "line", position = "identity"
     ) +
     ggplot2::facet_grid(
@@ -242,14 +242,14 @@ powerscale_plot_ecdf <- function(x, variables, resample = FALSE, ...) {
         title = "pareto-k"
       )
     ) +
-    ggplot2::ylab("Probability")
+    ggplot2::ylab("ECDF")
 
   if (resample || x$resampled) {
     p <- p +
-      ggplot2::stat_ecdf(ggplot2::aes_string(color = "alpha"))
+      ggplot2::stat_ecdf(ggplot2::aes(color = alpha))
   } else {
     p <- p +
-      stat_ewcdf(ggplot2::aes_string(color = "alpha"))
+      stat_ewcdf(ggplot2::aes(color = alpha))
   }
 
   p <- p + ggplot2::facet_grid(
@@ -388,21 +388,21 @@ powerscale_summary_plot <- function(x, variables, quantities = NULL,
 
   p <- ggplot2::ggplot(
     data = summaries,
-    mapping = ggplot2::aes_string(x = "alpha", y = "value")
+    mapping = ggplot2::aes(x = alpha, y = value)
   ) +
-    ggplot2::geom_line(ggplot2::aes_string(
-      color = "pareto_k_value", group = "component")) +
+    ggplot2::geom_line(ggplot2::aes(
+      color = pareto_k_value, group = component)) +
   ggplot2::facet_wrap(
     facets = variable ~ quantity,
     scales = "free",
     ncol = length(quantities)
   ) +
   ggplot2::geom_point(
-    ggplot2::aes_string(
-      x = "alpha",
-      y = "value",
-      shape = "component",
-      color = "pareto_k_value"
+    ggplot2::aes(
+      x = alpha,
+      y = value,
+      shape = component,
+      color = pareto_k_value
     ),
     fill = "white",
     size = 3,
@@ -435,16 +435,16 @@ powerscale_summary_plot <- function(x, variables, quantities = NULL,
     p <- p +
       ggplot2::scale_linetype_manual(values = "dashed", name = NULL) +
       ggplot2::geom_hline(
-        ggplot2::aes_string(
-          yintercept = "mcse_min",
+        ggplot2::aes(
+          yintercept = mcse_min,
           linetype = "+/-2MCSE"
         ),
         data = base_mcse,
         color = "black"
       ) +
       ggplot2::geom_hline(
-        ggplot2::aes_string(
-          yintercept = "mcse_max",
+        ggplot2::aes(
+          yintercept = mcse_max,
           linetype = "+/-2MCSE"
         ),
         data = base_mcse,
