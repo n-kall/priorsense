@@ -60,6 +60,8 @@ powerscale_sequence(x, ...)
   transform = FALSE,
   auto_alpha_range = FALSE,
   symmetric = TRUE,
+  prior_selection = NULL,
+  likelihood_selection = NULL,
   ...
 )
 }
@@ -120,6 +122,10 @@ values below threshold?}
 
 \item{symmetric}{Boolean. Should the alpha range be symmetrical
 around alpha = 1, on log-space?}
+
+\item{prior_selection}{Numeric vector of prior partitions to include in power-scaling. Default is NULL, which takes all partitions.}
+
+\item{likelihood_selection}{Numeric vector of likelihood partitions to include in power-scaling. Default is NULL, which takes all partitions.}
 }
 \value{
 A \code{powerscaled_draws} or \code{powerscaled_sequence} object,

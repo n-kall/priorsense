@@ -48,6 +48,8 @@ powerscale_sequence.powerscaling_data <- function(x, lower_alpha = 0.8,
                                                   transform = FALSE,
                                                   auto_alpha_range = FALSE,
                                                   symmetric = TRUE,
+                                                  prior_selection = NULL,
+                                                  likelihood_selection = NULL,
                                                   ...
                                                   ) {
 
@@ -155,6 +157,7 @@ powerscale_sequence.powerscaling_data <- function(x, lower_alpha = 0.8,
         moment_match = moment_match,
         resample = resample,
         transform = transform,
+        selection = prior_selection,
         ...
       )
 
@@ -187,6 +190,7 @@ powerscale_sequence.powerscaling_data <- function(x, lower_alpha = 0.8,
         k_treshold = k_threshold,
         resample = resample,
         transform = transform,
+        selection = likelihood_selection,
         ...
       )
 

@@ -14,6 +14,7 @@
 ##'   "likelihood"). For powerscale_sequence, this can be both "prior"
 ##'   and "likelihood".
 ##' @param selection Vector specifying parts of component to be considered.
+##' @template selection_arg
 ##' @template powerscale_args
 ##' @template prediction_arg
 ##' @param ... Further arguments passed to the custom functions
