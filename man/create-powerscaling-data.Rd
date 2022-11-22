@@ -18,10 +18,6 @@ create_powerscaling_data(x, ...)
   get_draws,
   log_prior,
   log_lik,
-  constrain_pars,
-  unconstrain_pars,
-  log_prob_upars,
-  log_ratio_upars,
   prediction = NULL,
   ...
 )
@@ -41,6 +37,9 @@ create_powerscaling_data(x, ...)
 
 \item{log_lik}{draws from log likelihood}
 
+\item{prediction}{function that returns predictions from x to be
+added to the draws}
+
 \item{constrain_pars}{function that transforms unconstrained
 parameters to constrained space}
 
@@ -52,9 +51,6 @@ unconstrained parameter values}
 
 \item{log_ratio_upars}{function that returns log density ratio for
 importance sampling given unconstrained parameter values}
-
-\item{prediction}{function that returns predictions from x to be
-added to the draws}
 }
 \value{
 A \code{powerscaling_data} object, which contains the data and
