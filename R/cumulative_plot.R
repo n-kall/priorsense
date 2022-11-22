@@ -1,6 +1,8 @@
 # Code adapted from
 # https://github.com/finnlindgren/StatCompLab/blob/main/R/ggplot.R and
 # https://rdrr.io/github/tidyverse/ggplot2/src/R/stat-ecdf.r
+
+# TODO: consider using ggecdf https://github.com/malcolmbarrett/ggecdf/blob/main/R/geom_ecdf.R
 stat_ewcdf <- function(mapping = NULL, data = NULL,
                        geom = "step", position = "identity",
                        ...,

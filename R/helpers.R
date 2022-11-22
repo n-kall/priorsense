@@ -1,3 +1,7 @@
+SW <- function(...) {
+  suppressWarnings(...)
+}
+
 rowsums_draws <- function(x) {
   posterior::draws_array(
         sum = rowSums(
@@ -8,7 +12,7 @@ rowsums_draws <- function(x) {
       )
 }
 
-remove_unwanted_vars <- function(x, excluded_variables = c("lprior", "log_lik", "lp__")) {
+remove_unwanted_vars <- function(x, excluded_variables = c("lprior", "log_lik", "lp__"), regex) {
 
   draws <- posterior::as_draws_df(x, variable = variable, regex = regex)
 

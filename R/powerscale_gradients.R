@@ -9,6 +9,10 @@
 ##' @param variable Variables to compute sensitivity of. If NA
 ##'   (default) sensitivity is computed for all variables.
 ##' @param component Component to power-scale (prior or likelihood).
+##' @param prior_selection Numeric vector specifying which priors to
+##'   consider.
+##' @param likelihood_selection Numeric vector specifying which likelihoods to
+##'   consider.
 ##' @param type type of sensitivity to measure ("distance",
 ##'   "quantity").  Multiple options can be specified at the same
 ##'   time.

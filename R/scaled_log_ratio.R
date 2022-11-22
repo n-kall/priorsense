@@ -21,7 +21,7 @@ powerscale_log_ratio_fun <- function(draws, fit, alpha, component, ...) {
     component_name = "log_lik"
   }
 
-  constr_draws <- iwmm::constrain_all_pars(fit, draws)
+  constr_draws <- iwmm::constrain_draws(fit, draws)
 
   component_draws <- rowsums_draws(
     posterior::subset_draws(

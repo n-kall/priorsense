@@ -13,6 +13,7 @@
 ##' @param component Component to be power-scaled (either "prior" or
 ##'   "likelihood"). For powerscale_sequence, this can be both "prior"
 ##'   and "likelihood".
+##' @param selection Vector specifying parts of component to be considered.
 ##' @template powerscale_args
 ##' @template prediction_arg
 ##' @param ... Further arguments passed to the custom functions
@@ -94,12 +95,14 @@ powerscale.powerscaling_data <- function(x,
   } else {
     # perform moment matching if specified
     # calculate the importance weights
-    importance_sampling <- is_method(
+    importance_sampling <- SW(
+      is_method(
         log_ratios = log_ratios,
         r_eff = loo::relative_eff(
           x = exp(-log_ratios)
         )
       )
+    )
 
     if (component == "prior") {
       component_fn <- x$log_prior_fn
@@ -107,22 +110,12 @@ powerscale.powerscaling_data <- function(x,
       component_fn <- x$log_lik_fn
     }
 
-    ## mm <- moment_match(
-    ##   x = x,
-    ##   psis = importance_sampling,
-    ##   component_fn = component_fn,
-    ##   alpha = alpha,
-    ##   k_threshold = k_threshold,
-    ##   selection = selection
-    ## )
-
     mm <- iwmm::moment_match(
-      x = x,
+      x = x$fit,
       alpha = alpha,
       component_draws = log_comp_draws,
       log_ratio_fun = powerscale_log_ratio_fun,
       component = component,
-      fit = x$fit,
       ...
     )
 
