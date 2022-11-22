@@ -98,14 +98,16 @@ the moment matching algorithm is used. Default is 0.5.}
 \item{resample}{Logical; Indicate whether or not draws should be
 resampled based on calculated importance weights.}
 
-\item{transform}{Indicate a transformation of posterior
-draws to perform before sensitivity analysis. Either "scale" or "whiten".}
+\item{transform}{Indicate a transformation of posterior draws to
+perform before sensitivity analysis. Either "scale" or "whiten".}
 
 \item{prediction}{Function taking the model fit and returning a
 draws_df of predictions to be appended to the posterior draws}
 
 \item{variable}{Vector of variable names to return estimated
 posterior draws for.}
+
+\item{selection}{Vector specifying parts of component to be considered.}
 
 \item{lower_alpha}{Lower power-scaling alpha value in sequence.}
 

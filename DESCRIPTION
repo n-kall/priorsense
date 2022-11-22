@@ -21,6 +21,7 @@ Imports:
     matrixStats,
     philentropy,
     posterior,
+    rlang,
     stats,
     tibble,
     transport,

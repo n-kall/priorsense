@@ -39,18 +39,6 @@ create_powerscaling_data(x, ...)
 
 \item{prediction}{function that returns predictions from x to be
 added to the draws}
-
-\item{constrain_pars}{function that transforms unconstrained
-parameters to constrained space}
-
-\item{unconstrain_pars}{function that transforms constrained
-parameters to unconstrained space}
-
-\item{log_prob_upars}{function that returns log density given
-unconstrained parameter values}
-
-\item{log_ratio_upars}{function that returns log density ratio for
-importance sampling given unconstrained parameter values}
 }
 \value{
 A \code{powerscaling_data} object, which contains the data and
