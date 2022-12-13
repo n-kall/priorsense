@@ -47,6 +47,7 @@ jobs:
         with:
           cache-version: 1
           extra-packages: |
+            XML
             stan-dev/cmdstanr
             n-kall/iwmm
             rcmdcheck
