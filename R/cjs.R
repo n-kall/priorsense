@@ -14,7 +14,7 @@
 ##'
 ##' \deqn{CJS_{dist}(P || Q) = \sqrt{CJS(P || Q) + CJS(Q || P)}}
 ##'
-##' This has an upper bound of \eqn{\sqrt \sum (P(x) + Q(x))}
+##' This has an upper bound of \eqn{\sqrt{ \sum (P(x) + Q(x))}}
 ##'
 ##' @param x numeric vector of samples from first distribution
 ##' @param y numeric vector of samples from second distribution
