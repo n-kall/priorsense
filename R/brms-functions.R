@@ -104,6 +104,12 @@ get_draws_brmsfit <- function(x, variable = NULL, regex = FALSE, log_prior_name 
   return(draws)
 }
 
+moment_match.brmsfit <- function(x, ...) {
+
+  iwmm::moment_match(x = x$fit, ...)
+
+}
+
 ## moment_match.brmsfit <- function(x, psis, ...) {
 ##   # ensure compatibility with objects not created in the current R session
 ##   x$fit@.MISC <- suppressMessages(brm(fit = x, chains = 0))$fit@.MISC
