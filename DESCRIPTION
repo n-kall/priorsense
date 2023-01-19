@@ -38,3 +38,4 @@ Config/testthat/edition: 3
 Depends: 
     R (>= 3.6.0)
 VignetteBuilder: knitr
+Remotes: n-kall/iwmm
