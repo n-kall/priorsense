@@ -276,11 +276,12 @@ powerscale_plot_ecdf <- function(x, variables, resample = FALSE, ...) {
 ##' @rdname powerscale_plots
 ##' @export
 powerscale_plot_quantities <- function(x, variables,
-                                       quantities = c("mean", "median", "sd", "mad", "quantile2"),
+                                       quantities = c("mean", "sd"),
                                        div_measure = "cjs_dist",
                                        resample = FALSE,
                                        measure_args = NULL,
-                                       mcse = FALSE, ...) {
+                                       mcse = TRUE,
+                                       ...) {
 
   summ <- summarise_draws(
     x,
@@ -438,7 +439,7 @@ powerscale_summary_plot <- function(x, variables, quantities = NULL,
       ggplot2::geom_hline(
         ggplot2::aes(
           yintercept = .data$mcse_min,
-          linetype = "+/-2MCSE"
+          linetype = "+-2MCSE"
         ),
         data = base_mcse,
         color = "black"
@@ -446,7 +447,7 @@ powerscale_summary_plot <- function(x, variables, quantities = NULL,
       ggplot2::geom_hline(
         ggplot2::aes(
           yintercept = .data$mcse_max,
-          linetype = "+/-2MCSE"
+          linetype = "+-2MCSE"
         ),
         data = base_mcse,
         color = "black"

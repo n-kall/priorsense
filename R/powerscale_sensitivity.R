@@ -138,7 +138,7 @@ powerscale_sensitivity.powerscaling_data <- function(x,
   sense$diagnosis <- ifelse(
     sense$prior >= sensitivity_threshold & sense$likelihood >= sensitivity_threshold, "prior-data conflict",
     ifelse(sense$prior > sensitivity_threshold & sense$likelihood < sensitivity_threshold,
-           "weak likelihood",
+           "prior domination / weak likelihood",
            "-"
            )
   )
