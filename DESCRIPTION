@@ -35,8 +35,6 @@ Suggests:
     covr
 Enhancements:
     cmdstanr
-Additional_repositories:
-    stan-dev
 Config/testthat/edition: 3
 Depends: 
     R (>= 3.6.0)
