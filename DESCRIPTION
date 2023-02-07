@@ -30,10 +30,11 @@ Imports:
 Suggests:
     knitr,
     rstan,
-    cmdstanr,
     testthat (>= 3.0.0),
     rmarkdown,
     covr
+Enhancements:
+    cmdstanr
 Config/testthat/edition: 3
 Depends: 
     R (>= 3.6.0)
