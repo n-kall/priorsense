@@ -25,8 +25,8 @@ Imports:
     transport,
     utils,
     methods,
-    brms
 Suggests:
+    brms
     knitr,
     rstan,
     testthat (>= 3.0.0),
