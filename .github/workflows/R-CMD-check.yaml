@@ -49,7 +49,7 @@ jobs:
           extra-packages: |
             XML
             stan-dev/cmdstanr
-            n-kall/iwmm
+            topipa/iwmm
             rcmdcheck
             checkmate
             jsonlite
