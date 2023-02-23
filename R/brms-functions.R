@@ -107,14 +107,12 @@ get_draws_brmsfit <- function(x, variable = NULL, regex = FALSE, log_prior_name 
 
 moment_match.brmsfit <- function(x, ...) {
 
-  mm <- try(iwmm::moment_match(x = x$fit, brmsfit = x, ...))
+  tryCatch(
+    iwmm::moment_match(x = x$fit, ...),
+    error = function(c) stop("'moment_match = TRUE' is currently unsupported for brms models"),
+  )
 
-   if(inherits(mm, "try-error")) {
-     stop(
-       "'moment_match = TRUE' is currently unsupported for brms models"
-     )
-   }
-return(mm)
+  return(TRUE)
 }
   
 ## moment_match.brmsfit <- function(x, psis, ...) {
