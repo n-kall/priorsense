@@ -9,7 +9,6 @@
 #' @name priorsense-package
 #' @aliases priorsense
 #' @import methods
-#' @importFrom brms log_lik brm rename_pars
 #' @import posterior
 #'
 #'
