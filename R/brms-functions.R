@@ -59,6 +59,7 @@ powerscale_sensitivity.brmsfit <- function(x,
 ##' @rdname joint_log_lik
 ##' @export
 log_lik_brmsfit <- function(x, ...) {
+  require_package("brms")
 
   nc <- posterior::nchains(x)
   ndrw <- posterior::ndraws(x)/nc
@@ -106,15 +107,14 @@ get_draws_brmsfit <- function(x, variable = NULL, regex = FALSE, log_prior_name 
 
 moment_match.brmsfit <- function(x, ...) {
 
-  mm <- try(iwmm::moment_match(x = x$fit, ...))
+  mm <- try(iwmm::moment_match(x = x$fit, brmsfit = x, ...))
 
-  if(methods::is(mm, "try-error")) {
-    stop(
-      "'moment_match = TRUE' is currently unsupported for brms models"
-    )
-
-    return(mm)
-  }
+   if(inherits(mm, "try-error")) {
+     stop(
+       "'moment_match = TRUE' is currently unsupported for brms models"
+     )
+   }
+return(mm)
 }
   
 ## moment_match.brmsfit <- function(x, psis, ...) {

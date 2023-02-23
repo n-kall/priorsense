@@ -11,31 +11,31 @@ License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.2
+RoxygenNote: 7.2.3
 Imports:
-    brms,
     cetcolor,
     checkmate,
     ggplot2,
     iwmm,
     loo,
     matrixStats,
-    philentropy,
     posterior,
     rlang,
     stats,
     tibble,
-    transport,
     utils
 Suggests:
-    knitr,
-    rstan,
+    brms,
     cmdstanr,
+    knitr,
+    philentropy,
+    rstan,
     testthat (>= 3.0.0),
+    transport,
     rmarkdown,
     covr
 Config/testthat/edition: 3
 Depends: 
     R (>= 3.6.0)
 VignetteBuilder: knitr
-Remotes: n-kall/iwmm
+Remotes: topipa/iwmm

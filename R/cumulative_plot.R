@@ -44,9 +44,6 @@ StatEwcdf <- ggplot2::ggproto(
 
     has_x <- !(is.null(data$x) && is.null(params$x))
     has_y <- !(is.null(data$y) && is.null(params$y))
-    if (!has_x && !has_y) {
-      rlang::abort("stat_ewcdf() requires an x or y aesthetic.")
-    }
     has_weights <- !(is.null(data$weight) && is.null(params$weight))
 
     params

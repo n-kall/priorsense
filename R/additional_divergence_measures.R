@@ -23,6 +23,8 @@ mv_wasserstein_dist <- function(draws1,
                                    ...
                                    ) {
 
+  require_package("transport")
+  
   if (is.null(weights1)) {
     weights1 <- rep(
       1 / posterior::ndraws(draws1),
@@ -69,6 +71,8 @@ mv_wasserstein_dist <- function(draws1,
 ##' @return numeric
 js_div <- function(x, y, x_weights, y_weights, ...) {
 
+  require_package("philentropy")
+  
   y_density <- stats::density(
     x = y,
     from = min(c(x, y)),
@@ -127,6 +131,8 @@ js_dist <- function(x, y, x_weights, y_weights, ...) {
 ##' @return numeric
 hellinger_dist <- function(x, y, x_weights, y_weights, ...) {
 
+  require_package("philentropy")
+  
   y_density <- stats::density(
     x = y,
     from = min(c(x, y)),
@@ -162,6 +168,8 @@ hellinger_dist <- function(x, y, x_weights, y_weights, ...) {
 ##'   estimated densitites
 kl_div <- function(x, y, x_weights, y_weights, ...) {
 
+  require_package("philentropy")
+  
   y_density <- stats::density(
     x = y,
     from = min(c(x, y)),
@@ -246,6 +254,8 @@ ks_dist <- function(x, y, x_weights, y_weights, ...) {
 ##' @return numeric value of Wassterstein distance
 ws_dist <- function(x, y, x_weights, y_weights, p = 1, ...) {
 
+  require_package("transport")
+  
   wa <- transport::wasserstein1d(
     a = x,
     b = y,
