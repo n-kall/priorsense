@@ -8,7 +8,6 @@
 #' @docType package
 #' @name priorsense-package
 #' @aliases priorsense
-#' @import methods
 #' @import posterior
 #'
 #'
