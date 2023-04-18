@@ -79,7 +79,6 @@ powerscale_sensitivity.powerscaling_data <- function(x,
   checkmate::assertCharacter(is_method)
   checkmate::assertNumber(k_threshold)
   checkmate::assertLogical(resample)
-  checkmate::assertLogical(transform)
   checkmate::assertFunction(prediction, null.ok = TRUE)
   checkmate::assertNumeric(prior_selection, null.ok = TRUE)
   checkmate::assertNumeric(likelihood_selection, null.ok = TRUE)

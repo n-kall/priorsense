@@ -54,13 +54,12 @@ powerscale.powerscaling_data <- function(x,
   checkmate::assertLogical(moment_match)
   checkmate::assertNumber(k_threshold)
   checkmate::assertLogical(resample)
-  checkmate::assertLogical(transform)
   checkmate::assertFunction(prediction, null.ok = TRUE)
   checkmate::assertCharacter(variable, null.ok = TRUE)
   checkmate::assertNumeric(selection, null.ok = TRUE)
 
   draws <- posterior::subset_draws(x$draws, variable = variable, ...)
-
+  
   # get the correct importance sampling function
   is_method <- get(is_method, asNamespace("loo"))
 
