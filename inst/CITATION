@@ -1,0 +1,64 @@
+bibentry(
+  bibtype = "Misc",
+  title = "Detecting and diagnosing prior and likelihood sensitivity with power-scaling",
+  author = c(
+    person(given = "Noa", family = "Kallioinen"),
+    person(given = "Topi", family = "Paananen"),
+    person(given = "Paul-Christian", family = "Bürkner"),
+    person(given = "Aki", family = "Vehtari")
+  ),
+  year = "2021",
+  eprint = "arXiv:2107.14054",
+  header = "To cite the priorsense package and power-scaling sensitivity:",
+  textVersion = paste(
+    "Noa Kallioinen, Topi Paananen, Paul-Christian Bürkner, Aki Vehtari (2021).",
+    "Detecting and diagnosing prior and likelihood sensitivity with power-scaling.",
+    "arXiv:2107:14054"
+  ),
+  encoding = "UTF-8"
+)
+
+bibentry(
+  bibtype = "Misc",
+  title = "Pareto smoothed importance sampling",
+  author = c(
+    person(given = "Aki", family = "Vehtari"),
+    person(given = "Daniel", family = "Simpson"),
+    person(given = "Andrew", family = "Gelman"),
+    person(given = "Yuling", family = "Yao"),
+    person(given = "Jonah", family = "Gabry")
+  ),
+  year = "2021",
+  eprint = "arXiv:1507.02646",
+  header = "To cite Pareto-smoothed importance sampling:",
+  textVersion = paste(
+    "Aki Vehtari, Daniel Simpson, Andrew Gelman, Yuling Yao, Jonah Gabry (2021).",
+    "Pareto smoothed importance sampling.",
+    "arXiv:1507.02646"
+  )
+)
+
+bibentry(
+  bibtype = "Article",
+  title = "Implicitly adaptive importance sampling",
+  author = c(
+    person(given = "Topi", family = "Paananen"),
+    person(given = "Juho", family = "Piironen"),
+    person(given = "Paul-Christian", family = "Bürkner"),
+    person(given = "Aki", family = "Vehtari")
+  ),
+  year = "2021",
+  journal = "Statistics and Computing",
+  volume = 31,
+  issue = 16,
+  pages = "1--19",
+  doi = "10.1007/s11222-020-09982-2",
+  header = "To cite importance weighted moment matching:",
+  textVersion = paste(
+    "Topi Paananen, Juho Piironen, Paul-Christian Bürkner, Aki Vehtari (2021).",
+    "Implicitly adaptive importance sampling.",
+    "Statistics and Computing, 31(16), 1-19.",
+    "doi:10.1007/s11222-020-09982-2"
+  ),
+  encoding = "UTF-8"
+)
