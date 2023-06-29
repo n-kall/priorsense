@@ -21,6 +21,7 @@ Imports:
     philentropy,
     posterior,
     stats,
+    rlang,
     tibble,
     transport,
     utils,

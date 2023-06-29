@@ -14,11 +14,11 @@ powerscale_plot_ecdf(x, variables, resample = FALSE, ...)
 powerscale_plot_quantities(
   x,
   variables,
-  quantities = c("mean", "median", "sd", "mad", "quantile2"),
+  quantities = c("mean", "sd"),
   div_measure = "cjs_dist",
   resample = FALSE,
   measure_args = NULL,
-  mcse = FALSE,
+  mcse = TRUE,
   ...
 )
 }
