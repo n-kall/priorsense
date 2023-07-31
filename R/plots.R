@@ -204,7 +204,8 @@ powerscale_plot_dens <- function(x, variables, resample = FALSE,
       geom = "line", position = "identity"
     ) +
     ggplot2::facet_grid(
-      component ~ variable,
+      rows = ggplot2::vars(.data$component),
+      cols = ggplot2::vars(.data$variable),
       labeller = ggplot2::labeller(
         component = c(
           likelihood = "Likelihood power-scaling",
@@ -254,7 +255,8 @@ powerscale_plot_ecdf <- function(x, variables, resample = FALSE, ...) {
   }
 
   p <- p + ggplot2::facet_grid(
-    ggplot2::vars(.data$component, .data$variable),
+    rows = ggplot2::vars(.data$component),
+    cols = ggplot2::vars(.data$variable),
     labeller = ggplot2::labeller(
       component = c(
         likelihood = "Likelihood power-scaling",
