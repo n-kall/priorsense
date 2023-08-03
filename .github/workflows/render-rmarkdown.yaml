@@ -2,9 +2,7 @@
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
 on:
   push:
-    branches: [main, master]
-  pull_request:
-    branches: [main, master]
+    paths: ['**.Rmd']
 
 name: render-rmarkdown
 
@@ -18,36 +16,12 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - uses: n1hility/cancel-previous-runs@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+
       - uses: r-lib/actions/setup-pandoc@v2
+
       - uses: r-lib/actions/setup-r@v2
-        with:
-          r-version: ${{ matrix.config.r }}
-          use-public-rspm: true
-          rtools-version: '42'
-      # packages that are needed for R CMD CHECK
-      - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          cache-version: 3
-          extra-packages: |
-            rcmdcheck
-            checkmate
-            jsonlite
-            posterior
-            processx
-            R6
-            BH
-            RcppEigen
-            StanHeaders
-            RcppParallel
-            withr
-            testthat
-            rmarkdown
-            knitr
-            any::XML
-            any::textshaping
+
+      - uses: r-lib/actions/setup-renv@v2
       
       - name: Render Rmarkdown files and Commit Results
         run: |
