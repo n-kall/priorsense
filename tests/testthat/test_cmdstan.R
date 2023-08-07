@@ -20,10 +20,10 @@ test_that("powerscale functions work for CmdStanFit", {
     chains = 1
   )
   expect_s3_class(
-    create_powerscaling_data(
+    create_priorsense_data(
       cfit
     ),
-    "powerscaling_data"
+    "priorsense_data"
   )
   expect_s3_class(
     powerscale(

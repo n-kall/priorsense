@@ -11,9 +11,9 @@ sfit <- suppressWarnings(rstan::stan(
   chains = 1
 ))
 
-test_that("powerscaling_data is created", {
+test_that("priorsense_data is created", {
   expect_error(
-    create_powerscaling_data(
+    create_priorsense_data(
       sfit
     ),
     NA
