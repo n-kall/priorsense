@@ -39,3 +39,12 @@ log_prior_CmdStanFit <- function(x, log_prior_name = "lprior", ...) {
 
   return(log_prior)
 }
+
+##' @rdname log_prior
+##' @export
+log_prior_draws <- function(x, log_prior_name = "lprior", ...) {
+
+  log_prior <- posterior::subset_draws(x, variable = log_prior_name)
+
+  return(log_prior)
+}

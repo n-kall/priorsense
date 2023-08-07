@@ -29,8 +29,16 @@ log_lik_stanfit <- function(x, log_lik_name = "log_lik", ...) {
 ##' @export
 log_lik_CmdStanFit <- function(x, log_lik_name = "log_lik", ...) {
 
-  # sum over correct dimension
   log_lik <- x$draws(variables = log_lik_name)
+
+  return(log_lik)
+}
+
+##' @rdname joint_log_lik
+##' @export
+log_lik_draws <- function(x, log_lik_name = "log_lik", ...) {
+
+  log_lik <- posterior::subset_draws(x, variable = log_lik_name)
 
   return(log_lik)
 }
