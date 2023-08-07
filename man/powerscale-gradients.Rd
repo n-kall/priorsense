@@ -5,7 +5,7 @@
 \alias{powerscale_gradients}
 \alias{powerscale_gradients.CmdStanFit}
 \alias{powerscale_gradients.stanfit}
-\alias{powerscale_gradients.powerscaling_data}
+\alias{powerscale_gradients.priorsense_data}
 \title{Power-scale gradients}
 \usage{
 powerscale_gradients(x, ...)
@@ -14,7 +14,7 @@ powerscale_gradients(x, ...)
 
 \method{powerscale_gradients}{stanfit}(x, ...)
 
-\method{powerscale_gradients}{powerscaling_data}(
+\method{powerscale_gradients}{priorsense_data}(
   x,
   variable = NULL,
   component = c("prior", "likelihood"),
@@ -36,7 +36,7 @@ powerscale_gradients(x, ...)
 )
 }
 \arguments{
-\item{x}{Model fit object or a powerscaling_data object.}
+\item{x}{Model fit object or a priorsense_data object.}
 
 \item{...}{Further arguments passed to functions.}
 

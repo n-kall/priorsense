@@ -5,6 +5,7 @@
 \alias{joint_log_lik}
 \alias{log_lik_stanfit}
 \alias{log_lik_CmdStanFit}
+\alias{log_lik_draws}
 \title{Extract joint log likelihood from fitted model}
 \usage{
 log_lik_brmsfit(x, ...)
@@ -12,6 +13,8 @@ log_lik_brmsfit(x, ...)
 log_lik_stanfit(x, log_lik_name = "log_lik", ...)
 
 log_lik_CmdStanFit(x, log_lik_name = "log_lik", ...)
+
+log_lik_draws(x, log_lik_name = "log_lik", ...)
 }
 \arguments{
 \item{x}{Model fit.}

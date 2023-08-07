@@ -5,7 +5,7 @@
 \alias{powerscale-sensitivity}
 \alias{powerscale_sensitivity}
 \alias{powerscale_sensitivity.default}
-\alias{powerscale_sensitivity.powerscaling_data}
+\alias{powerscale_sensitivity.priorsense_data}
 \alias{powerscale_sensitivity.CmdStanFit}
 \alias{powerscale_sensitivity.stanfit}
 \title{Power-scaling sensitivity analysis}
@@ -16,7 +16,7 @@ powerscale_sensitivity(x, ...)
 
 \method{powerscale_sensitivity}{default}(x, ...)
 
-\method{powerscale_sensitivity}{powerscaling_data}(
+\method{powerscale_sensitivity}{priorsense_data}(
   x,
   variable = NULL,
   lower_alpha = 0.99,
@@ -41,7 +41,7 @@ powerscale_sensitivity(x, ...)
 \method{powerscale_sensitivity}{stanfit}(x, ...)
 }
 \arguments{
-\item{x}{Model fit object or powerscaling_data object.}
+\item{x}{Model fit object or priorsense_data object.}
 
 \item{...}{Further arguments passed to functions.}
 

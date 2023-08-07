@@ -11,9 +11,9 @@ powerscale_sequence.CmdStanFit <- function(x,
                                            ...
                                            ) {
 
-  psd <- create_powerscaling_data.CmdStanFit(x, ...)
+  psd <- create_priorsense_data.CmdStanFit(x, ...)
 
-  powerscale_sequence.powerscaling_data(
+  powerscale_sequence.priorsense_data(
     psd,
     ...
   )
@@ -26,9 +26,9 @@ powerscale_sequence.stanfit <- function(x,
                                         ...
                                         ) {
 
-  psd <- create_powerscaling_data.stanfit(x, ...)
+  psd <- create_priorsense_data.stanfit(x, ...)
 
-  powerscale_sequence.powerscaling_data(
+  powerscale_sequence.priorsense_data(
     psd,
     ...
   )
@@ -37,21 +37,21 @@ powerscale_sequence.stanfit <- function(x,
 
 ##' @rdname powerscale-overview
 ##' @export
-powerscale_sequence.powerscaling_data <- function(x, lower_alpha = 0.8,
-                                                  upper_alpha = 1 / lower_alpha,
-                                                  length = 9, variable = NULL,
-                                                  component = c("prior", "likelihood"),
-                                                  is_method = "psis",
-                                                  moment_match = FALSE,
-                                                  k_threshold = 0.5,
-                                                  resample = FALSE,
-                                                  transform = FALSE,
-                                                  auto_alpha_range = FALSE,
-                                                  symmetric = TRUE,
-                                                  prior_selection = NULL,
-                                                  likelihood_selection = NULL,
-                                                  ...
-                                                  ) {
+powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
+                                                upper_alpha = 1 / lower_alpha,
+                                                length = 9, variable = NULL,
+                                                component = c("prior", "likelihood"),
+                                                is_method = "psis",
+                                                moment_match = FALSE,
+                                                k_threshold = 0.5,
+                                                resample = FALSE,
+                                                transform = FALSE,
+                                                auto_alpha_range = FALSE,
+                                                symmetric = TRUE,
+                                                prior_selection = NULL,
+                                                likelihood_selection = NULL,
+                                                ...
+                                                ) {
 
   # adapt alpha range to ensure pareto-k < theshold
   if (auto_alpha_range) {

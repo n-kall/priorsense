@@ -5,6 +5,7 @@
 \alias{log_prior}
 \alias{log_prior_stanfit}
 \alias{log_prior_CmdStanFit}
+\alias{log_prior_draws}
 \title{Extract log prior from fitted model}
 \usage{
 log_prior_brmsfit(x, log_prior_name = "lprior", ...)
@@ -12,6 +13,8 @@ log_prior_brmsfit(x, log_prior_name = "lprior", ...)
 log_prior_stanfit(x, log_prior_name = "lprior", ...)
 
 log_prior_CmdStanFit(x, log_prior_name = "lprior", ...)
+
+log_prior_draws(x, log_prior_name = "lprior", ...)
 }
 \arguments{
 \item{x}{Model fit.}

@@ -5,7 +5,7 @@
 ##' optionally moment matching).
 ##' @template fit_arg
 ##' @name powerscale-sensitivity
-##' @param x Model fit object or powerscaling_data object.
+##' @param x Model fit object or priorsense_data object.
 ##' @param ... Further arguments passed to functions.
 ##' @param variable Character vector of variables to check.
 ##' @param lower_alpha Lower alpha value for gradient calculation.
@@ -33,12 +33,12 @@ powerscale_sensitivity.default <- function(x,
                                            ...
                                            ) {
 
-  psd <- create_powerscaling_data(
+  psd <- create_priorsense_data(
     x = x,
     ...
   )
 
-  powerscale_sensitivity.powerscaling_data(
+  powerscale_sensitivity.priorsense_data(
     psd,
     ...)
 
@@ -46,7 +46,7 @@ powerscale_sensitivity.default <- function(x,
 
 ##' @rdname powerscale-sensitivity
 ##' @export
-powerscale_sensitivity.powerscaling_data <- function(x,
+powerscale_sensitivity.priorsense_data <- function(x,
                                                      variable = NULL,
                                                      lower_alpha = 0.99,
                                                      upper_alpha = 1.01,
@@ -67,7 +67,7 @@ powerscale_sensitivity.powerscaling_data <- function(x,
                                                      likelihood_selection = NULL,
                                                      ...) {
   # input checks
-  checkmate::assertClass(x, classes = "powerscaling_data")
+  checkmate::assertClass(x, classes = "priorsense_data")
   checkmate::assertCharacter(variable, null.ok = TRUE)
   checkmate::assertNumeric(lower_alpha, lower = 0, upper = 1)
   checkmate::assertNumeric(upper_alpha, lower = 1)
@@ -161,9 +161,9 @@ powerscale_sensitivity.CmdStanFit <- function(x,
                                               ...
                                               ) {
 
-  psd <- create_powerscaling_data.CmdStanFit(x)
+  psd <- create_priorsense_data.CmdStanFit(x)
 
-  powerscale_sensitivity.powerscaling_data(
+  powerscale_sensitivity.priorsense_data(
     psd,
     ...
   )
@@ -175,9 +175,9 @@ powerscale_sensitivity.stanfit <- function(x,
                                            ...
                                            ) {
 
-  psd <- create_powerscaling_data.stanfit(x, ...)
+  psd <- create_priorsense_data.stanfit(x, ...)
 
-  powerscale_sensitivity.powerscaling_data(
+  powerscale_sensitivity.priorsense_data(
     psd,
     ...
   )

@@ -33,7 +33,7 @@ powerscale <- function(x, ...) {
 
 ##' @rdname powerscale-overview
 ##' @export
-powerscale.powerscaling_data <- function(x,
+powerscale.priorsense_data <- function(x,
                                          component,
                                          alpha,
                                          is_method = "psis",
@@ -47,7 +47,7 @@ powerscale.powerscaling_data <- function(x,
                                          ...) {
 
   # input checks
-  checkmate::assertClass(x, classes = "powerscaling_data")
+  checkmate::assertClass(x, classes = "priorsense_data")
   checkmate::assertNumeric(alpha, lower = 0)
   checkmate::assertSubset(component, c("prior", "likelihood"))
   checkmate::assertCharacter(is_method)
@@ -112,9 +112,8 @@ powerscale.powerscaling_data <- function(x,
 
     mm <- iwmm::moment_match(
       x = x$fit,
-      alpha = alpha,
-      component_draws = log_comp_draws,
       log_ratio_fun = powerscale_log_ratio_fun,
+      alpha = alpha,
       component = component,
       ...
     )
@@ -190,9 +189,9 @@ powerscale.CmdStanFit <- function(x,
                                   alpha,
                                   ...
                                   ) {
-  psd <- create_powerscaling_data.CmdStanFit(x, ...)
+  psd <- create_priorsense_data.CmdStanFit(x, ...)
 
-  powerscale.powerscaling_data(
+  powerscale.priorsense_data(
     psd,
     component = component,
     alpha = alpha,
@@ -209,9 +208,9 @@ powerscale.stanfit <- function(x,
                                ...
                                ) {
 
-  psd <- create_powerscaling_data.stanfit(x, ...)
+  psd <- create_priorsense_data.stanfit(x, ...)
 
-  powerscale.powerscaling_data(
+  powerscale.priorsense_data(
     psd,
     component = component,
     alpha = alpha,

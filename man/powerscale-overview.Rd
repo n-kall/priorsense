@@ -6,13 +6,13 @@
 \alias{powerscale_sequence.brmsfit}
 \alias{powerscale-overview}
 \alias{powerscale}
-\alias{powerscale.powerscaling_data}
+\alias{powerscale.priorsense_data}
 \alias{powerscale.CmdStanFit}
 \alias{powerscale.stanfit}
 \alias{powerscale_sequence}
 \alias{powerscale_sequence.CmdStanFit}
 \alias{powerscale_sequence.stanfit}
-\alias{powerscale_sequence.powerscaling_data}
+\alias{powerscale_sequence.priorsense_data}
 \title{Prior/likelihood power-scaling perturbation}
 \usage{
 \method{powerscale}{brmsfit}(x, component, alpha, ...)
@@ -21,7 +21,7 @@
 
 powerscale(x, ...)
 
-\method{powerscale}{powerscaling_data}(
+\method{powerscale}{priorsense_data}(
   x,
   component,
   alpha,
@@ -46,7 +46,7 @@ powerscale_sequence(x, ...)
 
 \method{powerscale_sequence}{stanfit}(x, ...)
 
-\method{powerscale_sequence}{powerscaling_data}(
+\method{powerscale_sequence}{priorsense_data}(
   x,
   lower_alpha = 0.8,
   upper_alpha = 1/lower_alpha,

@@ -25,7 +25,8 @@ remove_unwanted_vars <- function(x, excluded_variables = c("lprior", "log_lik", 
     )
     variable <- variable[!(apply(has_prefix, 1, any))]
     draws <- posterior::subset_draws(draws, variable = variable)
-  
+
+  return(draws)
 }
 
 # check if a certain package is installed
