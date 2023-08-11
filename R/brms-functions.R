@@ -158,3 +158,54 @@ moment_match.brmsfit <- function(x, ...) {
 ##   component_draws <- component_fn(x)
 ##   scaled_log_ratio(component_draws, ...)
 ## }
+
+##' predictions as draws
+##'
+##' @param x brmsfit object
+##' @param predict_fn function for predictions
+##' @param prediction_names optional names of the predictions
+##' @param ... further arguments passed to predict_fn
+##' @return draws array of predictions
+predictions_as_draws <- function(x, predict_fn, prediction_names = NULL, ...) {
+  terms <- brms::brmsterms(x$formula)
+  if(inherits(terms, "mvbrmsterms")) {
+    responses <- brms::brmsterms(x$formula)$responses
+    mv <- TRUE
+  } else {
+    responses <- ""
+    mv <- FALSE
+  }
+  pred_draws <- list()
+  predictions <- predict_fn(x, ...)
+  if (!(mv)) {
+    # add additional dimension in univariate case
+    dim(predictions) <- c(dim(predictions), 1)
+  }
+  for (resp in seq_along(responses)) {
+    # create draws array of predictions for each response variable
+    predicted_draws <- posterior::as_draws_array(
+      array(
+        predictions[, , resp],
+        dim = c(
+          posterior::ndraws(x) / posterior::nchains(x),
+          posterior::nchains(x), dim(predictions)[2]
+        )
+      )
+    )
+    # name predicted variables
+    posterior::variables(predicted_draws) <-  c(
+      paste0(
+        responses[[resp]],
+        "_pred[",
+        seq_along(posterior::variables(predicted_draws)),
+        "]")
+    )
+    pred_draws[[resp]] <- predicted_draws
+  }
+  # bind draws from different responses
+  out <- posterior::bind_draws(pred_draws)
+  if (!(is.null(prediction_names))) {
+    posterior::variables(out) <- prediction_names
+  }
+  out
+}
