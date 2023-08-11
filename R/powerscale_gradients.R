@@ -95,7 +95,15 @@ powerscale_gradients.priorsense_data <- function(x,
   # extract the draws
   base_draws <- x$draws
 
-  base_draws <- posterior::subset_draws(base_draws, variable = variable, ...)
+  # get predictions if specified
+  if (!(is.null(prediction))) {
+    pred_draws <- prediction(x$fit, ...)
+
+  # bind predictions and posterior draws
+    base_draws <- posterior::bind_draws(base_draws, pred_draws)
+  }
+
+  base_draws <- posterior::subset_draws(base_draws, variable = variable)
 
   # specify selection
   selection <- list(prior = prior_selection, likelihood = likelihood_selection)

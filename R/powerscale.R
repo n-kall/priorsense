@@ -34,17 +34,17 @@ powerscale <- function(x, ...) {
 ##' @rdname powerscale-overview
 ##' @export
 powerscale.priorsense_data <- function(x,
-                                         component,
-                                         alpha,
-                                         is_method = "psis",
-                                         moment_match = FALSE,
-                                         k_threshold = 0.5,
-                                         resample = FALSE,
-                                         transform = FALSE,
-                                         prediction = NULL,
-                                         variable = NULL,
-                                         selection = NULL,
-                                         ...) {
+                                       component,
+                                       alpha,
+                                       is_method = "psis",
+                                       moment_match = FALSE,
+                                       k_threshold = 0.5,
+                                       resample = FALSE,
+                                       transform = FALSE,
+                                       prediction = NULL,
+                                       variable = NULL,
+                                       selection = NULL,
+                                       ...) {
 
   # input checks
   checkmate::assertClass(x, classes = "priorsense_data")
@@ -58,14 +58,25 @@ powerscale.priorsense_data <- function(x,
   checkmate::assertCharacter(variable, null.ok = TRUE)
   checkmate::assertNumeric(selection, null.ok = TRUE)
 
-  draws <- posterior::subset_draws(x$draws, variable = variable, ...)
+  draws <- x$draws
+
+  # get predictions if specified
+  if (!(is.null(prediction))) {
+    pred_draws <- prediction(x$fit, ...)
+
+    # bind predictions and posterior draws
+    draws <- posterior::bind_draws(draws, pred_draws)
+  }
+  
+  # subset the draws
+  draws <- posterior::subset_draws(draws, variable = variable)
   
   # get the correct importance sampling function
   is_method <- get(is_method, asNamespace("loo"))
 
   # select the appropriate component draws
   if (component == "prior") {
-      log_comp_draws <- x[["log_prior"]]
+    log_comp_draws <- x[["log_prior"]]
   } else if (component == "likelihood") {
     log_comp_draws <- x[["log_lik"]]
   }
@@ -118,12 +129,18 @@ powerscale.priorsense_data <- function(x,
       ...
     )
 
-    importance_sampling <- list(diagnostics = list(pareto_k = mm$pareto_k, n_eff = NA), log_weights = mm$log_weights)
-    class(importance_sampling) <- c("psis", "importance_sampling", class(importance_sampling))
+    importance_sampling <- list(
+      diagnostics = list(pareto_k = mm$pareto_k, n_eff = NA),
+      log_weights = mm$log_weights
+    )
+    class(importance_sampling) <- c(
+      "psis",
+      "importance_sampling",
+      class(importance_sampling)
+    )
 
     draws <- remove_unwanted_vars(posterior::as_draws_df(mm$draws))
-                                 
-    
+
   }
 
   # keep track of base log-ratios for diagnostics
@@ -159,7 +176,7 @@ powerscale.priorsense_data <- function(x,
       x = posterior::merge_chains(new_draws)
     )
   }
-
+  
   # create object with details of power-scaling
   powerscaling_details <- list(
     alpha = alpha,

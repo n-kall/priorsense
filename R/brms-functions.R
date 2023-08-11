@@ -1,12 +1,14 @@
 ##' @rdname create-powerscaling-data
 ##' @export
-create_powerscaling_data.brmsfit <- function(x, ...) {
+create_priorsense_data.brmsfit <- function(x, ...) {
 
-  create_powerscaling_data.default(
-    x = x,
-    log_prior = log_prior_brmsfit,
-    log_lik = log_lik_brmsfit,
-    get_draws = get_draws_brmsfit,
+  create_priorsense_data.default(
+    x = get_draws_brmsfit(x, ...),
+    fit = x,
+    log_prior = log_prior_brmsfit(x, ...),
+    log_lik = log_lik_brmsfit(x, ...),
+    log_prior_fn = log_prior_brmsfit,
+    log_lik_fn = log_lik_brmsfit,
     ...
   )
 }
@@ -18,9 +20,9 @@ powerscale.brmsfit <- function(x,
                                alpha,
                                ...
                                ) {
-  psd <- create_powerscaling_data.brmsfit(x, ...)
+  psd <- create_priorsense_data.brmsfit(x, ...)
 
-  powerscale.powerscaling_data(
+  powerscale.priorsense_data(
     psd,
     component = component,
     alpha = alpha,
@@ -35,9 +37,9 @@ powerscale_sequence.brmsfit <- function(x,
                                         ...
                                         ) {
 
-  psd <- create_powerscaling_data.brmsfit(x, ...)
+  psd <- create_priorsense_data.brmsfit(x, ...)
 
-  powerscale_sequence.powerscaling_data(psd, ...)
+  powerscale_sequence.priorsense_data(psd, ...)
 
 }
 
@@ -47,9 +49,9 @@ powerscale_sensitivity.brmsfit <- function(x,
                                            ...
                                            ) {
 
-  psd <- create_powerscaling_data.brmsfit(x, ...)
+  psd <- create_priorsense_data.brmsfit(x, ...)
 
-  powerscale_sensitivity.powerscaling_data(
+  powerscale_sensitivity.priorsense_data(
     psd,
     ...
   )
@@ -92,7 +94,7 @@ log_prior_brmsfit <- function(x, log_prior_name = "lprior", ...) {
 get_draws_brmsfit <- function(x, variable = NULL, regex = FALSE, log_prior_name = "lprior", ...) {
 
   excluded_variables <- c(log_prior_name, "lp__")
-  draws <- posterior::as_draws_df(x, variable = variable, regex = regex)
+  draws <- posterior::as_draws_df(x, regex = regex)
 
   if (is.null(variable)) {
     # remove unnecessary variables
@@ -109,7 +111,7 @@ moment_match.brmsfit <- function(x, ...) {
 
   tryCatch(
     iwmm::moment_match(x = x$fit, ...),
-    error = function(c) stop("'moment_match = TRUE' is currently unsupported for brms models"),
+    error = stop("'moment_match = TRUE' is currently unsupported for brms models")
   )
 
   return(TRUE)

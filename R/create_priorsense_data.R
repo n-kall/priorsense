@@ -9,8 +9,6 @@
 ##' @param log_lik_fn function to derive log likelihood from object
 ##' @param log_prior draws from log prior
 ##' @param log_lik draws from log likelihood
-##' @param prediction function that returns predictions from x to be
-##'   added to the draws
 ##' @param ... arguments passed to methods
 ##' @return A `priorsense_data` object, which contains the data and
 ##'   functions to run sensitivity analyses.
@@ -78,8 +76,8 @@ create_priorsense_data.draws <- function(x, ...) {
 
   create_priorsense_data.default(
     x = remove_unwanted_vars(x, ...),
-    log_prior_fn = log_prior_draws,
-    log_lik_fn = log_lik_draws,
+#    log_prior_fn = log_prior_draws,
+#    log_lik_fn = log_lik_draws,
     log_prior = log_prior_draws(x, ...),
     log_lik = log_lik_draws(x, ...),    
     ...
