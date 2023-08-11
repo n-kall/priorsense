@@ -159,13 +159,17 @@ moment_match.brmsfit <- function(x, ...) {
 ##   scaled_log_ratio(component_draws, ...)
 ## }
 
-##' predictions as draws
+##' Predictions as draws
+##'
+##' Create predictions using brms functions and convert them into
+##' draws format
 ##'
 ##' @param x brmsfit object
 ##' @param predict_fn function for predictions
 ##' @param prediction_names optional names of the predictions
 ##' @param ... further arguments passed to predict_fn
 ##' @return draws array of predictions
+##' @export
 predictions_as_draws <- function(x, predict_fn, prediction_names = NULL, ...) {
   terms <- brms::brmsterms(x$formula)
   if(inherits(terms, "mvbrmsterms")) {
