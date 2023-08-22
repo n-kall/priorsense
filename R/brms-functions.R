@@ -1,3 +1,9 @@
+##' Create powerscaling data
+##'
+##' @name create-powerscaling-data
+##'
+NULL
+
 ##' @rdname create-powerscaling-data
 ##' @export
 create_priorsense_data.brmsfit <- function(x, ...) {
@@ -116,7 +122,7 @@ moment_match.brmsfit <- function(x, ...) {
 
   return(TRUE)
 }
-  
+
 ## moment_match.brmsfit <- function(x, psis, ...) {
 ##   # ensure compatibility with objects not created in the current R session
 ##   x$fit@.MISC <- suppressMessages(brm(fit = x, chains = 0))$fit@.MISC
