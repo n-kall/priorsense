@@ -188,6 +188,13 @@ predictions_as_draws <- function(x, predict_fn, prediction_names = NULL, ...) {
   pred_draws <- list()
   predictions <- predict_fn(x, ...)
   if (!(mv)) {
+    dim_pred <- dim(predictions)
+    if (length(dim_pred) == 3) {
+      predictions <- array(predictions,
+                           dim = c(dim_pred[1], dim_pred[2] * dim_pred[3]))
+    } else if (length(dim_pred) > 3) {
+      stop("predict_fn() returned an unexpected number of margins (> 3)")
+    }
     # add additional dimension in univariate case
     dim(predictions) <- c(dim(predictions), 1)
   }
