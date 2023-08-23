@@ -190,13 +190,22 @@ predictions_as_draws <- function(x, predict_fn, prediction_names = NULL, ...) {
   if (!(mv)) {
     dim_pred <- dim(predictions)
     if (length(dim_pred) == 3) {
+      warning("coercing predict_fn()'s output from 3 margins to 2 margins (by ",
+              "making the former margin 2 nested within blocks which ",
+              "correspond to former margin 3)")
       predictions <- array(predictions,
                            dim = c(dim_pred[1], dim_pred[2] * dim_pred[3]))
     } else if (length(dim_pred) > 3) {
-      stop("predict_fn() returned an unexpected number of margins (> 3)")
+      stop("predict_fn() returned an unexpected number of margins (> 3) for ",
+           "this univariate model")
     }
     # add additional dimension in univariate case
     dim(predictions) <- c(dim(predictions), 1)
+  } else {
+    if (length(dim_pred) != 3) {
+      stop("predict_fn() returned an unexpected number of margins (!= 3) for ",
+           "this multivariate model")
+    }
   }
   for (resp in seq_along(responses)) {
     # create draws array of predictions for each response variable
