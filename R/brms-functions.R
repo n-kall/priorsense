@@ -173,10 +173,13 @@ moment_match.brmsfit <- function(x, ...) {
 ##' @param x brmsfit object
 ##' @param predict_fn function for predictions
 ##' @param prediction_names optional names of the predictions
+##' @param warn_dims throw a warning when coercing predict_fn's output from 3
+##'   margins to 2 margins?
 ##' @param ... further arguments passed to predict_fn
 ##' @return draws array of predictions
 ##' @export
-predictions_as_draws <- function(x, predict_fn, prediction_names = NULL, ...) {
+predictions_as_draws <- function(x, predict_fn, prediction_names = NULL,
+                                 warn_dims = TRUE, ...) {
   terms <- brms::brmsterms(x$formula)
   if(inherits(terms, "mvbrmsterms")) {
     responses <- brms::brmsterms(x$formula)$responses
@@ -190,9 +193,11 @@ predictions_as_draws <- function(x, predict_fn, prediction_names = NULL, ...) {
   if (!(mv)) {
     dim_pred <- dim(predictions)
     if (length(dim_pred) == 3) {
-      warning("coercing predict_fn()'s output from 3 margins to 2 margins (by ",
-              "making the former margin 2 nested within blocks which ",
-              "correspond to former margin 3)")
+      if (warn_dims) {
+        warning("coercing predict_fn()'s output from 3 margins to 2 margins ",
+                "(by making the former margin 2 nested within blocks which ",
+                "correspond to former margin 3)")
+      }
       predictions <- array(predictions,
                            dim = c(dim_pred[1], dim_pred[2] * dim_pred[3]))
     } else if (length(dim_pred) > 3) {

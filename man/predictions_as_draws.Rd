@@ -4,7 +4,13 @@
 \alias{predictions_as_draws}
 \title{Predictions as draws}
 \usage{
-predictions_as_draws(x, predict_fn, prediction_names = NULL, ...)
+predictions_as_draws(
+  x,
+  predict_fn,
+  prediction_names = NULL,
+  warn_dims = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{brmsfit object}
@@ -12,6 +18,9 @@ predictions_as_draws(x, predict_fn, prediction_names = NULL, ...)
 \item{predict_fn}{function for predictions}
 
 \item{prediction_names}{optional names of the predictions}
+
+\item{warn_dims}{throw a warning when coercing predict_fn's output from 3
+margins to 2 margins?}
 
 \item{...}{further arguments passed to predict_fn}
 }
