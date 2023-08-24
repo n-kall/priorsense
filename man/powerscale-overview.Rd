@@ -58,6 +58,7 @@ powerscale_sequence(x, ...)
   k_threshold = 0.5,
   resample = FALSE,
   transform = FALSE,
+  prediction = NULL,
   auto_alpha_range = FALSE,
   symmetric = TRUE,
   prior_selection = NULL,

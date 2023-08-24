@@ -46,12 +46,17 @@ powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
                                                 k_threshold = 0.5,
                                                 resample = FALSE,
                                                 transform = FALSE,
+                                                prediction = NULL,
                                                 auto_alpha_range = FALSE,
                                                 symmetric = TRUE,
                                                 prior_selection = NULL,
                                                 likelihood_selection = NULL,
                                                 ...
                                                 ) {
+
+  # input checks
+  checkmate::assertFunction(prediction, null.ok = TRUE)
+  # TODO: check other inputs, too
 
   # adapt alpha range to ensure pareto-k < theshold
   if (auto_alpha_range) {
@@ -106,10 +111,27 @@ powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
 
 
   # extract the base draws
+  if (!is.null(prediction) && !is.null(variable)) {
+    # TODO: do we need to generalize this? Or is "^_pred" the hard-coded
+    # pattern?
+    # TODO: this step might be necessary at other places in the package as well
+    # (probably whenever both arguments `prediction` and `variable` (or
+    # `variables`) exist)
+    variable_base <- grep("^_pred", variable, value = TRUE, invert = TRUE)
+  } else {
+    variable_base <- variable
+  }
   base_draws <- posterior::subset_draws(
     x$draws,
-    variable = variable,
+    variable = variable_base,
     ...)
+  # append predictions
+  if (!is.null(prediction)) {
+    pred_draws <- prediction(x$fit, ...)
+
+    # bind predictions and posterior draws
+    base_draws <- posterior::bind_draws(base_draws, pred_draws)
+  }
 
   if (transform == "whiten") {
     base_draws_tr <- whiten_draws(base_draws, ...)
@@ -157,6 +179,7 @@ powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
         moment_match = moment_match,
         resample = resample,
         transform = transform,
+        prediction = prediction,
         selection = prior_selection,
         ...
       )
@@ -191,6 +214,7 @@ powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
         k_treshold = k_threshold,
         resample = resample,
         transform = transform,
+        prediction = prediction,
         selection = likelihood_selection,
         ...
       )
