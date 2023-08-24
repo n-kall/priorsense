@@ -161,12 +161,13 @@ powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
         ...
       )
 
-      prior_scaled <- list(
-        draws_sequence = scaled_draws_list,
-        component = scaled_component
-      )
-
     }
+
+    prior_scaled <- list(
+      draws_sequence = scaled_draws_list,
+      component = scaled_component
+    )
+
   }
   if ("likelihood" %in% component) {
 
@@ -194,12 +195,13 @@ powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
         ...
       )
 
-      likelihood_scaled <- list(
-        draws_sequence = scaled_draws_list,
-        component = scaled_component
-      )
-
     }
+
+    likelihood_scaled <- list(
+      draws_sequence = scaled_draws_list,
+      component = scaled_component
+    )
+
   }
 
   out <- list(
