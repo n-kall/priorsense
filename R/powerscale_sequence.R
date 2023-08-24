@@ -109,26 +109,27 @@ powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
     alpha_seq <- c(alpha_seq_l, alpha_seq_u)
   }
 
-
-  # extract the base draws
-  if (!is.null(prediction) && !is.null(variable)) {
-    # TODO: do we need to generalize this? Or is "^_pred" the hard-coded
-    # pattern?
-    # TODO: this step might be necessary at other places in the package as well
-    # (probably whenever both arguments `prediction` and `variable` (or
-    # `variables`) exist)
-    variable_base <- grep("^_pred", variable, value = TRUE, invert = TRUE)
-  } else {
-    variable_base <- variable
+  variable_base <- variable
+  # compute predictions (necessary at this place to infer the variable names
+  # from the predictions in the next step)
+  if (!is.null(prediction)) {
+    pred_draws <- prediction(x$fit, ...)
   }
+  # for retrieving the base draws, we need to exclude the variable names from
+  # the predictions
+  # TODO: this step might be necessary at other places in the package as well
+  # (probably whenever both arguments `prediction` and `variable` (or
+  # `variables`) exist)
+  if (!is.null(prediction) && !is.null(variable_base)) {
+    variable_base <- setdiff(variable_base, posterior::variables(pred_draws))
+  }
+  # extract the base draws
   base_draws <- posterior::subset_draws(
     x$draws,
     variable = variable_base,
     ...)
   # append predictions
   if (!is.null(prediction)) {
-    pred_draws <- prediction(x$fit, ...)
-
     # bind predictions and posterior draws
     base_draws <- posterior::bind_draws(base_draws, pred_draws)
   }
