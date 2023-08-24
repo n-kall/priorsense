@@ -118,8 +118,6 @@ powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
   # for retrieving the base draws, we need to exclude the variable names from
   # the predictions
   # TODO: this step might be necessary at other places in the package as well
-  # (probably whenever both arguments `prediction` and `variable` (or
-  # `variables`) exist)
   if (!is.null(prediction) && !is.null(variable_base)) {
     variable_base <- setdiff(variable_base, posterior::variables(pred_draws))
   }
@@ -130,7 +128,6 @@ powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
     ...)
   # append predictions
   if (!is.null(prediction)) {
-    # bind predictions and posterior draws
     base_draws <- posterior::bind_draws(base_draws, pred_draws)
   }
 
