@@ -179,7 +179,8 @@ moment_match.brmsfit <- function(x, ...) {
 ##' @return draws array of predictions
 ##' @export
 predictions_as_draws <- function(x, predict_fn, prediction_names = NULL,
-                                 warn_dims = TRUE, ...) {
+                                 warn_dims = getOption("priorsense.warn", TRUE),
+                                 ...) {
   terms <- brms::brmsterms(x$formula)
   if(inherits(terms, "mvbrmsterms")) {
     responses <- brms::brmsterms(x$formula)$responses

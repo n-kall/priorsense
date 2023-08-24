@@ -8,7 +8,7 @@ predictions_as_draws(
   x,
   predict_fn,
   prediction_names = NULL,
-  warn_dims = TRUE,
+  warn_dims = getOption("priorsense.warn", TRUE),
   ...
 )
 }
