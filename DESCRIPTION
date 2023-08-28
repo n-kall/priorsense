@@ -4,6 +4,7 @@ Version: 0.0.0.9000
 Authors@R: c(person("Noa", "Kallioinen", email = "noa.kallioinen@aalto.fi", role = c("aut", "cre")),
              person("Paul-Christian", "Bürkner", role = c("aut")),
              person("Topi", "Paananen", role = c("aut")),
+             person("Frank", "Weber", role = c("ctb")),
 	     person("Aki", "Vehtari", role = c("aut"))
 	     )
 Description: priorsense provides functions for prior and likelihood sensitivity analysis in Bayesian models. Currently it implements methods to determine the sensitivity of the posterior to power-scaling perturbations of the prior and likelihood.

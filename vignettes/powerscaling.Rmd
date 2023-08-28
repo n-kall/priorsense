@@ -39,7 +39,7 @@ $\alpha > 0$.
 - For prior power-scaling: $p(\theta \mid y) \propto p(\theta)^\alpha
   p(y \mid \theta)$
 - For likelihood power-scaling: $p(\theta \mid y) \propto
-  p(\theta)^\alpha p(y \mid \theta)$
+  p(\theta) p(y \mid \theta)^\alpha$
 
 In priorsense, this is done in a computationally efficient manner
 using Pareto-smoothed importance sampling (and optionally importance
