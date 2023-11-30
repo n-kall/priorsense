@@ -63,7 +63,10 @@ powerscale_sensitivity.brmsfit <- function(x,
 ##' @rdname joint_log_lik
 ##' @export
 joint_log_lik_brmsfit <- function(x, ...) {
-
+  if (!requireNamespace("brms", quietly = TRUE)) {
+    warning("The brms package must be installed to use this functionality")
+    return(NULL)
+  }
   log_lik <- rowSums(brms::log_lik(x, ...))
   chains <- x$fit@sim$chains
 
