@@ -31,6 +31,7 @@ powerscale_sensitivity(x, ...)
   resample = FALSE,
   transform = FALSE,
   prediction = NULL,
+  num_args = getOption("posterior.num_args", list()),
   ...
 )
 
@@ -100,6 +101,11 @@ draws to perform before sensitivity analysis. Either "scale" or "whiten".}
 
 \item{prediction}{Function taking the model fit and returning a
 draws_df of predictions to be appended to the posterior draws}
+
+\item{num_args}{(named list) Optional arguments passed to
+\link[tibble:num]{num()} for pretty printing of summaries. Can be
+controlled globally via the \code{posterior.num_args}
+\link[base:options]{option}.}
 }
 \value{
 Table of sensitivity values for each specified variable.

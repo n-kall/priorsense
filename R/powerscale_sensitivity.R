@@ -18,6 +18,10 @@
 ##' @template powerscale_args
 ##' @template prediction_arg
 ##' @template resample_arg
+##' @param num_args (named list) Optional arguments passed to
+##'   [num()][tibble::num] for pretty printing of summaries. Can be
+##'   controlled globally via the `posterior.num_args`
+##'   [option][base::options].
 ##' @return Table of sensitivity values for each specified variable.
 ##' @template powerscale_references
 ##' @export
@@ -62,6 +66,7 @@ powerscale_sensitivity.powerscaling_data <- function(x,
                                                      resample = FALSE,
                                                      transform = FALSE,
                                                      prediction = NULL,
+                                                     num_args = getOption("posterior.num_args", list()),
                                                      ...) {
   # input checks
   checkmate::assertClass(x, classes = "powerscaling_data")
@@ -144,6 +149,8 @@ powerscale_sensitivity.powerscaling_data <- function(x,
   )
 
   class(out) <- "powerscaled_sensitivity_summary"
+
+  attr(out, "num_args") <- num_args
 
   return(out)
 }
