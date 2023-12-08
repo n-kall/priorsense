@@ -7,6 +7,7 @@
 \method{summarise_draws}{powerscaled_draws}(
   .x,
   ...,
+  .num_args = getOption("posterior.num_args", list()),
   .args = list(),
   base_draws = NULL,
   diagnostics = FALSE,
@@ -20,11 +21,16 @@
 
 \item{...}{summary functions}
 
+\item{.num_args}{(named list) Optional arguments passed to
+\link[tibble:num]{num()} for pretty printing of summaries. Can be
+controlled globally via the \code{posterior.num_args}
+\link[base:options]{option}.}
+
 \item{.args}{arguments for summary functions}
 
 \item{base_draws}{base draws}
 
-\item{diagnostics}{boolean, if TRUE included diagnostics for mean
+\item{diagnostics}{boolean, if TRUE include diagnostics for mean
 and variance}
 
 \item{div_measures}{divergence measures}

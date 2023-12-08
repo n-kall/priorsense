@@ -8,6 +8,7 @@
   .x,
   ...,
   .args = list(),
+  .num_args = NULL,
   div_measures = "cjs_dist",
   measure_args = list(),
   resample = FALSE
@@ -19,6 +20,8 @@
 \item{...}{summary functions}
 
 \item{.args}{additional arguments to summary functions}
+
+\item{.num_args}{}
 
 \item{div_measures}{divergence measures}
 

@@ -12,8 +12,12 @@ summary.powerscaled_draws <- function(object, ...) {
 ##' @param .x An object of class powerscaled_draws
 ##' @param ... summary functions
 ##' @param .args arguments for summary functions
+##' @param .num_args (named list) Optional arguments passed to
+##'   [num()][tibble::num] for pretty printing of summaries. Can be
+##'   controlled globally via the `posterior.num_args`
+##'   [option][base::options].
 ##' @param base_draws base draws
-##' @param diagnostics boolean, if TRUE included diagnostics for mean
+##' @param diagnostics boolean, if TRUE include diagnostics for mean
 ##'   and variance
 ##' @param div_measures divergence measures
 ##' @param measure_args arguments for divergence measures
@@ -109,6 +113,10 @@ summarise_draws.powerscaled_draws <- function(.x,
 ##' @param .x powerscaled_sequence
 ##' @param ... summary functions
 ##' @param .args additional arguments to summary functions
+##' @param .num_args (named list) Optional arguments passed to
+##'   [num()][tibble::num] for pretty printing of summaries. Can be
+##'   controlled globally via the `posterior.num_args`
+##'   [option][base::options].
 ##' @param div_measures divergence measures
 ##' @param measure_args arguments for divergence measures
 ##' @param resample resample
@@ -117,6 +125,7 @@ summarise_draws.powerscaled_draws <- function(.x,
 summarise_draws.powerscaled_sequence <- function(.x,
                                                  ...,
                                                  .args = list(),
+                                                 .num_args = NULL,
                                                  div_measures = "cjs_dist",
                                                  measure_args = list(),
                                                  resample = FALSE) {
