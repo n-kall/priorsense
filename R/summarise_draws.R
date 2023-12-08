@@ -21,6 +21,7 @@ summary.powerscaled_draws <- function(object, ...) {
 ##' @export
 summarise_draws.powerscaled_draws <- function(.x,
                                               ...,
+                                              .num_args = getOption("posterior.num_args", list()),
                                               .args = list(),
                                               base_draws = NULL,
                                               diagnostics = FALSE,
@@ -74,7 +75,8 @@ summarise_draws.powerscaled_draws <- function(.x,
   summ <- posterior::summarise_draws(
     target_draws,
     funs,
-    .args = .args
+    .args = .args,
+    .num_args = .num_args
   )
 
   if (!is.null(base_draws)) {
@@ -134,7 +136,9 @@ summarise_draws.powerscaled_sequence <- function(.x,
   # for base posterior
   base_quantities <- posterior::summarise_draws(
     posterior::merge_chains(base_draws),
-    funs
+    funs,
+    .args = .args,
+    .num_args = .num_args
   )
   base_quantities$alpha <- 1
   base_quantities$n_eff <- NA

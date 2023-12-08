@@ -37,16 +37,16 @@ print.powerscaling_details <- function(x, ...) {
 
 ##' @export
 print.powerscaled_draws <- function(x, ...) {
-  print(x$draws)
-  print(x$powerscaling)
+  print(x$draws, ...)
+  print(x$powerscaling, ...)
 
   invisible(x)
 }
 
 ##' @export
 print.powerscaled_draws_summary <- function(x, ...) {
-  print(x$draws_summary)
-  print(x$powerscaling)
+  print(x$draws_summary, ...)
+  print(x$powerscaling, ...)
 
   invisible(x)
 }
@@ -64,7 +64,7 @@ print.powerscaled_sequence <- function(x, ...) {
   }
 
   cat("base draws:\n")
-  print(x$base_draws)
+  print(x$base_draws, ...)
 
   cat(
     "\npower-scaling\n",
@@ -80,15 +80,19 @@ print.powerscaled_sequence <- function(x, ...) {
 
 
 ##' @export
-print.powerscaled_sensitivity_summary <- function(x, ...) {
+print.powerscaled_sensitivity_summary <- function(x, ..., num_args = NULL) {
 
+  num_args <- num_args %||% attr(x, "num_args")
+  for (i in seq_cols(x$sensitivity)) {
+    if (is.numeric(x$sensitivity[[i]])) {
+      x$sensitivity[[i]] <- do.call(tibble::set_num_opts, c(list(x$sensitivity[[i]]), num_args))
+    }
+  }
   cat(paste0("Sensitivity based on ", x$div_measure, ":\n"))
-
-  print(x$sensitivity)
+  print(x$sensitivity, ...)
   if (!is.null(x$loadings)) {
     cat("Factor loadings:\n")
     print(round(x$loadings, 2))
   }
   invisible(x)
-
 }
