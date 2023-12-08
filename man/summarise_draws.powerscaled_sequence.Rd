@@ -21,7 +21,10 @@
 
 \item{.args}{additional arguments to summary functions}
 
-\item{.num_args}{}
+\item{.num_args}{(named list) Optional arguments passed to
+\link[tibble:num]{num()} for pretty printing of summaries. Can be
+controlled globally via the \code{posterior.num_args}
+\link[base:options]{option}.}
 
 \item{div_measures}{divergence measures}
 
