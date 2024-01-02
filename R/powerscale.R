@@ -76,7 +76,7 @@ powerscale.powerscaling_data <- function(x,
     importance_sampling <- is_method(
       log_ratios = log_ratios,
       r_eff = loo::relative_eff(
-        x = exp(-log_ratios)
+        x = exp(-(log_ratios - max(log_ratios)))
       )
     )
   } else {
@@ -86,7 +86,7 @@ powerscale.powerscaling_data <- function(x,
       is_method(
         log_ratios = log_ratios,
         r_eff = loo::relative_eff(
-          x = exp(-log_ratios)
+          x = exp(-(log_ratios - max(log_ratios)))
         )
       )
     )
