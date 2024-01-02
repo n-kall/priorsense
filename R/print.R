@@ -89,6 +89,7 @@ print.powerscaled_sensitivity_summary <- function(x, ..., num_args = NULL) {
     }
   }
   cat(paste0("Sensitivity based on ", x$div_measure, ":\n"))
+
   print(x$sensitivity, ...)
   if (!is.null(x$loadings)) {
     cat("Factor loadings:\n")

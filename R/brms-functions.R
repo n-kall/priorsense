@@ -1,3 +1,9 @@
+##' Create powerscaling data
+##'
+##' @name create-powerscaling-data
+##'
+NULL
+
 ##' @rdname create-powerscaling-data
 ##' @export
 create_priorsense_data.brmsfit <- function(x, ...) {
@@ -116,7 +122,7 @@ moment_match.brmsfit <- function(x, ...) {
 
   return(TRUE)
 }
-  
+
 ## moment_match.brmsfit <- function(x, psis, ...) {
 ##   # ensure compatibility with objects not created in the current R session
 ##   x$fit@.MISC <- suppressMessages(brm(fit = x, chains = 0))$fit@.MISC
@@ -167,10 +173,14 @@ moment_match.brmsfit <- function(x, ...) {
 ##' @param x brmsfit object
 ##' @param predict_fn function for predictions
 ##' @param prediction_names optional names of the predictions
+##' @param warn_dims throw a warning when coercing predict_fn's output from 3
+##'   margins to 2 margins?
 ##' @param ... further arguments passed to predict_fn
 ##' @return draws array of predictions
 ##' @export
-predictions_as_draws <- function(x, predict_fn, prediction_names = NULL, ...) {
+predictions_as_draws <- function(x, predict_fn, prediction_names = NULL,
+                                 warn_dims = getOption("priorsense.warn", TRUE),
+                                 ...) {
   terms <- brms::brmsterms(x$formula)
   if(inherits(terms, "mvbrmsterms")) {
     responses <- brms::brmsterms(x$formula)$responses
@@ -182,8 +192,26 @@ predictions_as_draws <- function(x, predict_fn, prediction_names = NULL, ...) {
   pred_draws <- list()
   predictions <- predict_fn(x, ...)
   if (!(mv)) {
+    dim_pred <- dim(predictions)
+    if (length(dim_pred) == 3) {
+      if (warn_dims) {
+        warning("coercing predict_fn()'s output from 3 margins to 2 margins ",
+                "(by making the former margin 2 nested within blocks which ",
+                "correspond to former margin 3)")
+      }
+      predictions <- array(predictions,
+                           dim = c(dim_pred[1], dim_pred[2] * dim_pred[3]))
+    } else if (length(dim_pred) > 3) {
+      stop("predict_fn() returned an unexpected number of margins (> 3) for ",
+           "this univariate model")
+    }
     # add additional dimension in univariate case
     dim(predictions) <- c(dim(predictions), 1)
+  } else {
+    if (length(dim_pred) != 3) {
+      stop("predict_fn() returned an unexpected number of margins (!= 3) for ",
+           "this multivariate model")
+    }
   }
   for (resp in seq_along(responses)) {
     # create draws array of predictions for each response variable
