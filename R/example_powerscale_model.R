@@ -22,7 +22,7 @@ powerscale_examples <- function() {
       list(
         model_code = "data {
   int<lower=1> N;
-  real y[N];
+  array[N] real y;
   vector<lower=0>[2] prior_alpha;
   real<lower=0> likelihood_alpha;
 }
@@ -61,7 +61,7 @@ eight_schools =
   list(
     model_code = "data {
   int<lower=0> J;          // number of schools
-  real y[J];         // estimated treatment effects
+  array[J] real y;         // estimated treatment effects
   real<lower=0> sigma[J];  // s.e. of effect estimates
   real<lower=0> prior_alpha; // power-scaling
   real<lower=0> likelihood_alpha; // power-scaling
