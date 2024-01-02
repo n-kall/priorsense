@@ -1,10 +1,4 @@
-##' Create powerscaling data
-##'
-##' @name create-powerscaling-data
-##'
-NULL
-
-##' @rdname create-powerscaling-data
+##' @rdname create-priorsense-data
 ##' @export
 create_priorsense_data.brmsfit <- function(x, ...) {
 
