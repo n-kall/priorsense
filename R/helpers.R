@@ -29,9 +29,6 @@ remove_unwanted_vars <- function(x, excluded_variables = c("lprior", "log_lik", 
   return(draws)
 }
 
-# check if a certain package is installed
-# @param package package name
-# @param version optional minimal version number to require
 require_package <- function(package, version = NULL) {
   if (!requireNamespace(package, quietly = TRUE)) {
     stop2("Please install the '", package, "' package.")
@@ -48,4 +45,14 @@ require_package <- function(package, version = NULL) {
 
 stop2 <- function(...) {
   stop(..., call. = FALSE)
+}
+
+
+'%||%' <- function(x, y) {
+  if (is.null(x)) x <- y
+  x
+}
+
+seq_cols <- function(x) {
+  seq_len(NCOL(x))
 }

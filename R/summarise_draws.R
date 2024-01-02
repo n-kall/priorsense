@@ -12,6 +12,10 @@ summary.powerscaled_draws <- function(object, ...) {
 ##' @param .x An object of class powerscaled_draws
 ##' @param ... summary functions
 ##' @param .args arguments for summary functions
+##' @param .num_args (named list) Optional arguments passed to
+##'   [num()][tibble::num] for pretty printing of summaries. Can be
+##'   controlled globally via the `posterior.num_args`
+##'   [option][base::options].
 ##' @param base_draws base draws
 ##' @param diagnostics boolean, if TRUE included diagnostics for mean
 ##'   and variance
@@ -22,6 +26,7 @@ summary.powerscaled_draws <- function(object, ...) {
 summarise_draws.powerscaled_draws <- function(.x,
                                               ...,
                                               .args = list(),
+                                              .num_args = getOption("posterior.num_args", list()),
                                               base_draws = NULL,
                                               diagnostics = FALSE,
                                               div_measures = "cjs_dist",
@@ -74,7 +79,8 @@ summarise_draws.powerscaled_draws <- function(.x,
   summ <- posterior::summarise_draws(
     target_draws,
     funs,
-    .args = .args
+    .args = .args,
+    .num_args = .num_args
   )
 
   if (!is.null(base_draws)) {
@@ -107,6 +113,10 @@ summarise_draws.powerscaled_draws <- function(.x,
 ##' @param .x powerscaled_sequence
 ##' @param ... summary functions
 ##' @param .args additional arguments to summary functions
+##' @param .num_args (named list) Optional arguments passed to
+##'   [num()][tibble::num] for pretty printing of summaries. Can be
+##'   controlled globally via the `posterior.num_args`
+##'   [option][base::options].
 ##' @param div_measures divergence measures
 ##' @param measure_args arguments for divergence measures
 ##' @param resample resample
@@ -115,6 +125,7 @@ summarise_draws.powerscaled_draws <- function(.x,
 summarise_draws.powerscaled_sequence <- function(.x,
                                                  ...,
                                                  .args = list(),
+                                                 .num_args = getOption("posterior.num_args", list()),
                                                  div_measures = "cjs_dist",
                                                  measure_args = list(),
                                                  resample = FALSE) {
@@ -134,7 +145,9 @@ summarise_draws.powerscaled_sequence <- function(.x,
   # for base posterior
   base_quantities <- posterior::summarise_draws(
     posterior::merge_chains(base_draws),
-    funs
+    funs,
+    .args = .args,
+    .num_args = .num_args
   )
   base_quantities$alpha <- 1
   base_quantities$n_eff <- NA

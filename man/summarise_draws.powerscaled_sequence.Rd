@@ -8,6 +8,7 @@
   .x,
   ...,
   .args = list(),
+  .num_args = getOption("posterior.num_args", list()),
   div_measures = "cjs_dist",
   measure_args = list(),
   resample = FALSE
@@ -19,6 +20,11 @@
 \item{...}{summary functions}
 
 \item{.args}{additional arguments to summary functions}
+
+\item{.num_args}{(named list) Optional arguments passed to
+\link[tibble:num]{num()} for pretty printing of summaries. Can be
+controlled globally via the \code{posterior.num_args}
+\link[base:options]{option}.}
 
 \item{div_measures}{divergence measures}
 

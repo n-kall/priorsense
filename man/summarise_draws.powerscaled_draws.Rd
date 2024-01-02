@@ -8,6 +8,7 @@
   .x,
   ...,
   .args = list(),
+  .num_args = getOption("posterior.num_args", list()),
   base_draws = NULL,
   diagnostics = FALSE,
   div_measures = "cjs_dist",
@@ -21,6 +22,11 @@
 \item{...}{summary functions}
 
 \item{.args}{arguments for summary functions}
+
+\item{.num_args}{(named list) Optional arguments passed to
+\link[tibble:num]{num()} for pretty printing of summaries. Can be
+controlled globally via the \code{posterior.num_args}
+\link[base:options]{option}.}
 
 \item{base_draws}{base draws}
 
