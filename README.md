@@ -103,9 +103,9 @@ powerscale_sensitivity(fit)
 #> # A tibble: 3 × 4
 #>   variable prior likelihood diagnosis          
 #>   <chr>    <dbl>      <dbl> <chr>              
-#> 1 mu       0.368      0.528 prior-data conflict
-#> 2 sigma    0.276      0.516 prior-data conflict
-#> 3 lprior   0.356      0.506 prior-data conflict
+#> 1 mu       0.366      0.509 prior-data conflict
+#> 2 sigma    0.252      0.464 prior-data conflict
+#> 3 lprior   0.355      0.491 prior-data conflict
 ```
 
 To visually inspect changes to the posterior, first create a
@@ -120,30 +120,50 @@ values \> 0.5) are indicated.
 
 ``` r
 powerscale_plot_ecdf(pss, variables = c("mu", "sigma"))
-#> Warning: The following aesthetics were dropped during statistical transformation:
-#> weight
-#> ℹ This can happen when ggplot fails to infer the correct grouping
-#>   structure in the data.
-#> ℹ Did you forget to specify a `group` aesthetic or to convert a
-#>   numerical variable into a factor?
-#> The following aesthetics were dropped during statistical transformation:
-#> weight
-#> ℹ This can happen when ggplot fails to infer the correct grouping
-#>   structure in the data.
-#> ℹ Did you forget to specify a `group` aesthetic or to convert a
-#>   numerical variable into a factor?
-#> The following aesthetics were dropped during statistical transformation:
-#> weight
-#> ℹ This can happen when ggplot fails to infer the correct grouping
-#>   structure in the data.
-#> ℹ Did you forget to specify a `group` aesthetic or to convert a
-#>   numerical variable into a factor?
-#> The following aesthetics were dropped during statistical transformation:
-#> weight
-#> ℹ This can happen when ggplot fails to infer the correct grouping
-#>   structure in the data.
-#> ℹ Did you forget to specify a `group` aesthetic or to convert a
-#>   numerical variable into a factor?
+#> Warning: The following aesthetics were
+#> dropped during statistical
+#> transformation: weight
+#> ℹ This can happen when ggplot
+#>   fails to infer the correct
+#>   grouping structure in the
+#>   data.
+#> ℹ Did you forget to specify a
+#>   `group` aesthetic or to
+#>   convert a numerical variable
+#>   into a factor?
+#> The following aesthetics were
+#> dropped during statistical
+#> transformation: weight
+#> ℹ This can happen when ggplot
+#>   fails to infer the correct
+#>   grouping structure in the
+#>   data.
+#> ℹ Did you forget to specify a
+#>   `group` aesthetic or to
+#>   convert a numerical variable
+#>   into a factor?
+#> The following aesthetics were
+#> dropped during statistical
+#> transformation: weight
+#> ℹ This can happen when ggplot
+#>   fails to infer the correct
+#>   grouping structure in the
+#>   data.
+#> ℹ Did you forget to specify a
+#>   `group` aesthetic or to
+#>   convert a numerical variable
+#>   into a factor?
+#> The following aesthetics were
+#> dropped during statistical
+#> transformation: weight
+#> ℹ This can happen when ggplot
+#>   fails to infer the correct
+#>   grouping structure in the
+#>   data.
+#> ℹ Did you forget to specify a
+#>   `group` aesthetic or to
+#>   convert a numerical variable
+#>   into a factor?
 ```
 
 <img src="man/figures/README-ecdf_plot-1.png" width="70%" height="70%" />
@@ -162,14 +182,14 @@ powerscale_plot_quantities(
 ## References
 
 Noa Kallioinen, Topi Paananen, Paul-Christian Bürkner, Aki Vehtari
-(2022). Detecting and diagnosing prior and likelihood sensitivity with
-power-scaling. preprint
-[arXiv:2107.14054](https://arxiv.org/abs/2107.14054)
+(2024). Detecting and diagnosing prior and likelihood sensitivity with
+power-scaling. Statstics and Computing. 34, 57.
+<https://doi.org/10.1007/s11222-023-10366-5>
 
 Topi Paananen, Juho Piironen, Paul-Christian Bürkner, Aki Vehtari
 (2021). Implicitly adaptive importance sampling. Statistics and
 Computing 31, 16. <https://doi.org/10.1007/s11222-020-09982-2>
 
 Aki Vehtari, Daniel Simpson, Andrew Gelman, Yuling Yao, Jonah Gabry
-(2021). Pareto smoothed importance sampling. preprint
+(2022). Pareto smoothed importance sampling. preprint
 [arXiv:1507.02646](https://arxiv.org/abs/1507.02646)
