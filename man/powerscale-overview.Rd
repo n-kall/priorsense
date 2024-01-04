@@ -130,12 +130,13 @@ prior or likelihood using importance sampling (and optionally
 moment matching).
 }
 \references{
-Kallioinen, N., Paananen, T., Bürkner, P-C., Vehtari, A. (in
-prep).  Detecting and diagnosing prior and likelihood sensitivity
-with power-scaling perturbations.
+Kallioinen, N., Paananen, T., Bürkner, P-C., Vehtari, A. (2024).
+Detecting and diagnosing prior and likelihood sensitivity with
+power-scaling perturbations.  \emph{Statstics and
+Computing}. 34(57).  \code{doi:10.1007/s11222-023-10366-5}
 
 Vehtari, A., Simpson, D., Gelman, A., Yao, Y., and Gabry,
-J. (2019).  Pareto smoothed importance sampling.  \href{https://arxiv.org/abs/1507}{preprint arXiv:1507.02646}
+J. (2022).  Pareto smoothed importance sampling.  \href{https://arxiv.org/abs/1507}{preprint arXiv:1507.02646}
 
 Paananen, T., Piironen, J., Bürkner, P-C., Vehtari, A. (2021).
 Implicitly adaptive importance sampling.  \emph{Statistics and
