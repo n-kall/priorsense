@@ -26,6 +26,15 @@ create_priorsense_data.default <- function(x,
                                            log_prior = NULL,
                                            log_lik = NULL,
                                            ...) {
+
+  if (is.null(log_prior)) {
+    log_prior <- log_prior_fn(fit, ...)
+  }
+
+  if (is.null(log_lik)) {
+    log_lik <- log_lik_fn(fit, ...)
+  }
+
   psd <- list(
     draws = x,
     fit = fit,
@@ -34,7 +43,7 @@ create_priorsense_data.default <- function(x,
     log_prior = log_prior,
     log_lik = log_lik
   )
-
+  
   class(psd) <- c("priorsense_data", class(psd))
 
   return(psd)
@@ -47,10 +56,10 @@ create_priorsense_data.stanfit <- function(x, ...) {
   create_priorsense_data.default(
     x = get_draws_stanfit(x),
     fit = x,
-    log_prior_fn = log_prior_stanfit,
-    log_lik_fn = log_lik_stanfit,
-    log_prior = log_prior_stanfit(x, ...),
-    log_lik = log_lik_stanfit(x, ...),
+    log_prior_fn = log_prior_draws,
+    log_lik_fn = log_lik_draws,
+    log_prior = log_prior_draws(x, ...),
+    log_lik = log_lik_draws(x, ...),
     ...
   )
 }
@@ -62,10 +71,10 @@ create_priorsense_data.CmdStanFit <- function(x, ...) {
   create_priorsense_data.default(
     x = get_draws_CmdStanFit(x, ...),
     fit = x,
-    log_prior_fn = log_prior_CmdStanFit,
-    log_lik_fn = log_lik_CmdStanFit,
-    log_prior = log_prior_CmdStanFit(x, ...),
-    log_lik = log_lik_CmdStanFit(x, ...),
+    log_prior_fn = log_prior_draws,
+    log_lik_fn = log_lik_draws,
+    log_prior = log_prior_draws(x, ...),
+    log_lik = log_lik_draws(x, ...),
     ...
   )
 }
@@ -76,8 +85,8 @@ create_priorsense_data.draws <- function(x, ...) {
 
   create_priorsense_data.default(
     x = remove_unwanted_vars(x, ...),
-#    log_prior_fn = log_prior_draws,
-#    log_lik_fn = log_lik_draws,
+    log_prior_fn = log_prior_draws,
+    log_lik_fn = log_lik_draws,
     log_prior = log_prior_draws(x, ...),
     log_lik = log_lik_draws(x, ...),    
     ...

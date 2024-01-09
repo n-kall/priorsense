@@ -5,10 +5,10 @@ create_priorsense_data.brmsfit <- function(x, ...) {
   create_priorsense_data.default(
     x = get_draws_brmsfit(x, ...),
     fit = x,
-    log_prior = log_prior_brmsfit(x, ...),
-    log_lik = log_lik_brmsfit(x, ...),
-    log_prior_fn = log_prior_brmsfit,
-    log_lik_fn = log_lik_brmsfit,
+    log_prior = log_prior_draws.brmsfit(x, ...),
+    log_lik = log_lik_draws.brmsfit(x, ...),
+    log_prior_fn = log_prior_draws,
+    log_lik_fn = log_lik_draws,
     ...
   )
 }
@@ -60,7 +60,7 @@ powerscale_sensitivity.brmsfit <- function(x,
 
 ##' @rdname joint_log_lik
 ##' @export
-log_lik_brmsfit <- function(x, ...) {
+log_lik_draws.brmsfit <- function(x, ...) {
   require_package("brms")
 
   nc <- posterior::nchains(x)
@@ -84,7 +84,7 @@ log_lik_brmsfit <- function(x, ...) {
 
 ##' @rdname log_prior
 ##' @export
-log_prior_brmsfit <- function(x, log_prior_name = "lprior", ...) {
+log_prior_draws.brmsfit <- function(x, log_prior_name = "lprior", ...) {
 
   log_prior <- posterior::subset_draws(posterior::as_draws_array(x), variable = log_prior_name)
 

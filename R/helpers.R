@@ -5,7 +5,7 @@ SW <- function(...) {
 rowsums_draws <- function(x) {
   posterior::draws_array(
         sum = rowSums(
-          x,
+          posterior::as_draws_array(x),
           dims = 2
         ),
         .nchains = posterior::nchains(x)
