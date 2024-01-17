@@ -25,6 +25,8 @@
 ##' @importFrom rlang .data
 NULL
 
+# TODO add bounded
+
 prepare_plot_data <- function(x, variables, resample, ...) {
 
   base_draws <- posterior::merge_chains(x$base_draws)
@@ -283,11 +285,13 @@ powerscale_plot_quantities <- function(x, variables,
                                        resample = FALSE,
                                        measure_args = NULL,
                                        mcse = TRUE,
+                                       quantity_args = NULL,
                                        ...) {
 
   summ <- summarise_draws(
     x,
     ... = quantities,
+    .args = quantity_args,
     resample = resample,
     div_measures = div_measure,
     measure_args = measure_args

@@ -183,6 +183,7 @@ summarise_draws.powerscaled_sequence <- function(.x,
       quantities <- summarise_draws(
         .x = scaled,
         funs,
+        .args = .args,
         base_draws = base_draws,
         div_measures = div_measures,
         resample = resample
@@ -211,6 +212,7 @@ summarise_draws.powerscaled_sequence <- function(.x,
       quantities <- summarise_draws(
         .x = scaled,
         funs,
+        .args = .args,
         base_draws = base_draws,
         div_measures = div_measures,
         resample = resample

@@ -11,3 +11,14 @@ sensitivity analysis in Bayesian models. Currently it implements
 methods to determine the sensitivity of the posterior to power-scaling
 perturbations of the prior and likelihood.
 }
+\author{
+\strong{Maintainer}: Noa Kallioinen \email{noa.kallioinen@aalto.fi}
+
+Authors:
+\itemize{
+  \item Paul-Christian Bürkner
+  \item Topi Paananen
+  \item Aki Vehtari
+}
+
+}
