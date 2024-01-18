@@ -8,7 +8,7 @@ sfit <- suppressWarnings(rstan::stan(
   seed = 123,
   iter = 500,
   warmup = 250,
-  chains = 1
+  chains = 4
 ))
 
 test_that("moment matching is applied when specified and pareto-k is higher than threshold",

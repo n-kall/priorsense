@@ -3,23 +3,26 @@ find_alpha_threshold <- function(x, ...) {
 
 }
 
+##' @export
 find_alpha_threshold.CmdStanFit <- function(x, ...) {
 
-  psd <- create_powerscaling_data(x)
+  psd <- create_priorsense_data(x)
 
   find_alpha_threshold(psd, ...)
 
 }
 
+##' @export
 find_alpha_threshold.stanfit <- function(x, ...) {
 
-  psd <- create_powerscaling_data(x)
+  psd <- create_priorsense_data(x)
 
   find_alpha_threshold(psd, ...)
 
 }
 
-find_alpha_threshold.powerscaling_data <- function(x, ...) {
+##' @export
+find_alpha_threshold.priorsense_data <- function(x, ...) {
 
   find_alpha_threshold.default(
     x = x$fit,
@@ -34,6 +37,7 @@ find_alpha_threshold.powerscaling_data <- function(x, ...) {
 
 }
 
+##' @export
 find_alpha_threshold.default <- function(x,
                                  component,
                                  alpha_bound,

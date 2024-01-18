@@ -42,7 +42,7 @@ The symmetric metric is defined as:
 
 \deqn{CJS_{dist}(P || Q) = \sqrt{CJS(P || Q) + CJS(Q || P)}}
 
-This has an upper bound of \eqn{\sqrt \sum (P(x) + Q(x))}
+This has an upper bound of \eqn{\sqrt{ \sum (P(x) + Q(x))}}
 }
 \references{
 Nguyen H-V., Vreeken J. (2015).  Non-parametric

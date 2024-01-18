@@ -25,7 +25,7 @@ summary.powerscaled_draws <- function(object, ...) {
 ##' @export
 summarise_draws.powerscaled_draws <- function(.x,
                                               ...,
-                                              .num_args = getOption("posterior.num_args", list()),
+                                              .num_args = NULL,
                                               .args = list(),
                                               base_draws = NULL,
                                               diagnostics = FALSE,

@@ -1,16 +1,14 @@
-##' @rdname create-powerscaling-data
+##' @rdname create-priorsense-data
 ##' @export
-create_powerscaling_data.brmsfit <- function(x, ...) {
+create_priorsense_data.brmsfit <- function(x, ...) {
 
-  create_powerscaling_data.default(
-    x = x,
-    log_prior = log_prior_brmsfit,
-    log_lik = joint_log_lik_brmsfit,
-    get_draws = get_draws_brmsfit,
-    unconstrain_pars = unconstrain_pars,
-    constrain_pars = rstan::constrain_pars,
-    log_prob_upars = log_prob_upars,
-    log_ratio_upars = log_ratio_upars,
+  create_priorsense_data.default(
+    x = get_draws_brmsfit(x, ...),
+    fit = x,
+    log_prior = log_prior_draws.brmsfit(x, ...),
+    log_lik = log_lik_draws.brmsfit(x, ...),
+    log_prior_fn = log_prior_draws,
+    log_lik_fn = log_lik_draws,
     ...
   )
 }
@@ -22,9 +20,9 @@ powerscale.brmsfit <- function(x,
                                alpha,
                                ...
                                ) {
-  psd <- create_powerscaling_data.brmsfit(x, ...)
+  psd <- create_priorsense_data.brmsfit(x, ...)
 
-  powerscale.powerscaling_data(
+  powerscale.priorsense_data(
     psd,
     component = component,
     alpha = alpha,
@@ -39,9 +37,9 @@ powerscale_sequence.brmsfit <- function(x,
                                         ...
                                         ) {
 
-  psd <- create_powerscaling_data.brmsfit(x, ...)
+  psd <- create_priorsense_data.brmsfit(x, ...)
 
-  powerscale_sequence.powerscaling_data(psd, ...)
+  powerscale_sequence.priorsense_data(psd, ...)
 
 }
 
@@ -51,47 +49,52 @@ powerscale_sensitivity.brmsfit <- function(x,
                                            ...
                                            ) {
 
-  psd <- create_powerscaling_data.brmsfit(x, ...)
+  psd <- create_priorsense_data.brmsfit(x, ...)
 
-  powerscale_sensitivity.powerscaling_data(
+  powerscale_sensitivity.priorsense_data(
     psd,
     ...
   )
 }
 
 
-##' @rdname joint_log_lik
+##' @rdname log_lik_draws
 ##' @export
-joint_log_lik_brmsfit <- function(x, ...) {
-  if (!requireNamespace("brms", quietly = TRUE)) {
-    warning("The brms package must be installed to use this functionality")
-    return(NULL)
-  }
-  log_lik <- rowSums(brms::log_lik(x, ...))
-  chains <- x$fit@sim$chains
+log_lik_draws.brmsfit <- function(x, ...) {
+  require_package("brms")
 
-  log_lik <- posterior::draws_array(
-    log_lik = log_lik,
-    .nchains = chains
+  nc <- posterior::nchains(x)
+  ndrw <- posterior::ndraws(x)/nc
+
+  log_lik <- brms::log_lik(x, ...)
+
+  nobs <- ncol(log_lik)
+
+  log_lik <- array(log_lik, dim = c(ndrw, nc, nobs))
+
+  log_lik <- posterior::as_draws_array(
+    log_lik,
   )
+
+  posterior::variables(log_lik) <- paste0("log_lik[", 1:nobs, "]")
 
   return(log_lik)
 }
 
 
-##' @rdname log_prior
+##' @rdname log_prior_draws
 ##' @export
-log_prior_brmsfit <- function(x, ...) {
+log_prior_draws.brmsfit <- function(x, log_prior_name = "lprior", ...) {
 
-  log_prior <- posterior::subset_draws(posterior::as_draws_array(x), variable = "lprior")
+  log_prior <- posterior::subset_draws(posterior::as_draws_array(x), variable = log_prior_name)
 
   return(log_prior)
 }
 
-get_draws_brmsfit <- function(x, variable = NULL, regex = FALSE, ...) {
+get_draws_brmsfit <- function(x, variable = NULL, regex = FALSE, log_prior_name = "lprior", ...) {
 
-  excluded_variables <- c("lprior", "lp__")
-  draws <- posterior::as_draws_df(x, variable = variable, regex = regex)
+  excluded_variables <- c(log_prior_name, "lp__")
+  draws <- posterior::as_draws_df(x, regex = regex)
 
   if (is.null(variable)) {
     # remove unnecessary variables
@@ -104,45 +107,131 @@ get_draws_brmsfit <- function(x, variable = NULL, regex = FALSE, ...) {
   return(draws)
 }
 
-moment_match.brmsfit <- function(x, psis, ...) {
-  # ensure compatibility with objects not created in the current R session
-  x$fit@.MISC <- suppressMessages(brms::brm(fit = x, chains = 0))$fit@.MISC
-  mm <- try(moment_match.default(
-    x,
-    psis = psis, post_draws = as.matrix,
-    unconstrain_pars = unconstrain_pars.brmsfit,
-    log_prob_upars = log_prob_upars.brmsfit,
-    log_ratio_upars = log_ratio_upars.brmsfit,
-    nchains = posterior::nchains(x),
-    ...
-  ))
-  if (methods::is(mm, "try-error")) {
-    stop(
-      "'moment_match' failed. Did you set 'save_all_pars' ",
-      "to TRUE when fitting your brms model?"
-    )
+moment_match.brmsfit <- function(x, ...) {
+
+  tryCatch(
+    iwmm::moment_match(x = x$fit, ...),
+    error = stop("'moment_match = TRUE' is currently unsupported for brms models")
+  )
+
+  return(TRUE)
+}
+
+## moment_match.brmsfit <- function(x, psis, ...) {
+##   # ensure compatibility with objects not created in the current R session
+##   x$fit@.MISC <- suppressMessages(brm(fit = x, chains = 0))$fit@.MISC
+##   mm <- try(iwmm::moment_match.default(
+##     x,
+##     psis = psis, post_draws = as.matrix,
+##     unconstrain_pars = unconstrain_pars.brmsfit,
+##     log_prob_upars = log_prob_upars.brmsfit,
+##     log_ratio_upars = log_ratio_upars.brmsfit,
+##     nchains = posterior::nchains(x),
+##     ...
+##   ))
+##   if (methods::is(mm, "try-error")) {
+##     stop(
+##       "'moment_match' failed. Did you set 'save_all_pars' ",
+##       "to TRUE when fitting your brms model?"
+##     )
+##   }
+##   return(mm)
+## }
+
+## unconstrain_pars.brmsfit <- function(x, pars, ...) {
+##   unconstrain_pars.stanfit(x$fit, pars = pars, ...)
+## }
+
+## log_prob_upars.brmsfit <- function(x, upars, ...) {
+##   log_prob_upars.stanfit(x$fit, upars = upars, ...)
+## }
+
+## update_pars.brmsfit <- function(x, upars, ...) {
+##   x$fit <- update_pars(x$fit, upars = upars, save_old_pars = FALSE, ...)
+##   brms::rename_pars(x)
+## }
+
+## log_ratio_upars.brmsfit <- function(x, upars, component_fn, samples = NULL,
+##                                     subset = NULL, ...) {
+##   # do not pass subset or nsamples further to avoid subsetting twice
+##   x <- update_pars(x, upars = upars, ...)
+##   component_draws <- component_fn(x)
+##   scaled_log_ratio(component_draws, ...)
+## }
+
+##' Predictions as draws
+##'
+##' Create predictions using brms functions and convert them into
+##' draws format
+##'
+##' @param x brmsfit object
+##' @param predict_fn function for predictions
+##' @param prediction_names optional names of the predictions
+##' @param warn_dims throw a warning when coercing predict_fn's output from 3
+##'   margins to 2 margins?
+##' @param ... further arguments passed to predict_fn
+##' @return draws array of predictions
+##' @export
+predictions_as_draws <- function(x, predict_fn, prediction_names = NULL,
+                                 warn_dims = getOption("priorsense.warn", TRUE),
+                                 ...) {
+  terms <- brms::brmsterms(x$formula)
+  if(inherits(terms, "mvbrmsterms")) {
+    responses <- brms::brmsterms(x$formula)$responses
+    mv <- TRUE
+  } else {
+    responses <- ""
+    mv <- FALSE
   }
-  return(mm)
+  pred_draws <- list()
+  predictions <- predict_fn(x, ...)
+  if (!(mv)) {
+    dim_pred <- dim(predictions)
+    if (length(dim_pred) == 3) {
+      if (warn_dims) {
+        warning("coercing predict_fn()'s output from 3 margins to 2 margins ",
+                "(by making the former margin 2 nested within blocks which ",
+                "correspond to former margin 3)")
+      }
+      predictions <- array(predictions,
+                           dim = c(dim_pred[1], dim_pred[2] * dim_pred[3]))
+    } else if (length(dim_pred) > 3) {
+      stop("predict_fn() returned an unexpected number of margins (> 3) for ",
+           "this univariate model")
+    }
+    # add additional dimension in univariate case
+    dim(predictions) <- c(dim(predictions), 1)
+  } else {
+    if (length(dim_pred) != 3) {
+      stop("predict_fn() returned an unexpected number of margins (!= 3) for ",
+           "this multivariate model")
+    }
+  }
+  for (resp in seq_along(responses)) {
+    # create draws array of predictions for each response variable
+    predicted_draws <- posterior::as_draws_array(
+      array(
+        predictions[, , resp],
+        dim = c(
+          posterior::ndraws(x) / posterior::nchains(x),
+          posterior::nchains(x), dim(predictions)[2]
+        )
+      )
+    )
+    # name predicted variables
+    posterior::variables(predicted_draws) <-  c(
+      paste0(
+        responses[[resp]],
+        "_pred[",
+        seq_along(posterior::variables(predicted_draws)),
+        "]")
+    )
+    pred_draws[[resp]] <- predicted_draws
+  }
+  # bind draws from different responses
+  out <- posterior::bind_draws(pred_draws)
+  if (!(is.null(prediction_names))) {
+    posterior::variables(out) <- prediction_names
+  }
+  out
 }
-
-unconstrain_pars.brmsfit <- function(x, pars, ...) {
-  unconstrain_pars.stanfit(x$fit, pars = pars, ...)
-}
-
-log_prob_upars.brmsfit <- function(x, upars, ...) {
-  log_prob_upars.stanfit(x$fit, upars = upars, ...)
-}
-
-update_pars.brmsfit <- function(x, upars, ...) {
-  x$fit <- update_pars(x$fit, upars = upars, save_old_pars = FALSE, ...)
-  brms::rename_pars(x)
-}
-
-log_ratio_upars.brmsfit <- function(x, upars, component_fn, samples = NULL,
-                                    subset = NULL, ...) {
-  # do not pass subset or nsamples further to avoid subsetting twice
-  x <- update_pars(x, upars = upars, ...)
-  component_draws <- component_fn(x)
-  scaled_log_ratio(component_draws, ...)
-}
-

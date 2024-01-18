@@ -2,8 +2,9 @@ Package: priorsense
 Title: Prior Diagnostics and Sensitivity Analysis
 Version: 0.0.0.9000
 Authors@R: c(person("Noa", "Kallioinen", email = "noa.kallioinen@aalto.fi", role = c("aut", "cre")),
-             person("Paul-Christian", "Bürkner", role = c("aut")),
-     	     person("Topi", "Paananen", role = c("aut")),
+	     person("Paul-Christian", "Bürkner", role = c("aut")),
+	     person("Topi", "Paananen", role = c("aut")),
+	     person("Frank", "Weber", role = c("ctb")),
 	     person("Aki", "Vehtari", role = c("aut"))
 	     )
 Description: priorsense provides functions for prior and likelihood sensitivity analysis in Bayesian models. Currently it implements methods to determine the sensitivity of the posterior to power-scaling perturbations of the prior and likelihood.
@@ -16,24 +17,27 @@ Imports:
     cetcolor,
     checkmate,
     ggplot2,
+    iwmm,
     loo,
     matrixStats,
-    posterior,
-    stats,
-    rlang,
-    tibble,
-    utils,
     methods,
+    posterior,
+    rlang,
+    stats,
+    tibble,
+    utils
 Suggests:
     brms,
-    philentropy,
-    transport,
+    cmdstanr,
     knitr,
+    philentropy,
     rstan,
     testthat (>= 3.0.0),
+    transport,
     rmarkdown,
     covr
 Config/testthat/edition: 3
 Depends:
     R (>= 3.6.0)
 VignetteBuilder: knitr
+Remotes: topipa/iwmm

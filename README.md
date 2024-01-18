@@ -39,7 +39,8 @@ with:
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("n-kall/priorsense")
+# remotes::install_github("n-kall/iwmm")
+remotes::install_github("n-kall/priorsense", ref = "separate_scaling")
 ```
 
 ## Usage
@@ -100,12 +101,11 @@ Once fit, sensitivity can be checked as follows:
 ``` r
 powerscale_sensitivity(fit)
 #> Sensitivity based on cjs_dist:
-#> # A tibble: 3 × 4
+#> # A tibble: 2 × 4
 #>   variable prior likelihood diagnosis          
 #>   <chr>    <dbl>      <dbl> <chr>              
 #> 1 mu       0.366      0.509 prior-data conflict
 #> 2 sigma    0.252      0.464 prior-data conflict
-#> 3 lprior   0.355      0.491 prior-data conflict
 ```
 
 To visually inspect changes to the posterior, first create a
@@ -120,50 +120,18 @@ values \> 0.5) are indicated.
 
 ``` r
 powerscale_plot_ecdf(pss, variables = c("mu", "sigma"))
-#> Warning: The following aesthetics were
-#> dropped during statistical
-#> transformation: weight
-#> ℹ This can happen when ggplot
-#>   fails to infer the correct
-#>   grouping structure in the
-#>   data.
-#> ℹ Did you forget to specify a
-#>   `group` aesthetic or to
-#>   convert a numerical variable
-#>   into a factor?
-#> The following aesthetics were
-#> dropped during statistical
-#> transformation: weight
-#> ℹ This can happen when ggplot
-#>   fails to infer the correct
-#>   grouping structure in the
-#>   data.
-#> ℹ Did you forget to specify a
-#>   `group` aesthetic or to
-#>   convert a numerical variable
-#>   into a factor?
-#> The following aesthetics were
-#> dropped during statistical
-#> transformation: weight
-#> ℹ This can happen when ggplot
-#>   fails to infer the correct
-#>   grouping structure in the
-#>   data.
-#> ℹ Did you forget to specify a
-#>   `group` aesthetic or to
-#>   convert a numerical variable
-#>   into a factor?
-#> The following aesthetics were
-#> dropped during statistical
-#> transformation: weight
-#> ℹ This can happen when ggplot
-#>   fails to infer the correct
-#>   grouping structure in the
-#>   data.
-#> ℹ Did you forget to specify a
-#>   `group` aesthetic or to
-#>   convert a numerical variable
-#>   into a factor?
+#> Warning: The following aesthetics were dropped during statistical transformation: weight
+#> ℹ This can happen when ggplot fails to infer the correct grouping structure in the data.
+#> ℹ Did you forget to specify a `group` aesthetic or to convert a numerical variable into a factor?
+#> The following aesthetics were dropped during statistical transformation: weight
+#> ℹ This can happen when ggplot fails to infer the correct grouping structure in the data.
+#> ℹ Did you forget to specify a `group` aesthetic or to convert a numerical variable into a factor?
+#> The following aesthetics were dropped during statistical transformation: weight
+#> ℹ This can happen when ggplot fails to infer the correct grouping structure in the data.
+#> ℹ Did you forget to specify a `group` aesthetic or to convert a numerical variable into a factor?
+#> The following aesthetics were dropped during statistical transformation: weight
+#> ℹ This can happen when ggplot fails to infer the correct grouping structure in the data.
+#> ℹ Did you forget to specify a `group` aesthetic or to convert a numerical variable into a factor?
 ```
 
 <img src="man/figures/README-ecdf_plot-1.png" width="70%" height="70%" />

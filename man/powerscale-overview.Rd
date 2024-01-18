@@ -6,13 +6,13 @@
 \alias{powerscale_sequence.brmsfit}
 \alias{powerscale-overview}
 \alias{powerscale}
-\alias{powerscale.powerscaling_data}
+\alias{powerscale.priorsense_data}
 \alias{powerscale.CmdStanFit}
 \alias{powerscale.stanfit}
 \alias{powerscale_sequence}
 \alias{powerscale_sequence.CmdStanFit}
 \alias{powerscale_sequence.stanfit}
-\alias{powerscale_sequence.powerscaling_data}
+\alias{powerscale_sequence.priorsense_data}
 \title{Prior/likelihood power-scaling perturbation}
 \usage{
 \method{powerscale}{brmsfit}(x, component, alpha, ...)
@@ -21,10 +21,10 @@
 
 powerscale(x, ...)
 
-\method{powerscale}{powerscaling_data}(
+\method{powerscale}{priorsense_data}(
   x,
-  alpha,
   component,
+  alpha,
   is_method = "psis",
   moment_match = FALSE,
   k_threshold = 0.5,
@@ -32,6 +32,7 @@ powerscale(x, ...)
   transform = FALSE,
   prediction = NULL,
   variable = NULL,
+  selection = NULL,
   ...
 )
 
@@ -45,7 +46,7 @@ powerscale_sequence(x, ...)
 
 \method{powerscale_sequence}{stanfit}(x, ...)
 
-\method{powerscale_sequence}{powerscaling_data}(
+\method{powerscale_sequence}{priorsense_data}(
   x,
   lower_alpha = 0.8,
   upper_alpha = 1/lower_alpha,
@@ -57,8 +58,11 @@ powerscale_sequence(x, ...)
   k_threshold = 0.5,
   resample = FALSE,
   transform = FALSE,
+  prediction = NULL,
   auto_alpha_range = FALSE,
   symmetric = TRUE,
+  prior_selection = NULL,
+  likelihood_selection = NULL,
   ...
 )
 }
@@ -97,14 +101,16 @@ the moment matching algorithm is used. Default is 0.5.}
 \item{resample}{Logical; Indicate whether or not draws should be
 resampled based on calculated importance weights.}
 
-\item{transform}{Indicate a transformation of posterior
-draws to perform before sensitivity analysis. Either "scale" or "whiten".}
+\item{transform}{Indicate a transformation of posterior draws to
+perform before sensitivity analysis. Either "scale" or "whiten".}
 
 \item{prediction}{Function taking the model fit and returning a
 draws_df of predictions to be appended to the posterior draws}
 
 \item{variable}{Vector of variable names to return estimated
 posterior draws for.}
+
+\item{selection}{Vector specifying parts of component to be considered.}
 
 \item{lower_alpha}{Lower power-scaling alpha value in sequence.}
 
@@ -117,6 +123,10 @@ values below threshold?}
 
 \item{symmetric}{Boolean. Should the alpha range be symmetrical
 around alpha = 1, on log-space?}
+
+\item{prior_selection}{Numeric vector of prior partitions to include in power-scaling. Default is NULL, which takes all partitions.}
+
+\item{likelihood_selection}{Numeric vector of likelihood partitions to include in power-scaling. Default is NULL, which takes all partitions.}
 }
 \value{
 A \code{powerscaled_draws} or \code{powerscaled_sequence} object,
