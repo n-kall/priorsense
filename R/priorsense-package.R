@@ -1,9 +1,9 @@
 #' priorsense: Prior (and likelihood) diagnostics and sensitivity
 #' analysis
 #'
-#' @docType package
 #' @name priorsense-package
 #' @aliases priorsense
+#' @import methods
 #' @import posterior
 #'
 #' @description The \pkg{priorsense} package provides functions for
@@ -34,4 +34,6 @@
 #' \code{\link{powerscale_plot_dens}}
 #' \code{\link{powerscale_plot_quantities}}
 #' @template powerscale_references
-NULL
+"_PACKAGE"
+
+

@@ -19,6 +19,7 @@ powerscale_plot_quantities(
   resample = FALSE,
   measure_args = NULL,
   mcse = TRUE,
+  quantity_args = NULL,
   ...
 )
 }
@@ -32,7 +33,8 @@ resampled based on calculated importance weights.}
 
 \item{...}{Currently unused.}
 
-\item{quantities}{A character vector specifying quantities to plot. Options are "mean", "median", "sd", "mad", "quantile".}
+\item{quantities}{A character vector specifying quantities to
+plot. Options are "mean", "median", "sd", "mad", "quantile".}
 
 \item{div_measure}{The divergence measure to use. The
 following methods are implemented:
@@ -52,7 +54,12 @@ for a different order, where N is the order.
 
 \item{measure_args}{Named list of further arguments passed to divergence measure functions.}
 
-\item{mcse}{Boolean; If TRUE will plot +/- 2 * Monte Carlo standard error of the base quantity on the quantities plot}
+\item{mcse}{Boolean; If TRUE will plot +/- 2 * Monte Carlo
+standard error of the base quantity on the quantities plot}
+
+\item{quantity_args}{Named list of further arguments passed to
+quantity functions. Passed as \code{.args} to
+\verb{[posterior::summarise_draws]}}
 }
 \value{
 A ggplot object that can be further customized using the \strong{ggplot2} package.

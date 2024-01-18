@@ -58,7 +58,7 @@ powerscale_sensitivity.brmsfit <- function(x,
 }
 
 
-##' @rdname joint_log_lik
+##' @rdname log_lik_draws
 ##' @export
 log_lik_draws.brmsfit <- function(x, ...) {
   require_package("brms")
@@ -82,7 +82,7 @@ log_lik_draws.brmsfit <- function(x, ...) {
 }
 
 
-##' @rdname log_prior
+##' @rdname log_prior_draws
 ##' @export
 log_prior_draws.brmsfit <- function(x, log_prior_name = "lprior", ...) {
 

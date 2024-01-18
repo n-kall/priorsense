@@ -8,12 +8,12 @@
 ##' @param log_lik_name Name of parameter in Stan model
 ##'   corresponding to log likelihood, default is "log_lik".
 ##' @param ... Arguments passed to individual methods.
-##' @return A draws_array object containing log_prior values.
+##' @return A draws_array object containing log_lik values.
 log_lik_draws <- function(x, ...) {
   UseMethod("log_lik_draws")
 }
 
-##' @rdname joint_log_lik
+##' @rdname log_lik_draws
 ##' @export
 log_lik_draws.stanfit <- function(x, log_lik_name = "log_lik", ...) {
   log_lik <- loo::extract_log_lik(
@@ -27,7 +27,7 @@ log_lik_draws.stanfit <- function(x, log_lik_name = "log_lik", ...) {
   return(log_lik)
 }
 
-##' @rdname joint_log_lik
+##' @rdname log_lik_draws
 ##' @export
 log_lik_draws.CmdStanFit <- function(x, log_lik_name = "log_lik", ...) {
 
@@ -36,7 +36,7 @@ log_lik_draws.CmdStanFit <- function(x, log_lik_name = "log_lik", ...) {
   return(log_lik)
 }
 
-##' @rdname joint_log_lik
+##' @rdname log_lik_draws
 ##' @export
 log_lik_draws.draws <- function(x, log_lik_name = "log_lik", ...) {
 

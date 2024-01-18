@@ -33,6 +33,7 @@ powerscale_sensitivity(x, ...)
   prediction = NULL,
   prior_selection = NULL,
   likelihood_selection = NULL,
+  num_args = NULL,
   ...
 )
 
@@ -106,6 +107,11 @@ draws_df of predictions to be appended to the posterior draws}
 \item{prior_selection}{Numeric vector of prior partitions to include in power-scaling. Default is NULL, which takes all partitions.}
 
 \item{likelihood_selection}{Numeric vector of likelihood partitions to include in power-scaling. Default is NULL, which takes all partitions.}
+
+\item{num_args}{(named list) Optional arguments passed to
+\link[tibble:num]{num()} for pretty printing of summaries. Can be
+controlled globally via the \code{posterior.num_args}
+\link[base:options]{option}.}
 }
 \value{
 Table of sensitivity values for each specified variable.
@@ -116,12 +122,13 @@ perturbations. This is done using importance sampling (and
 optionally moment matching).
 }
 \references{
-Kallioinen, N., Paananen, T., Bürkner, P-C., Vehtari, A. (in
-prep).  Detecting and diagnosing prior and likelihood sensitivity
-with power-scaling perturbations.
+Kallioinen, N., Paananen, T., Bürkner, P-C., Vehtari, A. (2024).
+Detecting and diagnosing prior and likelihood sensitivity with
+power-scaling perturbations.  \emph{Statstics and
+Computing}. 34(57).  \code{doi:10.1007/s11222-023-10366-5}
 
 Vehtari, A., Simpson, D., Gelman, A., Yao, Y., and Gabry,
-J. (2019).  Pareto smoothed importance sampling.  \href{https://arxiv.org/abs/1507}{preprint arXiv:1507.02646}
+J. (2022).  Pareto smoothed importance sampling.  \href{https://arxiv.org/abs/1507}{preprint arXiv:1507.02646}
 
 Paananen, T., Piironen, J., Bürkner, P-C., Vehtari, A. (2021).
 Implicitly adaptive importance sampling.  \emph{Statistics and

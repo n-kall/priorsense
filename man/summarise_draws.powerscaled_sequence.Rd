@@ -8,7 +8,7 @@
   .x,
   ...,
   .args = list(),
-  .num_args = getOption("posterior.num_args", list()),
+  .num_args = NULL,
   div_measures = "cjs_dist",
   measure_args = list(),
   resample = FALSE
