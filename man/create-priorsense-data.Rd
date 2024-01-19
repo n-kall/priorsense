@@ -17,10 +17,11 @@ create_priorsense_data(x, ...)
 \method{create_priorsense_data}{default}(
   x,
   fit = NULL,
-  log_prior_fn = NULL,
-  log_lik_fn = NULL,
+  log_prior_fn = log_prior_draws,
+  log_lik_fn = log_lik_draws,
   log_prior = NULL,
   log_lik = NULL,
+  log_ratio_fn = NULL,
   ...
 )
 
@@ -44,6 +45,8 @@ create_priorsense_data(x, ...)
 \item{log_prior}{draws from log prior}
 
 \item{log_lik}{draws from log likelihood}
+
+\item{log_ratio_fn}{function for moment matching}
 }
 \value{
 A \code{priorsense_data} object, which contains the data and

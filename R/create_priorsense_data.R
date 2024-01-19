@@ -9,6 +9,7 @@
 ##' @param log_lik_fn function to derive log likelihood from object
 ##' @param log_prior draws from log prior
 ##' @param log_lik draws from log likelihood
+##' @param log_ratio_fn function for moment matching
 ##' @param ... arguments passed to methods
 ##' @return A `priorsense_data` object, which contains the data and
 ##'   functions to run sensitivity analyses.
@@ -21,27 +22,37 @@ create_priorsense_data <- function(x, ...) {
 ##' @export
 create_priorsense_data.default <- function(x,
                                            fit = NULL,
-                                           log_prior_fn = NULL,
-                                           log_lik_fn = NULL,
+                                           log_prior_fn = log_prior_draws,
+                                           log_lik_fn = log_lik_draws,
                                            log_prior = NULL,
                                            log_lik = NULL,
+                                           log_ratio_fn = NULL,
                                            ...) {
 
   if (is.null(log_prior)) {
-    log_prior <- log_prior_fn(fit, ...)
+    if (is.null(fit)) {
+      log_prior <- log_prior_fn(x, ...)
+    } else {
+      log_prior <- log_prior_fn(fit, ...)
+    }
   }
 
   if (is.null(log_lik)) {
-    log_lik <- log_lik_fn(fit, ...)
+    if (is.null(fit)) {
+      log_lik <- log_lik_fn(x, ...)
+    } else {
+      log_lik <- log_lik_fn(fit, ...)
+    }
   }
 
   psd <- list(
-    draws = x,
+    draws = remove_unwanted_vars(x),
     fit = fit,
     log_prior_fn = log_prior_fn,
     log_lik_fn = log_lik_fn,
     log_prior = log_prior,
-    log_lik = log_lik
+    log_lik = log_lik,
+    log_ratio_fn = log_ratio_fn
   )
   
   class(psd) <- c("priorsense_data", class(psd))
@@ -60,6 +71,7 @@ create_priorsense_data.stanfit <- function(x, ...) {
     log_lik_fn = log_lik_draws,
     log_prior = log_prior_draws(x, ...),
     log_lik = log_lik_draws(x, ...),
+    log_ratio_fn = powerscale_log_ratio_fun,
     ...
   )
 }
@@ -75,6 +87,7 @@ create_priorsense_data.CmdStanFit <- function(x, ...) {
     log_lik_fn = log_lik_draws,
     log_prior = log_prior_draws(x, ...),
     log_lik = log_lik_draws(x, ...),
+    log_ratio_fn = powerscale_log_ratio_fun,
     ...
   )
 }
@@ -84,11 +97,7 @@ create_priorsense_data.CmdStanFit <- function(x, ...) {
 create_priorsense_data.draws <- function(x, ...) {
 
   create_priorsense_data.default(
-    x = remove_unwanted_vars(x, ...),
-    log_prior_fn = log_prior_draws,
-    log_lik_fn = log_lik_draws,
-    log_prior = log_prior_draws(x, ...),
-    log_lik = log_lik_draws(x, ...),    
+    x = x,
     ...
   )
 }
