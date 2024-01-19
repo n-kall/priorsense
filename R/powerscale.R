@@ -59,18 +59,7 @@ powerscale.priorsense_data <- function(x,
   checkmate::assertNumeric(selection, null.ok = TRUE)
 
   draws <- x$draws
-
-  # get predictions if specified
-  if (!(is.null(prediction))) {
-    pred_draws <- prediction(x$fit, ...)
-
-    # bind predictions and posterior draws
-    draws <- posterior::bind_draws(draws, pred_draws)
-  }
-  
-  # subset the draws
-  draws <- posterior::subset_draws(draws, variable = variable)
-  
+    
   # get the correct importance sampling function
   is_method <- get(is_method, asNamespace("loo"))
 
@@ -123,14 +112,14 @@ powerscale.priorsense_data <- function(x,
 
     mm <- iwmm::moment_match(
       x = x$fit,
-      log_ratio_fun = powerscale_log_ratio_fun,
+      log_ratio_fun = x$log_ratio_fn,
       alpha = alpha,
-      component = component,
+      component_fn = component_fn,
       ...
     )
 
     importance_sampling <- list(
-      diagnostics = list(pareto_k = mm$pareto_k, n_eff = NA),
+      diagnostics = list(pareto_k = mm$diagnostics$pareto_k, n_eff = NA),
       log_weights = mm$log_weights
     )
     class(importance_sampling) <- c(
@@ -176,6 +165,18 @@ powerscale.priorsense_data <- function(x,
       x = posterior::merge_chains(new_draws)
     )
   }
+
+  # get predictions if specified
+  if (!(is.null(prediction))) {
+    pred_draws <- prediction(x$fit, ...)
+
+    # bind predictions and posterior draws
+    new_draws <- posterior::bind_draws(new_draws, pred_draws)
+  }
+
+  # subset the draws
+  new_draws <- posterior::subset_draws(new_draws, variable = variable)
+
   
   # create object with details of power-scaling
   powerscaling_details <- list(
@@ -193,6 +194,7 @@ powerscale.priorsense_data <- function(x,
     draws = new_draws,
     powerscaling = powerscaling_details
   )
+  
   class(powerscaled_draws) <- c("powerscaled_draws", class(powerscaled_draws))
 
   return(powerscaled_draws)

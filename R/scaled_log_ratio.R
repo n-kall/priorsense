@@ -13,22 +13,25 @@ scaled_log_ratio <- function(component_draws, alpha,
   return(scaled)
 }
 
-powerscale_log_ratio_fun <- function(draws, fit, alpha, component, ...) {
-
-  if (component == "prior") {
-    component_name = "lprior"
-  } else if (component == "likelihood") {
-    component_name = "log_lik"
-  }
+# density ratio function for moment matching
+powerscale_log_ratio_fun <- function(draws, fit, alpha, component_fn, ...) {
 
   constr_draws <- iwmm::constrain_draws(fit, draws)
 
-  component_draws <- rowsums_draws(
-    posterior::subset_draws(
-      constr_draws, variable = component_name
-    )
-  )
-
+  component_draws <- rowsums_draws(component_fn(constr_draws))
+   
   component_draws * (alpha - 1)
   
+}
+
+
+powerscale_log_ratio_fun_brmsfit <- function(draws, fit, alpha, component_fn, ...) {
+
+  fit <- brms:::.update_pars(x = fit, upars = draws)
+  component_draws <- component_fn(fit)
+
+  component_draws <- rowsums_draws(component_draws)
+   
+  component_draws * (alpha - 1)
+
 }
