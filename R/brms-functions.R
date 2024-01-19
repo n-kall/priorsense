@@ -230,3 +230,14 @@ predictions_as_draws <- function(x, predict_fn, prediction_names = NULL,
   }
   out
 }
+
+
+powerscale_log_ratio_fun_brmsfit <- function(draws, fit, alpha, component_fn, ...) {
+
+  component_draws <- component_fn(fit)
+
+  component_draws <- rowsums_draws(component_draws)
+
+  component_draws * (alpha - 1)
+
+}

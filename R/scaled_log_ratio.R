@@ -23,15 +23,3 @@ powerscale_log_ratio_fun <- function(draws, fit, alpha, component_fn, ...) {
   component_draws * (alpha - 1)
   
 }
-
-
-powerscale_log_ratio_fun_brmsfit <- function(draws, fit, alpha, component_fn, ...) {
-
-  fit <- brms:::.update_pars(x = fit, upars = draws)
-  component_draws <- component_fn(fit)
-
-  component_draws <- rowsums_draws(component_draws)
-   
-  component_draws * (alpha - 1)
-
-}
