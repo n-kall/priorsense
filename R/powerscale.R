@@ -51,7 +51,6 @@ powerscale.powerscaling_data <- function(x,
   checkmate::assertLogical(moment_match)
   checkmate::assertNumber(k_threshold)
   checkmate::assertLogical(resample)
-  checkmate::assertLogical(transform)
   checkmate::assertFunction(prediction, null.ok = TRUE)
   checkmate::assertCharacter(variable, null.ok = TRUE)
 
