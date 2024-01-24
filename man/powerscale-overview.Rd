@@ -29,7 +29,7 @@ powerscale(x, ...)
   moment_match = FALSE,
   k_threshold = 0.5,
   resample = FALSE,
-  transform = FALSE,
+  transform = NULL,
   prediction = NULL,
   variable = NULL,
   ...
@@ -56,7 +56,7 @@ powerscale_sequence(x, ...)
   moment_match = FALSE,
   k_threshold = 0.5,
   resample = FALSE,
-  transform = FALSE,
+  transform = NULL,
   auto_alpha_range = FALSE,
   symmetric = TRUE,
   ...

@@ -66,7 +66,7 @@ powerscale_gradients.powerscaling_data <- function(x,
                                          moment_match = FALSE,
                                          k_threshold = 0.5,
                                          resample = FALSE,
-                                         transform = FALSE,
+                                         transform = NULL,
                                          prediction = NULL,
                                          scale = FALSE,
                                          ...) {
@@ -81,9 +81,9 @@ powerscale_gradients.powerscaling_data <- function(x,
   checkmate::assertList(measure_args)
   checkmate::assertSubset(component, c("prior", "likelihood"))
   checkmate::assertCharacter(is_method)
+  checkmate::assertCharacter(transform, null.ok = TRUE)
   checkmate::assertNumber(k_threshold)
   checkmate::assertLogical(resample)
-  checkmate::assertLogical(transform)
   checkmate::assertFunction(prediction, null.ok = TRUE)
   checkmate::assertLogical(scale)
 
@@ -94,6 +94,9 @@ powerscale_gradients.powerscaling_data <- function(x,
 
   # transform if needed
   loadings <- NULL
+  if (is.null(transform)) {
+    transform <- "identity"
+  }
   if (transform == "whiten") {
     whitened_draws <- whiten_draws(base_draws, ...)
     base_draws_t <- whitened_draws$draws

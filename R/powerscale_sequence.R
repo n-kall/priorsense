@@ -45,7 +45,7 @@ powerscale_sequence.powerscaling_data <- function(x, lower_alpha = 0.8,
                                                   moment_match = FALSE,
                                                   k_threshold = 0.5,
                                                   resample = FALSE,
-                                                  transform = FALSE,
+                                                  transform = NULL,
                                                   auto_alpha_range = FALSE,
                                                   symmetric = TRUE,
                                                   ...
@@ -109,6 +109,9 @@ powerscale_sequence.powerscaling_data <- function(x, lower_alpha = 0.8,
     variable = variable,
     ...)
 
+  if (is.null(transform)) {
+    transform <- "identity"
+  }
   if (transform == "whiten") {
     base_draws_tr <- whiten_draws(base_draws, ...)
     transform_details <- list(

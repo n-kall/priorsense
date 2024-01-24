@@ -64,7 +64,7 @@ powerscale_sensitivity.powerscaling_data <- function(x,
                                                      moment_match = FALSE,
                                                      k_threshold = 0.5,
                                                      resample = FALSE,
-                                                     transform = FALSE,
+                                                     transform = NULL,
                                                      prediction = NULL,
                                                      num_args = getOption("posterior.num_args", list()),
                                                      ...) {
@@ -81,6 +81,7 @@ powerscale_sensitivity.powerscaling_data <- function(x,
   checkmate::assertCharacter(is_method)
   checkmate::assertNumber(k_threshold)
   checkmate::assertLogical(resample)
+  checkmate::assertCharacter(transform, null.ok = TRUE)
   checkmate::assertFunction(prediction, null.ok = TRUE)
 
 
