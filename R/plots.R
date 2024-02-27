@@ -126,7 +126,7 @@ prepare_plot_data <- function(x, variables, resample, ...) {
 prepare_plot <- function(d, resample, variable, ...) {
   if (resample) {
     p <- ggplot2::ggplot(
-      data = d[variable == var],
+      data = d,
       ggplot2::aes(
         x = .data$value,
         group = .data$alpha,
