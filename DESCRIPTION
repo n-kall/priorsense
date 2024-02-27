@@ -16,6 +16,7 @@ RoxygenNote: 7.2.3
 Imports:
     cetcolor,
     checkmate,
+    ggdist (>= 3.3.1),
     ggplot2,
     iwmm,
     loo,

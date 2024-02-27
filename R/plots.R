@@ -123,10 +123,10 @@ prepare_plot_data <- function(x, variables, resample, ...) {
   return(d)
 }
 
-prepare_plot <- function(d, resample, ...) {
+prepare_plot <- function(d, resample, variable, ...) {
   if (resample) {
     p <- ggplot2::ggplot(
-      data = d,
+      data = d[variable == var],
       ggplot2::aes(
         x = .data$value,
         group = .data$alpha,
@@ -181,7 +181,7 @@ prepare_plot <- function(d, resample, ...) {
 ##' @rdname powerscale_plots
 ##' @export
 powerscale_plot_dens <- function(x, variables, resample = FALSE,
-                                 ...) {
+                                 bw = "sj", ...) {
   # input checks
   checkmate::assert_class(x, c("powerscaled_sequence"))
   checkmate::assert_character(variables)
@@ -192,37 +192,41 @@ powerscale_plot_dens <- function(x, variables, resample = FALSE,
   if (resample || x$resample) {
     resample <- TRUE
   }
-  p <- prepare_plot(d, resample, ...) +
-    ggplot2::ylab("Density") +
-    ggplot2::guides(
-      linetype = ggplot2::guide_legend(
-        title = "pareto-k"
-      )
-    ) +
-    ggplot2::stat_density(
-#  densityfun::stat_density_adaptive(
-      ggplot2::aes(color = .data$alpha),
-      geom = "line", position = "identity"
-    ) +
-    ggplot2::facet_grid(
-      rows = ggplot2::vars(.data$component),
-      cols = ggplot2::vars(.data$variable),
-      labeller = ggplot2::labeller(
-        component = c(
-          likelihood = "Likelihood power-scaling",
-          prior = "Prior power-scaling"
-        )
-      ),
-      scales = "free",
-      switch = "y"
-    ) +
-    ggplot2::xlab("") +
-    ggplot2::ggtitle(
-      label = "Power-scaling sensitivity",
-      subtitle = "Posterior density estimates depending on amount of power-scaling (alpha).\nOverlapping lines indicate low sensitivity.\nWider gaps between lines indicate greater sensitivity.\nEstimates with Pareto-k values > 0.5 may be inaccurate."
-    )
 
-  return(p)
+  out <- prepare_plot(d, resample, ...) +
+      ggplot2::ylab("Density") +
+      ggplot2::guides(
+        linetype = ggplot2::guide_legend(
+          title = "pareto-k"
+        )
+      ) +
+    ggdist::stat_slab(
+        ggplot2::aes(color = .data$alpha),
+        fill = NA,
+        linewidth = 0.5,
+        ...,
+      ) +
+      ggplot2::facet_grid(
+        rows = ggplot2::vars(.data$component),
+        cols = ggplot2::vars(.data$variable),
+        labeller = ggplot2::labeller(
+          component = c(
+            likelihood = "Likelihood power-scaling",
+            prior = "Prior power-scaling"
+        )
+        ),
+        scales = "free",
+        switch = "y"
+      ) +
+      ggplot2::xlab("")
+
+  out <- out +
+      ggplot2::ggtitle(
+        label = "Power-scaling sensitivity",
+        subtitle = "Posterior density estimates depending on amount of power-scaling (alpha).\nOverlapping lines indicate low sensitivity.\nWider gaps between lines indicate greater sensitivity.\nEstimates with Pareto-k values > 0.5 may be inaccurate."
+    )
+  
+  return(out)
 }
 
 ##' @rdname powerscale_plots
