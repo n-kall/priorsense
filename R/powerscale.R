@@ -38,7 +38,7 @@ powerscale.priorsense_data <- function(x,
                                        alpha,
                                        is_method = "psis",
                                        moment_match = FALSE,
-                                       k_threshold = 0.5,
+                                       k_threshold = 0.7,
                                        resample = FALSE,
                                        transform = FALSE,
                                        prediction = NULL,
@@ -128,9 +128,9 @@ powerscale.priorsense_data <- function(x,
       component = component,
       ...
     )
-
+    
     importance_sampling <- list(
-      diagnostics = list(pareto_k = mm$pareto_k, n_eff = NA),
+      diagnostics = list(pareto_k = mm$diagnostics$pareto_k, n_eff = NA),
       log_weights = mm$log_weights
     )
     class(importance_sampling) <- c(
@@ -141,6 +141,14 @@ powerscale.priorsense_data <- function(x,
 
     draws <- remove_unwanted_vars(posterior::as_draws_df(mm$draws))
 
+    # get moment-matched predictions
+    if (!(is.null(prediction))) {
+      pred_draws <- prediction(mm$fit, ...)
+
+      # bind predictions and posterior draws
+      draws <- posterior::bind_draws(draws, pred_draws)
+    }
+    
   }
 
   # keep track of base log-ratios for diagnostics
