@@ -67,10 +67,10 @@ powerscale.priorsense_data <- function(x,
     # bind predictions and posterior draws
     draws <- posterior::bind_draws(draws, pred_draws)
   }
-  
+
   # subset the draws
   draws <- posterior::subset_draws(draws, variable = variable)
-  
+
   # get the correct importance sampling function
   is_method <- get(is_method, asNamespace("loo"))
 
@@ -128,7 +128,7 @@ powerscale.priorsense_data <- function(x,
       component = component,
       ...
     )
-    
+
     importance_sampling <- list(
       diagnostics = list(pareto_k = mm$diagnostics$pareto_k, n_eff = NA),
       log_weights = mm$log_weights
@@ -148,7 +148,7 @@ powerscale.priorsense_data <- function(x,
       # bind predictions and posterior draws
       draws <- posterior::bind_draws(draws, pred_draws)
     }
-    
+
   }
 
   # keep track of base log-ratios for diagnostics
@@ -184,7 +184,7 @@ powerscale.priorsense_data <- function(x,
       x = posterior::merge_chains(new_draws)
     )
   }
-  
+
   # create object with details of power-scaling
   powerscaling_details <- list(
     alpha = alpha,
