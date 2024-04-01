@@ -92,7 +92,7 @@ weighted_summary_measures <- function(x) {
   return(funcs)
 }
 
-## Following is adapted from https://aakinshin.net/posts/weighted-quantiles/
+## Following is adapted from Andrey Akinshin (2023) "Weighted quantile estimators" arXiv:2304.07265 [stat.ME]
 ##' @export
 ##' @rdname weighted_quantities
 quantile_weighted <- function(x, weights, probs = c(0.05, 0.95),
