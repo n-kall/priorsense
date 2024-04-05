@@ -25,7 +25,6 @@ powerscale_sensitivity(x, ...)
   measure_args = list(),
   component = c("prior", "likelihood"),
   sensitivity_threshold = 0.05,
-  is_method = "psis",
   moment_match = FALSE,
   k_threshold = 0.5,
   resample = FALSE,
@@ -75,18 +74,6 @@ for a different order, where N is the order.
 
 \item{sensitivity_threshold}{Threshold for flagging variable as
 sensitive to power-scaling.}
-
-\item{is_method}{The importance sampling method to use. The
-following methods are available:
-\itemize{
-\item \code{"psis"}: Pareto-Smoothed Importance Sampling (PSIS). Default
-method.
-\item \code{"tis"}: Truncated Importance Sampling (TIS) with truncation at
-\code{sqrt(S)}, where \code{S} is the number of posterior draws.
-\item \code{"sis"}: Standard Importance Sampling (SIS).
-}
-
-For further details, see the \code{loo} package.}
 
 \item{moment_match}{Logical; Indicate whether or not moment
 matching should be performed. Can only be TRUE if \code{is_method} is

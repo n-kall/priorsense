@@ -16,11 +16,7 @@ log_lik_draws <- function(x, ...) {
 ##' @rdname log_lik_draws
 ##' @export
 log_lik_draws.stanfit <- function(x, log_lik_name = "log_lik", ...) {
-  log_lik <- loo::extract_log_lik(
-      stanfit = x,
-      parameter_name = log_lik_name,
-      merge_chains = FALSE
-    )
+  log_lik <- as.array(x, pars = log_lik_name)
 
   log_lik <- posterior::as_draws_array(log_lik)
 

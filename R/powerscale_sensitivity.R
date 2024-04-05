@@ -61,7 +61,6 @@ powerscale_sensitivity.priorsense_data <- function(x,
                                                        "likelihood"
                                                      ),
                                                      sensitivity_threshold = 0.05,
-                                                     is_method = "psis",
                                                      moment_match = FALSE,
                                                      k_threshold = 0.5,
                                                      resample = FALSE,
@@ -81,22 +80,12 @@ powerscale_sensitivity.priorsense_data <- function(x,
   checkmate::assertLogical(moment_match)
   checkmate::assertSubset(component, c("prior", "likelihood"))
   checkmate::assertNumber(sensitivity_threshold, lower = 0)
-  checkmate::assertCharacter(is_method)
   checkmate::assertNumber(k_threshold)
   checkmate::assertLogical(resample)
   checkmate::assertCharacter(transform, null.ok = TRUE)
   checkmate::assertFunction(prediction, null.ok = TRUE)
   checkmate::assertNumeric(prior_selection, null.ok = TRUE)
   checkmate::assertNumeric(likelihood_selection, null.ok = TRUE)
-
-
-
-  if (is_method != "psis" && moment_match) {
-    # TODO: also allow moment_match if loo::psis function is given as
-    # argument
-    moment_match <- FALSE
-    warning("Moment-matching only works with PSIS. Falling back to moment_match = FALSE")
-  }
 
   gradients <- powerscale_gradients(
     x = x,
@@ -105,7 +94,6 @@ powerscale_sensitivity.priorsense_data <- function(x,
     type = "divergence",
     lower_alpha = lower_alpha,
     upper_alpha = upper_alpha,
-    is_method = is_method,
     moment_match = moment_match,
     div_measure = div_measure,
     measure_args = measure_args,

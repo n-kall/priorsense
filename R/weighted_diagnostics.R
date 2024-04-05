@@ -32,11 +32,11 @@ ess_var <- function(x, log_ratios, ...) {
 ##' @param ... unused
 ##' @return numeric
 pareto_k_mean <- function(x, log_ratios, ...) {
-  psis_f <- SW(loo::psis(
-    log_ratios = c(log(log_ratios) + log(abs(x))),
-    r_eff = 1)
+  pareto_k_mean <- posterior::pareto_khat(
+    x = c(log(log_ratios) + log(abs(x))),
+    are_log_weights = TRUE
     )
-  return(c(pareto_k_mean = psis_f$diagnostics$pareto_k))
+  return(c(pareto_k_mean = pareto_k_mean))
 }
 
 ##' Pareto-k diagnostic for computing the variance of a parameter
@@ -45,9 +45,9 @@ pareto_k_mean <- function(x, log_ratios, ...) {
 ##' @param ... unused
 ##' @return numeric
 pareto_k_var <- function(x, log_ratios, ...) {
-  psis_f <- SW(loo::psis(
-    log_ratios = c(log(log_ratios) + log(abs(x^2))),
-    r_eff = 1)
+  pareto_k_var <- posterior::pareto_khat(
+    x = c(log(log_ratios) + log(abs(x^2))),
+    are_log_weights = TRUE
     )
-  return(c(pareto_k_var = psis_f$diagnostics$pareto_k))
+  return(c(pareto_k_var = pareto_k_var))
 }

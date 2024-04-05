@@ -113,18 +113,6 @@ around alpha = 1, on log-space?}
 \item{prior_selection}{Numeric vector of prior partitions to include in power-scaling. Default is NULL, which takes all partitions.}
 
 \item{likelihood_selection}{Numeric vector of likelihood partitions to include in power-scaling. Default is NULL, which takes all partitions.}
-
-\item{is_method}{The importance sampling method to use. The
-following methods are available:
-\itemize{
-\item \code{"psis"}: Pareto-Smoothed Importance Sampling (PSIS). Default
-method.
-\item \code{"tis"}: Truncated Importance Sampling (TIS) with truncation at
-\code{sqrt(S)}, where \code{S} is the number of posterior draws.
-\item \code{"sis"}: Standard Importance Sampling (SIS).
-}
-
-For further details, see the \code{loo} package.}
 }
 \value{
 A \code{powerscaled_draws} or \code{powerscaled_sequence} object,
