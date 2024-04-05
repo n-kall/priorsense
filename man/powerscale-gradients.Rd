@@ -27,7 +27,7 @@ powerscale_gradients(x, ...)
   moment_match = FALSE,
   k_threshold = 0.5,
   resample = FALSE,
-  transform = FALSE,
+  transform = NULL,
   prediction = NULL,
   scale = FALSE,
   prior_selection = NULL,

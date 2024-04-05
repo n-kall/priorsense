@@ -44,7 +44,7 @@ powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
                                                 moment_match = FALSE,
                                                 k_threshold = 0.5,
                                                 resample = FALSE,
-                                                transform = FALSE,
+                                                transform = NULL,
                                                 prediction = NULL,
                                                 auto_alpha_range = FALSE,
                                                 symmetric = TRUE,
@@ -130,6 +130,9 @@ powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
     base_draws <- posterior::bind_draws(base_draws, pred_draws)
   }
 
+  if (is.null(transform)) {
+    transform <- "identity"
+  }
   if (transform == "whiten") {
     base_draws_tr <- whiten_draws(base_draws, ...)
     transform_details <- list(

@@ -29,7 +29,7 @@ powerscale_sensitivity(x, ...)
   moment_match = FALSE,
   k_threshold = 0.5,
   resample = FALSE,
-  transform = FALSE,
+  transform = NULL,
   prediction = NULL,
   prior_selection = NULL,
   likelihood_selection = NULL,

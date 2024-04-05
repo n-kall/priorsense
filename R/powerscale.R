@@ -39,7 +39,7 @@ powerscale.priorsense_data <- function(x,
                                        moment_match = FALSE,
                                        k_threshold = 0.7,
                                        resample = FALSE,
-                                       transform = FALSE,
+                                       transform = NULL,
                                        prediction = NULL,
                                        variable = NULL,
                                        selection = NULL,
@@ -52,6 +52,7 @@ powerscale.priorsense_data <- function(x,
   checkmate::assertLogical(moment_match)
   checkmate::assertNumber(k_threshold)
   checkmate::assertLogical(resample)
+  checkmate::assertCharacter(transform, null.ok = TRUE)
   checkmate::assertFunction(prediction, null.ok = TRUE)
   checkmate::assertCharacter(variable, null.ok = TRUE)
   checkmate::assertNumeric(selection, null.ok = TRUE)
@@ -146,6 +147,9 @@ powerscale.priorsense_data <- function(x,
   smoothed_log_ratios$orig_log_ratios <- log_ratios
 
   # transform the draws if specified
+  if (is.null(transform)) {
+    transform <- "identity"
+  }
   if (transform == "whiten") {
     whitened_draws <- whiten_draws(draws, ...)
     draws_tr <- whitened_draws$draws
