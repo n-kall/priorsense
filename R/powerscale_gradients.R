@@ -5,10 +5,14 @@
 ##' component (prior or likelihood). This is done using importance
 ##' sampling (and optionally moment matching).
 ##' @name powerscale-gradients
-##' @param x Model fit object or a powerscaling_data object.
+##' @param x Model fit object or a priorsense_data object.
 ##' @param variable Variables to compute sensitivity of. If NA
 ##'   (default) sensitivity is computed for all variables.
 ##' @param component Component to power-scale (prior or likelihood).
+##' @param prior_selection Numeric vector specifying which priors to
+##'   consider.
+##' @param likelihood_selection Numeric vector specifying which likelihoods to
+##'   consider.
 ##' @param type type of sensitivity to measure ("distance",
 ##'   "quantity").  Multiple options can be specified at the same
 ##'   time.
@@ -34,7 +38,7 @@ powerscale_gradients <- function(x, ...) {
 ##' @export
 powerscale_gradients.CmdStanFit <- function(x, ...) {
 
-  psd <- create_powerscaling_data(x)
+  psd <- create_priorsense_data(x)
 
   powerscale_gradients(psd, ...)
 
@@ -44,7 +48,7 @@ powerscale_gradients.CmdStanFit <- function(x, ...) {
 ##' @export
 powerscale_gradients.stanfit <- function(x, ...) {
 
-  psd <- create_powerscaling_data(x)
+  psd <- create_priorsense_data(x)
 
   powerscale_gradients(psd, ...)
 
@@ -54,7 +58,7 @@ powerscale_gradients.stanfit <- function(x, ...) {
 
 ##' @rdname powerscale-gradients
 ##' @export
-powerscale_gradients.powerscaling_data <- function(x,
+powerscale_gradients.priorsense_data <- function(x,
                                          variable = NULL,
                                          component = c("prior", "likelihood"),
                                          type = c("quantities", "divergence"),
@@ -69,10 +73,12 @@ powerscale_gradients.powerscaling_data <- function(x,
                                          transform = NULL,
                                          prediction = NULL,
                                          scale = FALSE,
+                                         prior_selection = NULL,
+                                         likelihood_selection = NULL,
                                          ...) {
 
   # input checks
-  checkmate::assertClass(x, classes = "powerscaling_data")
+  checkmate::assertClass(x, classes = "priorsense_data")
   checkmate::assertSubset(type, c("quantities", "divergence"))
   checkmate::assertCharacter(variable, null.ok = TRUE)
   checkmate::assertNumeric(lower_alpha, lower = 0, upper = 1)
@@ -80,7 +86,6 @@ powerscale_gradients.powerscaling_data <- function(x,
   checkmate::assertCharacter(div_measure)
   checkmate::assertList(measure_args)
   checkmate::assertSubset(component, c("prior", "likelihood"))
-  checkmate::assertCharacter(is_method)
   checkmate::assertCharacter(transform, null.ok = TRUE)
   checkmate::assertNumber(k_threshold)
   checkmate::assertLogical(resample)
@@ -90,7 +95,18 @@ powerscale_gradients.powerscaling_data <- function(x,
   # extract the draws
   base_draws <- x$draws
 
-  base_draws <- posterior::subset_draws(base_draws, variable = variable, ...)
+  # get predictions if specified
+  if (!(is.null(prediction))) {
+    pred_draws <- prediction(x$fit, ...)
+
+  # bind predictions and posterior draws
+    base_draws <- posterior::bind_draws(base_draws, pred_draws)
+  }
+
+  base_draws <- posterior::subset_draws(base_draws, variable = variable)
+
+  # specify selection
+  selection <- list(prior = prior_selection, likelihood = likelihood_selection)
 
   # transform if needed
   loadings <- NULL
@@ -141,12 +157,12 @@ powerscale_gradients.powerscaling_data <- function(x,
       variable = variable,
       component = comp,
       alpha = lower_alpha,
-      is_method = is_method,
       moment_match = moment_match,
       k_threshold = k_threshold,
       resample = resample,
       transform = transform,
       prediction = prediction,
+      selection = selection[[comp]],
       ...
     )
 
@@ -156,12 +172,12 @@ powerscale_gradients.powerscaling_data <- function(x,
       variable = variable,
       component = comp,
       alpha = upper_alpha,
-      is_method = is_method,
       moment_match = moment_match,
       k_threshold = k_threshold,
       resample = resample,
       transform = transform,
       prediction = prediction,
+      selection = selection[[comp]],
       ...
     )
 

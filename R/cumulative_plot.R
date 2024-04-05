@@ -1,6 +1,8 @@
 # Code adapted from
 # https://github.com/finnlindgren/StatCompLab/blob/main/R/ggplot.R and
 # https://rdrr.io/github/tidyverse/ggplot2/src/R/stat-ecdf.r
+
+# TODO: consider using ggecdf https://github.com/malcolmbarrett/ggecdf/blob/main/R/geom_ecdf.R
 stat_ewcdf <- function(mapping = NULL, data = NULL,
                        geom = "step", position = "identity",
                        ...,
@@ -42,9 +44,6 @@ StatEwcdf <- ggplot2::ggproto(
 
     has_x <- !(is.null(data$x) && is.null(params$x))
     has_y <- !(is.null(data$y) && is.null(params$y))
-    if (!has_x && !has_y) {
-      rlang::abort("stat_ewcdf() requires an x or y aesthetic.")
-    }
     has_weights <- !(is.null(data$weight) && is.null(params$weight))
 
     params

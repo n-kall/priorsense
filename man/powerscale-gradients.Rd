@@ -5,7 +5,7 @@
 \alias{powerscale_gradients}
 \alias{powerscale_gradients.CmdStanFit}
 \alias{powerscale_gradients.stanfit}
-\alias{powerscale_gradients.powerscaling_data}
+\alias{powerscale_gradients.priorsense_data}
 \title{Power-scale gradients}
 \usage{
 powerscale_gradients(x, ...)
@@ -14,7 +14,7 @@ powerscale_gradients(x, ...)
 
 \method{powerscale_gradients}{stanfit}(x, ...)
 
-\method{powerscale_gradients}{powerscaling_data}(
+\method{powerscale_gradients}{priorsense_data}(
   x,
   variable = NULL,
   component = c("prior", "likelihood"),
@@ -30,11 +30,13 @@ powerscale_gradients(x, ...)
   transform = NULL,
   prediction = NULL,
   scale = FALSE,
+  prior_selection = NULL,
+  likelihood_selection = NULL,
   ...
 )
 }
 \arguments{
-\item{x}{Model fit object or a powerscaling_data object.}
+\item{x}{Model fit object or a priorsense_data object.}
 
 \item{...}{Further arguments passed to functions.}
 
@@ -93,14 +95,20 @@ the moment matching algorithm is used. Default is 0.5.}
 \item{resample}{Logical; Indicate whether or not draws should be
 resampled based on calculated importance weights.}
 
-\item{transform}{Indicate a transformation of posterior
-draws to perform before sensitivity analysis. Either "scale" or "whiten".}
+\item{transform}{Indicate a transformation of posterior draws to
+perform before sensitivity analysis. Either "scale" or "whiten".}
 
 \item{prediction}{Function taking the model fit and returning a
 draws_df of predictions to be appended to the posterior draws}
 
 \item{scale}{logical scale quantity gradients by base posterior
 standard deviation.}
+
+\item{prior_selection}{Numeric vector specifying which priors to
+consider.}
+
+\item{likelihood_selection}{Numeric vector specifying which likelihoods to
+consider.}
 }
 \value{
 Maximum of the absolute derivatives above and below alpha

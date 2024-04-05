@@ -2,7 +2,7 @@
 title: "Powerscaling sensitivity analysis"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{powerscaling}
+  %\VignetteIndexEntry{Powerscaling sensitivity analysis}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -39,7 +39,7 @@ $\alpha > 0$.
 - For prior power-scaling: $p(\theta \mid y) \propto p(\theta)^\alpha
   p(y \mid \theta)$
 - For likelihood power-scaling: $p(\theta \mid y) \propto
-  p(\theta)^\alpha p(y \mid \theta)$
+  p(\theta) p(y \mid \theta)^\alpha$
 
 In priorsense, this is done in a computationally efficient manner
 using Pareto-smoothed importance sampling (and optionally importance
@@ -94,7 +94,7 @@ normal_model <- example_powerscale_model("univariate_normal")
 
 fit <- stan(
   model_code = normal_model$model_code,
-  data = c(normal_model$data, prior_alpha = 1, likelihood_alpha = 1),
+  data = normal_model$data,
   refresh = FALSE,
   seed = 123
 )

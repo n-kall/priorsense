@@ -1,16 +1,14 @@
 ##' @export
 print.powerscaling_details <- function(x, ...) {
 
-  pareto_k <- x$importance_sampling$diagnostics$pareto_k
-  pareto_kf <- x$importance_sampling$diagnostics$pareto_kf
-  ess <- x$importance_sampling$diagnostics$n_eff
-  is_method <- class(x$importance_sampling)[[1]]
+  pareto_k <- x$diagnostics$khat
+  pareto_k_threshold <- x$diagnostics$khat_threshold
+  pareto_kf <- x$diagnostics$khatf
 
   pareto_k_print <- c()
 
-  if (is_method == "psis") {
-    pareto_k_print <- paste("pareto-k:", round(pareto_k, digits = 3), "\n")
-  }
+  pareto_k_print <- paste("pareto-k:", round(pareto_k, digits = 2), "\n")
+
   if (!is.null(pareto_kf)) {
     pareto_k_print <- c(
       "moment-matched\n",
@@ -25,9 +23,8 @@ print.powerscaling_details <- function(x, ...) {
     "\npower-scaling\n",
     paste("alpha:", x$alpha, "\n"),
     paste("scaled component:", x$component, "\n"),
-    paste("importance sampling method:", is_method, "\n"),
     pareto_k_print,
-    paste("ESS:", round(ess, digits = 3), "\n"),
+    paste("pareto-k threshold:", round(pareto_k_threshold, 2), "\n"),
     paste("resampled:", x$resampled, "\n"),
     paste("transform:", x$transform_details$transform, "\n")
   )
@@ -71,7 +68,6 @@ print.powerscaled_sequence <- function(x, ...) {
     paste0("alpha range: [", min(x$alphas), ", ", max(x$alphas), "]\n"),
     paste("length of sequence:", length(x$alphas), "\n"),
     paste("scaled component:", component, "\n"),
-    paste("importance sampling method:", x$is_method, "\n"),
     paste("transform:", x$transform$transform, "\n")
   )
 
@@ -83,12 +79,14 @@ print.powerscaled_sequence <- function(x, ...) {
 print.powerscaled_sensitivity_summary <- function(x, ..., num_args = NULL) {
 
   num_args <- num_args %||% attr(x, "num_args")
+
   for (i in seq_cols(x$sensitivity)) {
     if (is.numeric(x$sensitivity[[i]])) {
       x$sensitivity[[i]] <- do.call(tibble::set_num_opts, c(list(x$sensitivity[[i]]), num_args))
     }
   }
   cat(paste0("Sensitivity based on ", x$div_measure, ":\n"))
+
   print(x$sensitivity, ...)
   if (!is.null(x$loadings)) {
     cat("Factor loadings:\n")

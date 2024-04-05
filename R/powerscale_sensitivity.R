@@ -5,7 +5,7 @@
 ##' optionally moment matching).
 ##' @template fit_arg
 ##' @name powerscale-sensitivity
-##' @param x Model fit object or powerscaling_data object.
+##' @param x Model fit object or priorsense_data object.
 ##' @param ... Further arguments passed to functions.
 ##' @param variable Character vector of variables to check.
 ##' @param lower_alpha Lower alpha value for gradient calculation.
@@ -18,6 +18,7 @@
 ##' @template powerscale_args
 ##' @template prediction_arg
 ##' @template resample_arg
+##' @template selection_arg
 ##' @param num_args (named list) Optional arguments passed to
 ##'   [num()][tibble::num] for pretty printing of summaries. Can be
 ##'   controlled globally via the `posterior.num_args`
@@ -36,12 +37,12 @@ powerscale_sensitivity.default <- function(x,
                                            ...
                                            ) {
 
-  psd <- create_powerscaling_data(
+  psd <- create_priorsense_data(
     x = x,
     ...
   )
 
-  powerscale_sensitivity.powerscaling_data(
+  powerscale_sensitivity.priorsense_data(
     psd,
     ...)
 
@@ -49,7 +50,7 @@ powerscale_sensitivity.default <- function(x,
 
 ##' @rdname powerscale-sensitivity
 ##' @export
-powerscale_sensitivity.powerscaling_data <- function(x,
+powerscale_sensitivity.priorsense_data <- function(x,
                                                      variable = NULL,
                                                      lower_alpha = 0.99,
                                                      upper_alpha = 1.01,
@@ -66,10 +67,12 @@ powerscale_sensitivity.powerscaling_data <- function(x,
                                                      resample = FALSE,
                                                      transform = NULL,
                                                      prediction = NULL,
-                                                     num_args = getOption("posterior.num_args", list()),
+                                                     prior_selection = NULL,
+                                                     likelihood_selection = NULL,
+                                                     num_args = NULL,
                                                      ...) {
   # input checks
-  checkmate::assertClass(x, classes = "powerscaling_data")
+  checkmate::assertClass(x, classes = "priorsense_data")
   checkmate::assertCharacter(variable, null.ok = TRUE)
   checkmate::assertNumeric(lower_alpha, lower = 0, upper = 1)
   checkmate::assertNumeric(upper_alpha, lower = 1)
@@ -83,6 +86,8 @@ powerscale_sensitivity.powerscaling_data <- function(x,
   checkmate::assertLogical(resample)
   checkmate::assertCharacter(transform, null.ok = TRUE)
   checkmate::assertFunction(prediction, null.ok = TRUE)
+  checkmate::assertNumeric(prior_selection, null.ok = TRUE)
+  checkmate::assertNumeric(likelihood_selection, null.ok = TRUE)
 
 
 
@@ -107,6 +112,8 @@ powerscale_sensitivity.powerscaling_data <- function(x,
     transform = transform,
     resample = resample,
     prediction = prediction,
+    prior_selection = prior_selection,
+    likelihood_selection = likelihood_selection,
     ...
   )
 
@@ -136,7 +143,7 @@ powerscale_sensitivity.powerscaling_data <- function(x,
   sense$diagnosis <- ifelse(
     sense$prior >= sensitivity_threshold & sense$likelihood >= sensitivity_threshold, "prior-data conflict",
     ifelse(sense$prior > sensitivity_threshold & sense$likelihood < sensitivity_threshold,
-           "weak likelihood",
+           "prior domination / weak likelihood",
            "-"
            )
   )
@@ -162,9 +169,9 @@ powerscale_sensitivity.CmdStanFit <- function(x,
                                               ...
                                               ) {
 
-  psd <- create_powerscaling_data.CmdStanFit(x)
+  psd <- create_priorsense_data.CmdStanFit(x)
 
-  powerscale_sensitivity.powerscaling_data(
+  powerscale_sensitivity.priorsense_data(
     psd,
     ...
   )
@@ -176,9 +183,9 @@ powerscale_sensitivity.stanfit <- function(x,
                                            ...
                                            ) {
 
-  psd <- create_powerscaling_data.stanfit(x, ...)
+  psd <- create_priorsense_data.stanfit(x, ...)
 
-  powerscale_sensitivity.powerscaling_data(
+  powerscale_sensitivity.priorsense_data(
     psd,
     ...
   )

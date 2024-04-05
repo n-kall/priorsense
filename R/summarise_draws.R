@@ -25,7 +25,7 @@ summary.powerscaled_draws <- function(object, ...) {
 ##' @export
 summarise_draws.powerscaled_draws <- function(.x,
                                               ...,
-                                              .num_args = getOption("posterior.num_args", list()),
+                                              .num_args = NULL,
                                               .args = list(),
                                               base_draws = NULL,
                                               diagnostics = FALSE,
@@ -60,20 +60,6 @@ summarise_draws.powerscaled_draws <- function(.x,
       list(weights = stats::weights(.x$draws)),
       .args
     )
-
-    if (diagnostics) {
-      funs <- c(
-        funs,
-        "n_eff_mean",
-        "pareto_k_mean",
-        "n_eff_var",
-        "pareto_k_var"
-      )
-      .args <- c(
-        .args,
-        log_ratios = .x$powerscaling$importance_sampling$orig_log_ratios
-      )
-    }
   }
 
   summ <- posterior::summarise_draws(
@@ -150,12 +136,8 @@ summarise_draws.powerscaled_sequence <- function(.x,
     .num_args = .num_args
   )
   base_quantities$alpha <- 1
-  base_quantities$n_eff <- NA
-  if (.x$is_method == "psis") {
-    base_quantities$pareto_k <- -Inf
-  } else {
-    base_quantities$pareto_k <- NA
-  }
+  base_quantities$pareto_k_threshold <- Inf
+  base_quantities$pareto_k <- -Inf
   base_distance <- measure_divergence(
     draws1 = posterior::merge_chains(base_draws),
     draws2 = posterior::merge_chains(base_draws),
@@ -193,9 +175,9 @@ summarise_draws.powerscaled_sequence <- function(.x,
 
       quant_df$alpha <- quantities$powerscaling$alpha
       quant_df$component <- quantities$powerscaling$component
-      quant_df$pareto_k <- quantities$powerscaling$importance_sampling$diagnostics$pareto_k
-      quant_df$n_eff <- quantities$powerscaling$importance_sampling$diagnostics$n_eff
-
+      quant_df$pareto_k <- quantities$powerscaling$diagnostics$khat
+      quant_df$pareto_k_threshold <- quantities$powerscaling$diagnostics$khat_threshold
+      
       summaries <- rbind(summaries, quant_df)
     }
   }
@@ -222,14 +204,15 @@ summarise_draws.powerscaled_sequence <- function(.x,
 
       quant_df$alpha <- quantities$powerscaling$alpha
       quant_df$component <- quantities$powerscaling$component
-      quant_df$pareto_k <- quantities$powerscaling$importance_sampling$diagnostics$pareto_k
-      quant_df$n_eff <- quantities$powerscaling$importance_sampling$diagnostics$n_eff
+      quant_df$pareto_k <- quantities$powerscaling$diagnostics$khat
+      quant_df$pareto_k_threshold <- quantities$powerscaling$diagnostics$khat_threshold
 
       summaries <- rbind(summaries, quant_df)
     }
   }
 
   # join base and perturbed summaries
+
   summaries <- list(rbind(base_summary_prior, base_summary_likelihood, summaries))
 
   # correctly specify types of variables

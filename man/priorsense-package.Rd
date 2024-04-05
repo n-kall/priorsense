@@ -4,12 +4,50 @@
 \name{priorsense-package}
 \alias{priorsense-package}
 \alias{priorsense}
-\title{priorsense: Prior Diagnostics and Sensitivity Analysis}
+\title{priorsense: Prior (and likelihood) diagnostics and sensitivity
+analysis}
 \description{
-priorsense provides functions for prior and likelihood
-sensitivity analysis in Bayesian models. Currently it implements
-methods to determine the sensitivity of the posterior to power-scaling
-perturbations of the prior and likelihood.
+The \pkg{priorsense} package provides functions for
+prior and likelihood sensitivity analysis of Bayesian
+models. Currently it implements methods to determine the
+sensitivity of the posterior to power-scaling perturbations of
+the prior and likelihood.
+}
+\details{
+The main diagnostic function provided by \pkg{priorsense}
+is \code{\link{powerscale_sensitivity}}. Given a fitted model
+or draws object, it computes the powerscaling sensitivity
+diagnostic described in Kallioinen et al. (2023). It does so by
+perturbing the prior and likelihood and computing the effect on
+the posterior, without needing to refit the model (using Pareto
+smoothed importance sampling and importance weighted moment
+matching; Vehtari et al. 2022, Paananen et al. 2021).
+
+In addition, visual diagnostics are available by first using
+\code{\link{powerscale_sequence}} to create a sequence of perturbed
+posteriors, and then a plot function such as
+\code{\link{powerscale_plot_ecdf}} to visualise the change.
+}
+\references{
+Kallioinen, N., Paananen, T., Bürkner, P-C., Vehtari, A. (2024).
+Detecting and diagnosing prior and likelihood sensitivity with
+power-scaling perturbations.  \emph{Statstics and
+Computing}. 34(57).  \code{doi:10.1007/s11222-023-10366-5}
+
+Vehtari, A., Simpson, D., Gelman, A., Yao, Y., and Gabry,
+J. (2022).  Pareto smoothed importance sampling.  \href{https://arxiv.org/abs/1507}{preprint arXiv:1507.02646}
+
+Paananen, T., Piironen, J., Bürkner, P-C., Vehtari, A. (2021).
+Implicitly adaptive importance sampling.  \emph{Statistics and
+Computing}. 31(16).  \code{doi:10.1007/s11222-020-09982-2}
+}
+\seealso{
+\code{\link{powerscale_sensitivity}}
+\code{\link{powerscale_sequence}}
+\code{\link{powerscale}}
+\code{\link{powerscale_plot_ecdf}}
+\code{\link{powerscale_plot_dens}}
+\code{\link{powerscale_plot_quantities}}
 }
 \author{
 \strong{Maintainer}: Noa Kallioinen \email{noa.kallioinen@aalto.fi}
@@ -19,6 +57,11 @@ Authors:
   \item Paul-Christian Bürkner
   \item Topi Paananen
   \item Aki Vehtari
+}
+
+Other contributors:
+\itemize{
+  \item Frank Weber [contributor]
 }
 
 }

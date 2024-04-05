@@ -5,7 +5,7 @@
 \alias{powerscale-sensitivity}
 \alias{powerscale_sensitivity}
 \alias{powerscale_sensitivity.default}
-\alias{powerscale_sensitivity.powerscaling_data}
+\alias{powerscale_sensitivity.priorsense_data}
 \alias{powerscale_sensitivity.CmdStanFit}
 \alias{powerscale_sensitivity.stanfit}
 \title{Power-scaling sensitivity analysis}
@@ -16,7 +16,7 @@ powerscale_sensitivity(x, ...)
 
 \method{powerscale_sensitivity}{default}(x, ...)
 
-\method{powerscale_sensitivity}{powerscaling_data}(
+\method{powerscale_sensitivity}{priorsense_data}(
   x,
   variable = NULL,
   lower_alpha = 0.99,
@@ -31,7 +31,9 @@ powerscale_sensitivity(x, ...)
   resample = FALSE,
   transform = NULL,
   prediction = NULL,
-  num_args = getOption("posterior.num_args", list()),
+  prior_selection = NULL,
+  likelihood_selection = NULL,
+  num_args = NULL,
   ...
 )
 
@@ -40,7 +42,7 @@ powerscale_sensitivity(x, ...)
 \method{powerscale_sensitivity}{stanfit}(x, ...)
 }
 \arguments{
-\item{x}{Model fit object or powerscaling_data object.}
+\item{x}{Model fit object or priorsense_data object.}
 
 \item{...}{Further arguments passed to functions.}
 
@@ -96,11 +98,15 @@ the moment matching algorithm is used. Default is 0.5.}
 \item{resample}{Logical; Indicate whether or not draws should be
 resampled based on calculated importance weights.}
 
-\item{transform}{Indicate a transformation of posterior
-draws to perform before sensitivity analysis. Either "scale" or "whiten".}
+\item{transform}{Indicate a transformation of posterior draws to
+perform before sensitivity analysis. Either "scale" or "whiten".}
 
 \item{prediction}{Function taking the model fit and returning a
 draws_df of predictions to be appended to the posterior draws}
+
+\item{prior_selection}{Numeric vector of prior partitions to include in power-scaling. Default is NULL, which takes all partitions.}
+
+\item{likelihood_selection}{Numeric vector of likelihood partitions to include in power-scaling. Default is NULL, which takes all partitions.}
 
 \item{num_args}{(named list) Optional arguments passed to
 \link[tibble:num]{num()} for pretty printing of summaries. Can be
