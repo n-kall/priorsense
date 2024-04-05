@@ -3,6 +3,7 @@ find_alpha_threshold <- function(x, ...) {
 
 }
 
+##' @export
 find_alpha_threshold.CmdStanFit <- function(x, ...) {
 
   psd <- create_priorsense_data(x)
@@ -11,6 +12,7 @@ find_alpha_threshold.CmdStanFit <- function(x, ...) {
 
 }
 
+##' @export
 find_alpha_threshold.stanfit <- function(x, ...) {
 
   psd <- create_priorsense_data(x)
@@ -19,6 +21,7 @@ find_alpha_threshold.stanfit <- function(x, ...) {
 
 }
 
+##' @export
 find_alpha_threshold.priorsense_data <- function(x, ...) {
 
   find_alpha_threshold.default(
@@ -34,6 +37,7 @@ find_alpha_threshold.priorsense_data <- function(x, ...) {
 
 }
 
+##' @export
 find_alpha_threshold.default <- function(x,
                                  component,
                                  alpha_bound,

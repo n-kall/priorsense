@@ -149,3 +149,6 @@ quantile_weighted <- function(x, weights, probs = c(0.05, 0.95),
 ##' @export
 ##' @rdname weighted_quantities
 quantile2_weighted <- quantile_weighted
+
+# always use quantile2 internally
+quantile <- posterior::quantile2

@@ -29,12 +29,13 @@ posteriors, and then a plot function such as
 \code{\link{powerscale_plot_ecdf}} to visualise the change.
 }
 \references{
-Kallioinen, N., Paananen, T., Bürkner, P-C., Vehtari, A. (in
-prep).  Detecting and diagnosing prior and likelihood sensitivity
-with power-scaling perturbations.
+Kallioinen, N., Paananen, T., Bürkner, P-C., Vehtari, A. (2024).
+Detecting and diagnosing prior and likelihood sensitivity with
+power-scaling perturbations.  \emph{Statstics and
+Computing}. 34(57).  \code{doi:10.1007/s11222-023-10366-5}
 
 Vehtari, A., Simpson, D., Gelman, A., Yao, Y., and Gabry,
-J. (2019).  Pareto smoothed importance sampling.  \href{https://arxiv.org/abs/1507}{preprint arXiv:1507.02646}
+J. (2022).  Pareto smoothed importance sampling.  \href{https://arxiv.org/abs/1507}{preprint arXiv:1507.02646}
 
 Paananen, T., Piironen, J., Bürkner, P-C., Vehtari, A. (2021).
 Implicitly adaptive importance sampling.  \emph{Statistics and
@@ -47,4 +48,20 @@ Computing}. 31(16).  \code{doi:10.1007/s11222-020-09982-2}
 \code{\link{powerscale_plot_ecdf}}
 \code{\link{powerscale_plot_dens}}
 \code{\link{powerscale_plot_quantities}}
+}
+\author{
+\strong{Maintainer}: Noa Kallioinen \email{noa.kallioinen@aalto.fi}
+
+Authors:
+\itemize{
+  \item Paul-Christian Bürkner
+  \item Topi Paananen
+  \item Aki Vehtari
+}
+
+Other contributors:
+\itemize{
+  \item Frank Weber [contributor]
+}
+
 }

@@ -48,7 +48,7 @@ stop2 <- function(...) {
 }
 
 
-'%||%' <- function(x, y) {
+`%||%` <- function(x, y) {
   if (is.null(x)) x <- y
   x
 }

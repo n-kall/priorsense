@@ -8,13 +8,13 @@
 ##' @param log_prior_name Name of parameter in Stan model
 ##'   corresponding to log prior, default is "lprior".
 ##' @param ... Arguments passed to individual methods.
-##' @return A draws_array object containing log_prior values.
+##' @return A draws_array obejct containing log_prior values.
 log_prior_draws <- function(x, ...) {
   UseMethod("log_prior_draws")
 }
 
 
-##' @rdname log_prior
+##' @rdname log_prior_draws
 ##' @export
 log_prior_draws.stanfit <- function(x, log_prior_name = "lprior", ...) {
 
@@ -34,7 +34,7 @@ log_prior_draws.stanfit <- function(x, log_prior_name = "lprior", ...) {
   return(log_prior)
 }
 
-##' @rdname log_prior
+##' @rdname log_prior_draws
 ##' @export
 log_prior_draws.CmdStanFit <- function(x, log_prior_name = "lprior", ...) {
 
@@ -43,7 +43,7 @@ log_prior_draws.CmdStanFit <- function(x, log_prior_name = "lprior", ...) {
   return(log_prior)
 }
 
-##' @rdname log_prior
+##' @rdname log_prior_draws
 ##' @export
 log_prior_draws.draws <- function(x, log_prior_name = "lprior", ...) {
 

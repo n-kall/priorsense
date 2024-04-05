@@ -17,7 +17,7 @@ summary.powerscaled_draws <- function(object, ...) {
 ##'   controlled globally via the `posterior.num_args`
 ##'   [option][base::options].
 ##' @param base_draws base draws
-##' @param diagnostics boolean, if TRUE included diagnostics for mean
+##' @param diagnostics boolean, if TRUE include diagnostics for mean
 ##'   and variance
 ##' @param div_measures divergence measures
 ##' @param measure_args arguments for divergence measures
@@ -25,8 +25,8 @@ summary.powerscaled_draws <- function(object, ...) {
 ##' @export
 summarise_draws.powerscaled_draws <- function(.x,
                                               ...,
+                                              .num_args = NULL,
                                               .args = list(),
-                                              .num_args = getOption("posterior.num_args", list()),
                                               base_draws = NULL,
                                               diagnostics = FALSE,
                                               div_measures = "cjs_dist",
@@ -125,7 +125,7 @@ summarise_draws.powerscaled_draws <- function(.x,
 summarise_draws.powerscaled_sequence <- function(.x,
                                                  ...,
                                                  .args = list(),
-                                                 .num_args = getOption("posterior.num_args", list()),
+                                                 .num_args = NULL,
                                                  div_measures = "cjs_dist",
                                                  measure_args = list(),
                                                  resample = FALSE) {
@@ -183,6 +183,7 @@ summarise_draws.powerscaled_sequence <- function(.x,
       quantities <- summarise_draws(
         .x = scaled,
         funs,
+        .args = .args,
         base_draws = base_draws,
         div_measures = div_measures,
         resample = resample
@@ -211,6 +212,7 @@ summarise_draws.powerscaled_sequence <- function(.x,
       quantities <- summarise_draws(
         .x = scaled,
         funs,
+        .args = .args,
         base_draws = base_draws,
         div_measures = div_measures,
         resample = resample

@@ -23,7 +23,9 @@ mv_wasserstein_dist <- function(draws1,
                                    ...
                                    ) {
 
+
   require_package("transport")
+
   
   if (is.null(weights1)) {
     weights1 <- rep(
@@ -167,6 +169,7 @@ hellinger_dist <- function(x, y, x_weights, y_weights, ...) {
 ##' @return numeric value of approximate KL(p_x||p_y) based on
 ##'   estimated densitites
 kl_div <- function(x, y, x_weights, y_weights, ...) {
+
 
   require_package("philentropy")
   

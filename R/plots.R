@@ -181,7 +181,7 @@ prepare_plot <- function(d, resample, variable, ...) {
 ##' @rdname powerscale_plots
 ##' @export
 powerscale_plot_dens <- function(x, variables, resample = FALSE,
-                                 bw = "sj", ...) {
+                                 ...) {
   # input checks
   checkmate::assert_class(x, c("powerscaled_sequence"))
   checkmate::assert_character(variables)
@@ -288,11 +288,13 @@ powerscale_plot_quantities <- function(x, variables,
                                        resample = FALSE,
                                        measure_args = NULL,
                                        mcse = TRUE,
+                                       quantity_args = NULL,
                                        ...) {
 
   summ <- summarise_draws(
     x,
     ... = quantities,
+    .args = quantity_args,
     resample = resample,
     div_measures = div_measure,
     measure_args = measure_args

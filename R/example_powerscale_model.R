@@ -23,7 +23,9 @@ powerscale_examples <- function() {
         model_code = "data {
   int<lower=1> N;
   array[N] real y;
+
   vector<lower=0>[2] prior_alpha;
+
   real<lower=0> likelihood_alpha;
 }
 parameters {
