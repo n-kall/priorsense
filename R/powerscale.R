@@ -37,7 +37,7 @@ powerscale.priorsense_data <- function(x,
                                        component,
                                        alpha,
                                        moment_match = FALSE,
-                                       k_threshold = 0.5,
+                                       k_threshold = 0.7,
                                        resample = FALSE,
                                        transform = FALSE,
                                        prediction = NULL,
@@ -65,10 +65,10 @@ powerscale.priorsense_data <- function(x,
     # bind predictions and posterior draws
     draws <- posterior::bind_draws(draws, pred_draws)
   }
-  
+
   # subset the draws
   draws <- posterior::subset_draws(draws, variable = variable)
-  
+
   # select the appropriate component draws
   if (component == "prior") {
     log_comp_draws <- x[["log_prior"]]
@@ -121,7 +121,15 @@ powerscale.priorsense_data <- function(x,
       x = mm$log_weights
     )
     draws <- remove_unwanted_vars(posterior::as_draws_df(mm$draws))
-    
+
+    # get moment-matched predictions
+    if (!(is.null(prediction))) {
+      pred_draws <- prediction(mm$fit, ...)
+
+      # bind predictions and posterior draws
+      draws <- posterior::bind_draws(draws, pred_draws)
+    }
+
   } else {
     
     # no moment matching
@@ -166,7 +174,7 @@ powerscale.priorsense_data <- function(x,
       x = posterior::merge_chains(new_draws)
     )
   }
-  
+
   # create object with details of power-scaling
   powerscaling_details <- list(
     alpha = alpha,

@@ -107,58 +107,6 @@ get_draws_brmsfit <- function(x, variable = NULL, regex = FALSE, log_prior_name 
   return(draws)
 }
 
-moment_match.brmsfit <- function(x, ...) {
-
-  tryCatch(
-    iwmm::moment_match(x = x$fit, ...),
-    error = stop("'moment_match = TRUE' is currently unsupported for brms models")
-  )
-
-  return(TRUE)
-}
-
-## moment_match.brmsfit <- function(x, psis, ...) {
-##   # ensure compatibility with objects not created in the current R session
-##   x$fit@.MISC <- suppressMessages(brm(fit = x, chains = 0))$fit@.MISC
-##   mm <- try(iwmm::moment_match.default(
-##     x,
-##     psis = psis, post_draws = as.matrix,
-##     unconstrain_pars = unconstrain_pars.brmsfit,
-##     log_prob_upars = log_prob_upars.brmsfit,
-##     log_ratio_upars = log_ratio_upars.brmsfit,
-##     nchains = posterior::nchains(x),
-##     ...
-##   ))
-##   if (methods::is(mm, "try-error")) {
-##     stop(
-##       "'moment_match' failed. Did you set 'save_all_pars' ",
-##       "to TRUE when fitting your brms model?"
-##     )
-##   }
-##   return(mm)
-## }
-
-## unconstrain_pars.brmsfit <- function(x, pars, ...) {
-##   unconstrain_pars.stanfit(x$fit, pars = pars, ...)
-## }
-
-## log_prob_upars.brmsfit <- function(x, upars, ...) {
-##   log_prob_upars.stanfit(x$fit, upars = upars, ...)
-## }
-
-## update_pars.brmsfit <- function(x, upars, ...) {
-##   x$fit <- update_pars(x$fit, upars = upars, save_old_pars = FALSE, ...)
-##   brms::rename_pars(x)
-## }
-
-## log_ratio_upars.brmsfit <- function(x, upars, component_fn, samples = NULL,
-##                                     subset = NULL, ...) {
-##   # do not pass subset or nsamples further to avoid subsetting twice
-##   x <- update_pars(x, upars = upars, ...)
-##   component_draws <- component_fn(x)
-##   scaled_log_ratio(component_draws, ...)
-## }
-
 ##' Predictions as draws
 ##'
 ##' Create predictions using brms functions and convert them into
