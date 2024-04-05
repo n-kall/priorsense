@@ -36,9 +36,8 @@ powerscale <- function(x, ...) {
 powerscale.priorsense_data <- function(x,
                                        component,
                                        alpha,
-                                       is_method = "psis",
                                        moment_match = FALSE,
-                                       k_threshold = 0.5,
+                                       k_threshold = 0.7,
                                        resample = FALSE,
                                        transform = FALSE,
                                        prediction = NULL,
@@ -50,7 +49,6 @@ powerscale.priorsense_data <- function(x,
   checkmate::assertClass(x, classes = "priorsense_data")
   checkmate::assertNumeric(alpha, lower = 0)
   checkmate::assertSubset(component, c("prior", "likelihood"))
-  checkmate::assertCharacter(is_method)
   checkmate::assertLogical(moment_match)
   checkmate::assertNumber(k_threshold)
   checkmate::assertLogical(resample)
@@ -59,9 +57,18 @@ powerscale.priorsense_data <- function(x,
   checkmate::assertNumeric(selection, null.ok = TRUE)
 
   draws <- x$draws
-    
-  # get the correct importance sampling function
-  is_method <- get(is_method, asNamespace("loo"))
+
+  # duplicate here
+  # get predictions if specified
+  if (!(is.null(prediction))) {
+    pred_draws <- prediction(x$fit, ...)
+
+    # bind predictions and posterior draws
+    draws <- posterior::bind_draws(draws, pred_draws)
+  }
+
+  # subset the draws
+  draws <- posterior::subset_draws(draws, variable = variable)
 
   # select the appropriate component draws
   if (component == "prior") {
@@ -84,26 +91,15 @@ powerscale.priorsense_data <- function(x,
     alpha = alpha
   )
 
-  if (!moment_match) {
-    # calculate the importance weights
-    importance_sampling <- is_method(
-      log_ratios = log_ratios,
-      r_eff = loo::relative_eff(
-        x = exp(-(log_ratios - max(log_ratios)))
-      )
+  if (moment_match) {
+
+    require_package(
+      "iwmm",
+      message = " to use moment matching, available from https://github.com/topipa/iwmm"
     )
-  } else {
+    
     # perform moment matching if specified
     # calculate the importance weights
-    importance_sampling <- SW(
-      is_method(
-        log_ratios = log_ratios,
-        r_eff = loo::relative_eff(
-          x = exp(-(log_ratios - max(log_ratios)))
-        )
-      )
-    )
-
     if (component == "prior") {
       component_fn <- x$log_prior_fn
     } else if (component == "likelihood") {
@@ -118,22 +114,36 @@ powerscale.priorsense_data <- function(x,
       ...
     )
 
-    importance_sampling <- list(
-      diagnostics = list(pareto_k = mm$diagnostics$pareto_k, n_eff = NA),
-      log_weights = mm$log_weights
+    smoothed_log_ratios <- list(
+      diagnostics = list(
+        khat = mm$diagnostics$pareto_k,
+        khat_threshold = 0.7 # hardcoded threshold until updates to iwmm
+        ),
+      x = mm$log_weights
     )
-    class(importance_sampling) <- c(
-      "psis",
-      "importance_sampling",
-      class(importance_sampling)
-    )
-
     draws <- remove_unwanted_vars(posterior::as_draws_df(mm$draws))
 
+    # get moment-matched predictions
+    if (!(is.null(prediction))) {
+      pred_draws <- prediction(mm$fit, ...)
+
+      # bind predictions and posterior draws
+      draws <- posterior::bind_draws(draws, pred_draws)
+    }
+
+  } else {
+    
+    # no moment matching
+    smoothed_log_ratios <- posterior::pareto_smooth(
+      as.numeric(log_ratios), are_log_weights = TRUE,
+      return_k = TRUE,
+      extra_diags = TRUE,
+      verbose = FALSE
+    )
   }
 
   # keep track of base log-ratios for diagnostics
-  importance_sampling$orig_log_ratios <- log_ratios
+  smoothed_log_ratios$orig_log_ratios <- log_ratios
 
   # transform the draws if specified
   if (transform == "whiten") {
@@ -155,7 +165,7 @@ powerscale.priorsense_data <- function(x,
   # reweight the draws with the calculated importance weights
   new_draws <- posterior::weight_draws(
     x = draws,
-    weights = stats::weights(importance_sampling, normalize = FALSE),
+    weights = smoothed_log_ratios$x,
     log = TRUE
   )
 
@@ -166,6 +176,7 @@ powerscale.priorsense_data <- function(x,
     )
   }
 
+  # duplicate here
   # get predictions if specified
   if (!(is.null(prediction))) {
     pred_draws <- prediction(x$fit, ...)
@@ -177,13 +188,12 @@ powerscale.priorsense_data <- function(x,
   # subset the draws
   new_draws <- posterior::subset_draws(new_draws, variable = variable)
 
-  
   # create object with details of power-scaling
   powerscaling_details <- list(
     alpha = alpha,
     component = component,
-    importance_sampling = importance_sampling,
     moment_match = moment_match,
+    diagnostics = smoothed_log_ratios$diagnostics,
     resampled = resample,
     transform_details = transform_details
   )

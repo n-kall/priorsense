@@ -46,7 +46,7 @@ test_that("plots contain expected data", {
   )
   expect_equal(
     colnames(psq$data),
-    c("variable", "alpha", "n_eff", "pareto_k", "component", "quantity", "value", "id", "pareto_k_value")
+    c("variable", "alpha", "pareto_k_threshold", "pareto_k", "component", "quantity", "value", "id", "pareto_k_value")
   )
 
   expect_equal(
