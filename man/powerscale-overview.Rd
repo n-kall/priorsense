@@ -26,7 +26,7 @@ powerscale(x, ...)
   component,
   alpha,
   moment_match = FALSE,
-  k_threshold = 0.5,
+  k_threshold = 0.7,
   resample = FALSE,
   transform = FALSE,
   prediction = NULL,
