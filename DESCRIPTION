@@ -41,5 +41,4 @@ Depends:
     R (>= 3.6.0)
 VignetteBuilder: knitr
 Remotes:
-    topipa/iwmm,
-    stan-dev/posterior
+    topipa/iwmm
