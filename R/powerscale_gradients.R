@@ -86,7 +86,6 @@ powerscale_gradients.priorsense_data <- function(x,
   checkmate::assertCharacter(div_measure)
   checkmate::assertList(measure_args)
   checkmate::assertSubset(component, c("prior", "likelihood"))
-  checkmate::assertCharacter(is_method)
   checkmate::assertNumber(k_threshold)
   checkmate::assertLogical(resample)
   checkmate::assertFunction(prediction, null.ok = TRUE)
@@ -154,7 +153,6 @@ powerscale_gradients.priorsense_data <- function(x,
       variable = variable,
       component = comp,
       alpha = lower_alpha,
-      is_method = is_method,
       moment_match = moment_match,
       k_threshold = k_threshold,
       resample = resample,
@@ -170,7 +168,6 @@ powerscale_gradients.priorsense_data <- function(x,
       variable = variable,
       component = comp,
       alpha = upper_alpha,
-      is_method = is_method,
       moment_match = moment_match,
       k_threshold = k_threshold,
       resample = resample,

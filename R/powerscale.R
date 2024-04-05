@@ -176,15 +176,6 @@ powerscale.priorsense_data <- function(x,
     )
   }
 
-  # duplicate here
-  # get predictions if specified
-  if (!(is.null(prediction))) {
-    pred_draws <- prediction(x$fit, ...)
-
-    # bind predictions and posterior draws
-    new_draws <- posterior::bind_draws(new_draws, pred_draws)
-  }
-
   # subset the draws
   new_draws <- posterior::subset_draws(new_draws, variable = variable)
 
