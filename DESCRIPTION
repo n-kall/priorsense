@@ -12,13 +12,12 @@ License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.0
+RoxygenNote: 7.3.1
 Imports:
     cetcolor,
     checkmate,
+    ggdist (>= 3.3.2),
     ggplot2,
-    iwmm,
-    loo,
     matrixStats,
     methods,
     posterior,
@@ -29,6 +28,7 @@ Imports:
 Suggests:
     brms,
     cmdstanr,
+    iwmm,
     knitr,
     philentropy,
     rstan,

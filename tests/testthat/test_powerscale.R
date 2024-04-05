@@ -103,22 +103,22 @@ test_that("powerscale_sequence adapts alphas and keeps pareto-k low", {
   ))
 
   expect_lt(
-    pss$likelihood_scaled$draws_sequence[[1]]$powerscaling$importance_sampling$diagnostics$pareto_k,
+    pss$likelihood_scaled$draws_sequence[[1]]$powerscaling$diagnostics$khat,
     k_threshold
   )
 
   expect_lt(
-    pss$likelihood_scaled$draws_sequence[[length(pss$likelihood_scaled$draws_sequence)]]$powerscaling$importance_sampling$diagnostics$pareto_k,
+    pss$likelihood_scaled$draws_sequence[[length(pss$likelihood_scaled$draws_sequence)]]$powerscaling$diagnostics$khat,
     k_threshold
   )
 
   expect_lt(
-    pss$prior_scaled$draws_sequence[[1]]$powerscaling$importance_sampling$diagnostics$pareto_k,
+    pss$prior_scaled$draws_sequence[[1]]$powerscaling$diagnostics$khat,
     k_threshold
   )
 
   expect_lt(
-    pss$prior_scaled$draws_sequence[[length(pss$prior_scaled$draws_sequence)]]$powerscaling$importance_sampling$diagnostics$pareto_k,
+    pss$prior_scaled$draws_sequence[[length(pss$prior_scaled$draws_sequence)]]$powerscaling$diagnostics$khat,
     k_threshold
   )
 
