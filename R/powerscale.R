@@ -58,6 +58,7 @@ powerscale.priorsense_data <- function(x,
 
   draws <- x$draws
 
+  # duplicate here
   # get predictions if specified
   if (!(is.null(prediction))) {
     pred_draws <- prediction(x$fit, ...)
@@ -107,9 +108,9 @@ powerscale.priorsense_data <- function(x,
 
     mm <- iwmm::moment_match(
       x = x$fit,
-      log_ratio_fun = powerscale_log_ratio_fun,
+      log_ratio_fun = x$log_ratio_fn,
       alpha = alpha,
-      component = component,
+      component_fn = component_fn,
       ...
     )
 
@@ -175,6 +176,18 @@ powerscale.priorsense_data <- function(x,
     )
   }
 
+  # duplicate here
+  # get predictions if specified
+  if (!(is.null(prediction))) {
+    pred_draws <- prediction(x$fit, ...)
+
+    # bind predictions and posterior draws
+    new_draws <- posterior::bind_draws(new_draws, pred_draws)
+  }
+
+  # subset the draws
+  new_draws <- posterior::subset_draws(new_draws, variable = variable)
+
   # create object with details of power-scaling
   powerscaling_details <- list(
     alpha = alpha,
@@ -191,6 +204,7 @@ powerscale.priorsense_data <- function(x,
     draws = new_draws,
     powerscaling = powerscaling_details
   )
+  
   class(powerscaled_draws) <- c("powerscaled_draws", class(powerscaled_draws))
 
   return(powerscaled_draws)

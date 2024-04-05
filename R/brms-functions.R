@@ -9,6 +9,7 @@ create_priorsense_data.brmsfit <- function(x, ...) {
     log_lik = log_lik_draws.brmsfit(x, ...),
     log_prior_fn = log_prior_draws,
     log_lik_fn = log_lik_draws,
+    log_ratio_fn = powerscale_log_ratio_fun_brmsfit,
     ...
   )
 }
@@ -63,20 +64,11 @@ powerscale_sensitivity.brmsfit <- function(x,
 log_lik_draws.brmsfit <- function(x, ...) {
   require_package("brms")
 
-  nc <- posterior::nchains(x)
-  ndrw <- posterior::ndraws(x)/nc
-
   log_lik <- brms::log_lik(x, ...)
 
-  nobs <- ncol(log_lik)
+  log_lik <- posterior::as_draws_array(log_lik)
 
-  log_lik <- array(log_lik, dim = c(ndrw, nc, nobs))
-
-  log_lik <- posterior::as_draws_array(
-    log_lik,
-  )
-
-  posterior::variables(log_lik) <- paste0("log_lik[", 1:nobs, "]")
+  posterior::variables(log_lik) <- paste0("log_lik[", 1:nvariables(log_lik), "]")
 
   return(log_lik)
 }
@@ -86,7 +78,10 @@ log_lik_draws.brmsfit <- function(x, ...) {
 ##' @export
 log_prior_draws.brmsfit <- function(x, log_prior_name = "lprior", ...) {
 
-  log_prior <- posterior::subset_draws(posterior::as_draws_array(x), variable = log_prior_name)
+  log_prior <- posterior::subset_draws(
+    posterior::as_draws_array(x),
+    variable = log_prior_name
+  )
 
   return(log_prior)
 }
@@ -182,4 +177,15 @@ predictions_as_draws <- function(x, predict_fn, prediction_names = NULL,
     posterior::variables(out) <- prediction_names
   }
   out
+}
+
+
+powerscale_log_ratio_fun_brmsfit <- function(draws, fit, alpha, component_fn, ...) {
+
+  component_draws <- component_fn(fit)
+
+  component_draws <- rowsums_draws(component_draws)
+
+  component_draws * (alpha - 1)
+
 }
