@@ -20,7 +20,7 @@ Imports:
     ggplot2,
     matrixStats,
     methods,
-    posterior,
+    posterior (> 1.5.0),
     rlang,
     stats,
     tibble,
