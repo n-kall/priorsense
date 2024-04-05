@@ -84,7 +84,7 @@ find_alpha_threshold.default <- function(x,
         component = component,
         moment_match = moment_match
       )
-    )$powerscaling$importance_sampling$diagnostics$pareto_k
+    )$powerscaling$diagnostics$khat
 
     compare <- comparison(new_pareto_k, pareto_k, k_threshold, epsilon)
 
