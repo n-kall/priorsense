@@ -198,6 +198,8 @@ powerscale_plot_dens <- function(x, variables, resample = FALSE,
     resample <- TRUE
   }
 
+  n_components <- length(unique(d$component))
+  
   out <- prepare_plot(d, resample, ...) +
       ggplot2::ylab("Density") +
       ggplot2::guides(
@@ -209,26 +211,32 @@ powerscale_plot_dens <- function(x, variables, resample = FALSE,
         ggplot2::aes(color = .data$alpha),
         fill = NA,
         linewidth = 0.5,
+        trim = FALSE,
+        normalize = "xy",
         ...,
       ) +
-      ggplot2::facet_grid(
-        cols = ggplot2::vars(.data$component),
-        rows = ggplot2::vars(.data$variable),
-        labeller = ggplot2::labeller(
-          component = c(
-            likelihood = "Likelihood power-scaling",
-            prior = "Prior power-scaling"
+    ggplot2::facet_wrap(
+      ncol = n_components,
+      facets = ggplot2::vars(.data$variable, .data$component),
+      labeller = ggplot2::labeller(
+        component = c(
+          likelihood = "Likelihood power-scaling",
+          prior = "Prior power-scaling"
         )
-        ),
-        scales = "free",
-        switch = "y"
-      ) +
-      ggplot2::xlab("")
-
+      ),
+      scales = "free_x"
+    ) +
+    ggplot2::xlab(NULL) +
+    ggplot2::ylab(NULL) +
+    ggplot2::theme(
+      axis.text.y = ggplot2::element_blank(),
+      axis.ticks.y = ggplot2::element_blank()
+    )
+  
   out <- out +
       ggplot2::ggtitle(
         label = "Power-scaling sensitivity",
-        subtitle = "Posterior density estimates depending on amount of power-scaling (alpha).\nOverlapping lines indicate low sensitivity.\nWider gaps between lines indicate greater sensitivity.\nEstimates with Pareto-k values > 0.5 may be inaccurate."
+        subtitle = "Posterior density estimates depending on amount of power-scaling (alpha).\nOverlapping lines indicate low sensitivity.\nWider gaps between lines indicate greater sensitivity.\nEstimates with high Pareto-k values may be inaccurate."
     )
   
   return(out)
