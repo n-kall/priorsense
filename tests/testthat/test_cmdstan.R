@@ -1,7 +1,3 @@
-cmdstanr_available <- require(cmdstanr)
-
-if(cmdstanr_available) {
-
 set.seed(123)
 normal_example <- example_powerscale_model("univariate_normal")
 
@@ -56,4 +52,3 @@ test_that("powerscale functions work for CmdStanFit", {
 }
 )
 
-}

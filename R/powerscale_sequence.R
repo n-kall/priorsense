@@ -7,40 +7,40 @@ powerscale_sequence <- function(x, ...) {
 
 ##' @rdname powerscale-overview
 ##' @export
-powerscale_sequence.default <- function(x, ...) {
+powerscale_sequence.default <- function(x,
+                                        lower_alpha = 0.8,
+                                        upper_alpha = 1 / lower_alpha,
+                                        length = 9, variable = NULL,
+                                        component = c("prior", "likelihood"),
+                                        moment_match = FALSE,
+                                        k_threshold = 0.5,
+                                        resample = FALSE,
+                                        transform = NULL,
+                                        prediction = NULL,
+                                        auto_alpha_range = FALSE,
+                                        symmetric = TRUE,
+                                        prior_selection = NULL,
+                                        likelihood_selection = NULL,
+                                        ...) {
   psd <- create_priorsense_data(x, ...)
-  powerscale_sequence(psd, ...)
-}
-
-
-##' @rdname powerscale-overview
-##' @export
-powerscale_sequence.CmdStanFit <- function(x,
-                                           ...
-                                           ) {
-
-  psd <- create_priorsense_data.CmdStanFit(x, ...)
-
-  powerscale_sequence.priorsense_data(
+  powerscale_sequence(
     psd,
+    lower_alpha = lower_alpha,
+    upper_alpha = upper_alpha,
+    length = length,
+    variable = variable,
+    component = component,
+    moment_match = moment_match,
+    k_threshold = k_threshold,
+    resample = resample,
+    transform = transform,
+    prediction = prediction,
+    auto_alpha_range = auto_alpha_range,
+    symmetric = symmetric,
+    prior_selection = prior_selection,
+    likelihood_selection = likelihood_selection,
     ...
   )
-
-}
-
-##' @rdname powerscale-overview
-##' @export
-powerscale_sequence.stanfit <- function(x,
-                                        ...
-                                        ) {
-
-  psd <- create_priorsense_data.stanfit(x, ...)
-
-  powerscale_sequence.priorsense_data(
-    psd,
-    ...
-  )
-
 }
 
 ##' @rdname powerscale-overview
@@ -63,7 +63,21 @@ powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
 
   # input checks
   checkmate::assertFunction(prediction, null.ok = TRUE)
-  # TODO: check other inputs, too
+  checkmate::assertSubset(component, c("prior", "likelihood"))
+  checkmate::assertNumber(lower_alpha)
+  checkmate::assertNumber(upper_alpha)
+  checkmate::assertNumber(length)
+  checkmate::assertLogical(moment_match, len = 1)
+  checkmate::assertLogical(symmetric, len = 1)
+  checkmate::assertNumber(k_threshold, null.ok = TRUE)
+  checkmate::assertLogical(resample, len = 1)
+  checkmate::assertCharacter(transform, null.ok = TRUE, len = 1)
+  checkmate::assertFunction(prediction, null.ok = TRUE)
+  checkmate::assertCharacter(variable, null.ok = TRUE)
+  checkmate::assertNumeric(prior_selection, null.ok = TRUE)
+  checkmate::assertNumeric(likelihood_selection, null.ok = TRUE)
+
+  
 
   # adapt alpha range to ensure pareto-k < theshold
   if (auto_alpha_range) {

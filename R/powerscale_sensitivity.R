@@ -34,6 +34,24 @@ powerscale_sensitivity <- function(x, ...) {
 ##' @rdname powerscale-sensitivity
 ##' @export
 powerscale_sensitivity.default <- function(x,
+                                           variable = NULL,
+                                           lower_alpha = 0.99,
+                                           upper_alpha = 1.01,
+                                           div_measure = "cjs_dist",
+                                           measure_args = list(),
+                                           component = c(
+                                             "prior",
+                                             "likelihood"
+                                           ),
+                                           sensitivity_threshold = 0.05,
+                                           moment_match = FALSE,
+                                           k_threshold = 0.5,
+                                           resample = FALSE,
+                                           transform = NULL,
+                                           prediction = NULL,
+                                           prior_selection = NULL,
+                                           likelihood_selection = NULL,
+                                           num_args = NULL,
                                            ...
                                            ) {
 
@@ -44,45 +62,59 @@ powerscale_sensitivity.default <- function(x,
 
   powerscale_sensitivity.priorsense_data(
     psd,
-    ...)
+    variable = variable,
+    lower_alpha = lower_alpha,
+    upper_alpha = upper_alpha,
+    div_measure = div_measure,
+    measure_args = measure_args,
+    sensitivity_threshold = sensitivity_threshold,
+    moment_match = moment_match,
+    k_threshold = k_threshold,
+    resample = resample,
+    transform = transform,
+    prediction = prediction,
+    prior_selection = prior_selection,
+    likelihood_selection = likelihood_selection,
+    num_args = num_args,
+    ...
+  )
 
 }
 
 ##' @rdname powerscale-sensitivity
 ##' @export
 powerscale_sensitivity.priorsense_data <- function(x,
-                                                     variable = NULL,
-                                                     lower_alpha = 0.99,
-                                                     upper_alpha = 1.01,
-                                                     div_measure = "cjs_dist",
-                                                     measure_args = list(),
-                                                     component = c(
-                                                       "prior",
-                                                       "likelihood"
-                                                     ),
-                                                     sensitivity_threshold = 0.05,
-                                                     moment_match = FALSE,
-                                                     k_threshold = NULL,
-                                                     resample = FALSE,
-                                                     transform = NULL,
-                                                     prediction = NULL,
-                                                     prior_selection = NULL,
-                                                     likelihood_selection = NULL,
-                                                     num_args = NULL,
-                                                     ...) {
+                                                   variable = NULL,
+                                                   lower_alpha = 0.99,
+                                                   upper_alpha = 1.01,
+                                                   div_measure = "cjs_dist",
+                                                   measure_args = list(),
+                                                   component = c(
+                                                     "prior",
+                                                     "likelihood"
+                                                   ),
+                                                   sensitivity_threshold = 0.05,
+                                                   moment_match = FALSE,
+                                                   k_threshold = 0.5,
+                                                   resample = FALSE,
+                                                   transform = NULL,
+                                                   prediction = NULL,
+                                                   prior_selection = NULL,
+                                                   likelihood_selection = NULL,
+                                                   num_args = NULL,
+                                                   ...) {
   # input checks
-  checkmate::assertClass(x, classes = "priorsense_data")
   checkmate::assertCharacter(variable, null.ok = TRUE)
-  checkmate::assertNumeric(lower_alpha, lower = 0, upper = 1)
-  checkmate::assertNumeric(upper_alpha, lower = 1)
-  checkmate::assertCharacter(div_measure)
+  checkmate::assertNumber(lower_alpha, lower = 0, upper = 1)
+  checkmate::assertNumber(upper_alpha, lower = 1)
+  checkmate::assertCharacter(div_measure, len = 1)
   checkmate::assertList(measure_args)
-  checkmate::assertLogical(moment_match)
+  checkmate::assertLogical(moment_match, len = 1)
   checkmate::assertSubset(component, c("prior", "likelihood"))
   checkmate::assertNumber(sensitivity_threshold, lower = 0)
   checkmate::assertNumber(k_threshold, null.ok = TRUE)
-  checkmate::assertLogical(resample)
-  checkmate::assertCharacter(transform, null.ok = TRUE)
+  checkmate::assertLogical(resample, len = 1)
+  checkmate::assertCharacter(transform, null.ok = TRUE, len = 1)
   checkmate::assertFunction(prediction, null.ok = TRUE)
   checkmate::assertNumeric(prior_selection, null.ok = TRUE)
   checkmate::assertNumeric(likelihood_selection, null.ok = TRUE)
@@ -117,7 +149,7 @@ powerscale_sensitivity.priorsense_data <- function(x,
   }
 
   varnames <- unique(c(as.character(gradients$divergence$prior$variable),
-                as.character(gradients$divergence$likelihood$variable)))
+                       as.character(gradients$divergence$likelihood$variable)))
 
   sense <- tibble::tibble(
     variable = varnames,

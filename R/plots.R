@@ -7,20 +7,17 @@
 ##' @template plot_args
 ##' @template div_measure_arg
 ##' @template resample_arg
+##' @param auto_title Logical indicating whether automatic title with
+##'   description should be included in the plot. Default is TRUE.
 ##' @template ggplot_return
-##' @section Plot Descriptions:
-##' \describe{
-##'   \item{`powerscale_plot_dens()`}{
-##'    Kernel density plot of power-scaled posterior draws with respect to power-scaling.
-##'   }
-##'   \item{`powerscale_plot_ecdf()`}{
-##'    Empirical cumulative distribution function plot
-##'    of power-scaled posterior draws with respect to power-scaling.
-##'   }
-##'   \item{`powerscale_plot_quantities()`}{
-##'    Plot of posterior quantities with respect to power-scaling.
-##'   }
-##' }
+##' @section Plot Descriptions: \describe{
+##'   \item{`powerscale_plot_dens()`}{ Kernel density plot of
+##'   power-scaled posterior draws with respect to power-scaling.  }
+##'   \item{`powerscale_plot_ecdf()`}{ Empirical cumulative
+##'   distribution function plot of power-scaled posterior draws with
+##'   respect to power-scaling.  }
+##'   \item{`powerscale_plot_quantities()`}{ Plot of posterior
+##'   quantities with respect to power-scaling.  } }
 ##'
 ##' @importFrom rlang .data
 NULL
@@ -190,18 +187,19 @@ powerscale_plot_dens <- function(x, ...) {
 }
 
 ##' @export
-powerscale_plot_dens.default <- function(x, variables, resample = FALSE, ...) {
+powerscale_plot_dens.default <- function(x, variables, resample = FALSE, auto_title = TRUE, ...) {
   ps <- powerscale_sequence(x, ...)
-  powerscale_plot_dens(ps, variables = variables, resample = resample)
+  powerscale_plot_dens(ps, variables = variables, resample = resample, auto_title = auto_title)
 }
 
   
 ##' @export
-powerscale_plot_dens.powerscaled_sequence <- function(x, variables, resample = FALSE,
+powerscale_plot_dens.powerscaled_sequence <- function(x, variables, resample = FALSE, auto_title = TRUE,
                                  ...) {
   # input checks
   checkmate::assert_character(variables)
-  checkmate::assert_logical(resample)
+  checkmate::assert_logical(resample, len = 1)
+  checkmate::assert_logical(auto_title, len = 1)
 
   d <- prepare_plot_data(x, variables, resample, ...)
 
@@ -243,12 +241,14 @@ powerscale_plot_dens.powerscaled_sequence <- function(x, variables, resample = F
       axis.text.y = ggplot2::element_blank(),
       axis.ticks.y = ggplot2::element_blank()
     )
-  
-  out <- out +
+
+  if (auto_title) {
+    out <- out +
       ggplot2::ggtitle(
         label = "Power-scaling sensitivity",
         subtitle = "Posterior density estimates depending on amount of power-scaling (alpha).\nOverlapping lines indicate low sensitivity.\nWider gaps between lines indicate greater sensitivity.\nEstimates with high Pareto-k values may be inaccurate."
-    )
+      )
+  }
   
   return(out)
 }
@@ -261,18 +261,19 @@ powerscale_plot_ecdf <- function(x, ...) {
 
 
 ##' @export
-powerscale_plot_ecdf.default <- function(x, variables, resample = FALSE, ...) {
+powerscale_plot_ecdf.default <- function(x, variables, resample = FALSE, auto_title = TRUE, ...) {
   ps <- powerscale_sequence(x, ...)
-  powerscale_plot_ecdf(ps, variables = variables, resample = resample)
+  powerscale_plot_ecdf(ps, variables = variables, resample = resample, auto_title = auto_title)
 }
 
 ##' @rdname powerscale_plots
 ##' @export
-powerscale_plot_ecdf.powerscaled_sequence <- function(x, variables, resample = FALSE, ...) {
+powerscale_plot_ecdf.powerscaled_sequence <- function(x, variables, resample = FALSE, auto_title = TRUE, ...) {
 
   # input checks
   checkmate::assert_character(variables)
-  checkmate::assert_logical(resample)
+  checkmate::assert_logical(resample, len = 1)
+  checkmate::assert_logical(auto_title, len = 1)
 
   d <- prepare_plot_data(x, variables, resample, ...)
 
@@ -308,11 +309,15 @@ powerscale_plot_ecdf.powerscaled_sequence <- function(x, variables, resample = F
     ),
     scales = "free_x"
   ) +
-    ggplot2::xlab("") +
+    ggplot2::xlab("")
+
+  if (auto_title) {
+    p <- p + 
   ggplot2::ggtitle(
     label = "Power-scaling sensitivity",
     subtitle = "Posterior ECDF depending on amount of power-scaling (alpha).\nOverlapping lines indicate low sensitivity.\nWider gaps between lines indicate greater sensitivity.\nEstimates with high Pareto-k values may be inaccurate."
   )
+  }
 
   return(p)
 
@@ -332,6 +337,7 @@ powerscale_plot_quantities.default <- function(x, variables,
                                        measure_args = NULL,
                                        mcse = TRUE,
                                        quantity_args = NULL,
+                                       auto_title = TRUE,
                                        ...) {
   ps <- powerscale_sequence(x, ...)
 
@@ -343,7 +349,8 @@ powerscale_plot_quantities.default <- function(x, variables,
     resample = resample,
     measure_args = measure_args,
     mcse = mcse,
-    quantity_args = quantity_args
+    quantity_args = quantity_args,
+    auto_title = auto_title
   )
 }
 
@@ -356,8 +363,18 @@ powerscale_plot_quantities.powerscaled_sequence <- function(x, variables,
                                        measure_args = NULL,
                                        mcse = TRUE,
                                        quantity_args = NULL,
+                                       auto_title = TRUE,
                                        ...) {
 
+  checkmate::assertCharacter(variables)
+  checkmate::assertCharacter(quantities)
+  checkmate::assertCharacter(div_measure)
+  checkmate::assertLogical(resample, len = 1)
+  checkmate::assertList(measure_args, null.ok = TRUE)
+  checkmate::assertLogical(mcse, len = 1)
+  checkmate::assertList(quantity_args, null.ok = TRUE)
+  checkmate::assertLogical(auto_title, len = 1)
+  
   summ <- summarise_draws(
     x,
     ... = quantities,
@@ -419,13 +436,14 @@ powerscale_plot_quantities.powerscaled_sequence <- function(x, variables,
 
   return(
     powerscale_summary_plot(
-      summ, variables = variables, base_mcse = base_mcse, ...)
+      summ, variables = variables, base_mcse = base_mcse, auto_title = auto_title, ...)
   )
 
 }
 
 powerscale_summary_plot <- function(x, variables, quantities = NULL,
                                     scale = FALSE, base_mcse = NULL,
+                                    auto_title = TRUE,
                                     ...) {
 
   if (is.null(quantities)) {
@@ -501,11 +519,15 @@ powerscale_summary_plot <- function(x, variables, quantities = NULL,
     limits = c(min(summaries$alpha) - 0.01, max(summaries$alpha) + 0.01),
     breaks = c(min(summaries$alpha), 1, max(summaries$alpha)),
     labels = round(c(min(summaries$alpha), 1, max(summaries$alpha)), digits = 3)
-  ) +
+  )
+
+  if (auto_title) {
+    p <- p +
   ggplot2::ggtitle(
     label = "Power-scaling sensitivity",
     subtitle = "Posterior quantities depending on amount of power-scaling (alpha).\nHorizontal lines indicate low sensitivity.\nSteeper lines indicate greater sensitivity.\nEstimates with high Pareto-k values may be inaccurate."
   )
+  }
 
   if (!is.null(base_mcse)) {
 

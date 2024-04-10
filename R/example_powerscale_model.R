@@ -11,8 +11,13 @@ example_powerscale_model <- function(model = "univariate_normal") {
 
   examples <- powerscale_examples()
 
-  return(list(model_code = examples[[model]][["model_code"]],
-              data = examples[[model]][["data"]]))
+  return(
+    list(
+      model_code = examples[[model]][["model_code"]],
+      data = examples[[model]][["data"]],
+      draws = examples[[model]][["draws"]]
+    )
+  )
 }
 
 powerscale_examples <- function() {
@@ -57,14 +62,15 @@ data = list(
   N = 25,
   prior_alpha = c(1, 1),
   likelihood_alpha = 1
-)
+),
+draws = get("draws_univariate_normal", asNamespace("priorsense"))
 ),
 eight_schools =
   list(
     model_code = "data {
   int<lower=0> J;          // number of schools
   array[J] real y;         // estimated treatment effects
-  real<lower=0> sigma[J];  // s.e. of effect estimates
+  array[J] real<lower=0> sigma;  // s.e. of effect estimates
   real<lower=0> prior_alpha; // power-scaling
   real<lower=0> likelihood_alpha; // power-scaling
 }
@@ -105,7 +111,8 @@ data = list(
   sigma = c(15, 10, 16, 11,  9, 11, 10, 18),
   prior_alpha = 1,
   likelihood_alpha = 1
-)
+),
+draws = get("draws_eight_schools", asNamespace("priorsense"))
 )
 )
 }

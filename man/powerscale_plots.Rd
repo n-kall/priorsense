@@ -13,7 +13,7 @@ powerscale_plot_dens(x, ...)
 
 powerscale_plot_ecdf(x, ...)
 
-\method{powerscale_plot_ecdf}{powerscaled_sequence}(x, variables, resample = FALSE, ...)
+\method{powerscale_plot_ecdf}{powerscaled_sequence}(x, variables, resample = FALSE, auto_title = TRUE, ...)
 
 powerscale_plot_quantities(x, ...)
 
@@ -26,6 +26,7 @@ powerscale_plot_quantities(x, ...)
   measure_args = NULL,
   mcse = TRUE,
   quantity_args = NULL,
+  auto_title = TRUE,
   ...
 )
 }
@@ -40,6 +41,9 @@ of class \code{powerscaled_sequence}.}
 
 \item{resample}{Logical; Indicate whether or not draws should be
 resampled based on calculated importance weights.}
+
+\item{auto_title}{Logical indicating whether automatic title with
+description should be included in the plot. Default is TRUE.}
 
 \item{quantities}{A character vector specifying quantities to
 plot. Options are "mean", "median", "sd", "mad", "quantile".}
@@ -76,18 +80,13 @@ A ggplot object that can be further customized using the \strong{ggplot2} packag
 Various diagnostic plots for power-scaling sensitivity. See \strong{Plot Descriptions} below for details.
 }
 \section{Plot Descriptions}{
-
-\describe{
-\item{\code{powerscale_plot_dens()}}{
-Kernel density plot of power-scaled posterior draws with respect to power-scaling.
-}
-\item{\code{powerscale_plot_ecdf()}}{
-Empirical cumulative distribution function plot
-of power-scaled posterior draws with respect to power-scaling.
-}
-\item{\code{powerscale_plot_quantities()}}{
-Plot of posterior quantities with respect to power-scaling.
-}
-}
+ \describe{
+\item{\code{powerscale_plot_dens()}}{ Kernel density plot of
+power-scaled posterior draws with respect to power-scaling.  }
+\item{\code{powerscale_plot_ecdf()}}{ Empirical cumulative
+distribution function plot of power-scaled posterior draws with
+respect to power-scaling.  }
+\item{\code{powerscale_plot_quantities()}}{ Plot of posterior
+quantities with respect to power-scaling.  } }
 }
 

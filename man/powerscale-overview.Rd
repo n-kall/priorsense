@@ -5,25 +5,19 @@
 \alias{powerscale}
 \alias{powerscale.default}
 \alias{powerscale.priorsense_data}
-\alias{powerscale.CmdStanFit}
-\alias{powerscale.stanfit}
 \alias{powerscale_sequence}
 \alias{powerscale_sequence.default}
-\alias{powerscale_sequence.CmdStanFit}
-\alias{powerscale_sequence.stanfit}
 \alias{powerscale_sequence.priorsense_data}
 \title{Prior/likelihood power-scaling perturbation}
 \usage{
 powerscale(x, ...)
 
-\method{powerscale}{default}(x, component, alpha, ...)
-
-\method{powerscale}{priorsense_data}(
+\method{powerscale}{default}(
   x,
   component,
   alpha,
   moment_match = FALSE,
-  k_threshold = NULL,
+  k_threshold = 0.5,
   resample = FALSE,
   transform = NULL,
   prediction = NULL,
@@ -32,17 +26,40 @@ powerscale(x, ...)
   ...
 )
 
-\method{powerscale}{CmdStanFit}(x, component, alpha, ...)
-
-\method{powerscale}{stanfit}(x, component, alpha, ...)
+\method{powerscale}{priorsense_data}(
+  x,
+  component,
+  alpha,
+  moment_match = FALSE,
+  k_threshold = 0.5,
+  resample = FALSE,
+  transform = NULL,
+  prediction = NULL,
+  variable = NULL,
+  selection = NULL,
+  ...
+)
 
 powerscale_sequence(x, ...)
 
-\method{powerscale_sequence}{default}(x, ...)
-
-\method{powerscale_sequence}{CmdStanFit}(x, ...)
-
-\method{powerscale_sequence}{stanfit}(x, ...)
+\method{powerscale_sequence}{default}(
+  x,
+  lower_alpha = 0.8,
+  upper_alpha = 1/lower_alpha,
+  length = 9,
+  variable = NULL,
+  component = c("prior", "likelihood"),
+  moment_match = FALSE,
+  k_threshold = 0.5,
+  resample = FALSE,
+  transform = NULL,
+  prediction = NULL,
+  auto_alpha_range = FALSE,
+  symmetric = TRUE,
+  prior_selection = NULL,
+  likelihood_selection = NULL,
+  ...
+)
 
 \method{powerscale_sequence}{priorsense_data}(
   x,
@@ -93,9 +110,11 @@ perform before sensitivity analysis. Either "scale" or "whiten".}
 draws_df of predictions to be appended to the posterior draws}
 
 \item{variable}{Vector of variable names to return estimated
-posterior draws for.}
+posterior draws for. If \code{NULL} all variables will be included.}
 
-\item{selection}{Vector specifying parts of component to be considered.}
+\item{selection}{Numeric vector specifying partitions of component
+to be included in power-scaling. Default is NULL, which takes
+all partitions.}
 
 \item{lower_alpha}{Lower power-scaling alpha value in sequence.}
 

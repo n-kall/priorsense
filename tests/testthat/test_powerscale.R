@@ -1,22 +1,11 @@
-set.seed(123)
-normal_example <- example_powerscale_model("univariate_normal")
-
-sfit <- suppressWarnings(rstan::stan(
-  model_code = normal_example$model_code,
-  data = normal_example$data,
-  refresh = FALSE,
-  seed = 123,
-  iter = 1000,
-  warmup = 250,
-  chains = 1
-))
+univariate_normal_draws <- example_powerscale_model()$draws
 
 test_that("priorsense_data is created", {
-  expect_error(
+  expect_s3_class(
     create_priorsense_data(
-      sfit
+      univariate_normal_draws
     ),
-    NA
+    "priorsense_data"
   )
 }
 )
@@ -24,7 +13,7 @@ test_that("priorsense_data is created", {
 test_that("powerscale returns powerscaled_draws", {
   expect_s3_class(
     powerscale(
-      x = sfit,
+      x = univariate_normal_draws,
       component = "prior",
       alpha = 0.8
     ),
@@ -32,7 +21,7 @@ test_that("powerscale returns powerscaled_draws", {
   )
   expect_s3_class(
     powerscale(
-      x = sfit,
+      x = univariate_normal_draws,
       component = "likelihood",
       alpha = 0.8
     ),
@@ -44,7 +33,7 @@ test_that("powerscale returns powerscaled_draws", {
 test_that("powerscale_seqence returns powerscaled_sequence", {
   expect_s3_class(
     suppressWarnings(powerscale_sequence(
-      x = sfit
+      x = univariate_normal_draws
     )),
     "powerscaled_sequence"
   )
@@ -54,7 +43,7 @@ test_that("powerscale_seqence returns powerscaled_sequence", {
 test_that("powerscale_sensitivity returns powerscaled_sensitivity_summary", {
   expect_s3_class(
     powerscale_sensitivity(
-      x = sfit
+      x = univariate_normal_draws
     ),
     "powerscaled_sensitivity_summary"
   )
@@ -65,7 +54,7 @@ test_that("powerscale_sequence uses input alphas correctly", {
   lower_alpha <- 0.5
   upper_alpha <- 2.5
   pss <- suppressWarnings(powerscale_sequence(
-    x = sfit,
+    x = univariate_normal_draws,
     lower_alpha = lower_alpha,
     upper_alpha = upper_alpha,
     symmetric = FALSE,
@@ -98,7 +87,7 @@ test_that("powerscale_sequence uses input alphas correctly", {
 test_that("powerscale_sequence adapts alphas and keeps pareto-k low", {
   k_threshold <- 0.5
   pss <- suppressWarnings(powerscale_sequence(
-    x = sfit,
+    x = univariate_normal_draws,
     auto_alpha_range = TRUE
   ))
 
@@ -129,7 +118,7 @@ test_that("powerscale_sequence gives symmetric range", {
   lower_alpha <- 0.3
   length <- 9
   pss <- suppressWarnings(powerscale_sequence(
-    x = sfit,
+    x = univariate_normal_draws,
     symmetric = TRUE,
     lower_alpha = lower_alpha,
     length = length

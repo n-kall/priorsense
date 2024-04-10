@@ -1,17 +1,6 @@
-set.seed(123)
 eight_schools_example <- example_powerscale_model("eight_schools")
 
-sfit <- suppressWarnings(rstan::stan(
-  model_code = eight_schools_example$model_code,
-  data = eight_schools_example$data,
-  refresh = FALSE,
-  seed = 123,
-  iter = 250,
-  warmup = 50,
-  chains = 1
-))
-
-ps <- powerscale_sequence(sfit, length = 3)
+ps <- powerscale_sequence(eight_schools_example$draws, length = 3)
 
 test_that("diagnostic plots give no errors", {
   expect_error(
@@ -53,4 +42,48 @@ test_that("plots contain expected data", {
     levels(psq$data$quantity),
     c("q10", "q90", "mean", "cjs_dist")
   )
+})
+
+
+test_that("auto_title behaves as expected in plots", {
+
+ psq_title <- powerscale_plot_quantities(
+    ps,
+    variables = c("mu"),
+    quantities = c("quantile", "mean"),
+    quantity_args = list(probs = c(0.1, 0.9))
+ )
+
+  psq_notitle <- powerscale_plot_quantities(
+    ps,
+    variables = c("mu"),
+    quantities = c("quantile", "mean"),
+    quantity_args = list(probs = c(0.1, 0.9)),
+    auto_title = FALSE
+  )
+
+  expect_false(is.null(psq_title$labels$title))
+  expect_false(is.null(psq_title$labels$subtitle))
+
+  expect_null(psq_notitle$labels$title)
+  expect_null(psq_notitle$labels$subtitle)
+  
+  psecdf_title <- powerscale_plot_ecdf(ps, variables = "mu")
+  psecdf_notitle <- powerscale_plot_ecdf(ps, variables = "mu", auto_title = FALSE)
+
+
+  expect_false(is.null(psecdf_title$labels$title))
+  expect_false(is.null(psecdf_title$labels$subtitle))
+
+  expect_null(psecdf_notitle$labels$title)
+  expect_null(psecdf_notitle$labels$subtitle)
+
+  psdens_title <- powerscale_plot_dens(ps, variables = "mu")
+  psdens_notitle <- powerscale_plot_dens(ps, variables = "mu", auto_title = FALSE)
+
+  expect_false(is.null(psdens_title$labels$title))
+  expect_false(is.null(psdens_title$labels$subtitle))
+  
+  expect_null(psdens_notitle$labels$title)
+  expect_null(psdens_notitle$labels$subtitle)
 })

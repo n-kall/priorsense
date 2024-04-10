@@ -9,11 +9,13 @@
 ##' @template fit_arg
 ##' @template alpha_args
 ##' @param variable Vector of variable names to return estimated
-##'   posterior draws for.
+##'   posterior draws for. If `NULL` all variables will be included.
 ##' @param component Component to be power-scaled (either "prior" or
 ##'   "likelihood"). For powerscale_sequence, this can be both "prior"
 ##'   and "likelihood".
-##' @param selection Vector specifying parts of component to be considered.
+##' @param selection Numeric vector specifying partitions of component
+##'   to be included in power-scaling. Default is NULL, which takes
+##'   all partitions.
 ##' @template selection_arg
 ##' @template powerscale_args
 ##' @template prediction_arg
@@ -32,9 +34,28 @@ powerscale <- function(x, ...) {
 
 ##' @rdname powerscale-overview
 ##' @export
-powerscale.default <- function(x, component, alpha, ...) {
+powerscale.default <- function(x, component, alpha,
+                               moment_match = FALSE,
+                               k_threshold = 0.5,
+                               resample = FALSE,
+                               transform = NULL,
+                               prediction = NULL,
+                               variable = NULL,
+                               selection = NULL,
+                               ...) {
   psd <- create_priorsense_data(x, ...)
-  powerscale(psd, component = component, alpha = alpha)
+  powerscale(
+    psd,
+    component = component,
+    alpha = alpha,
+    moment_match = moment_match,
+    k_threshold = k_threshold,
+    resample = resample,
+    transform = transform,
+    prediction = prediction,
+    variable = variable,
+    selection = selection
+    )
 }
 
 
@@ -44,7 +65,7 @@ powerscale.priorsense_data <- function(x,
                                        component,
                                        alpha,
                                        moment_match = FALSE,
-                                       k_threshold = NULL,
+                                       k_threshold = 0.5,
                                        resample = FALSE,
                                        transform = NULL,
                                        prediction = NULL,
@@ -53,13 +74,12 @@ powerscale.priorsense_data <- function(x,
                                        ...) {
 
   # input checks
-  checkmate::assertClass(x, classes = "priorsense_data")
-  checkmate::assertNumeric(alpha, lower = 0)
-  checkmate::assertSubset(component, c("prior", "likelihood"))
-  checkmate::assertLogical(moment_match)
+  checkmate::assertNumber(alpha, lower = 0)
+  checkmate::assertChoice(component, c("prior", "likelihood"))
+  checkmate::assertLogical(moment_match, len = 1)
   checkmate::assertNumber(k_threshold, null.ok = TRUE)
-  checkmate::assertLogical(resample)
-  checkmate::assertCharacter(transform, null.ok = TRUE)
+  checkmate::assertLogical(resample, len = 1)
+  checkmate::assertCharacter(transform, null.ok = TRUE, len = 1)
   checkmate::assertFunction(prediction, null.ok = TRUE)
   checkmate::assertCharacter(variable, null.ok = TRUE)
   checkmate::assertNumeric(selection, null.ok = TRUE)
@@ -215,42 +235,4 @@ powerscale.priorsense_data <- function(x,
   class(powerscaled_draws) <- c("powerscaled_draws", class(powerscaled_draws))
 
   return(powerscaled_draws)
-}
-
-
-##' @rdname powerscale-overview
-##' @export
-powerscale.CmdStanFit <- function(x,
-                                  component,
-                                  alpha,
-                                  ...
-                                  ) {
-  psd <- create_priorsense_data.CmdStanFit(x, ...)
-
-  powerscale.priorsense_data(
-    psd,
-    component = component,
-    alpha = alpha,
-    ...
-  )
-
-}
-
-##' @rdname powerscale-overview
-##' @export
-powerscale.stanfit <- function(x,
-                               component,
-                               alpha,
-                               ...
-                               ) {
-
-  psd <- create_priorsense_data.stanfit(x, ...)
-
-  powerscale.priorsense_data(
-    psd,
-    component = component,
-    alpha = alpha,
-    ...
-  )
-
 }

@@ -3,16 +3,13 @@
 \name{powerscale-gradients}
 \alias{powerscale-gradients}
 \alias{powerscale_gradients}
-\alias{powerscale_gradients.CmdStanFit}
-\alias{powerscale_gradients.stanfit}
+\alias{powerscale_gradients.default}
 \alias{powerscale_gradients.priorsense_data}
 \title{Power-scale gradients}
 \usage{
 powerscale_gradients(x, ...)
 
-\method{powerscale_gradients}{CmdStanFit}(x, ...)
-
-\method{powerscale_gradients}{stanfit}(x, ...)
+\method{powerscale_gradients}{default}(x, ...)
 
 \method{powerscale_gradients}{priorsense_data}(
   x,
@@ -39,7 +36,7 @@ powerscale_gradients(x, ...)
 
 \item{...}{Further arguments passed to functions.}
 
-\item{variable}{Variables to compute sensitivity of. If NA
+\item{variable}{Variables to compute sensitivity of. If NULL
 (default) sensitivity is computed for all variables.}
 
 \item{component}{Component to power-scale (prior or likelihood).}

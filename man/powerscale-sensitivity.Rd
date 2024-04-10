@@ -11,7 +11,25 @@
 \usage{
 powerscale_sensitivity(x, ...)
 
-\method{powerscale_sensitivity}{default}(x, ...)
+\method{powerscale_sensitivity}{default}(
+  x,
+  variable = NULL,
+  lower_alpha = 0.99,
+  upper_alpha = 1.01,
+  div_measure = "cjs_dist",
+  measure_args = list(),
+  component = c("prior", "likelihood"),
+  sensitivity_threshold = 0.05,
+  moment_match = FALSE,
+  k_threshold = 0.5,
+  resample = FALSE,
+  transform = NULL,
+  prediction = NULL,
+  prior_selection = NULL,
+  likelihood_selection = NULL,
+  num_args = NULL,
+  ...
+)
 
 \method{powerscale_sensitivity}{priorsense_data}(
   x,
@@ -23,7 +41,7 @@ powerscale_sensitivity(x, ...)
   component = c("prior", "likelihood"),
   sensitivity_threshold = 0.05,
   moment_match = FALSE,
-  k_threshold = NULL,
+  k_threshold = 0.5,
   resample = FALSE,
   transform = NULL,
   prediction = NULL,

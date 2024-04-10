@@ -6,7 +6,7 @@
 ##' sampling (and optionally moment matching).
 ##' @name powerscale-gradients
 ##' @param x Model fit object or a priorsense_data object.
-##' @param variable Variables to compute sensitivity of. If NA
+##' @param variable Variables to compute sensitivity of. If NULL
 ##'   (default) sensitivity is computed for all variables.
 ##' @param component Component to power-scale (prior or likelihood).
 ##' @param prior_selection Numeric vector specifying which priors to
@@ -36,25 +36,13 @@ powerscale_gradients <- function(x, ...) {
 
 ##' @rdname powerscale-gradients
 ##' @export
-powerscale_gradients.CmdStanFit <- function(x, ...) {
+powerscale_gradients.default <- function(x, ...) {
 
   psd <- create_priorsense_data(x)
 
   powerscale_gradients(psd, ...)
 
   }
-
-##' @rdname powerscale-gradients
-##' @export
-powerscale_gradients.stanfit <- function(x, ...) {
-
-  psd <- create_priorsense_data(x)
-
-  powerscale_gradients(psd, ...)
-
-
-}
-
 
 ##' @rdname powerscale-gradients
 ##' @export
@@ -77,19 +65,21 @@ powerscale_gradients.priorsense_data <- function(x,
                                          ...) {
 
   # input checks
-  checkmate::assertClass(x, classes = "priorsense_data")
   checkmate::assertSubset(type, c("quantities", "divergence"))
   checkmate::assertCharacter(variable, null.ok = TRUE)
   checkmate::assertNumeric(lower_alpha, lower = 0, upper = 1)
   checkmate::assertNumeric(upper_alpha, lower = 1)
-  checkmate::assertCharacter(div_measure)
+  checkmate::assertCharacter(div_measure, len = 1)
   checkmate::assertList(measure_args)
   checkmate::assertSubset(component, c("prior", "likelihood"))
   checkmate::assertCharacter(transform, null.ok = TRUE)
   checkmate::assertNumber(k_threshold)
-  checkmate::assertLogical(resample)
+  checkmate::assertLogical(resample, len = 1)
   checkmate::assertFunction(prediction, null.ok = TRUE)
-  checkmate::assertLogical(scale)
+  checkmate::assertLogical(scale, len = 1)
+  checkmate::assertLogical(moment_match, len = 1)
+  checkmate::assertNumeric(prior_selection, null.ok = TRUE)
+  checkmate::assertNumeric(likelihood_selection, null.ok = TRUE)
 
   # extract the draws
   base_draws <- x$draws
