@@ -48,7 +48,7 @@ posteriors. Sensitivity can then be quantified by considering how much
 the perturbed posteriors differ from the base posterior.
 
 ## Example power-scaling sensitivity analysis
-```{r, eval = FALSE, message = FALSE}
+```{r, message = FALSE}
 library(priorsense)
 library(rstan)
 ```
