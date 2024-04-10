@@ -62,7 +62,7 @@ powerscale_sensitivity.priorsense_data <- function(x,
                                                      ),
                                                      sensitivity_threshold = 0.05,
                                                      moment_match = FALSE,
-                                                     k_threshold = 0.5,
+                                                     k_threshold = NULL,
                                                      resample = FALSE,
                                                      transform = NULL,
                                                      prediction = NULL,
@@ -80,7 +80,7 @@ powerscale_sensitivity.priorsense_data <- function(x,
   checkmate::assertLogical(moment_match)
   checkmate::assertSubset(component, c("prior", "likelihood"))
   checkmate::assertNumber(sensitivity_threshold, lower = 0)
-  checkmate::assertNumber(k_threshold)
+  checkmate::assertNumber(k_threshold, null.ok = TRUE)
   checkmate::assertLogical(resample)
   checkmate::assertCharacter(transform, null.ok = TRUE)
   checkmate::assertFunction(prediction, null.ok = TRUE)
