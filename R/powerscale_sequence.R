@@ -7,6 +7,14 @@ powerscale_sequence <- function(x, ...) {
 
 ##' @rdname powerscale-overview
 ##' @export
+powerscale_sequence.default <- function(x, ...) {
+  psd <- create_priorsense_data(x, ...)
+  powerscale_sequence(psd, ...)
+}
+
+
+##' @rdname powerscale-overview
+##' @export
 powerscale_sequence.CmdStanFit <- function(x,
                                            ...
                                            ) {

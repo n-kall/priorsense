@@ -9,6 +9,7 @@
 ##'   corresponding to log prior, default is "lprior".
 ##' @param ... Arguments passed to individual methods.
 ##' @return A draws_array obejct containing log_prior values.
+##' @export
 log_prior_draws <- function(x, ...) {
   UseMethod("log_prior_draws")
 }

@@ -30,6 +30,13 @@ powerscale <- function(x, ...) {
 }
 
 
+##' @rdname powerscale-overview
+##' @export
+powerscale.default <- function(x, component, alpha, ...) {
+  psd <- create_priorsense_data(x, ...)
+  powerscale(psd, component = component, alpha = alpha)
+}
+
 
 ##' @rdname powerscale-overview
 ##' @export
@@ -37,7 +44,7 @@ powerscale.priorsense_data <- function(x,
                                        component,
                                        alpha,
                                        moment_match = FALSE,
-                                       k_threshold = 0.7,
+                                       k_threshold = NULL,
                                        resample = FALSE,
                                        transform = NULL,
                                        prediction = NULL,
@@ -50,7 +57,7 @@ powerscale.priorsense_data <- function(x,
   checkmate::assertNumeric(alpha, lower = 0)
   checkmate::assertSubset(component, c("prior", "likelihood"))
   checkmate::assertLogical(moment_match)
-  checkmate::assertNumber(k_threshold)
+  checkmate::assertNumber(k_threshold, null.ok = TRUE)
   checkmate::assertLogical(resample)
   checkmate::assertCharacter(transform, null.ok = TRUE)
   checkmate::assertFunction(prediction, null.ok = TRUE)
@@ -58,6 +65,10 @@ powerscale.priorsense_data <- function(x,
   checkmate::assertNumeric(selection, null.ok = TRUE)
 
   draws <- x$draws
+
+  if (is.null(k_threshold)) {
+    k_threshold <- min(1 - 1 / log10(ndraws(draws)), 0.7)
+  }
 
   # duplicate here
   # get predictions if specified
@@ -112,13 +123,14 @@ powerscale.priorsense_data <- function(x,
       log_ratio_fun = x$log_ratio_fn,
       alpha = alpha,
       component_fn = component_fn,
+      k_threshold = k_threshold,
       ...
     )
 
     smoothed_log_ratios <- list(
       diagnostics = list(
         khat = mm$diagnostics$pareto_k,
-        khat_threshold = 0.7 # hardcoded threshold until updates to iwmm
+        khat_threshold = k_threshold
         ),
       x = mm$log_weights
     )

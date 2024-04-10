@@ -9,6 +9,7 @@
 ##'   corresponding to log likelihood, default is "log_lik".
 ##' @param ... Arguments passed to individual methods.
 ##' @return A draws_array object containing log_lik values.
+##' @export
 log_lik_draws <- function(x, ...) {
   UseMethod("log_lik_draws")
 }

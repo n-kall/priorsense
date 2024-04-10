@@ -14,51 +14,6 @@ create_priorsense_data.brmsfit <- function(x, ...) {
   )
 }
 
-##' @rdname powerscale-overview
-##' @export
-powerscale.brmsfit <- function(x,
-                               component,
-                               alpha,
-                               ...
-                               ) {
-  psd <- create_priorsense_data.brmsfit(x, ...)
-
-  powerscale.priorsense_data(
-    psd,
-    component = component,
-    alpha = alpha,
-    ...
-  )
-
-}
-
-##' @rdname powerscale-overview
-##' @export
-powerscale_sequence.brmsfit <- function(x,
-                                        ...
-                                        ) {
-
-  psd <- create_priorsense_data.brmsfit(x, ...)
-
-  powerscale_sequence.priorsense_data(psd, ...)
-
-}
-
-##' @rdname powerscale-sensitivity
-##' @export
-powerscale_sensitivity.brmsfit <- function(x,
-                                           ...
-                                           ) {
-
-  psd <- create_priorsense_data.brmsfit(x, ...)
-
-  powerscale_sensitivity.priorsense_data(
-    psd,
-    ...
-  )
-}
-
-
 ##' @rdname log_lik_draws
 ##' @export
 log_lik_draws.brmsfit <- function(x, ...) {
