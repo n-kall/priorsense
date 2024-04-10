@@ -66,11 +66,10 @@ powerscale_gradients.priorsense_data <- function(x,
                                          upper_alpha = 1.01,
                                          div_measure = "cjs_dist",
                                          measure_args = list(),
-                                         is_method = "psis",
                                          moment_match = FALSE,
                                          k_threshold = 0.5,
                                          resample = FALSE,
-                                         transform = FALSE,
+                                         transform = NULL,
                                          prediction = NULL,
                                          scale = FALSE,
                                          prior_selection = NULL,
@@ -86,7 +85,7 @@ powerscale_gradients.priorsense_data <- function(x,
   checkmate::assertCharacter(div_measure)
   checkmate::assertList(measure_args)
   checkmate::assertSubset(component, c("prior", "likelihood"))
-  checkmate::assertCharacter(is_method)
+  checkmate::assertCharacter(transform, null.ok = TRUE)
   checkmate::assertNumber(k_threshold)
   checkmate::assertLogical(resample)
   checkmate::assertFunction(prediction, null.ok = TRUE)
@@ -110,6 +109,9 @@ powerscale_gradients.priorsense_data <- function(x,
 
   # transform if needed
   loadings <- NULL
+  if (is.null(transform)) {
+    transform <- "identity"
+  }
   if (transform == "whiten") {
     whitened_draws <- whiten_draws(base_draws, ...)
     base_draws_t <- whitened_draws$draws
@@ -154,7 +156,6 @@ powerscale_gradients.priorsense_data <- function(x,
       variable = variable,
       component = comp,
       alpha = lower_alpha,
-      is_method = is_method,
       moment_match = moment_match,
       k_threshold = k_threshold,
       resample = resample,
@@ -170,7 +171,6 @@ powerscale_gradients.priorsense_data <- function(x,
       variable = variable,
       component = comp,
       alpha = upper_alpha,
-      is_method = is_method,
       moment_match = moment_match,
       k_threshold = k_threshold,
       resample = resample,

@@ -25,8 +25,6 @@
 ##' @importFrom rlang .data
 NULL
 
-# TODO add bounded
-
 prepare_plot_data <- function(x, variables, resample, ...) {
 
   base_draws <- posterior::merge_chains(x$base_draws)
@@ -58,13 +56,15 @@ prepare_plot_data <- function(x, variables, resample, ...) {
 
       prior_draws[[i]]$alpha <- prior_scaled[[i]]$powerscaling$alpha
       prior_draws[[i]]$component <- "prior"
-      prior_draws[[i]]$pareto_k <- prior_scaled[[i]]$powerscaling$importance_sampling$diagnostics$pareto_k
+      prior_draws[[i]]$pareto_k <- prior_scaled[[i]]$powerscaling$diagnostics$khat
+      prior_draws[[i]]$pareto_k_threshold <- prior_scaled[[i]]$powerscaling$diagnostics$khat_threshold
     }
 
     base_draws_prior <- base_draws
     base_draws_prior$alpha <- 1
     base_draws_prior$component <- "prior"
-    base_draws_prior$pareto_k <- 0
+    base_draws_prior$pareto_k <- -Inf
+    base_draws_prior$pareto_k_threshold <- Inf
   }
 
   if (!(is.null(x$likelihood_scaled))) {
@@ -84,14 +84,17 @@ prepare_plot_data <- function(x, variables, resample, ...) {
 
       likelihood_draws[[i]]$alpha <- likelihood_scaled[[i]]$powerscaling$alpha
       likelihood_draws[[i]]$component <- "likelihood"
-      likelihood_draws[[i]]$pareto_k <- likelihood_scaled[[i]]$powerscaling$importance_sampling$diagnostics$pareto_k
+      likelihood_draws[[i]]$pareto_k <- likelihood_scaled[[i]]$powerscaling$diagnostics$khat
+      likelihood_draws[[i]]$pareto_k_threshold <- likelihood_scaled[[i]]$powerscaling$diagnostics$khat_threshold
+      
 
     }
 
     base_draws_lik <- base_draws
     base_draws_lik$alpha <- 1
     base_draws_lik$component <- "likelihood"
-    base_draws_lik$pareto_k <- 0
+    base_draws_lik$pareto_k <- -Inf
+    base_draws_lik$pareto_k_threshold <- Inf
   }
 
   d <- rbind(
@@ -101,12 +104,12 @@ prepare_plot_data <- function(x, variables, resample, ...) {
     base_draws_prior
   )
 
-  d$pareto_k_value <- ifelse(d$pareto_k > 0.5, "> 0.5",
-                             "< 0.5")
+  d$pareto_k_value <- ifelse(d$pareto_k > d$pareto_k_threshold, "High",
+                             "OK")
 
   d$pareto_k_value <- factor(
     d$pareto_k_value,
-    levels = c("< 0.5", "> 0.5")
+    levels = c("OK", "High")
   )
 
 
@@ -125,7 +128,7 @@ prepare_plot_data <- function(x, variables, resample, ...) {
   return(d)
 }
 
-prepare_plot <- function(d, resample, ...) {
+prepare_plot <- function(d, resample, variable, ...) {
   if (resample) {
     p <- ggplot2::ggplot(
       data = d,
@@ -194,36 +197,49 @@ powerscale_plot_dens <- function(x, variables, resample = FALSE,
   if (resample || x$resample) {
     resample <- TRUE
   }
-  p <- prepare_plot(d, resample, ...) +
-    ggplot2::ylab("Density") +
-    ggplot2::guides(
-      linetype = ggplot2::guide_legend(
-        title = "pareto-k"
-      )
-    ) +
-    ggplot2::stat_density(
-      ggplot2::aes(color = .data$alpha),
-      geom = "line", position = "identity"
-    ) +
-    ggplot2::facet_grid(
-      rows = ggplot2::vars(.data$component),
-      cols = ggplot2::vars(.data$variable),
+
+  n_components <- length(unique(d$component))
+  
+  out <- prepare_plot(d, resample, ...) +
+      ggplot2::ylab("Density") +
+      ggplot2::guides(
+        linetype = ggplot2::guide_legend(
+          title = "pareto-k"
+        )
+      ) +
+    ggdist::stat_slab(
+        ggplot2::aes(color = .data$alpha),
+        fill = NA,
+        linewidth = 0.5,
+        trim = FALSE,
+        normalize = "xy",
+        ...,
+      ) +
+    ggplot2::facet_wrap(
+      ncol = n_components,
+      facets = ggplot2::vars(.data$variable, .data$component),
       labeller = ggplot2::labeller(
         component = c(
           likelihood = "Likelihood power-scaling",
           prior = "Prior power-scaling"
         )
       ),
-      scales = "free",
-      switch = "y"
+      scales = "free_x"
     ) +
-    ggplot2::xlab("") +
-    ggplot2::ggtitle(
-      label = "Power-scaling sensitivity",
-      subtitle = "Posterior density estimates depending on amount of power-scaling (alpha).\nOverlapping lines indicate low sensitivity.\nWider gaps between lines indicate greater sensitivity.\nEstimates with Pareto-k values > 0.5 may be inaccurate."
+    ggplot2::xlab(NULL) +
+    ggplot2::ylab(NULL) +
+    ggplot2::theme(
+      axis.text.y = ggplot2::element_blank(),
+      axis.ticks.y = ggplot2::element_blank()
     )
-
-  return(p)
+  
+  out <- out +
+      ggplot2::ggtitle(
+        label = "Power-scaling sensitivity",
+        subtitle = "Posterior density estimates depending on amount of power-scaling (alpha).\nOverlapping lines indicate low sensitivity.\nWider gaps between lines indicate greater sensitivity.\nEstimates with high Pareto-k values may be inaccurate."
+    )
+  
+  return(out)
 }
 
 ##' @rdname powerscale_plots
@@ -257,8 +273,8 @@ powerscale_plot_ecdf <- function(x, variables, resample = FALSE, ...) {
   }
 
   p <- p + ggplot2::facet_grid(
-    rows = ggplot2::vars(.data$component),
-    cols = ggplot2::vars(.data$variable),
+    cols = ggplot2::vars(.data$component),
+    rows = ggplot2::vars(.data$variable),
     labeller = ggplot2::labeller(
       component = c(
         likelihood = "Likelihood power-scaling",
@@ -364,7 +380,7 @@ powerscale_summary_plot <- function(x, variables, quantities = NULL,
     quantities <- setdiff(
       colnames(x[[1]]),
       c("variable", "alpha", "component",
-        "pareto_k", "pareto_kf", "n_eff")
+        "pareto_k", "pareto_kf", "n_eff", "pareto_k_threshold")
     )
   }
 
@@ -382,12 +398,12 @@ powerscale_summary_plot <- function(x, variables, quantities = NULL,
   )
 
   summaries$quantity <- factor(summaries$quantity, levels = quantities)
-  summaries$pareto_k_value <- ifelse(summaries$pareto_k > 0.5, "> 0.5",
-                                     "< 0.5")
+  summaries$pareto_k_value <- ifelse(summaries$pareto_k > summaries$pareto_k_threshold, "High",
+                                     "OK")
 
   summaries$pareto_k_value <- factor(
     summaries$pareto_k_value,
-    levels = c("< 0.5", "> 0.5")
+    levels = c("OK", "High")
   )
 
   # subset for plotting points at ends of lines
@@ -434,7 +450,7 @@ powerscale_summary_plot <- function(x, variables, quantities = NULL,
   ) +
   ggplot2::ggtitle(
     label = "Power-scaling sensitivity",
-    subtitle = "Posterior quantities depending on amount of power-scaling (alpha).\nHorizontal lines indicate low sensitivity.\nSteeper lines indicate greater sensitivity.\nEstimates with Pareto-k values > 0.5 may be inaccurate."
+    subtitle = "Posterior quantities depending on amount of power-scaling (alpha).\nHorizontal lines indicate low sensitivity.\nSteeper lines indicate greater sensitivity.\nEstimates with high Pareto-k values may be inaccurate."
   ) +
   ggplot2::theme(aspect.ratio = 1)
 

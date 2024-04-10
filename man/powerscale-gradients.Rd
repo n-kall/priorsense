@@ -23,11 +23,10 @@ powerscale_gradients(x, ...)
   upper_alpha = 1.01,
   div_measure = "cjs_dist",
   measure_args = list(),
-  is_method = "psis",
   moment_match = FALSE,
   k_threshold = 0.5,
   resample = FALSE,
-  transform = FALSE,
+  transform = NULL,
   prediction = NULL,
   scale = FALSE,
   prior_selection = NULL,
@@ -72,18 +71,6 @@ for a different order, where N is the order.
 }}
 
 \item{measure_args}{Named list of further arguments passed to divergence measure functions.}
-
-\item{is_method}{The importance sampling method to use. The
-following methods are available:
-\itemize{
-\item \code{"psis"}: Pareto-Smoothed Importance Sampling (PSIS). Default
-method.
-\item \code{"tis"}: Truncated Importance Sampling (TIS) with truncation at
-\code{sqrt(S)}, where \code{S} is the number of posterior draws.
-\item \code{"sis"}: Standard Importance Sampling (SIS).
-}
-
-For further details, see the \code{loo} package.}
 
 \item{moment_match}{Logical; Indicate whether or not moment
 matching should be performed. Can only be TRUE if \code{is_method} is

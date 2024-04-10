@@ -29,9 +29,9 @@ remove_unwanted_vars <- function(x, excluded_variables = c("lprior", "log_lik", 
   return(draws)
 }
 
-require_package <- function(package, version = NULL) {
+require_package <- function(package, version = NULL, message = NULL) {
   if (!requireNamespace(package, quietly = TRUE)) {
-    stop2("Please install the '", package, "' package.")
+    stop2("Please install the '", package, "' package", message)
   }
   if (!is.null(version)) {
     version <- as.package_version(version)
