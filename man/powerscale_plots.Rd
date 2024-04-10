@@ -4,14 +4,20 @@
 \alias{powerscale_plots}
 \alias{powerscale_plot_dens}
 \alias{powerscale_plot_ecdf}
+\alias{powerscale_plot_ecdf.powerscaled_sequence}
 \alias{powerscale_plot_quantities}
+\alias{powerscale_plot_quantities.powerscaled_sequence}
 \title{Diagnostic plots for power-scaling sensitivity}
 \usage{
-powerscale_plot_dens(x, variables, resample = FALSE, ...)
+powerscale_plot_dens(x, ...)
 
-powerscale_plot_ecdf(x, variables, resample = FALSE, ...)
+powerscale_plot_ecdf(x, ...)
 
-powerscale_plot_quantities(
+\method{powerscale_plot_ecdf}{powerscaled_sequence}(x, variables, resample = FALSE, ...)
+
+powerscale_plot_quantities(x, ...)
+
+\method{powerscale_plot_quantities}{powerscaled_sequence}(
   x,
   variables,
   quantities = c("mean", "sd"),
@@ -24,14 +30,16 @@ powerscale_plot_quantities(
 )
 }
 \arguments{
-\item{x}{An object of class \code{powerscaled_sequence}.}
+\item{x}{An object of class \code{powerscaled_sequence} or an object
+for which \code{powerscale_sequence} will first be run on.}
+
+\item{...}{Arguments passed to \code{powerscale_sequence} if \code{x} is not
+of class \code{powerscaled_sequence}.}
 
 \item{variables}{A character vector of variable names.}
 
 \item{resample}{Logical; Indicate whether or not draws should be
 resampled based on calculated importance weights.}
-
-\item{...}{Currently unused.}
 
 \item{quantities}{A character vector specifying quantities to
 plot. Options are "mean", "median", "sd", "mad", "quantile".}
@@ -55,11 +63,11 @@ for a different order, where N is the order.
 \item{measure_args}{Named list of further arguments passed to divergence measure functions.}
 
 \item{mcse}{Boolean; If TRUE will plot +/- 2 * Monte Carlo
-standard error of the base quantity on the quantities plot}
+standard error of the base quantity on the quantities plot.}
 
 \item{quantity_args}{Named list of further arguments passed to
 quantity functions. Passed as \code{.args} to
-\verb{[posterior::summarise_draws]}}
+\verb{[posterior::summarise_draws]}.}
 }
 \value{
 A ggplot object that can be further customized using the \strong{ggplot2} package.

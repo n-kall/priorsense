@@ -176,8 +176,8 @@ prepare_plot <- function(d, resample, variable, ...) {
         "1",
         round(max(d$alpha), digits = 3)
       )
-    ) +
-    ggplot2::theme(aspect.ratio = 1)
+    )
+
 
   return(p)
 
@@ -185,10 +185,21 @@ prepare_plot <- function(d, resample, variable, ...) {
 
 ##' @rdname powerscale_plots
 ##' @export
-powerscale_plot_dens <- function(x, variables, resample = FALSE,
+powerscale_plot_dens <- function(x, ...) {
+  UseMethod("powerscale_plot_dens")
+}
+
+##' @export
+powerscale_plot_dens.default <- function(x, variables, resample = FALSE, ...) {
+  ps <- powerscale_sequence(x, ...)
+  powerscale_plot_dens(ps, variables = variables, resample = resample)
+}
+
+  
+##' @export
+powerscale_plot_dens.powerscaled_sequence <- function(x, variables, resample = FALSE,
                                  ...) {
   # input checks
-  checkmate::assert_class(x, c("powerscaled_sequence"))
   checkmate::assert_character(variables)
   checkmate::assert_logical(resample)
 
@@ -244,15 +255,29 @@ powerscale_plot_dens <- function(x, variables, resample = FALSE,
 
 ##' @rdname powerscale_plots
 ##' @export
-powerscale_plot_ecdf <- function(x, variables, resample = FALSE, ...) {
+powerscale_plot_ecdf <- function(x, ...) {
+  UseMethod("powerscale_plot_ecdf")
+}
+
+
+##' @export
+powerscale_plot_ecdf.default <- function(x, variables, resample = FALSE, ...) {
+  ps <- powerscale_sequence(x, ...)
+  powerscale_plot_ecdf(ps, variables = variables, resample = resample)
+}
+
+##' @rdname powerscale_plots
+##' @export
+powerscale_plot_ecdf.powerscaled_sequence <- function(x, variables, resample = FALSE, ...) {
 
   # input checks
-  checkmate::assert_class(x, "powerscaled_sequence")
   checkmate::assert_character(variables)
   checkmate::assert_logical(resample)
 
   d <- prepare_plot_data(x, variables, resample, ...)
 
+  n_components <- length(unique(d$component))
+  
   if (resample || x$resample) {
     resample <- TRUE
   }
@@ -272,21 +297,21 @@ powerscale_plot_ecdf <- function(x, variables, resample = FALSE, ...) {
       stat_ewcdf(ggplot2::aes(color = .data$alpha))
   }
 
-  p <- p + ggplot2::facet_grid(
-    cols = ggplot2::vars(.data$component),
-    rows = ggplot2::vars(.data$variable),
+   p <- p + ggplot2::facet_wrap(
+      ncol = n_components,
+      facets = ggplot2::vars(.data$variable, .data$component),
     labeller = ggplot2::labeller(
       component = c(
         likelihood = "Likelihood power-scaling",
         prior = "Prior power-scaling"
       )
     ),
-    scales = "free_x", switch = "y"
+    scales = "free_x"
   ) +
     ggplot2::xlab("") +
   ggplot2::ggtitle(
     label = "Power-scaling sensitivity",
-    subtitle = "Posterior ECDF depending on amount of power-scaling (alpha).\nOverlapping lines indicate low sensitivity.\nWider gaps between lines indicate greater sensitivity.\nEstimates with Pareto-k values > 0.5 may be inaccurate."
+    subtitle = "Posterior ECDF depending on amount of power-scaling (alpha).\nOverlapping lines indicate low sensitivity.\nWider gaps between lines indicate greater sensitivity.\nEstimates with high Pareto-k values may be inaccurate."
   )
 
   return(p)
@@ -295,7 +320,36 @@ powerscale_plot_ecdf <- function(x, variables, resample = FALSE, ...) {
 
 ##' @rdname powerscale_plots
 ##' @export
-powerscale_plot_quantities <- function(x, variables,
+powerscale_plot_quantities <- function(x, ...) {
+  UseMethod("powerscale_plot_quantities")
+}
+
+##' @export
+powerscale_plot_quantities.default <- function(x, variables,
+                                       quantities = c("mean", "sd"),
+                                       div_measure = "cjs_dist",
+                                       resample = FALSE,
+                                       measure_args = NULL,
+                                       mcse = TRUE,
+                                       quantity_args = NULL,
+                                       ...) {
+  ps <- powerscale_sequence(x, ...)
+
+  powerscale_plot_quantities(
+    ps,
+    variables = variables,    
+    quantities = quantities,
+    div_measure = div_measure,
+    resample = resample,
+    measure_args = measure_args,
+    mcse = mcse,
+    quantity_args = quantity_args
+  )
+}
+
+##' @rdname powerscale_plots
+##' @export
+powerscale_plot_quantities.powerscaled_sequence <- function(x, variables,
                                        quantities = c("mean", "sd"),
                                        div_measure = "cjs_dist",
                                        resample = FALSE,
@@ -451,8 +505,7 @@ powerscale_summary_plot <- function(x, variables, quantities = NULL,
   ggplot2::ggtitle(
     label = "Power-scaling sensitivity",
     subtitle = "Posterior quantities depending on amount of power-scaling (alpha).\nHorizontal lines indicate low sensitivity.\nSteeper lines indicate greater sensitivity.\nEstimates with high Pareto-k values may be inaccurate."
-  ) +
-  ggplot2::theme(aspect.ratio = 1)
+  )
 
   if (!is.null(base_mcse)) {
 

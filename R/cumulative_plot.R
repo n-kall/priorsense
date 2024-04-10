@@ -2,7 +2,8 @@
 # https://github.com/finnlindgren/StatCompLab/blob/main/R/ggplot.R and
 # https://rdrr.io/github/tidyverse/ggplot2/src/R/stat-ecdf.r
 
-# TODO: consider using ggecdf https://github.com/malcolmbarrett/ggecdf/blob/main/R/geom_ecdf.R
+# TODO: when PR https://github.com/tidyverse/ggplot2/pull/5119 is
+# merged, change to ggplot2 version
 stat_ewcdf <- function(mapping = NULL, data = NULL,
                        geom = "step", position = "identity",
                        ...,
@@ -72,8 +73,10 @@ StatEwcdf <- ggplot2::ggproto(
         )(x)
     }
 
-    df_ecdf <- vctrs::new_data_frame(list(x = x, y = data_ecdf), n = length(x))
+    df_ecdf <- data.frame(x = x, y = data_ecdf)
     df_ecdf$flipped_aes <- flipped_aes
     ggplot2::flip_data(df_ecdf, flipped_aes)
-  }
+    
+  },
+  dropped_aes = "weight"
 )
