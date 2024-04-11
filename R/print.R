@@ -34,16 +34,16 @@ print.powerscaling_details <- function(x, ...) {
 
 ##' @export
 print.powerscaled_draws <- function(x, ...) {
-  print(x$draws, ...)
-  print(x$powerscaling, ...)
+  NextMethod(...)
+  print(attr(x, "powerscaling"), ...)
 
   invisible(x)
 }
 
 ##' @export
 print.powerscaled_draws_summary <- function(x, ...) {
-  print(x$draws_summary, ...)
-  print(x$powerscaling, ...)
+  NextMethod()
+  print(get_powerscaling_details(x))
 
   invisible(x)
 }

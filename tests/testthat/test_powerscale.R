@@ -66,7 +66,7 @@ test_that("powerscale_sequence uses input alphas correctly", {
     0.5
   )
   expect_equal(
-    pss$prior_scaled$draws_sequence[[1]]$powerscaling$alpha,
+    get_powerscaling_details(pss$prior_scaled$draws_sequence[[1]])$alpha,
     0.5
   )
   expect_equal(
@@ -74,7 +74,7 @@ test_that("powerscale_sequence uses input alphas correctly", {
     2.5
   )
   expect_equal(
-    pss$prior_scaled$draws_sequence[[length(pss$alphas)]]$powerscaling$alpha,
+    get_powerscaling_details(pss$prior_scaled$draws_sequence[[length(pss$alphas)]])$alpha,
     2.5
   )
   expect_equal(
@@ -92,22 +92,22 @@ test_that("powerscale_sequence adapts alphas and keeps pareto-k low", {
   ))
 
   expect_lt(
-    pss$likelihood_scaled$draws_sequence[[1]]$powerscaling$diagnostics$khat,
+    get_powerscaling_details(pss$likelihood_scaled$draws_sequence[[1]])$diagnostics$khat,
     k_threshold
   )
 
   expect_lt(
-    pss$likelihood_scaled$draws_sequence[[length(pss$likelihood_scaled$draws_sequence)]]$powerscaling$diagnostics$khat,
+    get_powerscaling_details(pss$likelihood_scaled$draws_sequence[[length(pss$likelihood_scaled$draws_sequence)]])$diagnostics$khat,
     k_threshold
   )
 
   expect_lt(
-    pss$prior_scaled$draws_sequence[[1]]$powerscaling$diagnostics$khat,
+    attr(pss$prior_scaled$draws_sequence[[1]], "powerscaling")$diagnostics$khat,
     k_threshold
   )
 
   expect_lt(
-    pss$prior_scaled$draws_sequence[[length(pss$prior_scaled$draws_sequence)]]$powerscaling$diagnostics$khat,
+    get_powerscaling_details(pss$prior_scaled$draws_sequence[[length(pss$prior_scaled$draws_sequence)]])$diagnostics$khat,
     k_threshold
   )
 
@@ -128,7 +128,7 @@ test_that("powerscale_sequence gives symmetric range", {
     lower_alpha
   )
   expect_equal(
-    pss$prior_scaled$draws_sequence[[1]]$powerscaling$alpha,
+    get_powerscaling_details(pss$prior_scaled$draws_sequence[[1]])$alpha,
     lower_alpha
   )
   expect_equal(
@@ -136,7 +136,7 @@ test_that("powerscale_sequence gives symmetric range", {
     1 / lower_alpha
   )
   expect_equal(
-    pss$prior_scaled$draws_sequence[[length(pss$alphas)]]$powerscaling$alpha,
+    get_powerscaling_details(pss$prior_scaled$draws_sequence[[length(pss$alphas)]])$alpha,
     1 / lower_alpha
   )
   expect_equal(

@@ -11,14 +11,15 @@ sfit <- suppressWarnings(rstan::stan(
   chains = 4
 ))
 
-test_that("moment matching is applied when specified and pareto-k is higher than threshold",
-{
+test_that("moment matching is applied when specified and pareto-k is higher than threshold", {
   expect_true(
-    powerscale(
+    get_powerscaling_details(
+      powerscale(
       x = sfit,
       alpha = 0.2,
       component = "likelihood",
       moment_match = TRUE
-    )$powerscaling$moment_match
+      )
+    )$moment_match
   )
 })

@@ -175,7 +175,7 @@ powerscale_gradients.priorsense_data <- function(x,
       # compute the divergence for lower draws
       lower_dist <- measure_divergence(
         draws1 = base_draws_t,
-        draws2 = perturbed_draws_lower[[comp]]$draws,
+        draws2 = perturbed_draws_lower[[comp]],
         measure = div_measure,
         measure_args = measure_args,
         ...
@@ -184,7 +184,7 @@ powerscale_gradients.priorsense_data <- function(x,
       # compute the divergence for upper draws
       upper_dist <- measure_divergence(
         draws1 = base_draws_t,
-        draws2 = perturbed_draws_upper[[comp]]$draws,
+        draws2 = perturbed_draws_upper[[comp]],
         measure = div_measure,
         measure_args = measure_args,
         ...
@@ -211,12 +211,12 @@ powerscale_gradients.priorsense_data <- function(x,
       # calculate lower quantities
       lower_quantities <- summarise_draws(
         perturbed_draws_lower[[comp]]
-      )$draws_summary
+      )
 
       # calculate upper quantities
       upper_quantities <- summarise_draws(
         perturbed_draws_upper[[comp]]
-      )$draws_summary
+      )
 
       # calculate gradients of quantities
       out$quantities[[comp]] <- powerscale_quantities_gradients(
@@ -240,13 +240,13 @@ powerscale_gradients.priorsense_data <- function(x,
     for (comp in component) {
 
       upper_multi_kl[[comp]] <- sqrt(mv_kl_div(
-        weights = stats::weights(perturbed_draws_upper[[comp]]$draws)
+        weights = stats::weights(perturbed_draws_upper[[comp]])
       )) / log(upper_alpha, base = 2)
 
       upper_multi_wasserstein[[comp]] <- mv_wasserstein_dist(
         draws1 = base_draws_t,
-        draws2 = perturbed_draws_upper[[comp]]$draws,
-        weights2 = stats::weights(perturbed_draws_upper[[comp]]$draws)
+        draws2 = perturbed_draws_upper[[comp]],
+        weights2 = stats::weights(perturbed_draws_upper[[comp]])
       )
 
       upper_mw_dist[[comp]] <- mv_wasserstein_dist(
@@ -254,7 +254,7 @@ powerscale_gradients.priorsense_data <- function(x,
           base_draws_t,
           rep(1 / posterior::ndraws(base_draws_t),
               times = posterior::ndraws(base_draws_t)),
-          perturbed_draws_upper[[comp]]$draws
+          perturbed_draws_upper[[comp]]
         )
       )
 

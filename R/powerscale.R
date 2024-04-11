@@ -231,8 +231,13 @@ powerscale.priorsense_data <- function(x,
     draws = new_draws,
     powerscaling = powerscaling_details
   )
-  
-  class(powerscaled_draws) <- c("powerscaled_draws", class(powerscaled_draws))
 
-  return(powerscaled_draws)
+
+  attr(new_draws, "powerscaling") <- powerscaling_details
+  
+  class(new_draws) <- c("powerscaled_draws", class(new_draws))
+
+
+  return(new_draws)
+  
 }

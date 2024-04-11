@@ -45,14 +45,15 @@ find_alpha_threshold.priorsense_data <- function(x,
   while (continue) {
 
     # calculate criterion
-    new_pareto_k <- suppressWarnings(
+    new_pareto_k <- get_powerscaling_details(
+      suppressWarnings(
       powerscale(
         x = x,
         alpha = alpha,
         component = component,
         moment_match = moment_match
       )
-    )$powerscaling$diagnostics$khat
+    ))$diagnostics$khat
 
     compare <- comparison(new_pareto_k, pareto_k, k_threshold, epsilon)
 

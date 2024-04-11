@@ -56,3 +56,10 @@ stop2 <- function(...) {
 seq_cols <- function(x) {
   seq_len(NCOL(x))
 }
+
+
+get_powerscaling_details <- function(x) {
+
+  attr(x, "powerscaling")
+
+}

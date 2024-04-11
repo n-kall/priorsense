@@ -45,16 +45,19 @@ prepare_plot_data <- function(x, variables, resample, ...) {
     prior_scaled <- x$prior_scaled$draws_sequence
 
     for (i in seq_along(prior_scaled)) {
-      prior_draws[[i]] <- posterior::merge_chains(prior_scaled[[i]]$draws)
+      prior_draws[[i]] <- posterior::merge_chains(prior_scaled[[i]])
 
       if (resample && !x$resampled) {
         prior_draws[[i]]  <- posterior::resample_draws(prior_draws[[i]])
       }
 
-      prior_draws[[i]]$alpha <- prior_scaled[[i]]$powerscaling$alpha
+      prior_ps_details <- get_powerscaling_details(prior_scaled[[i]])
+      
+      prior_draws[[i]]$alpha <- prior_ps_details$alpha
       prior_draws[[i]]$component <- "prior"
-      prior_draws[[i]]$pareto_k <- prior_scaled[[i]]$powerscaling$diagnostics$khat
-      prior_draws[[i]]$pareto_k_threshold <- prior_scaled[[i]]$powerscaling$diagnostics$khat_threshold
+      prior_draws[[i]]$pareto_k <- prior_ps_details$diagnostics$khat
+      prior_draws[[i]]$pareto_k_threshold <- prior_ps_details$diagnostics$khat_threshold
+      
     }
 
     base_draws_prior <- base_draws
@@ -70,7 +73,7 @@ prepare_plot_data <- function(x, variables, resample, ...) {
 
     for (i in seq_along(likelihood_scaled)) {
       likelihood_draws[[i]] <- posterior::merge_chains(
-        likelihood_scaled[[i]]$draws
+        likelihood_scaled[[i]]
       )
 
       if (resample && !x$resampled) {
@@ -79,10 +82,12 @@ prepare_plot_data <- function(x, variables, resample, ...) {
         )
       }
 
-      likelihood_draws[[i]]$alpha <- likelihood_scaled[[i]]$powerscaling$alpha
+      likelihood_ps_details <- get_powerscaling_details(likelihood_scaled[[i]])
+      
+      likelihood_draws[[i]]$alpha <- likelihood_ps_details$alpha
       likelihood_draws[[i]]$component <- "likelihood"
-      likelihood_draws[[i]]$pareto_k <- likelihood_scaled[[i]]$powerscaling$diagnostics$khat
-      likelihood_draws[[i]]$pareto_k_threshold <- likelihood_scaled[[i]]$powerscaling$diagnostics$khat_threshold
+      likelihood_draws[[i]]$pareto_k <- likelihood_ps_details$diagnostics$khat
+      likelihood_draws[[i]]$pareto_k_threshold <- likelihood_ps_details$diagnostics$khat_threshold
       
 
     }
