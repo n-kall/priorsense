@@ -52,9 +52,8 @@ remotes::install_github("n-kall/priorsense", ref = "separate_scaling")
 
 ## Usage
 
-priorsense currently works with models created with rstan, cmdstanr or
-brms. However, moment matching currently does not work with cmdstan
-models.
+priorsense works with models created with rstan, cmdstanr or brms, or
+with draws objects from the posterior package.
 
 ### Example 
 
@@ -65,7 +64,7 @@ via`example_powerscale_model("univariate_normal")`):
 ```{stan, eval = F, output.var = "stanmod"}
 data {
   int<lower=1> N;
-  real y[N];
+  array[N] real y;
 }
 parameters {
   real mu;
@@ -91,7 +90,7 @@ generated quantities {
 
 We first fit the model using Stan:
 
-```{r, eval = T, results = F}
+```{r, eval = T, results = F, message = F, warning = F}
 library(priorsense)
 
 normal_model <- example_powerscale_model("univariate_normal")
@@ -142,6 +141,6 @@ Topi Paananen, Juho Piironen, Paul-Christian Bürkner, Aki Vehtari (2021).
 Implicitly adaptive importance sampling. Statistics and Computing
 31, 16. https://doi.org/10.1007/s11222-020-09982-2
 
-Aki Vehtari, Daniel Simpson, Andrew Gelman, Yuling Yao, Jonah Gabry
-(2022).  Pareto smoothed importance sampling. preprint
-[arXiv:1507.02646](https://arxiv.org/abs/1507.02646)
+Aki Vehtari, Daniel Simpson, Andrew Gelman, Yuling Yao, Jonah Gabry (2024). 
+Pareto smoothed importance sampling. Journal of
+Machine Learning Research. 25, 72. https://jmlr.org/papers/v25/19-556.html
