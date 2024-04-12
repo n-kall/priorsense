@@ -108,22 +108,17 @@ Once fit, sensitivity can be checked as follows:
 powerscale_sensitivity(fit)
 ```
 
-To visually inspect changes to the posterior, first create a
-power-scaling sequence.
-```{r, eval = T}
-pss <- powerscale_sequence(fit)
-```
-
-Then use a plotting function. Estimates that may be inaccurate
-(Pareto-k values > 0.5) are indicated.
+To visually inspect changes to the posterior, use one of the
+diagnostic plot functions. Estimates with high Pareto-k values may be
+inaccurate and are indicated.
 
 ```{r ecdf_plot, eval = T, out.width = '70%', out.height = '70%'}
-powerscale_plot_ecdf(pss, variables = c("mu", "sigma"))
+powerscale_plot_ecdf(fit, variables = c("mu", "sigma"))
 ```
 
 ```{r quants_plot, eval = T, out.width = '70%', out.height = '70%'}
 powerscale_plot_quantities(
-  pss,
+  fit,
   quantities = c("mean", "sd"),
   div_measure = "cjs_dist",
   variables = c("mu", "sigma")

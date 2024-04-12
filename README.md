@@ -99,34 +99,27 @@ Once fit, sensitivity can be checked as follows:
 
 ``` r
 powerscale_sensitivity(fit)
-#> Loading required namespace: testthat
 #> Sensitivity based on cjs_dist:
 #> # A tibble: 2 × 4
 #>   variable prior likelihood diagnosis          
 #>   <chr>    <dbl>      <dbl> <chr>              
-#> 1 mu       0.433      0.641 prior-data conflict
-#> 2 sigma    0.358      0.671 prior-data conflict
+#> 1 mu       0.436      0.649 prior-data conflict
+#> 2 sigma    0.364      0.683 prior-data conflict
 ```
 
-To visually inspect changes to the posterior, first create a
-power-scaling sequence.
+To visually inspect changes to the posterior, use one of the diagnostic
+plot functions. Estimates with high Pareto-k values may be inaccurate
+and are indicated.
 
 ``` r
-pss <- powerscale_sequence(fit)
-```
-
-Then use a plotting function. Estimates that may be inaccurate (Pareto-k
-values \> 0.5) are indicated.
-
-``` r
-powerscale_plot_ecdf(pss, variables = c("mu", "sigma"))
+powerscale_plot_ecdf(fit, variables = c("mu", "sigma"))
 ```
 
 <img src="man/figures/README-ecdf_plot-1.png" width="70%" height="70%" />
 
 ``` r
 powerscale_plot_quantities(
-  pss,
+  fit,
   quantities = c("mean", "sd"),
   div_measure = "cjs_dist",
   variables = c("mu", "sigma")
