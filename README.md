@@ -128,6 +128,27 @@ powerscale_plot_quantities(
 
 <img src="man/figures/README-quants_plot-1.png" width="70%" height="70%" />
 
+In some cases, setting `moment_match = TRUE` will improve the unreliable
+estimates at the cost of some further computation.
+
+``` r
+powerscale_plot_ecdf(fit, variables = c("mu", "sigma"), moment_match = TRUE)
+```
+
+<img src="man/figures/README-ecdf_plot_mm-1.png" width="70%" height="70%" />
+
+``` r
+powerscale_plot_quantities(
+  fit,
+  quantities = c("mean", "sd"),
+  div_measure = "cjs_dist",
+  variables = c("mu", "sigma"),
+  moment_match = TRUE
+)
+```
+
+<img src="man/figures/README-quants_plot_mm-1.png" width="70%" height="70%" />
+
 ## References
 
 Noa Kallioinen, Topi Paananen, Paul-Christian Bürkner, Aki Vehtari
