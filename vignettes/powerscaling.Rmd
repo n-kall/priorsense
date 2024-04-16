@@ -118,10 +118,6 @@ prior-data conflict for $\mu$. We follow up with visualisation.
 We first create a `powerscaled_sequence` object, which contains
 estimates of posteriors for a range of power-scaling amounts.
 
-```{r}
-pss <- powerscale_sequence(fit)
-```
-
 There are three plots currently available:
 
 - Kernel density estimates:
