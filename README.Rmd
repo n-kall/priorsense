@@ -46,8 +46,8 @@ Download the development version from [GitHub](https://github.com/) with:
 
 ```{r, eval = F}
 # install.packages("remotes")
-# remotes::install_github("n-kall/iwmm")
-remotes::install_github("n-kall/priorsense", ref = "separate_scaling")
+# remotes::install_github("topipa/iwmm")
+remotes::install_github("n-kall/priorsense", ref = "development")
 ```
 
 ## Usage
@@ -61,7 +61,7 @@ Consider a simple univariate model with unknown mu and sigma fit to
 some data y (available
 via`example_powerscale_model("univariate_normal")`):
 
-```{stan, eval = F, output.var = "stanmod"}
+```stan
 data {
   int<lower=1> N;
   array[N] real y;
@@ -85,7 +85,6 @@ generated quantities {
   // joint prior specification
   lprior = normal_lpdf(mu | 0, 1) +
 	normal_lpdf(sigma | 0, 2.5);
-}
 ```
 
 We first fit the model using Stan:
