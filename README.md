@@ -39,8 +39,8 @@ with:
 
 ``` r
 # install.packages("remotes")
-# remotes::install_github("n-kall/iwmm")
-remotes::install_github("n-kall/priorsense", ref = "separate_scaling")
+# remotes::install_github("topipa/iwmm")
+remotes::install_github("n-kall/priorsense", ref = "development")
 ```
 
 ## Usage
@@ -77,7 +77,6 @@ generated quantities {
   // joint prior specification
   lprior = normal_lpdf(mu | 0, 1) +
     normal_lpdf(sigma | 0, 2.5);
-}
 ```
 
 We first fit the model using Stan:
@@ -99,12 +98,15 @@ Once fit, sensitivity can be checked as follows:
 
 ``` r
 powerscale_sensitivity(fit)
+#> Loading required namespace: testthat
 #> Sensitivity based on cjs_dist:
 #> # A tibble: 2 × 4
 #>   variable prior likelihood diagnosis          
 #>   <chr>    <dbl>      <dbl> <chr>              
-#> 1 mu       0.436      0.649 prior-data conflict
-#> 2 sigma    0.364      0.683 prior-data conflict
+#> 1 mu       0.391      0.559 prior-data conflict
+#> 2 sigma    0.323      0.585 prior-data conflict
+#> Factor loadings:
+#> data frame with 0 columns and 0 rows
 ```
 
 To visually inspect changes to the posterior, use one of the diagnostic
