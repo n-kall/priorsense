@@ -335,7 +335,7 @@ powerscale_plot_quantities <- function(x, ...) {
 }
 
 ##' @export
-powerscale_plot_quantities.default <- function(x, variables,
+powerscale_plot_quantities.default <- function(x, variable = NULL,
                                        quantities = c("mean", "sd"),
                                        div_measure = "cjs_dist",
                                        resample = FALSE,
@@ -348,7 +348,7 @@ powerscale_plot_quantities.default <- function(x, variables,
 
   powerscale_plot_quantities(
     ps,
-    variables = variables,    
+    variable = variable,    
     quantities = quantities,
     div_measure = div_measure,
     resample = resample,
@@ -361,7 +361,7 @@ powerscale_plot_quantities.default <- function(x, variables,
 
 ##' @rdname powerscale_plots
 ##' @export
-powerscale_plot_quantities.powerscaled_sequence <- function(x, variables,
+powerscale_plot_quantities.powerscaled_sequence <- function(x, variable = NULL,
                                        quantities = c("mean", "sd"),
                                        div_measure = "cjs_dist",
                                        resample = FALSE,
@@ -371,7 +371,7 @@ powerscale_plot_quantities.powerscaled_sequence <- function(x, variables,
                                        auto_title = TRUE,
                                        ...) {
 
-  checkmate::assertCharacter(variables)
+  checkmate::assertCharacter(variable, null.ok = TRUE)
   checkmate::assertCharacter(quantities)
   checkmate::assertCharacter(div_measure)
   checkmate::assertLogical(resample, len = 1)
@@ -389,10 +389,14 @@ powerscale_plot_quantities.powerscaled_sequence <- function(x, variables,
     measure_args = measure_args
   )
 
-  # TODO: better way to handle e.g. "a" -> "a[1]", "a[2]"
-  variables <- posterior::variables(
-    posterior::subset_draws(x[[1]], variable = variables)
-  )
+  if (is.null(variable)) {
+    variable <- variables(x$base_draws)
+  } else {
+    # TODO: better way to handle e.g. "a" -> "a[1]", "a[2]"
+    variable <- posterior::variables(
+      posterior::subset_draws(x[[1]], variable = variable)
+    )
+  }
 
   if (mcse) {
     quants <- setdiff(
@@ -407,7 +411,7 @@ powerscale_plot_quantities.powerscaled_sequence <- function(x, variables,
       posterior::default_mcse_measures()
     )
 
-    base_mcse <- base_mcse[which(base_mcse$variable %in% variables), ]
+    base_mcse <- base_mcse[which(base_mcse$variable %in% variable), ]
 
     base_mcse <- as.data.frame(base_mcse)
     base_mcse <- stats::reshape(
@@ -441,28 +445,27 @@ powerscale_plot_quantities.powerscaled_sequence <- function(x, variables,
 
   return(
     powerscale_summary_plot(
-      summ, variables = variables, base_mcse = base_mcse, auto_title = auto_title, ...)
+      summ, variable = variable, base_mcse = base_mcse, auto_title = auto_title, ...)
   )
 
 }
 
-powerscale_summary_plot <- function(x, variables, quantities = NULL,
-                                    scale = FALSE, base_mcse = NULL,
+powerscale_summary_plot <- function(x,
+                                    variable,
+                                    base_mcse = NULL,
                                     auto_title = TRUE,
                                     ...) {
 
-  if (is.null(quantities)) {
-
-    # get default quantities
-    quantities <- setdiff(
-      colnames(x[[1]]),
-      c("variable", "alpha", "component",
-        "pareto_k", "pareto_kf", "n_eff", "pareto_k_threshold")
-    )
-  }
+  
+  # get default quantities
+  quantities <- setdiff(
+    colnames(x[[1]]),
+    c("variable", "alpha", "component",
+      "pareto_k", "pareto_kf", "n_eff", "pareto_k_threshold")
+  )
 
   # select only specified variables
-  x[[1]] <- x[[1]][x[[1]][["variable"]] %in% variables, ]
+    x[[1]] <- x[[1]][x[[1]][["variable"]] %in% variable, ]
 
   # reshape quantities for plotting
   summaries <- stats::reshape(
@@ -493,10 +496,14 @@ powerscale_summary_plot <- function(x, variables, quantities = NULL,
   ) +
     ggplot2::geom_line(ggplot2::aes(
       color = .data$pareto_k_value, group = .data$component)) +
-  ggplot2::facet_wrap(
-    facets = ggplot2::vars(.data$variable, .data$quantity),
-    scales = "free",
-    ncol = length(quantities)
+    ggh4x::facet_grid2(
+      rows = ggplot2::vars(.data$variable),
+      cols = ggplot2::vars(.data$quantity),
+#    facets = ggplot2::vars(.data$variable, .data$quantity),
+      scales = "free",
+      switch = "y",
+    independent = "all"#,
+#    ncol = length(quantities)
   ) +
   ggplot2::geom_point(
     ggplot2::aes(

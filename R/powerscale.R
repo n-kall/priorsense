@@ -129,7 +129,7 @@ powerscale.priorsense_data <- function(x,
       "iwmm",
       message = " to use moment matching, available from https://github.com/topipa/iwmm"
     )
-
+    
     # perform moment matching if specified
     # calculate the importance weights
     if (component == "prior") {
@@ -167,7 +167,7 @@ powerscale.priorsense_data <- function(x,
   } else {
 
     # no moment matching
-
+    
     # TODO: change to use the are_log_weights functionality when new
     # posterior release
     smoothed_log_ratios <- posterior::pareto_smooth(
@@ -239,10 +239,10 @@ powerscale.priorsense_data <- function(x,
 
 
   attr(new_draws, "powerscaling") <- powerscaling_details
-
+  
   class(new_draws) <- c("powerscaled_draws", class(new_draws))
 
 
   return(new_draws)
-
+  
 }

@@ -19,7 +19,7 @@ powerscale_plot_quantities(x, ...)
 
 \method{powerscale_plot_quantities}{powerscaled_sequence}(
   x,
-  variables,
+  variable = NULL,
   quantities = c("mean", "sd"),
   div_measure = "cjs_dist",
   resample = FALSE,
