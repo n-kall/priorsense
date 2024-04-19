@@ -17,6 +17,7 @@ Imports:
     cetcolor,
     checkmate,
     ggdist (>= 3.3.2),
+    ggh4x,
     ggplot2,
     matrixStats,
     methods,

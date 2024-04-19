@@ -112,33 +112,22 @@ diagnostic plot functions. Estimates with high Pareto-k values may be
 inaccurate and are indicated.
 
 ```{r ecdf_plot, eval = T, out.width = '70%', out.height = '70%'}
-powerscale_plot_ecdf(fit, variables = c("mu", "sigma"))
+powerscale_plot_ecdf(fit)
 ```
 
 ```{r quants_plot, eval = T, out.width = '70%', out.height = '70%'}
-powerscale_plot_quantities(
-  fit,
-  quantities = c("mean", "sd"),
-  div_measure = "cjs_dist",
-  variables = c("mu", "sigma")
-)
+powerscale_plot_quantities(fit)
 ```
 
 In some cases, setting `moment_match = TRUE` will improve the
 unreliable estimates at the cost of some further computation.
 
 ```{r ecdf_plot_mm, eval = T, out.width = '70%', out.height = '70%'}
-powerscale_plot_ecdf(fit, variables = c("mu", "sigma"), moment_match = TRUE)
+powerscale_plot_ecdf(fit, moment_match = TRUE)
 ```
 
 ```{r quants_plot_mm, eval = T, out.width = '70%', out.height = '70%'}
-powerscale_plot_quantities(
-  fit,
-  quantities = c("mean", "sd"),
-  div_measure = "cjs_dist",
-  variables = c("mu", "sigma"),
-  moment_match = TRUE
-)
+powerscale_plot_quantities(fit, moment_match = TRUE)
 ```
 
 

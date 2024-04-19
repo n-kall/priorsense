@@ -122,17 +122,17 @@ There are three plots currently available:
 
 - Kernel density estimates:
 ```{r}
-powerscale_plot_dens(fit, variables = "mu")
+powerscale_plot_dens(fit, variable = "mu")
 ```
 
 - Empirical cumulative distribution functions:
 ```{r}
-powerscale_plot_ecdf(fit, variables = "mu")
+powerscale_plot_ecdf(fit, variable = "mu")
 ```
 
 - Quantities:
 ```{r, fig.width = 12, fig.height = 4}
-powerscale_plot_quantities(fit, variables = "mu")
+powerscale_plot_quantities(fit, variable = "mu")
 ```
 
 As can be seen in the plots, power-scaling the prior and likelihood
