@@ -80,17 +80,17 @@ print.powerscaled_sensitivity_summary <- function(x, ..., num_args = NULL) {
 
   num_args <- num_args %||% attr(x, "num_args")
 
-  for (i in seq_cols(x$sensitivity)) {
-    if (is.numeric(x$sensitivity[[i]])) {
-      x$sensitivity[[i]] <- do.call(tibble::set_num_opts, c(list(x$sensitivity[[i]]), num_args))
+  for (i in seq_cols(x)) {
+    if (is.numeric(x[[i]])) {
+      x[[i]] <- do.call(tibble::set_num_opts, c(list(x[[i]]), num_args))
     }
   }
-  cat(paste0("Sensitivity based on ", x$div_measure, ":\n"))
+  cat(paste0("Sensitivity based on ", attr(x, "div_measure"), ":\n"))
 
-  print(x$sensitivity, ...)
-  if (!is.null(x$loadings)) {
+  NextMethod()
+  if (!is.null(attr(x, "loadings"))) {
     cat("Factor loadings:\n")
-    print(round(x$loadings, 2))
+    print(round(attr(x, "loadings"), 2))
   }
   invisible(x)
 }

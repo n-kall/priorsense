@@ -168,16 +168,13 @@ powerscale_sensitivity.priorsense_data <- function(x,
            )
   )
 
-  out <- list(
-    # order by largest value first
-    sensitivity = sense,
-    div_measure = div_measure,
-    loadings = gradients$loadings
-  )
+  out <- sense
 
-  class(out) <- "powerscaled_sensitivity_summary"
+  class(out) <- c("powerscaled_sensitivity_summary", class(out))
 
   attr(out, "num_args") <- num_args
+  attr(out, "div_measure") <- div_measure
+  attr(out, "loadings") <- as.data.frame(gradients$loadings)
 
   return(out)
 }
