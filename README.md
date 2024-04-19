@@ -105,8 +105,6 @@ powerscale_sensitivity(fit)
 #>   <chr>    <dbl>      <dbl> <chr>              
 #> 1 mu       0.391      0.559 prior-data conflict
 #> 2 sigma    0.323      0.585 prior-data conflict
-#> Factor loadings:
-#> data frame with 0 columns and 0 rows
 ```
 
 To visually inspect changes to the posterior, use one of the diagnostic

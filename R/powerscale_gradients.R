@@ -105,7 +105,7 @@ powerscale_gradients.priorsense_data <- function(x,
   if (transform == "whiten") {
     whitened_draws <- whiten_draws(base_draws, ...)
     base_draws_t <- whitened_draws$draws
-    loadings <- whitened_draws$loadings
+    loadings <- as.data.frame(whitened_draws$loadings)
   } else if (transform == "scale") {
     base_draws_t <- scale_draws(base_draws, ...)
   } else {

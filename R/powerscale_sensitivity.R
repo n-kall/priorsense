@@ -163,7 +163,7 @@ powerscale_sensitivity.priorsense_data <- function(x,
   sense$diagnosis <- ifelse(
     sense$prior >= sensitivity_threshold & sense$likelihood >= sensitivity_threshold, "prior-data conflict",
     ifelse(sense$prior > sensitivity_threshold & sense$likelihood < sensitivity_threshold,
-           "prior domination / weak likelihood",
+           "strong prior / weak likelihood",
            "-"
            )
   )
@@ -174,7 +174,7 @@ powerscale_sensitivity.priorsense_data <- function(x,
 
   attr(out, "num_args") <- num_args
   attr(out, "div_measure") <- div_measure
-  attr(out, "loadings") <- as.data.frame(gradients$loadings)
+  attr(out, "loadings") <- gradients$loadings
 
   return(out)
 }
