@@ -165,14 +165,17 @@ powerscale.priorsense_data <- function(x,
     }
 
   } else {
-    
+
+    # TODO: use the are_log_weights functionality when new posterior release
     # no moment matching
     smoothed_log_ratios <- posterior::pareto_smooth(
-      as.numeric(log_ratios), are_log_weights = TRUE,
+      exp(as.numeric(log_ratios)),
       return_k = TRUE,
       extra_diags = TRUE,
       verbose = FALSE
     )
+
+    smoothed_log_ratios$x <- log(smoothed_log_ratios$x)
   }
 
   # keep track of base log-ratios for diagnostics
