@@ -13,7 +13,13 @@ powerscale_plot_dens(x, ...)
 
 powerscale_plot_ecdf(x, ...)
 
-\method{powerscale_plot_ecdf}{powerscaled_sequence}(x, variables, resample = FALSE, auto_title = TRUE, ...)
+\method{powerscale_plot_ecdf}{powerscaled_sequence}(
+  x,
+  variable = NULL,
+  resample = FALSE,
+  auto_title = TRUE,
+  ...
+)
 
 powerscale_plot_quantities(x, ...)
 
@@ -37,7 +43,8 @@ for which \code{powerscale_sequence} will first be run on.}
 \item{...}{Arguments passed to \code{powerscale_sequence} if \code{x} is not
 of class \code{powerscaled_sequence}.}
 
-\item{variables}{A character vector of variable names.}
+\item{variable}{A character vector of variable names. If \code{NULL}
+(the default) all variables will be plotted.}
 
 \item{resample}{Logical; Indicate whether or not draws should be
 resampled based on calculated importance weights.}

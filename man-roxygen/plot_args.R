@@ -1,6 +1,7 @@
 ##' @param x An object of class `powerscaled_sequence` or an object
 ##'   for which `powerscale_sequence` will first be run on.
-##' @param variables A character vector of variable names.
+##' @param variable A character vector of variable names. If `NULL`
+##'   (the default) all variables will be plotted.
 ##' @param quantities A character vector specifying quantities to
 ##'   plot. Options are "mean", "median", "sd", "mad", "quantile".
 ##' @param quantity_args Named list of further arguments passed to
