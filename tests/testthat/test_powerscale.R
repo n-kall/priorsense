@@ -51,6 +51,7 @@ test_that("powerscale_sensitivity returns powerscaled_sensitivity_summary", {
 )
 
 test_that("powerscale_sequence uses input alphas correctly", {
+
   lower_alpha <- 0.5
   upper_alpha <- 2.5
   pss <- suppressWarnings(powerscale_sequence(
@@ -65,22 +66,27 @@ test_that("powerscale_sequence uses input alphas correctly", {
     pss$alphas[1],
     0.5
   )
+
   expect_equal(
     get_powerscaling_details(pss$prior_scaled$draws_sequence[[1]])$alpha,
     0.5
   )
+
   expect_equal(
     pss$alphas[length(pss$alphas)],
     2.5
   )
+
   expect_equal(
     get_powerscaling_details(pss$prior_scaled$draws_sequence[[length(pss$alphas)]])$alpha,
     2.5
   )
+
   expect_equal(
     length(pss$alphas),
     10
   )
+
 }
 )
 
@@ -115,6 +121,7 @@ test_that("powerscale_sequence adapts alphas and keeps pareto-k low", {
 )
 
 test_that("powerscale_sequence gives symmetric range", {
+
   lower_alpha <- 0.3
   length <- 9
   pss <- suppressWarnings(powerscale_sequence(
@@ -123,29 +130,36 @@ test_that("powerscale_sequence gives symmetric range", {
     lower_alpha = lower_alpha,
     length = length
   ))
+  
   expect_equal(
     pss$alphas[1],
     lower_alpha
   )
+  
   expect_equal(
     get_powerscaling_details(pss$prior_scaled$draws_sequence[[1]])$alpha,
     lower_alpha
   )
+  
   expect_equal(
     pss$alphas[length(pss$alphas)],
     1 / lower_alpha
   )
+  
   expect_equal(
     get_powerscaling_details(pss$prior_scaled$draws_sequence[[length(pss$alphas)]])$alpha,
     1 / lower_alpha
   )
+  
   expect_equal(
     length(pss$alphas),
     8
   )
+  
   expect_equal(
     abs(log(pss$alphas[1])),
     abs(log(pss$alphas[length(pss$alphas)]))
   )
+  
 }
 )
