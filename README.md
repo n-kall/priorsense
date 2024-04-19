@@ -103,8 +103,8 @@ powerscale_sensitivity(fit)
 #> # A tibble: 2 × 4
 #>   variable prior likelihood diagnosis          
 #>   <chr>    <dbl>      <dbl> <chr>              
-#> 1 mu       0.391      0.559 prior-data conflict
-#> 2 sigma    0.323      0.585 prior-data conflict
+#> 1 mu       0.433      0.641 prior-data conflict
+#> 2 sigma    0.358      0.671 prior-data conflict
 ```
 
 To visually inspect changes to the posterior, use one of the diagnostic
