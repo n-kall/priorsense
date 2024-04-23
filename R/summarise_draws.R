@@ -25,7 +25,7 @@ summary.powerscaled_draws <- function(object, ...) {
 ##' @export
 summarise_draws.powerscaled_draws <- function(.x,
                                               ...,
-                                              .num_args = getOption("posterior.num_args", list()),
+                                              .num_args = NULL,
                                               .args = list(),
                                               base_draws = NULL,
                                               diagnostics = FALSE,
@@ -38,18 +38,20 @@ summarise_draws.powerscaled_draws <- function(.x,
     funs <- posterior::default_summary_measures()
   }
 
+  ps_details <- get_powerscaling_details(.x)
+  
   .args <- as.list(.args)
 
-  if (resample && !(.x$powerscaling$resampled)) {
+  if (resample && !ps_details$resampled) {
     # only resample if specified and draws are not already resampled
     target_draws <- posterior::resample_draws(
-      posterior::merge_chains(.x$draws)
+      posterior::merge_chains(.x)
     )
   } else {
-    target_draws <- .x$draws
+    target_draws <- .x
   }
 
-  if (!resample && !.x$powerscaling$resampled) {
+  if (!resample && !ps_details$resampled) {
     # without resampling, only weighted quantities used
     funs <- as.list(
       paste0(funs, "_weighted")
@@ -57,32 +59,21 @@ summarise_draws.powerscaled_draws <- function(.x,
 
     # add the weights to args
     .args <- c(
-      list(weights = stats::weights(.x$draws)),
+      list(weights = stats::weights(.x)),
       .args
     )
-
-    if (diagnostics) {
-      funs <- c(
-        funs,
-        "n_eff_mean",
-        "pareto_k_mean",
-        "n_eff_var",
-        "pareto_k_var"
-      )
-      .args <- c(
-        .args,
-        log_ratios = .x$powerscaling$importance_sampling$orig_log_ratios
-      )
-    }
   }
 
+  class(target_draws) <- class(target_draws)[-1]
+  
   summ <- posterior::summarise_draws(
-    target_draws,
-    funs,
+    .x = target_draws,
+    ... = funs,
     .args = .args,
     .num_args = .num_args
   )
 
+  
   if (!is.null(base_draws)) {
     # calculate the divergences between the base and target draws
     divergences <- measure_divergence(
@@ -95,16 +86,16 @@ summarise_draws.powerscaled_draws <- function(.x,
     summ <- merge(summ, divergences, by = "variable")
   }
 
-  out <- list(
-    draws_summary = summ,
-    powerscaling = .x$powerscaling
-  )
-
+  out <- summ
+  
   if (resample) {
-    out$powerscaling$resampled <- TRUE
+    ps_details$resampled <- TRUE
   }
+  
+  attr(out, "powerscaling") <- ps_details
 
-  class(out) <- "powerscaled_draws_summary"
+
+  class(out) <- c("powerscaled_draws_summary", class(out))
   return(out)
 }
 
@@ -144,30 +135,29 @@ summarise_draws.powerscaled_sequence <- function(.x,
 
   # for base posterior
   base_quantities <- posterior::summarise_draws(
-    posterior::merge_chains(base_draws),
+    .x = posterior::merge_chains(base_draws),
     funs,
     .args = .args,
     .num_args = .num_args
   )
+
   base_quantities$alpha <- 1
-  base_quantities$n_eff <- NA
-  if (.x$is_method == "psis") {
-    base_quantities$pareto_k <- -Inf
-  } else {
-    base_quantities$pareto_k <- NA
-  }
+  base_quantities$pareto_k_threshold <- Inf
+  base_quantities$pareto_k <- -Inf
+
   base_distance <- measure_divergence(
     draws1 = posterior::merge_chains(base_draws),
     draws2 = posterior::merge_chains(base_draws),
     measure = div_measures,
     measure_args = measure_args
   )
+  
   base_summary <- merge(
     x = base_quantities,
     y = base_distance,
     by = "variable"
   )
-
+  
   base_summary_prior <- c()
   base_summary_likelihood <- c()
 
@@ -182,21 +172,21 @@ summarise_draws.powerscaled_sequence <- function(.x,
 
       quantities <- summarise_draws(
         .x = scaled,
-        funs,
+        ... = funs,
         .args = .args,
         base_draws = base_draws,
         div_measures = div_measures,
         resample = resample
       )
 
-      quant_df <- as.data.frame(quantities[[1]])
-
-      quant_df$alpha <- quantities$powerscaling$alpha
-      quant_df$component <- quantities$powerscaling$component
-      quant_df$pareto_k <- quantities$powerscaling$importance_sampling$diagnostics$pareto_k
-      quant_df$n_eff <- quantities$powerscaling$importance_sampling$diagnostics$n_eff
-
-      summaries <- rbind(summaries, quant_df)
+      ps_details <- get_powerscaling_details(quantities)
+      
+      quantities$alpha <- ps_details$alpha
+      quantities$component <- ps_details$component
+      quantities$pareto_k <- ps_details$diagnostics$khat
+      quantities$pareto_k_threshold <- ps_details$diagnostics$khat_threshold
+      
+      summaries <- rbind(summaries, quantities)
     }
   }
 
@@ -218,18 +208,18 @@ summarise_draws.powerscaled_sequence <- function(.x,
         resample = resample
       )
 
-      quant_df <- as.data.frame(quantities[[1]])
+      ps_details <- get_powerscaling_details(quantities)
+      
+      quantities$alpha <- ps_details$alpha
+      quantities$component <- ps_details$component
+      quantities$pareto_k <- ps_details$diagnostics$khat
+      quantities$pareto_k_threshold <- ps_details$diagnostics$khat_threshold
 
-      quant_df$alpha <- quantities$powerscaling$alpha
-      quant_df$component <- quantities$powerscaling$component
-      quant_df$pareto_k <- quantities$powerscaling$importance_sampling$diagnostics$pareto_k
-      quant_df$n_eff <- quantities$powerscaling$importance_sampling$diagnostics$n_eff
-
-      summaries <- rbind(summaries, quant_df)
+      summaries <- rbind(summaries, quantities)
     }
   }
 
-  # join base and perturbed summaries
+  # join base and perturbed summaries  
   summaries <- list(rbind(base_summary_prior, base_summary_likelihood, summaries))
 
   # correctly specify types of variables

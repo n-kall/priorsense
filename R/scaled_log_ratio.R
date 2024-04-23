@@ -6,6 +6,20 @@
 ##' @return log ratio
 scaled_log_ratio <- function(component_draws, alpha,
                              ...) {
+
   # calculate log ratios for power-scaling
-  return((alpha - 1) * component_draws)
+  scaled <- component_draws * (alpha - 1)
+  
+  return(scaled)
+}
+
+# density ratio function for moment matching
+powerscale_log_ratio_fun <- function(draws, fit, alpha, component_fn, ...) {
+
+  constr_draws <- iwmm::constrain_draws(fit, draws)
+
+  component_draws <- rowsums_draws(component_fn(constr_draws))
+   
+  component_draws * (alpha - 1)
+  
 }

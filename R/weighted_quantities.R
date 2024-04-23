@@ -151,4 +151,4 @@ quantile_weighted <- function(x, weights, probs = c(0.05, 0.95),
 quantile2_weighted <- quantile_weighted
 
 # always use quantile2 internally
-quantile <- quantile2
+quantile <- posterior::quantile2

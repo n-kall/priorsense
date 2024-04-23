@@ -21,7 +21,7 @@ test_that("powerscale with resample actually resamples", {
   )
 
   expect_equal(
-    ps$powerscaling$resampled,
+    get_powerscaling_details(ps)$resampled,
     TRUE
   )
 

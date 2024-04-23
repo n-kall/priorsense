@@ -3,18 +3,15 @@
 \name{powerscale-gradients}
 \alias{powerscale-gradients}
 \alias{powerscale_gradients}
-\alias{powerscale_gradients.CmdStanFit}
-\alias{powerscale_gradients.stanfit}
-\alias{powerscale_gradients.powerscaling_data}
+\alias{powerscale_gradients.default}
+\alias{powerscale_gradients.priorsense_data}
 \title{Power-scale gradients}
 \usage{
 powerscale_gradients(x, ...)
 
-\method{powerscale_gradients}{CmdStanFit}(x, ...)
+\method{powerscale_gradients}{default}(x, ...)
 
-\method{powerscale_gradients}{stanfit}(x, ...)
-
-\method{powerscale_gradients}{powerscaling_data}(
+\method{powerscale_gradients}{priorsense_data}(
   x,
   variable = NULL,
   component = c("prior", "likelihood"),
@@ -23,22 +20,23 @@ powerscale_gradients(x, ...)
   upper_alpha = 1.01,
   div_measure = "cjs_dist",
   measure_args = list(),
-  is_method = "psis",
   moment_match = FALSE,
   k_threshold = 0.5,
   resample = FALSE,
   transform = NULL,
   prediction = NULL,
   scale = FALSE,
+  prior_selection = NULL,
+  likelihood_selection = NULL,
   ...
 )
 }
 \arguments{
-\item{x}{Model fit object or a powerscaling_data object.}
+\item{x}{Model fit object or a priorsense_data object.}
 
 \item{...}{Further arguments passed to functions.}
 
-\item{variable}{Variables to compute sensitivity of. If NA
+\item{variable}{Variables to compute sensitivity of. If NULL
 (default) sensitivity is computed for all variables.}
 
 \item{component}{Component to power-scale (prior or likelihood).}
@@ -71,18 +69,6 @@ for a different order, where N is the order.
 
 \item{measure_args}{Named list of further arguments passed to divergence measure functions.}
 
-\item{is_method}{The importance sampling method to use. The
-following methods are available:
-\itemize{
-\item \code{"psis"}: Pareto-Smoothed Importance Sampling (PSIS). Default
-method.
-\item \code{"tis"}: Truncated Importance Sampling (TIS) with truncation at
-\code{sqrt(S)}, where \code{S} is the number of posterior draws.
-\item \code{"sis"}: Standard Importance Sampling (SIS).
-}
-
-For further details, see the \code{loo} package.}
-
 \item{moment_match}{Logical; Indicate whether or not moment
 matching should be performed. Can only be TRUE if \code{is_method} is
 "psis".}
@@ -93,14 +79,20 @@ the moment matching algorithm is used. Default is 0.5.}
 \item{resample}{Logical; Indicate whether or not draws should be
 resampled based on calculated importance weights.}
 
-\item{transform}{Indicate a transformation of posterior
-draws to perform before sensitivity analysis. Either "scale" or "whiten".}
+\item{transform}{Indicate a transformation of posterior draws to
+perform before sensitivity analysis. Either "scale" or "whiten".}
 
 \item{prediction}{Function taking the model fit and returning a
 draws_df of predictions to be appended to the posterior draws}
 
 \item{scale}{logical scale quantity gradients by base posterior
 standard deviation.}
+
+\item{prior_selection}{Numeric vector specifying which priors to
+consider.}
+
+\item{likelihood_selection}{Numeric vector specifying which likelihoods to
+consider.}
 }
 \value{
 Maximum of the absolute derivatives above and below alpha

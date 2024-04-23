@@ -11,8 +11,13 @@ example_powerscale_model <- function(model = "univariate_normal") {
 
   examples <- powerscale_examples()
 
-  return(list(model_code = examples[[model]][["model_code"]],
-              data = examples[[model]][["data"]]))
+  return(
+    list(
+      model_code = examples[[model]][["model_code"]],
+      data = examples[[model]][["data"]],
+      draws = examples[[model]][["draws"]]
+    )
+  )
 }
 
 powerscale_examples <- function() {
@@ -23,7 +28,9 @@ powerscale_examples <- function() {
         model_code = "data {
   int<lower=1> N;
   array[N] real y;
-  real<lower=0> prior_alpha;
+
+  vector<lower=0>[2] prior_alpha;
+
   real<lower=0> likelihood_alpha;
 }
 parameters {
@@ -31,13 +38,13 @@ parameters {
   real<lower=0> sigma;
 }
 transformed parameters {
-  real lprior = 0;
+  vector[2] lprior;
   // priors
-  lprior += normal_lpdf(mu | 0, 1);
-  lprior += normal_lpdf(sigma | 0, 2.5);
+  lprior[1] = normal_lpdf(mu | 0, 1);
+  lprior[2] = normal_lpdf(sigma | 0, 2.5);
 }
 model {
-  target += prior_alpha * lprior;
+  target += dot_product(prior_alpha, lprior);
   // likelihood
   target += likelihood_alpha * normal_lpdf(y | mu, sigma);
 }
@@ -53,16 +60,17 @@ data = list(
         11.1, 9.3, 10.5, 9.7, 10.3, 10.0, 9.8, 9.6, 8.3, 10.2, 9.8,
         10.0, 10.0, 9.1),
   N = 25,
-  prior_alpha = 1,
+  prior_alpha = c(1, 1),
   likelihood_alpha = 1
-)
+),
+draws = get("draws_univariate_normal", asNamespace("priorsense"))
 ),
 eight_schools =
   list(
     model_code = "data {
   int<lower=0> J;          // number of schools
   array[J] real y;         // estimated treatment effects
-  real<lower=0> sigma[J];  // s.e. of effect estimates
+  array[J] real<lower=0> sigma;  // s.e. of effect estimates
   real<lower=0> prior_alpha; // power-scaling
   real<lower=0> likelihood_alpha; // power-scaling
 }
@@ -103,7 +111,8 @@ data = list(
   sigma = c(15, 10, 16, 11,  9, 11, 10, 18),
   prior_alpha = 1,
   likelihood_alpha = 1
-)
+),
+draws = get("draws_eight_schools", asNamespace("priorsense"))
 )
 )
 }

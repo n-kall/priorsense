@@ -1,48 +1,43 @@
-##' Extract joint log likelihood from fitted model
+##' Extract log likelihood from fitted model
 ##'
-##' Extract joint log likelihood from fitted model
+##' Extract log likelihood from fitted model
 ##'
-##' @name joint_log_lik
+##' @name log_lik_draws
 ##'
 ##' @param x Model fit.
 ##' @param log_lik_name Name of parameter in Stan model
 ##'   corresponding to log likelihood, default is "log_lik".
 ##' @param ... Arguments passed to individual methods.
-##' @return A draws_array object containing log_prior values.
-NULL
-
-##' @rdname joint_log_lik
+##' @return A draws_array object containing log_lik values.
 ##' @export
-joint_log_lik_stanfit <- function(x, log_lik_name = "log_lik", ...) {
-  log_lik <- rowSums(
-    x = loo::extract_log_lik(
-      stanfit = x,
-      parameter_name = log_lik_name,
-      merge_chains = FALSE
-    ),
-    dims = 2
-  )
+log_lik_draws <- function(x, ...) {
+  UseMethod("log_lik_draws")
+}
 
-  dim(log_lik) <- c(dim(log_lik), 1)
+##' @rdname log_lik_draws
+##' @export
+log_lik_draws.stanfit <- function(x, log_lik_name = "log_lik", ...) {
+  log_lik <- as.array(x, pars = log_lik_name)
+
   log_lik <- posterior::as_draws_array(log_lik)
-  posterior::variables(log_lik) <- log_lik_name
 
   return(log_lik)
 }
 
-##' @rdname joint_log_lik
+##' @rdname log_lik_draws
 ##' @export
-joint_log_lik_CmdStanFit <- function(x, log_lik_name = "log_lik", ...) {
+log_lik_draws.CmdStanFit <- function(x, log_lik_name = "log_lik", ...) {
 
-  # sum over correct dimension
-  log_lik <- rowSums(x = x$draws(variables = log_lik_name), dims = 2)
+  log_lik <- x$draws(variables = log_lik_name)
 
-  # retain dimensions
-  dim(log_lik) <- c(dim(log_lik), 1)
+  return(log_lik)
+}
 
-  # back to draws_array
-  log_lik <- posterior::as_draws_array(log_lik)
-  posterior::variables(log_lik) <- log_lik_name
+##' @rdname log_lik_draws
+##' @export
+log_lik_draws.draws <- function(x, log_lik_name = "log_lik", ...) {
+
+  log_lik <- posterior::subset_draws(x, variable = log_lik_name)
 
   return(log_lik)
 }

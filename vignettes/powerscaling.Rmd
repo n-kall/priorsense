@@ -2,7 +2,7 @@
 title: "Powerscaling sensitivity analysis"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{powerscaling}
+  %\VignetteIndexEntry{Powerscaling sensitivity analysis}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -39,7 +39,7 @@ $\alpha > 0$.
 - For prior power-scaling: $p(\theta \mid y) \propto p(\theta)^\alpha
   p(y \mid \theta)$
 - For likelihood power-scaling: $p(\theta \mid y) \propto
-  p(\theta)^\alpha p(y \mid \theta)$
+  p(\theta) p(y \mid \theta)^\alpha$
 
 In priorsense, this is done in a computationally efficient manner
 using Pareto-smoothed importance sampling (and optionally importance
@@ -94,7 +94,7 @@ normal_model <- example_powerscale_model("univariate_normal")
 
 fit <- stan(
   model_code = normal_model$model_code,
-  data = c(normal_model$data, prior_alpha = 1, likelihood_alpha = 1),
+  data = normal_model$data,
   refresh = FALSE,
   seed = 123
 )
@@ -118,25 +118,21 @@ prior-data conflict for $\mu$. We follow up with visualisation.
 We first create a `powerscaled_sequence` object, which contains
 estimates of posteriors for a range of power-scaling amounts.
 
-```{r}
-pss <- powerscale_sequence(fit)
-```
-
 There are three plots currently available:
 
 - Kernel density estimates:
 ```{r}
-powerscale_plot_dens(pss, variables = "mu")
+powerscale_plot_dens(fit, variable = "mu")
 ```
 
 - Empirical cumulative distribution functions:
 ```{r}
-powerscale_plot_ecdf(pss, variables = "mu")
+powerscale_plot_ecdf(fit, variable = "mu")
 ```
 
 - Quantities:
 ```{r, fig.width = 12, fig.height = 4}
-powerscale_plot_quantities(pss, variables = "mu")
+powerscale_plot_quantities(fit, variable = "mu")
 ```
 
 As can be seen in the plots, power-scaling the prior and likelihood

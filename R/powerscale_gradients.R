@@ -5,10 +5,14 @@
 ##' component (prior or likelihood). This is done using importance
 ##' sampling (and optionally moment matching).
 ##' @name powerscale-gradients
-##' @param x Model fit object or a powerscaling_data object.
-##' @param variable Variables to compute sensitivity of. If NA
+##' @param x Model fit object or a priorsense_data object.
+##' @param variable Variables to compute sensitivity of. If NULL
 ##'   (default) sensitivity is computed for all variables.
 ##' @param component Component to power-scale (prior or likelihood).
+##' @param prior_selection Numeric vector specifying which priors to
+##'   consider.
+##' @param likelihood_selection Numeric vector specifying which likelihoods to
+##'   consider.
 ##' @param type type of sensitivity to measure ("distance",
 ##'   "quantity").  Multiple options can be specified at the same
 ##'   time.
@@ -32,9 +36,9 @@ powerscale_gradients <- function(x, ...) {
 
 ##' @rdname powerscale-gradients
 ##' @export
-powerscale_gradients.CmdStanFit <- function(x, ...) {
+powerscale_gradients.default <- function(x, ...) {
 
-  psd <- create_powerscaling_data(x)
+  psd <- create_priorsense_data(x)
 
   powerscale_gradients(psd, ...)
 
@@ -42,19 +46,7 @@ powerscale_gradients.CmdStanFit <- function(x, ...) {
 
 ##' @rdname powerscale-gradients
 ##' @export
-powerscale_gradients.stanfit <- function(x, ...) {
-
-  psd <- create_powerscaling_data(x)
-
-  powerscale_gradients(psd, ...)
-
-
-}
-
-
-##' @rdname powerscale-gradients
-##' @export
-powerscale_gradients.powerscaling_data <- function(x,
+powerscale_gradients.priorsense_data <- function(x,
                                          variable = NULL,
                                          component = c("prior", "likelihood"),
                                          type = c("quantities", "divergence"),
@@ -62,35 +54,48 @@ powerscale_gradients.powerscaling_data <- function(x,
                                          upper_alpha = 1.01,
                                          div_measure = "cjs_dist",
                                          measure_args = list(),
-                                         is_method = "psis",
                                          moment_match = FALSE,
                                          k_threshold = 0.5,
                                          resample = FALSE,
                                          transform = NULL,
                                          prediction = NULL,
                                          scale = FALSE,
+                                         prior_selection = NULL,
+                                         likelihood_selection = NULL,
                                          ...) {
 
   # input checks
-  checkmate::assertClass(x, classes = "powerscaling_data")
   checkmate::assertSubset(type, c("quantities", "divergence"))
   checkmate::assertCharacter(variable, null.ok = TRUE)
   checkmate::assertNumeric(lower_alpha, lower = 0, upper = 1)
   checkmate::assertNumeric(upper_alpha, lower = 1)
-  checkmate::assertCharacter(div_measure)
+  checkmate::assertCharacter(div_measure, len = 1)
   checkmate::assertList(measure_args)
   checkmate::assertSubset(component, c("prior", "likelihood"))
-  checkmate::assertCharacter(is_method)
   checkmate::assertCharacter(transform, null.ok = TRUE)
   checkmate::assertNumber(k_threshold)
-  checkmate::assertLogical(resample)
+  checkmate::assertLogical(resample, len = 1)
   checkmate::assertFunction(prediction, null.ok = TRUE)
-  checkmate::assertLogical(scale)
+  checkmate::assertLogical(scale, len = 1)
+  checkmate::assertLogical(moment_match, len = 1)
+  checkmate::assertNumeric(prior_selection, null.ok = TRUE)
+  checkmate::assertNumeric(likelihood_selection, null.ok = TRUE)
 
   # extract the draws
   base_draws <- x$draws
 
-  base_draws <- posterior::subset_draws(base_draws, variable = variable, ...)
+  # get predictions if specified
+  if (!(is.null(prediction))) {
+    pred_draws <- prediction(x$fit, ...)
+
+  # bind predictions and posterior draws
+    base_draws <- posterior::bind_draws(base_draws, pred_draws)
+  }
+
+  base_draws <- posterior::subset_draws(base_draws, variable = variable)
+
+  # specify selection
+  selection <- list(prior = prior_selection, likelihood = likelihood_selection)
 
   # transform if needed
   loadings <- NULL
@@ -100,7 +105,7 @@ powerscale_gradients.powerscaling_data <- function(x,
   if (transform == "whiten") {
     whitened_draws <- whiten_draws(base_draws, ...)
     base_draws_t <- whitened_draws$draws
-    loadings <- whitened_draws$loadings
+    loadings <- as.data.frame(whitened_draws$loadings)
   } else if (transform == "scale") {
     base_draws_t <- scale_draws(base_draws, ...)
   } else {
@@ -141,12 +146,12 @@ powerscale_gradients.powerscaling_data <- function(x,
       variable = variable,
       component = comp,
       alpha = lower_alpha,
-      is_method = is_method,
       moment_match = moment_match,
       k_threshold = k_threshold,
       resample = resample,
       transform = transform,
       prediction = prediction,
+      selection = selection[[comp]],
       ...
     )
 
@@ -156,12 +161,12 @@ powerscale_gradients.powerscaling_data <- function(x,
       variable = variable,
       component = comp,
       alpha = upper_alpha,
-      is_method = is_method,
       moment_match = moment_match,
       k_threshold = k_threshold,
       resample = resample,
       transform = transform,
       prediction = prediction,
+      selection = selection[[comp]],
       ...
     )
 
@@ -170,7 +175,7 @@ powerscale_gradients.powerscaling_data <- function(x,
       # compute the divergence for lower draws
       lower_dist <- measure_divergence(
         draws1 = base_draws_t,
-        draws2 = perturbed_draws_lower[[comp]]$draws,
+        draws2 = perturbed_draws_lower[[comp]],
         measure = div_measure,
         measure_args = measure_args,
         ...
@@ -179,7 +184,7 @@ powerscale_gradients.powerscaling_data <- function(x,
       # compute the divergence for upper draws
       upper_dist <- measure_divergence(
         draws1 = base_draws_t,
-        draws2 = perturbed_draws_upper[[comp]]$draws,
+        draws2 = perturbed_draws_upper[[comp]],
         measure = div_measure,
         measure_args = measure_args,
         ...
@@ -206,12 +211,12 @@ powerscale_gradients.powerscaling_data <- function(x,
       # calculate lower quantities
       lower_quantities <- summarise_draws(
         perturbed_draws_lower[[comp]]
-      )$draws_summary
+      )
 
       # calculate upper quantities
       upper_quantities <- summarise_draws(
         perturbed_draws_upper[[comp]]
-      )$draws_summary
+      )
 
       # calculate gradients of quantities
       out$quantities[[comp]] <- powerscale_quantities_gradients(
@@ -235,13 +240,13 @@ powerscale_gradients.powerscaling_data <- function(x,
     for (comp in component) {
 
       upper_multi_kl[[comp]] <- sqrt(mv_kl_div(
-        weights = stats::weights(perturbed_draws_upper[[comp]]$draws)
+        weights = stats::weights(perturbed_draws_upper[[comp]])
       )) / log(upper_alpha, base = 2)
 
       upper_multi_wasserstein[[comp]] <- mv_wasserstein_dist(
         draws1 = base_draws_t,
-        draws2 = perturbed_draws_upper[[comp]]$draws,
-        weights2 = stats::weights(perturbed_draws_upper[[comp]]$draws)
+        draws2 = perturbed_draws_upper[[comp]],
+        weights2 = stats::weights(perturbed_draws_upper[[comp]])
       )
 
       upper_mw_dist[[comp]] <- mv_wasserstein_dist(
@@ -249,7 +254,7 @@ powerscale_gradients.powerscaling_data <- function(x,
           base_draws_t,
           rep(1 / posterior::ndraws(base_draws_t),
               times = posterior::ndraws(base_draws_t)),
-          perturbed_draws_upper[[comp]]$draws
+          perturbed_draws_upper[[comp]]
         )
       )
 

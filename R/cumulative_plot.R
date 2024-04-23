@@ -1,6 +1,9 @@
 # Code adapted from
 # https://github.com/finnlindgren/StatCompLab/blob/main/R/ggplot.R and
 # https://rdrr.io/github/tidyverse/ggplot2/src/R/stat-ecdf.r
+
+# TODO: when PR https://github.com/tidyverse/ggplot2/pull/5119 is
+# merged, change to ggplot2 version
 stat_ewcdf <- function(mapping = NULL, data = NULL,
                        geom = "step", position = "identity",
                        ...,
@@ -42,9 +45,6 @@ StatEwcdf <- ggplot2::ggproto(
 
     has_x <- !(is.null(data$x) && is.null(params$x))
     has_y <- !(is.null(data$y) && is.null(params$y))
-    if (!has_x && !has_y) {
-      rlang::abort("stat_ewcdf() requires an x or y aesthetic.")
-    }
     has_weights <- !(is.null(data$weight) && is.null(params$weight))
 
     params
@@ -73,8 +73,10 @@ StatEwcdf <- ggplot2::ggproto(
         )(x)
     }
 
-    df_ecdf <- vctrs::new_data_frame(list(x = x, y = data_ecdf), n = length(x))
+    df_ecdf <- data.frame(x = x, y = data_ecdf)
     df_ecdf$flipped_aes <- flipped_aes
     ggplot2::flip_data(df_ecdf, flipped_aes)
-  }
+    
+  },
+  dropped_aes = "weight"
 )

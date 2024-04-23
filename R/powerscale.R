@@ -9,14 +9,17 @@
 ##' @template fit_arg
 ##' @template alpha_args
 ##' @param variable Vector of variable names to return estimated
-##'   posterior draws for.
+##'   posterior draws for. If `NULL` all variables will be included.
 ##' @param component Component to be power-scaled (either "prior" or
 ##'   "likelihood"). For powerscale_sequence, this can be both "prior"
 ##'   and "likelihood".
+##' @param selection Numeric vector specifying partitions of component
+##'   to be included in power-scaling. Default is NULL, which takes
+##'   all partitions.
+##' @template selection_arg
 ##' @template powerscale_args
 ##' @template prediction_arg
-##' @param ... Further arguments passed to the custom functions
-##'   documented above.
+##' @param ... Further arguments passed to internal functions.
 ##' @return A `powerscaled_draws` or `powerscaled_sequence` object,
 ##'   which contains the estimated posterior draws resulting from the
 ##'   power-scaling perturbations and details of the perturbation and
@@ -28,90 +31,156 @@ powerscale <- function(x, ...) {
 }
 
 
+##' @rdname powerscale-overview
+##' @export
+powerscale.default <- function(x, component, alpha,
+                               moment_match = FALSE,
+                               k_threshold = 0.5,
+                               resample = FALSE,
+                               transform = NULL,
+                               prediction = NULL,
+                               variable = NULL,
+                               selection = NULL,
+                               ...) {
+  psd <- create_priorsense_data(x, ...)
+  powerscale(
+    psd,
+    component = component,
+    alpha = alpha,
+    moment_match = moment_match,
+    k_threshold = k_threshold,
+    resample = resample,
+    transform = transform,
+    prediction = prediction,
+    variable = variable,
+    selection = selection
+    )
+}
+
 
 ##' @rdname powerscale-overview
 ##' @export
-powerscale.powerscaling_data <- function(x,
-                                         alpha,
-                                         component,
-                                         is_method = "psis",
-                                         moment_match = FALSE,
-                                         k_threshold = 0.5,
-                                         resample = FALSE,
-                                         transform = NULL,
-                                         prediction = NULL,
-                                         variable = NULL,
-                                         ...) {
+powerscale.priorsense_data <- function(x,
+                                       component,
+                                       alpha,
+                                       moment_match = FALSE,
+                                       k_threshold = 0.5,
+                                       resample = FALSE,
+                                       transform = NULL,
+                                       prediction = NULL,
+                                       variable = NULL,
+                                       selection = NULL,
+                                       ...) {
 
   # input checks
-  checkmate::assertClass(x, classes = "powerscaling_data")
-  checkmate::assertNumeric(alpha, lower = 0)
-  checkmate::assertSubset(component, c("prior", "likelihood"))
-  checkmate::assertCharacter(is_method)
-  checkmate::assertLogical(moment_match)
-  checkmate::assertNumber(k_threshold)
-  checkmate::assertLogical(resample)
-  checkmate::assertCharacter(transform, null.ok = TRUE)
+  checkmate::assertNumber(alpha, lower = 0)
+  checkmate::assertChoice(component, c("prior", "likelihood"))
+  checkmate::assertLogical(moment_match, len = 1)
+  checkmate::assertNumber(k_threshold, null.ok = TRUE)
+  checkmate::assertLogical(resample, len = 1)
+  checkmate::assertCharacter(transform, null.ok = TRUE, len = 1)
   checkmate::assertFunction(prediction, null.ok = TRUE)
   checkmate::assertCharacter(variable, null.ok = TRUE)
+  checkmate::assertNumeric(selection, null.ok = TRUE)
 
-  draws <- posterior::subset_draws(x$draws, variable = variable, ...)
+  draws <- x$draws
 
-  # get the correct importance sampling function
-  is_method <- get(is_method, asNamespace("loo"))
-
-  # calculate the log density ratios
-  if (component == "prior") {
-    log_comp <- "log_prior"
-  } else if (component == "likelihood") {
-    log_comp <- "log_lik"
+  if (is.null(k_threshold)) {
+    k_threshold <- min(1 - 1 / log10(ndraws(draws)), 0.7)
   }
+
+  # duplicate here
+  # get predictions if specified
+  if (!(is.null(prediction))) {
+    pred_draws <- prediction(x$fit, ...)
+
+    # bind predictions and posterior draws
+    draws <- posterior::bind_draws(draws, pred_draws)
+  }
+
+  # subset the draws
+  draws <- posterior::subset_draws(draws, variable = variable)
+
+  # select the appropriate component draws
+  if (component == "prior") {
+    log_comp_draws <- x[["log_prior"]]
+  } else if (component == "likelihood") {
+    log_comp_draws <- x[["log_lik"]]
+  }
+
+  # subset component draws if specified
+  if (!(is.null(selection))) {
+    log_comp_draws <- log_comp_draws[, , selection]
+  }
+
+  # sum component draws
+  log_comp_draws <- rowsums_draws(log_comp_draws)
+
+  # calculate the log weights
   log_ratios <- scaled_log_ratio(
-    component_draws = x[[log_comp]],
+    component_draws = log_comp_draws,
     alpha = alpha
   )
 
-  if (!moment_match) {
-    # calculate the importance weights
-    importance_sampling <- is_method(
-      log_ratios = log_ratios,
-      r_eff = loo::relative_eff(
-        x = exp(-(log_ratios - max(log_ratios)))
-      )
+  if (moment_match) {
+
+    require_package(
+      "iwmm",
+      message = " to use moment matching, available from https://github.com/topipa/iwmm"
     )
-  } else {
+    
     # perform moment matching if specified
     # calculate the importance weights
-    importance_sampling <- SW(
-      is_method(
-        log_ratios = log_ratios,
-        r_eff = loo::relative_eff(
-          x = exp(-(log_ratios - max(log_ratios)))
-        )
-      )
-    )
-
     if (component == "prior") {
       component_fn <- x$log_prior_fn
     } else if (component == "likelihood") {
       component_fn <- x$log_lik_fn
     }
 
-    mm <- moment_match(
-      x = x,
-      psis = importance_sampling,
-      component_fn = component_fn,
+    mm <- iwmm::moment_match(
+      x = x$fit,
+      log_ratio_fun = x$log_ratio_fn,
       alpha = alpha,
-      k_threshold = k_threshold
+      component_fn = component_fn,
+      k_threshold = k_threshold,
+      ...
     )
 
-    importance_sampling <- mm$importance_sampling
-    draws <- x$get_draws(mm$x)
+    smoothed_log_ratios <- list(
+      diagnostics = list(
+        khat = mm$diagnostics$pareto_k,
+        khat_threshold = k_threshold
+        ),
+      x = mm$log_weights
+    )
+    draws <- remove_unwanted_vars(posterior::as_draws_df(mm$draws))
 
+    # get moment-matched predictions
+    if (!(is.null(prediction))) {
+      pred_draws <- prediction(mm$fit, ...)
+
+      # bind predictions and posterior draws
+      draws <- posterior::bind_draws(draws, pred_draws)
+    }
+
+  } else {
+
+    # no moment matching
+    
+    # TODO: change to use the are_log_weights functionality when new
+    # posterior release
+    smoothed_log_ratios <- posterior::pareto_smooth(
+      exp(as.numeric(log_ratios - max(log_ratios))),
+      return_k = TRUE,
+      extra_diags = TRUE,
+      verbose = FALSE
+    )
+
+    smoothed_log_ratios$x <- log(smoothed_log_ratios$x)
   }
 
   # keep track of base log-ratios for diagnostics
-  importance_sampling$orig_log_ratios <- log_ratios
+  smoothed_log_ratios$orig_log_ratios <- log_ratios
 
   # transform the draws if specified
   if (is.null(transform)) {
@@ -136,7 +205,7 @@ powerscale.powerscaling_data <- function(x,
   # reweight the draws with the calculated importance weights
   new_draws <- posterior::weight_draws(
     x = draws,
-    weights = stats::weights(importance_sampling, normalize = FALSE),
+    weights = smoothed_log_ratios$x,
     log = TRUE
   )
 
@@ -147,12 +216,15 @@ powerscale.powerscaling_data <- function(x,
     )
   }
 
+  # subset the draws
+  new_draws <- posterior::subset_draws(new_draws, variable = variable)
+
   # create object with details of power-scaling
   powerscaling_details <- list(
     alpha = alpha,
     component = component,
-    importance_sampling = importance_sampling,
     moment_match = moment_match,
+    diagnostics = smoothed_log_ratios$diagnostics,
     resampled = resample,
     transform_details = transform_details
   )
@@ -163,45 +235,13 @@ powerscale.powerscaling_data <- function(x,
     draws = new_draws,
     powerscaling = powerscaling_details
   )
-  class(powerscaled_draws) <- c("powerscaled_draws", class(powerscaled_draws))
-
-  return(powerscaled_draws)
-}
 
 
-##' @rdname powerscale-overview
-##' @export
-powerscale.CmdStanFit <- function(x,
-                                  component,
-                                  alpha,
-                                  ...
-                                  ) {
-  psd <- create_powerscaling_data.CmdStanFit(x, ...)
+  attr(new_draws, "powerscaling") <- powerscaling_details
+  
+  class(new_draws) <- c("powerscaled_draws", class(new_draws))
 
-  powerscale.powerscaling_data(
-    psd,
-    component = component,
-    alpha = alpha,
-    ...
-  )
 
-}
-
-##' @rdname powerscale-overview
-##' @export
-powerscale.stanfit <- function(x,
-                               component,
-                               alpha,
-                               ...
-                               ) {
-
-  psd <- create_powerscaling_data.stanfit(x, ...)
-
-  powerscale.powerscaling_data(
-    psd,
-    component = component,
-    alpha = alpha,
-    ...
-  )
-
+  return(new_draws)
+  
 }

@@ -3,53 +3,25 @@ find_alpha_threshold <- function(x, ...) {
 
 }
 
-find_alpha_threshold.CmdStanFit <- function(x, ...) {
+##' @export
+find_alpha_threshold.default <- function(x, ...) {
 
-  psd <- create_powerscaling_data(x)
-
-  find_alpha_threshold(psd, ...)
-
-}
-
-find_alpha_threshold.stanfit <- function(x, ...) {
-
-  psd <- create_powerscaling_data(x)
+  psd <- create_priorsense_data(x, ...)
 
   find_alpha_threshold(psd, ...)
 
 }
 
-find_alpha_threshold.powerscaling_data <- function(x, ...) {
-
-  find_alpha_threshold.default(
-    x = x$fit,
-    log_prior_fn = x$log_prior_fn,
-    joint_log_lik_fn = x$joint_log_lik_fn,
-    get_draws = x$get_draws,
-    unconstrain_pars = x$unconstrain_pars,
-    log_prob_upars = x$log_prob_upars,
-    log_ratio_upars = x$log_ratio_upars,
-    ...
-  )
-
-}
-
-find_alpha_threshold.default <- function(x,
-                                 component,
-                                 alpha_bound,
-                                 log_prior_fn,
-                                 joint_log_lik_fn,
-                                 get_draws,
-                                 unconstrain_pars,
-                                 log_prob_upars,
-                                 log_ratio_upars,
-                                 k_threshold = 0.5,
-                                 epsilon = 0.001,
-                                 moment_match = FALSE, ...) {
-  checkmate::assert_number(epsilon)
-  checkmate::assert_number(alpha_bound)
+##' @export
+find_alpha_threshold.priorsense_data <- function(x,
+                                                 component,
+                                                 alpha_bound,
+                                                 k_threshold = 0.5,
+                                                 epsilon = 0.001,
+                                                 moment_match = FALSE, ...) {
+  checkmate::assert_number(alpha_bound, lower = 0)
   checkmate::assert_number(k_threshold)
-  checkmate::assert(epsilon > 0)
+  checkmate::assert_number(epsilon, lower = 0)
   checkmate::assert_choice(component, c("prior", "likelihood"))
 
   if (alpha_bound < 1) {
@@ -73,14 +45,15 @@ find_alpha_threshold.default <- function(x,
   while (continue) {
 
     # calculate criterion
-    new_pareto_k <- suppressWarnings(
+    new_pareto_k <- get_powerscaling_details(
+      suppressWarnings(
       powerscale(
         x = x,
         alpha = alpha,
         component = component,
         moment_match = moment_match
       )
-    )$powerscaling$importance_sampling$diagnostics$pareto_k
+    ))$diagnostics$khat
 
     compare <- comparison(new_pareto_k, pareto_k, k_threshold, epsilon)
 

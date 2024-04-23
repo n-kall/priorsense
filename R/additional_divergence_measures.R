@@ -23,10 +23,9 @@ mv_wasserstein_dist <- function(draws1,
                                    ...
                                    ) {
 
-  if (!requireNamespace("transport", quietly = TRUE)) {
-    warning("The transport package must be installed to use this functionality")
-    return(NULL)
-  }
+
+  require_package("transport")
+
   
   if (is.null(weights1)) {
     weights1 <- rep(
@@ -73,10 +72,9 @@ mv_wasserstein_dist <- function(draws1,
 ##' @param ... unused
 ##' @return numeric
 js_div <- function(x, y, x_weights, y_weights, ...) {
-  if (!requireNamespace("philentropy", quietly = TRUE)) {
-    warning("The philentropy package must be installed to use this functionality")
-    return(NULL)
-  }
+
+  require_package("philentropy")
+  
   y_density <- stats::density(
     x = y,
     from = min(c(x, y)),
@@ -135,10 +133,7 @@ js_dist <- function(x, y, x_weights, y_weights, ...) {
 ##' @return numeric
 hellinger_dist <- function(x, y, x_weights, y_weights, ...) {
 
-  if (!requireNamespace("philentropy", quietly = TRUE)) {
-    warning("The philentropy package must be installed to use this functionality")
-    return(NULL)
-  }
+  require_package("philentropy")
   
   y_density <- stats::density(
     x = y,
@@ -175,10 +170,8 @@ hellinger_dist <- function(x, y, x_weights, y_weights, ...) {
 ##'   estimated densitites
 kl_div <- function(x, y, x_weights, y_weights, ...) {
 
-  if (!requireNamespace("philentropy", quietly = TRUE)) {
-    warning("The philentropy package must be installed to use this functionality")
-    return(NULL)
-  }
+
+  require_package("philentropy")
   
   y_density <- stats::density(
     x = y,
@@ -264,6 +257,8 @@ ks_dist <- function(x, y, x_weights, y_weights, ...) {
 ##' @return numeric value of Wassterstein distance
 ws_dist <- function(x, y, x_weights, y_weights, p = 1, ...) {
 
+  require_package("transport")
+  
   wa <- transport::wasserstein1d(
     a = x,
     b = y,

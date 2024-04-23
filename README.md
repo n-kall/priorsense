@@ -39,14 +39,14 @@ with:
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("n-kall/priorsense")
+# remotes::install_github("topipa/iwmm")
+remotes::install_github("n-kall/priorsense", ref = "development")
 ```
 
 ## Usage
 
-priorsense currently works with models created with rstan, cmdstanr or
-brms. However, moment matching currently does not work with cmdstan
-models.
+priorsense works with models created with rstan, cmdstanr or brms, or
+with draws objects from the posterior package.
 
 ### Example
 
@@ -56,7 +56,7 @@ data y (available via`example_powerscale_model("univariate_normal")`):
 ``` stan
 data {
   int<lower=1> N;
-  real y[N];
+  array[N] real y;
 }
 parameters {
   real mu;
@@ -77,7 +77,6 @@ generated quantities {
   // joint prior specification
   lprior = normal_lpdf(mu | 0, 1) +
     normal_lpdf(sigma | 0, 2.5);
-}
 ```
 
 We first fit the model using Stan:
@@ -91,7 +90,7 @@ fit <- rstan::stan(
   model_code = normal_model$model_code,
   data = normal_model$data,
   refresh = FALSE,
-  seed = 1234
+  seed = 123
 )
 ```
 
@@ -99,85 +98,46 @@ Once fit, sensitivity can be checked as follows:
 
 ``` r
 powerscale_sensitivity(fit)
+#> Loading required namespace: testthat
 #> Sensitivity based on cjs_dist:
-#> # A tibble: 3 × 4
+#> # A tibble: 2 × 4
 #>   variable prior likelihood diagnosis          
 #>   <chr>    <dbl>      <dbl> <chr>              
-#> 1 mu       0.366      0.509 prior-data conflict
-#> 2 sigma    0.252      0.464 prior-data conflict
-#> 3 lprior   0.355      0.491 prior-data conflict
+#> 1 mu       0.433      0.641 prior-data conflict
+#> 2 sigma    0.358      0.671 prior-data conflict
 ```
 
-To visually inspect changes to the posterior, first create a
-power-scaling sequence.
+To visually inspect changes to the posterior, use one of the diagnostic
+plot functions. Estimates with high Pareto-k values may be inaccurate
+and are indicated.
 
 ``` r
-pss <- powerscale_sequence(fit)
-```
-
-Then use a plotting function. Estimates that may be inaccurate (Pareto-k
-values \> 0.5) are indicated.
-
-``` r
-powerscale_plot_ecdf(pss, variables = c("mu", "sigma"))
-#> Warning: The following aesthetics were
-#> dropped during statistical
-#> transformation: weight
-#> ℹ This can happen when ggplot
-#>   fails to infer the correct
-#>   grouping structure in the
-#>   data.
-#> ℹ Did you forget to specify a
-#>   `group` aesthetic or to
-#>   convert a numerical variable
-#>   into a factor?
-#> The following aesthetics were
-#> dropped during statistical
-#> transformation: weight
-#> ℹ This can happen when ggplot
-#>   fails to infer the correct
-#>   grouping structure in the
-#>   data.
-#> ℹ Did you forget to specify a
-#>   `group` aesthetic or to
-#>   convert a numerical variable
-#>   into a factor?
-#> The following aesthetics were
-#> dropped during statistical
-#> transformation: weight
-#> ℹ This can happen when ggplot
-#>   fails to infer the correct
-#>   grouping structure in the
-#>   data.
-#> ℹ Did you forget to specify a
-#>   `group` aesthetic or to
-#>   convert a numerical variable
-#>   into a factor?
-#> The following aesthetics were
-#> dropped during statistical
-#> transformation: weight
-#> ℹ This can happen when ggplot
-#>   fails to infer the correct
-#>   grouping structure in the
-#>   data.
-#> ℹ Did you forget to specify a
-#>   `group` aesthetic or to
-#>   convert a numerical variable
-#>   into a factor?
+powerscale_plot_ecdf(fit)
 ```
 
 <img src="man/figures/README-ecdf_plot-1.png" width="70%" height="70%" />
 
 ``` r
-powerscale_plot_quantities(
-  pss,
-  quantities = c("mean", "sd"),
-  div_measure = "cjs_dist",
-  variables = c("mu", "sigma")
-)
+powerscale_plot_quantities(fit)
 ```
 
 <img src="man/figures/README-quants_plot-1.png" width="70%" height="70%" />
+
+In some cases, setting `moment_match = TRUE` will improve the unreliable
+estimates at the cost of some further computation. This requires the
+[`iwmm` package](https://github.com/topipa/iwmm).
+
+``` r
+powerscale_plot_ecdf(fit, moment_match = TRUE)
+```
+
+<img src="man/figures/README-ecdf_plot_mm-1.png" width="70%" height="70%" />
+
+``` r
+powerscale_plot_quantities(fit, moment_match = TRUE)
+```
+
+<img src="man/figures/README-quants_plot_mm-1.png" width="70%" height="70%" />
 
 ## References
 
@@ -191,5 +151,5 @@ Topi Paananen, Juho Piironen, Paul-Christian Bürkner, Aki Vehtari
 Computing 31, 16. <https://doi.org/10.1007/s11222-020-09982-2>
 
 Aki Vehtari, Daniel Simpson, Andrew Gelman, Yuling Yao, Jonah Gabry
-(2022). Pareto smoothed importance sampling. preprint
-[arXiv:1507.02646](https://arxiv.org/abs/1507.02646)
+(2024). Pareto smoothed importance sampling. Journal of Machine Learning
+Research. 25, 72. <https://jmlr.org/papers/v25/19-556.html>
