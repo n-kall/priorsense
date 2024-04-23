@@ -34,6 +34,14 @@ Kallioinen et al. (2022).
 
 ## Installation
 
+Download the stable version from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("remotes")
+# remotes::install_github("topipa/iwmm")
+remotes::install_github("n-kall/priorsense")
+```
+
 Download the development version from [GitHub](https://github.com/)
 with:
 
