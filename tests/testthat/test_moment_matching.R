@@ -12,6 +12,7 @@ sfit <- suppressWarnings(rstan::stan(
 ))
 
 test_that("moment matching is applied when specified and pareto-k is higher than threshold", {
+  skip_on_cran()
   expect_true(
     get_powerscaling_details(
       powerscale(

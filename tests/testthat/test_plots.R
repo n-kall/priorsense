@@ -18,7 +18,7 @@ test_that("diagnostic plots give no errors", {
      NA
    )
   expect_error(
-    powerscale_plot_quantities(
+    powerscale_plot_quantity(
       ps,
       variable = c("mu", "tau")
     ),
@@ -27,10 +27,10 @@ test_that("diagnostic plots give no errors", {
 })
 
 test_that("plots contain expected data", {
-  psq <- powerscale_plot_quantities(
+  psq <- powerscale_plot_quantity(
     ps,
     variable = c("mu"),
-    quantities = c("quantile", "mean"),
+    quantity = c("quantile", "mean"),
     quantity_args = list(probs = c(0.1, 0.9))
   )
   expect_equal(
@@ -45,21 +45,22 @@ test_that("plots contain expected data", {
 })
 
 
-test_that("auto_title behaves as expected in plots", {
+test_that("help_text behaves as expected in plots", {
 
- psq_title <- powerscale_plot_quantities(
+ psq_title <- powerscale_plot_quantity(
     ps,
     variable = c("mu"),
-    quantities = c("quantile", "mean"),
-    quantity_args = list(probs = c(0.1, 0.9))
+    quantity = c("quantile", "mean"),
+    quantity_args = list(probs = c(0.1, 0.9)),
+    help_text = TRUE
  )
 
-  psq_notitle <- powerscale_plot_quantities(
+  psq_notitle <- powerscale_plot_quantity(
     ps,
     variable = c("mu"),
-    quantities = c("quantile", "mean"),
+    quantity = c("quantile", "mean"),
     quantity_args = list(probs = c(0.1, 0.9)),
-    auto_title = FALSE
+    help_text = FALSE
   )
 
   expect_false(is.null(psq_title$labels$title))
@@ -69,7 +70,7 @@ test_that("auto_title behaves as expected in plots", {
   expect_null(psq_notitle$labels$subtitle)
   
   psecdf_title <- powerscale_plot_ecdf(ps, variable = "mu")
-  psecdf_notitle <- powerscale_plot_ecdf(ps, variable = "mu", auto_title = FALSE)
+  psecdf_notitle <- powerscale_plot_ecdf(ps, variable = "mu", help_text = FALSE)
 
 
   expect_false(is.null(psecdf_title$labels$title))
@@ -79,7 +80,7 @@ test_that("auto_title behaves as expected in plots", {
   expect_null(psecdf_notitle$labels$subtitle)
 
   psdens_title <- powerscale_plot_dens(ps, variable = "mu")
-  psdens_notitle <- powerscale_plot_dens(ps, variable = "mu", auto_title = FALSE)
+  psdens_notitle <- powerscale_plot_dens(ps, variable = "mu", help_text = FALSE)
 
   expect_false(is.null(psdens_title$labels$title))
   expect_false(is.null(psdens_title$labels$subtitle))

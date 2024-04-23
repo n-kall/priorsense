@@ -6,7 +6,8 @@
 \alias{powerscale_plot_ecdf}
 \alias{powerscale_plot_ecdf.powerscaled_sequence}
 \alias{powerscale_plot_quantities}
-\alias{powerscale_plot_quantities.powerscaled_sequence}
+\alias{powerscale_plot_quantity}
+\alias{powerscale_plot_quantity.powerscaled_sequence}
 \title{Diagnostic plots for power-scaling sensitivity}
 \usage{
 powerscale_plot_dens(x, ...)
@@ -17,22 +18,27 @@ powerscale_plot_ecdf(x, ...)
   x,
   variable = NULL,
   resample = FALSE,
-  auto_title = TRUE,
+  help_text = getOption("priorsense.plot_help_text", TRUE),
+  variables = lifecycle::deprecated(),
   ...
 )
 
 powerscale_plot_quantities(x, ...)
 
-\method{powerscale_plot_quantities}{powerscaled_sequence}(
+powerscale_plot_quantity(x, ...)
+
+\method{powerscale_plot_quantity}{powerscaled_sequence}(
   x,
   variable = NULL,
-  quantities = c("mean", "sd"),
+  quantity = c("mean", "sd"),
   div_measure = "cjs_dist",
   resample = FALSE,
   measure_args = NULL,
   mcse = TRUE,
   quantity_args = NULL,
-  auto_title = TRUE,
+  help_text = getOption("priorsense.plot_help_text", TRUE),
+  quantities = deprecated(),
+  variables = deprecated(),
   ...
 )
 }
@@ -49,11 +55,16 @@ of class \code{powerscaled_sequence}.}
 \item{resample}{Logical; Indicate whether or not draws should be
 resampled based on calculated importance weights.}
 
-\item{auto_title}{Logical indicating whether automatic title with
-description should be included in the plot. Default is TRUE.}
+\item{help_text}{Logical indicating whether title and subtitle
+with explanatory description should be included in the
+plot. Default is TRUE. Can be set via option
+"priorsense.show_help_text".}
 
-\item{quantities}{A character vector specifying quantities to
-plot. Options are "mean", "median", "sd", "mad", "quantile".}
+\item{variables}{(deprecated) Use variable instead.}
+
+\item{quantity}{A character vector specifying one or several
+quantities to plot. Options are "mean", "median", "sd", "mad",
+"quantile".}
 
 \item{div_measure}{The divergence measure to use. The
 following methods are implemented:
@@ -79,6 +90,8 @@ standard error of the base quantity on the quantities plot.}
 \item{quantity_args}{Named list of further arguments passed to
 quantity functions. Passed as \code{.args} to
 \verb{[posterior::summarise_draws]}.}
+
+\item{quantities}{(deprecated) Use quantity instead.}
 }
 \value{
 A ggplot object that can be further customized using the \strong{ggplot2} package.
@@ -94,6 +107,6 @@ power-scaled posterior draws with respect to power-scaling.  }
 distribution function plot of power-scaled posterior draws with
 respect to power-scaling.  }
 \item{\code{powerscale_plot_quantities()}}{ Plot of posterior
-quantities with respect to power-scaling.  } }
+quantities with respect to power-scaling.} }
 }
 

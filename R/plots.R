@@ -7,8 +7,10 @@
 ##' @template plot_args
 ##' @template div_measure_arg
 ##' @template resample_arg
-##' @param auto_title Logical indicating whether automatic title with
-##'   description should be included in the plot. Default is TRUE.
+##' @param help_text Logical indicating whether title and subtitle
+##'   with explanatory description should be included in the
+##'   plot. Default is TRUE. Can be set via option
+##'   "priorsense.show_help_text".
 ##' @template ggplot_return
 ##' @section Plot Descriptions: \describe{
 ##'   \item{`powerscale_plot_dens()`}{ Kernel density plot of
@@ -17,9 +19,10 @@
 ##'   distribution function plot of power-scaled posterior draws with
 ##'   respect to power-scaling.  }
 ##'   \item{`powerscale_plot_quantities()`}{ Plot of posterior
-##'   quantities with respect to power-scaling.  } }
+##'   quantities with respect to power-scaling.} }
 ##'
 ##' @importFrom rlang .data
+##' @importFrom lifecycle deprecated
 NULL
 
 prepare_plot_data <- function(x, variable, resample, ...) {
@@ -52,12 +55,12 @@ prepare_plot_data <- function(x, variable, resample, ...) {
       }
 
       prior_ps_details <- get_powerscaling_details(prior_scaled[[i]])
-      
+
       prior_draws[[i]]$alpha <- prior_ps_details$alpha
       prior_draws[[i]]$component <- "prior"
       prior_draws[[i]]$pareto_k <- prior_ps_details$diagnostics$khat
       prior_draws[[i]]$pareto_k_threshold <- prior_ps_details$diagnostics$khat_threshold
-      
+
     }
 
     base_draws_prior <- base_draws
@@ -83,12 +86,12 @@ prepare_plot_data <- function(x, variable, resample, ...) {
       }
 
       likelihood_ps_details <- get_powerscaling_details(likelihood_scaled[[i]])
-      
+
       likelihood_draws[[i]]$alpha <- likelihood_ps_details$alpha
       likelihood_draws[[i]]$component <- "likelihood"
       likelihood_draws[[i]]$pareto_k <- likelihood_ps_details$diagnostics$khat
       likelihood_draws[[i]]$pareto_k_threshold <- likelihood_ps_details$diagnostics$khat_threshold
-      
+
 
     }
 
@@ -193,19 +196,26 @@ powerscale_plot_dens <- function(x, ...) {
 }
 
 ##' @export
-powerscale_plot_dens.default <- function(x, variable = NULL, resample = FALSE, auto_title = TRUE, ...) {
+powerscale_plot_dens.default <- function(x, variable = NULL, resample = FALSE, help_text = getOption("priorsense.plot_help_text", TRUE), variables = deprecated(), ...) {
   ps <- powerscale_sequence(x, ...)
-  powerscale_plot_dens(ps, variable = variable, resample = resample, auto_title = auto_title)
+  powerscale_plot_dens(ps, variable = variable, resample = resample, help_text = help_text)
 }
 
-  
+
 ##' @export
-powerscale_plot_dens.powerscaled_sequence <- function(x, variable = NULL, resample = FALSE, auto_title = TRUE,
-                                 ...) {
+powerscale_plot_dens.powerscaled_sequence <- function(x, variable = NULL, resample = FALSE, help_text = getOption("priorsense.plot_help_text", TRUE),
+                                                      variables = deprecated(),
+                                                      ...) {
+
+    if (lifecycle::is_present(variables)) {
+    lifecycle::deprecate_warn("1.0.0", "powerscale_plot_dens(variables)", "powerscale_plot_dens(variable)")
+    variable <- variables
+  }
+
   # input checks
   checkmate::assert_character(variable, null.ok = TRUE)
   checkmate::assert_logical(resample, len = 1)
-  checkmate::assert_logical(auto_title, len = 1)
+  checkmate::assert_logical(help_text, len = 1)
 
   if (is.null(variable)) {
     variable <- posterior::variables(x$base_draws)
@@ -214,7 +224,7 @@ powerscale_plot_dens.powerscaled_sequence <- function(x, variable = NULL, resamp
       posterior::subset_draws(x$base_draws, variable = variable)
     )
   }
-  
+
   d <- prepare_plot_data(x, variable = variable, resample = resample, ...)
 
   if (resample || x$resample) {
@@ -222,7 +232,7 @@ powerscale_plot_dens.powerscaled_sequence <- function(x, variable = NULL, resamp
   }
 
   n_components <- length(unique(d$component))
-  
+
   out <- prepare_plot(d, resample, ...) +
       ggplot2::ylab("Density") +
       ggplot2::guides(
@@ -258,14 +268,19 @@ powerscale_plot_dens.powerscaled_sequence <- function(x, variable = NULL, resamp
       axis.ticks.y = ggplot2::element_blank()
     )
 
-  if (auto_title) {
+  if (help_text) {
     out <- out +
       ggplot2::ggtitle(
         label = "Power-scaling sensitivity",
         subtitle = "Posterior density estimates depending on amount of power-scaling (alpha).\nOverlapping lines indicate low sensitivity.\nWider gaps between lines indicate greater sensitivity.\nEstimates with high Pareto-k values may be inaccurate."
       )
   }
-  
+
+  if (getOption("priorsense.use_plot_theme", TRUE)) {
+    out <- out +
+      theme_priorsense()
+  }
+
   return(out)
 }
 
@@ -277,24 +292,29 @@ powerscale_plot_ecdf <- function(x, ...) {
 
 
 ##' @export
-powerscale_plot_ecdf.default <- function(x, variable = NULL, resample = FALSE, auto_title = TRUE, ...) {
+powerscale_plot_ecdf.default <- function(x, variable = NULL, resample = FALSE, help_text = getOption("priorsense.plot_help_text", TRUE), variables = lifecycle::deprecated(), ...) {
   ps <- powerscale_sequence(x, ...)
   powerscale_plot_ecdf(
     ps,
     variable = variable,
     resample = resample,
-    auto_title = auto_title
+    help_text = help_text
   )
 }
 
 ##' @rdname powerscale_plots
 ##' @export
-powerscale_plot_ecdf.powerscaled_sequence <- function(x, variable = NULL, resample = FALSE, auto_title = TRUE, ...) {
+powerscale_plot_ecdf.powerscaled_sequence <- function(x, variable = NULL, resample = FALSE, help_text = getOption("priorsense.plot_help_text", TRUE), variables = lifecycle::deprecated(), ...) {
+
+  if (lifecycle::is_present(variables)) {
+    lifecycle::deprecate_warn("1.0.0", "powerscale_plot_ecdf(variables)", "powerscale_plot_ecdf(variable)")
+    variable <- variables
+  }
 
   # input checks
   checkmate::assert_character(variable, null.ok = TRUE)
   checkmate::assert_logical(resample, len = 1)
-  checkmate::assert_logical(auto_title, len = 1)
+  checkmate::assert_logical(help_text, len = 1)
 
   if (is.null(variable)) {
     variable <- posterior::variables(x$base_draws)
@@ -303,11 +323,11 @@ powerscale_plot_ecdf.powerscaled_sequence <- function(x, variable = NULL, resamp
       posterior::subset_draws(x$base_draws, variable = variable)
     )
   }
-  
+
   d <- prepare_plot_data(x, variable = variable, resample = resample, ...)
 
   n_components <- length(unique(d$component))
-  
+
   if (resample || x$resample) {
     resample <- TRUE
   }
@@ -343,73 +363,106 @@ powerscale_plot_ecdf.powerscaled_sequence <- function(x, variable = NULL, resamp
   ) +
     ggplot2::xlab("")
 
-  if (auto_title) {
-    p <- p + 
+  if (help_text) {
+    p <- p +
   ggplot2::ggtitle(
     label = "Power-scaling sensitivity",
     subtitle = "Posterior ECDF depending on amount of power-scaling (alpha).\nOverlapping lines indicate low sensitivity.\nWider gaps between lines indicate greater sensitivity.\nEstimates with high Pareto-k values may be inaccurate."
   )
   }
 
+  if (getOption("priorsense.use_plot_theme", TRUE)) {
+    p <- p +
+      theme_priorsense()
+  }
+
   return(p)
 
 }
 
+
 ##' @rdname powerscale_plots
 ##' @export
 powerscale_plot_quantities <- function(x, ...) {
-  UseMethod("powerscale_plot_quantities")
+  lifecycle::deprecate_warn("1.0.0", "powerscale_plot_quantities()", "powerscale_plot_quantity()")
+  UseMethod("powerscale_plot_quantity")
+}
+
+
+
+##' @rdname powerscale_plots
+##' @export
+powerscale_plot_quantity <- function(x, ...) {
+  UseMethod("powerscale_plot_quantity")
 }
 
 ##' @export
-powerscale_plot_quantities.default <- function(x, variable = NULL,
-                                       quantities = c("mean", "sd"),
+powerscale_plot_quantity.default <- function(x, variable = NULL,
+                                       quantity = c("mean", "sd"),
                                        div_measure = "cjs_dist",
                                        resample = FALSE,
                                        measure_args = NULL,
                                        mcse = TRUE,
                                        quantity_args = NULL,
-                                       auto_title = TRUE,
+                                       help_text = getOption("priorsense.plot_help_text", TRUE),
+                                       variables = lifecycle::deprecated(),
+                                       quantities = lifecycle::deprecated(),
+
                                        ...) {
   ps <- powerscale_sequence(x, ...)
 
-  powerscale_plot_quantities(
+  powerscale_plot_quantity(
     ps,
-    variable = variable,    
-    quantities = quantities,
+    variable = variable,
+    quantity = quantity,
     div_measure = div_measure,
     resample = resample,
     measure_args = measure_args,
     mcse = mcse,
     quantity_args = quantity_args,
-    auto_title = auto_title
+    help_text = help_text,
+    quantities = quantities,
+    variables = variables
   )
 }
 
 ##' @rdname powerscale_plots
 ##' @export
-powerscale_plot_quantities.powerscaled_sequence <- function(x, variable = NULL,
-                                       quantities = c("mean", "sd"),
+powerscale_plot_quantity.powerscaled_sequence <- function(x, variable = NULL,
+                                       quantity = c("mean", "sd"),
                                        div_measure = "cjs_dist",
                                        resample = FALSE,
                                        measure_args = NULL,
                                        mcse = TRUE,
                                        quantity_args = NULL,
-                                       auto_title = TRUE,
+                                       help_text = getOption("priorsense.plot_help_text", TRUE),
+                                       quantities = deprecated(),
+                                       variables = deprecated(),
                                        ...) {
 
+  if (lifecycle::is_present(variables)) {
+    lifecycle::deprecate_warn("1.0.0", "powerscale_plot_quantity(variables)", "powerscale_plot_quantity(variable)")
+    variable <- variables
+  }
+
+  if (lifecycle::is_present(quantities)) {
+    lifecycle::deprecate_warn("1.0.0", "powerscale_plot_quantity(quantities)", "powerscale_plot_quantity(quantity)")
+    quantity <- quantities
+  }
+
+
   checkmate::assertCharacter(variable, null.ok = TRUE)
-  checkmate::assertCharacter(quantities)
+  checkmate::assertCharacter(quantity)
   checkmate::assertCharacter(div_measure)
   checkmate::assertLogical(resample, len = 1)
   checkmate::assertList(measure_args, null.ok = TRUE)
   checkmate::assertLogical(mcse, len = 1)
   checkmate::assertList(quantity_args, null.ok = TRUE)
-  checkmate::assertLogical(auto_title, len = 1)
-  
+  checkmate::assertLogical(help_text, len = 1)
+
   summ <- summarise_draws(
     x,
-    ... = quantities,
+    ... = quantity,
     .args = quantity_args,
     resample = resample,
     div_measures = div_measure,
@@ -472,7 +525,7 @@ powerscale_plot_quantities.powerscaled_sequence <- function(x, variable = NULL,
 
   return(
     powerscale_summary_plot(
-      summ, variable = variable, base_mcse = base_mcse, auto_title = auto_title, ...)
+      summ, variable = variable, base_mcse = base_mcse, help_text = help_text, ...)
   )
 
 }
@@ -480,10 +533,10 @@ powerscale_plot_quantities.powerscaled_sequence <- function(x, variable = NULL,
 powerscale_summary_plot <- function(x,
                                     variable,
                                     base_mcse = NULL,
-                                    auto_title = TRUE,
+                                    help_text,
                                     ...) {
 
-  
+
   # get default quantities
   quantities <- setdiff(
     colnames(x[[1]]),
@@ -558,7 +611,7 @@ powerscale_summary_plot <- function(x,
     labels = round(c(min(summaries$alpha), 1, max(summaries$alpha)), digits = 3)
   )
 
-  if (auto_title) {
+  if (help_text) {
     p <- p +
   ggplot2::ggtitle(
     label = "Power-scaling sensitivity",
@@ -586,6 +639,11 @@ powerscale_summary_plot <- function(x,
         data = base_mcse,
         color = "black"
       )
+  }
+
+  if (getOption("priorsense.use_plot_theme", TRUE)) {
+    p <- p +
+      theme_priorsense()
   }
 
   return(p)

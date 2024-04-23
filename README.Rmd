@@ -120,7 +120,8 @@ powerscale_plot_quantities(fit)
 ```
 
 In some cases, setting `moment_match = TRUE` will improve the
-unreliable estimates at the cost of some further computation.
+unreliable estimates at the cost of some further computation. This
+requires the [`iwmm` package](https://github.com/topipa/iwmm).
 
 ```{r ecdf_plot_mm, eval = T, out.width = '70%', out.height = '70%'}
 powerscale_plot_ecdf(fit, moment_match = TRUE)

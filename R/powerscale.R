@@ -19,8 +19,7 @@
 ##' @template selection_arg
 ##' @template powerscale_args
 ##' @template prediction_arg
-##' @param ... Further arguments passed to the custom functions
-##'   documented above.
+##' @param ... Further arguments passed to internal functions.
 ##' @return A `powerscaled_draws` or `powerscaled_sequence` object,
 ##'   which contains the estimated posterior draws resulting from the
 ##'   power-scaling perturbations and details of the perturbation and
