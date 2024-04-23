@@ -19,6 +19,7 @@ Imports:
     ggdist (>= 3.3.2),
     ggh4x,
     ggplot2,
+    lifecycle,
     matrixStats,
     methods,
     posterior,
