@@ -18,7 +18,7 @@ test_that("diagnostic plots give no errors", {
      NA
    )
   expect_error(
-    powerscale_plot_quantity(
+    powerscale_plot_quantities(
       ps,
       variable = c("mu", "tau")
     ),
@@ -27,7 +27,7 @@ test_that("diagnostic plots give no errors", {
 })
 
 test_that("plots contain expected data", {
-  psq <- powerscale_plot_quantity(
+  psq <- powerscale_plot_quantities(
     ps,
     variable = c("mu"),
     quantity = c("quantile", "mean"),
@@ -47,7 +47,7 @@ test_that("plots contain expected data", {
 
 test_that("help_text behaves as expected in plots", {
 
- psq_title <- powerscale_plot_quantity(
+ psq_title <- powerscale_plot_quantities(
     ps,
     variable = c("mu"),
     quantity = c("quantile", "mean"),
@@ -55,7 +55,7 @@ test_that("help_text behaves as expected in plots", {
     help_text = TRUE
  )
 
-  psq_notitle <- powerscale_plot_quantity(
+  psq_notitle <- powerscale_plot_quantities(
     ps,
     variable = c("mu"),
     quantity = c("quantile", "mean"),

@@ -83,8 +83,7 @@ powerscale_sequence(x, ...)
 \arguments{
 \item{x}{A fitted model object.}
 
-\item{...}{Further arguments passed to the custom functions
-documented above.}
+\item{...}{Further arguments passed to internal functions.}
 
 \item{component}{Component to be power-scaled (either "prior" or
 "likelihood"). For powerscale_sequence, this can be both "prior"

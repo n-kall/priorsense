@@ -384,20 +384,11 @@ powerscale_plot_ecdf.powerscaled_sequence <- function(x, variable = NULL, resamp
 ##' @rdname powerscale_plots
 ##' @export
 powerscale_plot_quantities <- function(x, ...) {
-  lifecycle::deprecate_warn("0.9", "powerscale_plot_quantities()", "powerscale_plot_quantity()")
-  UseMethod("powerscale_plot_quantity")
-}
-
-
-
-##' @rdname powerscale_plots
-##' @export
-powerscale_plot_quantity <- function(x, ...) {
-  UseMethod("powerscale_plot_quantity")
+  UseMethod("powerscale_plot_quantities")
 }
 
 ##' @export
-powerscale_plot_quantity.default <- function(x, variable = NULL,
+powerscale_plot_quantities.default <- function(x, variable = NULL,
                                        quantity = c("mean", "sd"),
                                        div_measure = "cjs_dist",
                                        resample = FALSE,
@@ -411,7 +402,7 @@ powerscale_plot_quantity.default <- function(x, variable = NULL,
                                        ...) {
   ps <- powerscale_sequence(x, ...)
 
-  powerscale_plot_quantity(
+  powerscale_plot_quantities(
     ps,
     variable = variable,
     quantity = quantity,
@@ -428,7 +419,7 @@ powerscale_plot_quantity.default <- function(x, variable = NULL,
 
 ##' @rdname powerscale_plots
 ##' @export
-powerscale_plot_quantity.powerscaled_sequence <- function(x, variable = NULL,
+powerscale_plot_quantities.powerscaled_sequence <- function(x, variable = NULL,
                                        quantity = c("mean", "sd"),
                                        div_measure = "cjs_dist",
                                        resample = FALSE,
@@ -441,12 +432,12 @@ powerscale_plot_quantity.powerscaled_sequence <- function(x, variable = NULL,
                                        ...) {
 
   if (lifecycle::is_present(variables)) {
-    lifecycle::deprecate_warn("0.9", "powerscale_plot_quantity(variables)", "powerscale_plot_quantity(variable)")
+    lifecycle::deprecate_warn("0.9", "powerscale_plot_quantities(variables)", "powerscale_plot_quantities(variable)")
     variable <- variables
   }
 
   if (lifecycle::is_present(quantities)) {
-    lifecycle::deprecate_warn("0.9", "powerscale_plot_quantity(quantities)", "powerscale_plot_quantity(quantity)")
+    lifecycle::deprecate_warn("0.9", "powerscale_plot_quantities(quantities)", "powerscale_plot_quantities(quantity)")
     quantity <- quantities
   }
 

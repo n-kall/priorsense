@@ -6,8 +6,7 @@
 \alias{powerscale_plot_ecdf}
 \alias{powerscale_plot_ecdf.powerscaled_sequence}
 \alias{powerscale_plot_quantities}
-\alias{powerscale_plot_quantity}
-\alias{powerscale_plot_quantity.powerscaled_sequence}
+\alias{powerscale_plot_quantities.powerscaled_sequence}
 \title{Diagnostic plots for power-scaling sensitivity}
 \usage{
 powerscale_plot_dens(x, ...)
@@ -25,9 +24,7 @@ powerscale_plot_ecdf(x, ...)
 
 powerscale_plot_quantities(x, ...)
 
-powerscale_plot_quantity(x, ...)
-
-\method{powerscale_plot_quantity}{powerscaled_sequence}(
+\method{powerscale_plot_quantities}{powerscaled_sequence}(
   x,
   variable = NULL,
   quantity = c("mean", "sd"),
