@@ -496,7 +496,7 @@ powerscale_plot_quantities.powerscaled_sequence <- function(x, variable = NULL,
       timevar = "quantity",
       idvar = "variable"
     )
-    
+
     base_mcse <- posterior::summarise_draws(
       x$base_draws,
       mcse_functions,
@@ -506,7 +506,7 @@ powerscale_plot_quantities.powerscaled_sequence <- function(x, variable = NULL,
     base_mcse <- as.data.frame(base_mcse)
 
     mcse_names <- colnames(base_mcse)[-1]
-    
+
     base_mcse <- stats::reshape(
       data = base_mcse,
       varying = mcse_names,
@@ -561,9 +561,11 @@ powerscale_summary_plot <- function(x,
     timevar = "quantity"
   )
 
-  summaries$quantity <- factor(summaries$quantity, levels = quantities)
-  summaries$pareto_k_value <- ifelse(summaries$pareto_k > summaries$pareto_k_threshold, "High",
-                                     "OK")
+  summaries$pareto_k_value <- ifelse(
+    summaries$pareto_k > summaries$pareto_k_threshold,
+    "High",
+    "OK"
+  )
 
   summaries$pareto_k_value <- factor(
     summaries$pareto_k_value,
@@ -581,8 +583,8 @@ powerscale_summary_plot <- function(x,
     ggplot2::geom_line(ggplot2::aes(
       color = .data$pareto_k_value, group = .data$component)) +
     ggh4x::facet_grid2(
-      rows = ggplot2::vars(.data$variable),
-      cols = ggplot2::vars(.data$quantity),
+      rows = ggplot2::vars(factor(.data$variable, levels = unique(.data$variable))),
+      cols = ggplot2::vars(factor(.data$quantity, levels = unique(.data$quantity))),
       scales = "free",
       switch = "y",
     independent = "all"
