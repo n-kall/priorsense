@@ -39,7 +39,7 @@ test_that("plots contain expected data", {
   )
 
   expect_equal(
-    levels(psq$data$quantity),
+    unique(psq$data$quantity),
     c("q10", "q90", "mean", "cjs_dist")
   )
 })
@@ -49,17 +49,11 @@ test_that("help_text behaves as expected in plots", {
 
  psq_title <- powerscale_plot_quantities(
     ps,
-    variable = c("mu"),
-    quantity = c("quantile", "mean"),
-    quantity_args = list(probs = c(0.1, 0.9)),
     help_text = TRUE
  )
 
   psq_notitle <- powerscale_plot_quantities(
     ps,
-    variable = c("mu"),
-    quantity = c("quantile", "mean"),
-    quantity_args = list(probs = c(0.1, 0.9)),
     help_text = FALSE
   )
 
@@ -68,8 +62,9 @@ test_that("help_text behaves as expected in plots", {
 
   expect_null(psq_notitle$labels$title)
   expect_null(psq_notitle$labels$subtitle)
-  
+
   psecdf_title <- powerscale_plot_ecdf(ps, variable = "mu")
+
   psecdf_notitle <- powerscale_plot_ecdf(ps, variable = "mu", help_text = FALSE)
 
 
@@ -84,7 +79,7 @@ test_that("help_text behaves as expected in plots", {
 
   expect_false(is.null(psdens_title$labels$title))
   expect_false(is.null(psdens_title$labels$subtitle))
-  
+
   expect_null(psdens_notitle$labels$title)
   expect_null(psdens_notitle$labels$subtitle)
 })
