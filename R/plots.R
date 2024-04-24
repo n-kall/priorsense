@@ -444,16 +444,18 @@ powerscale_plot_quantities.powerscaled_sequence <- function(x, variable = NULL,
 
   checkmate::assertCharacter(variable, null.ok = TRUE)
   checkmate::assertCharacter(quantity)
-  checkmate::assertCharacter(div_measure)
+  checkmate::assertCharacter(div_measure, null.ok = TRUE)
   checkmate::assertLogical(resample, len = 1)
   checkmate::assertList(measure_args, null.ok = TRUE)
   checkmate::assertLogical(mcse, len = 1)
   checkmate::assertList(quantity_args, null.ok = TRUE)
   checkmate::assertLogical(help_text, len = 1)
 
+  names(quantity) <- quantity
+
   summ <- summarise_draws(
     x,
-    ... = quantity,
+    quantity,
     .args = quantity_args,
     resample = resample,
     div_measures = div_measure,
@@ -473,29 +475,18 @@ powerscale_plot_quantities.powerscaled_sequence <- function(x, variable = NULL,
     quants <- setdiff(
       colnames(summ[[1]]),
       c("variable", "alpha", "component",
-        "pareto_k", "pareto_kf", "n_eff")
+        "pareto_k", "pareto_kf", "pareto_k_threshold", "n_eff", div_measure)
     )
+
+    mcse_functions <- paste0("mcse_", quantity)
+
     base_quantities <- summ[[1]][which(summ[[1]]$alpha == 1), ]
     base_quantities <- unique(base_quantities[c("variable", quants)])
-    base_mcse <- posterior::summarise_draws(
-      x$base_draws,
-      posterior::default_mcse_measures()
-    )
-
-    base_mcse <- base_mcse[which(base_mcse$variable %in% variable), ]
-
-    base_mcse <- as.data.frame(base_mcse)
-    base_mcse <- stats::reshape(
-      data = base_mcse,
-      varying = c("mcse_mean", "mcse_median", "mcse_sd", "mcse_q5", "mcse_q95"),
-      direction = "long",
-      times = c("mean", "median", "sd", "q5", "q95"),
-      v.names = "mcse",
-      timevar = "quantity",
-      idvar = "variable"
-    )
 
     base_q <- as.data.frame(base_quantities)
+
+    base_q <- as.data.frame(base_quantities)
+
     base_q <- stats::reshape(
       data = base_q,
       varying = quants,
@@ -505,6 +496,28 @@ powerscale_plot_quantities.powerscaled_sequence <- function(x, variable = NULL,
       timevar = "quantity",
       idvar = "variable"
     )
+    
+    base_mcse <- posterior::summarise_draws(
+      x$base_draws,
+      mcse_functions,
+      .args = quantity_args
+    )
+    base_mcse <- base_mcse[which(base_mcse$variable %in% variable), ]
+    base_mcse <- as.data.frame(base_mcse)
+
+    mcse_names <- colnames(base_mcse)[-1]
+    
+    base_mcse <- stats::reshape(
+      data = base_mcse,
+      varying = mcse_names,
+      direction = "long",
+      times = quants,
+      v.names = "mcse",
+      timevar = "quantity",
+      idvar = "variable"
+    )
+
+
 
     base_mcse <- merge(base_q, base_mcse)
     base_mcse$mcse_min <- base_mcse$value - 2 * base_mcse$mcse
