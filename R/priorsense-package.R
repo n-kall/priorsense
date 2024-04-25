@@ -26,6 +26,12 @@
 #' posteriors, and then a plot function such as
 #' \code{\link{powerscale_plot_ecdf}} to visualise the change.
 #'
+#' The following global options are available:
+#'    * `priorsense.use_plot_theme`: If `TRUE` (the default),
+#'      priorsense plots will use the priorsense theme. If `FALSE` they will use the current `ggplot2` theme.
+#'    * `priorsense.plot_help_text`: If `TRUE` (the default), priorsense plots will include a title and explanatory text. If `FALSE` they will not.
+#'
+#'
 #' @seealso
 #' \code{\link{powerscale_sensitivity}}
 #' \code{\link{powerscale_sequence}}
