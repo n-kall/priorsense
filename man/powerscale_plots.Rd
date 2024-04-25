@@ -17,6 +17,7 @@ powerscale_plot_ecdf(x, ...)
   x,
   variable = NULL,
   resample = FALSE,
+  switch_facets = FALSE,
   help_text = getOption("priorsense.plot_help_text", TRUE),
   variables = lifecycle::deprecated(),
   ...
@@ -51,6 +52,11 @@ of class \code{powerscaled_sequence}.}
 
 \item{resample}{Logical; Indicate whether or not draws should be
 resampled based on calculated importance weights.}
+
+\item{switch_facets}{Logical indicating whether facets should we
+switched. If \code{FALSE} (the default), variables will be plotted in
+different rows, and component in columns. If \code{TRUE} these will
+be switched.}
 
 \item{help_text}{Logical indicating whether title and subtitle
 with explanatory description should be included in the

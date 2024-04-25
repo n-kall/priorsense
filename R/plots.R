@@ -11,6 +11,10 @@
 ##'   with explanatory description should be included in the
 ##'   plot. Default is TRUE. Can be set via option
 ##'   "priorsense.show_help_text".
+##' @param switch_facets Logical indicating whether facets should we
+##'   switched. If `FALSE` (the default), variables will be plotted in
+##'   different rows, and component in columns. If `TRUE` these will
+##'   be switched.
 ##' @template ggplot_return
 ##' @section Plot Descriptions: \describe{
 ##'   \item{`powerscale_plot_dens()`}{ Kernel density plot of
@@ -196,14 +200,21 @@ powerscale_plot_dens <- function(x, ...) {
 }
 
 ##' @export
-powerscale_plot_dens.default <- function(x, variable = NULL, resample = FALSE, help_text = getOption("priorsense.plot_help_text", TRUE), variables = deprecated(), ...) {
+powerscale_plot_dens.default <- function(x, variable = NULL, resample = FALSE, switch_facets = FALSE, help_text = getOption("priorsense.plot_help_text", TRUE), variables = deprecated(), ...) {
   ps <- powerscale_sequence(x, ...)
-  powerscale_plot_dens(ps, variable = variable, resample = resample, help_text = help_text)
+  powerscale_plot_dens(
+    ps,
+    variable = variable,
+    resample = resample,
+    switch_facets = switch_facets,
+    help_text = help_text,
+    variables = variables
+  )
 }
 
 
 ##' @export
-powerscale_plot_dens.powerscaled_sequence <- function(x, variable = NULL, resample = FALSE, help_text = getOption("priorsense.plot_help_text", TRUE),
+powerscale_plot_dens.powerscaled_sequence <- function(x, variable = NULL, resample = FALSE, switch_facets = FALSE, help_text = getOption("priorsense.plot_help_text", TRUE),
                                                       variables = deprecated(),
                                                       ...) {
 
@@ -247,7 +258,25 @@ powerscale_plot_dens.powerscaled_sequence <- function(x, variable = NULL, resamp
       trim = FALSE,
       normalize = "xy",
       ...,
-      ) +
+      )
+
+  if (switch_facets) {
+    out <- out +
+      ggh4x::facet_grid2(
+        rows = ggplot2::vars(.data$component),
+        cols = ggplot2::vars(.data$variable),
+        labeller = ggplot2::labeller(
+          component = c(
+            likelihood = "Likelihood power-scaling",
+            prior = "Prior power-scaling"
+          )
+        ),
+        independent = "all",
+        scales = "free",
+        switch = "y"
+      )
+  } else {
+  out <- out +
     ggh4x::facet_grid2(
       rows = ggplot2::vars(.data$variable),
       cols = ggplot2::vars(.data$component),
@@ -260,13 +289,9 @@ powerscale_plot_dens.powerscaled_sequence <- function(x, variable = NULL, resamp
       independent = "all",
       scales = "free",
       switch = "y"
-    ) +
-    ggplot2::xlab(NULL) +
-    ggplot2::ylab(NULL) +
-    ggplot2::theme(
-      axis.text.y = ggplot2::element_blank(),
-      axis.ticks.y = ggplot2::element_blank()
     )
+
+  }
 
   if (help_text) {
     out <- out +
@@ -278,7 +303,18 @@ powerscale_plot_dens.powerscaled_sequence <- function(x, variable = NULL, resamp
 
   if (getOption("priorsense.use_plot_theme", TRUE)) {
     out <- out +
-      theme_priorsense()
+      theme_priorsense() +
+      ggplot2::xlab(NULL) +
+      ggplot2::ylab(NULL) +
+      ggplot2::theme(
+        axis.text.y = ggplot2::element_blank(),
+        axis.ticks.y = ggplot2::element_blank()
+      )
+  }
+
+  if (switch_facets) {
+    out <- out +
+      ggplot2::theme(legend.position = "bottom")
   }
 
   return(out)
@@ -292,19 +328,21 @@ powerscale_plot_ecdf <- function(x, ...) {
 
 
 ##' @export
-powerscale_plot_ecdf.default <- function(x, variable = NULL, resample = FALSE, help_text = getOption("priorsense.plot_help_text", TRUE), variables = lifecycle::deprecated(), ...) {
+powerscale_plot_ecdf.default <- function(x, variable = NULL, resample = FALSE, switch_facets = FALSE, help_text = getOption("priorsense.plot_help_text", TRUE), variables = lifecycle::deprecated(), ...) {
   ps <- powerscale_sequence(x, ...)
   powerscale_plot_ecdf(
     ps,
     variable = variable,
     resample = resample,
-    help_text = help_text
+    switch_facets = switch_facets,
+    help_text = help_text,
+    variables = variables
   )
 }
 
 ##' @rdname powerscale_plots
 ##' @export
-powerscale_plot_ecdf.powerscaled_sequence <- function(x, variable = NULL, resample = FALSE, help_text = getOption("priorsense.plot_help_text", TRUE), variables = lifecycle::deprecated(), ...) {
+powerscale_plot_ecdf.powerscaled_sequence <- function(x, variable = NULL, resample = FALSE, switch_facets = FALSE, help_text = getOption("priorsense.plot_help_text", TRUE), variables = lifecycle::deprecated(), ...) {
 
   if (lifecycle::is_present(variables)) {
     lifecycle::deprecate_warn("0.9", "powerscale_plot_ecdf(variables)", "powerscale_plot_ecdf(variable)")
@@ -347,7 +385,23 @@ powerscale_plot_ecdf.powerscaled_sequence <- function(x, variable = NULL, resamp
       stat_ewcdf(ggplot2::aes(color = .data$alpha))
   }
 
+
+  if (switch_facets) {
   p <- p +
+    ggh4x::facet_grid2(
+      rows = ggplot2::vars(.data$component),
+      cols = ggplot2::vars(.data$variable),
+    labeller = ggplot2::labeller(
+      component = c(
+        likelihood = "Likelihood power-scaling",
+        prior = "Prior power-scaling"
+      )
+    ),
+    scales = "free",
+    independent = "all",
+    switch = "y"
+    )
+  } else {
     ggh4x::facet_grid2(
       rows = ggplot2::vars(.data$variable),
       cols = ggplot2::vars(.data$component),
@@ -360,8 +414,9 @@ powerscale_plot_ecdf.powerscaled_sequence <- function(x, variable = NULL, resamp
     scales = "free",
     independent = "all",
     switch = "y"
-  ) +
-    ggplot2::xlab("")
+    )
+
+  }
 
   if (help_text) {
     p <- p +
@@ -373,6 +428,7 @@ powerscale_plot_ecdf.powerscaled_sequence <- function(x, variable = NULL, resamp
 
   if (getOption("priorsense.use_plot_theme", TRUE)) {
     p <- p +
+      ggplot2::xlab("") +
       theme_priorsense()
   }
 
@@ -529,7 +585,13 @@ powerscale_plot_quantities.powerscaled_sequence <- function(x, variable = NULL,
 
   return(
     powerscale_summary_plot(
-      summ, variable = variable, base_mcse = base_mcse, help_text = help_text, ...)
+      summ,
+      variable = variable,
+      base_mcse = base_mcse,
+      switch_facets = switch_facets,
+      help_text = help_text,
+      ...
+    )
   )
 
 }
@@ -537,6 +599,7 @@ powerscale_plot_quantities.powerscaled_sequence <- function(x, variable = NULL,
 powerscale_summary_plot <- function(x,
                                     variable,
                                     base_mcse = NULL,
+                                    switch_facets,
                                     help_text,
                                     ...) {
 
