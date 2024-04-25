@@ -43,7 +43,7 @@ prepare_plot_data <- function(x, variable, resample, trim, ...) {
       colnames(trim_values) <- c("variable", "lower_lim", "upper_lim")
   }
 
-  
+
   if (!resample && !(x$resampled)) {
     base_draws <- posterior::weight_draws(
       x = base_draws,
@@ -267,11 +267,12 @@ powerscale_plot_dens.powerscaled_sequence <- function(x, variable = NULL, resamp
         )
       ) +
     ggdist::stat_slab(
-      ggplot2::aes(color = .data$alpha, limits = c(lower_lim, upper_lim),),
+      ggplot2::aes(color = .data$alpha),
       fill = NA,
       linewidth = 0.5,
       trim = FALSE,
       normalize = "xy",
+      limits = c(d$lower_lim[1], d$upper_lim[2]),
       ...,
       )
 
@@ -466,6 +467,7 @@ powerscale_plot_quantities.default <- function(x, variable = NULL,
                                        measure_args = NULL,
                                        mcse = TRUE,
                                        quantity_args = NULL,
+                                       switch_facets = FALSE,
                                        help_text = getOption("priorsense.plot_help_text", TRUE),
                                        variables = lifecycle::deprecated(),
                                        quantities = lifecycle::deprecated(),
@@ -482,6 +484,7 @@ powerscale_plot_quantities.default <- function(x, variable = NULL,
     measure_args = measure_args,
     mcse = mcse,
     quantity_args = quantity_args,
+    switch_facets = switch_facets,
     help_text = help_text,
     quantities = quantities,
     variables = variables
@@ -497,6 +500,7 @@ powerscale_plot_quantities.powerscaled_sequence <- function(x, variable = NULL,
                                        measure_args = NULL,
                                        mcse = TRUE,
                                        quantity_args = NULL,
+                                       switch_facets = FALSE,
                                        help_text = getOption("priorsense.plot_help_text", TRUE),
                                        quantities = deprecated(),
                                        variables = deprecated(),
@@ -659,15 +663,30 @@ powerscale_summary_plot <- function(x,
     mapping = ggplot2::aes(x = .data$alpha, y = .data$value)
   ) +
     ggplot2::geom_line(ggplot2::aes(
-      color = .data$pareto_k_value, group = .data$component)) +
+      color = .data$pareto_k_value, group = .data$component))
+
+  if (switch_facets) {
+  p  <- p +
+    ggh4x::facet_grid2(
+      rows = ggplot2::vars(factor(.data$quantity, levels = unique(.data$quantity))),
+      cols = ggplot2::vars(factor(.data$variable, levels = unique(.data$variable))),
+      scales = "free",
+      switch = "y",
+    independent = "all"
+    )
+  } else {
+    p <- p +
     ggh4x::facet_grid2(
       rows = ggplot2::vars(factor(.data$variable, levels = unique(.data$variable))),
       cols = ggplot2::vars(factor(.data$quantity, levels = unique(.data$quantity))),
       scales = "free",
       switch = "y",
     independent = "all"
-  ) +
-  ggplot2::geom_point(
+    )
+  }
+
+  p <- p +
+    ggplot2::geom_point(
     ggplot2::aes(
       x = .data$alpha,
       y = .data$value,
@@ -727,6 +746,12 @@ powerscale_summary_plot <- function(x,
   if (getOption("priorsense.use_plot_theme", TRUE)) {
     p <- p +
       theme_priorsense()
+
+    if (switch_facets) {
+      p <- p +
+        ggplot2::theme(legend.position = "bottom")
+    }
+
   }
 
   return(p)

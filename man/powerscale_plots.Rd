@@ -34,6 +34,7 @@ powerscale_plot_quantities(x, ...)
   measure_args = NULL,
   mcse = TRUE,
   quantity_args = NULL,
+  switch_facets = FALSE,
   help_text = getOption("priorsense.plot_help_text", TRUE),
   quantities = deprecated(),
   variables = deprecated(),
