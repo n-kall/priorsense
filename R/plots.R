@@ -29,10 +29,21 @@
 ##' @importFrom lifecycle deprecated
 NULL
 
-prepare_plot_data <- function(x, variable, resample, ...) {
+prepare_plot_data <- function(x, variable, resample, trim, ...) {
 
   base_draws <- posterior::merge_chains(x$base_draws)
 
+  if (!is.null(trim)) {
+    trim_values <- posterior::summarise_draws(
+      posterior::subset_draws(base_draws, variable = variable),
+      quantile2,
+      .args = list(probs = c((1 - trim)/2, trim + (1 - trim)/2))
+    )
+
+      colnames(trim_values) <- c("variable", "lower_lim", "upper_lim")
+  }
+
+  
   if (!resample && !(x$resampled)) {
     base_draws <- posterior::weight_draws(
       x = base_draws,
@@ -134,7 +145,10 @@ prepare_plot_data <- function(x, variable, resample, ...) {
     timevar = "variable"
   )
 
+  d <- merge(d, trim_values)
+
   return(d)
+
 }
 
 prepare_plot <- function(d, resample, variable, ...) {
@@ -200,12 +214,13 @@ powerscale_plot_dens <- function(x, ...) {
 }
 
 ##' @export
-powerscale_plot_dens.default <- function(x, variable = NULL, resample = FALSE, switch_facets = FALSE, help_text = getOption("priorsense.plot_help_text", TRUE), variables = deprecated(), ...) {
+powerscale_plot_dens.default <- function(x, variable = NULL, resample = FALSE, trim = 0.95, switch_facets = FALSE, help_text = getOption("priorsense.plot_help_text", TRUE), variables = deprecated(), ...) {
   ps <- powerscale_sequence(x, ...)
   powerscale_plot_dens(
     ps,
     variable = variable,
     resample = resample,
+    trim = trim,
     switch_facets = switch_facets,
     help_text = help_text,
     variables = variables
@@ -214,7 +229,7 @@ powerscale_plot_dens.default <- function(x, variable = NULL, resample = FALSE, s
 
 
 ##' @export
-powerscale_plot_dens.powerscaled_sequence <- function(x, variable = NULL, resample = FALSE, switch_facets = FALSE, help_text = getOption("priorsense.plot_help_text", TRUE),
+powerscale_plot_dens.powerscaled_sequence <- function(x, variable = NULL, resample = FALSE, trim = 0.95, switch_facets = FALSE, help_text = getOption("priorsense.plot_help_text", TRUE),
                                                       variables = deprecated(),
                                                       ...) {
 
@@ -236,7 +251,7 @@ powerscale_plot_dens.powerscaled_sequence <- function(x, variable = NULL, resamp
     )
   }
 
-  d <- prepare_plot_data(x, variable = variable, resample = resample, ...)
+  d <- prepare_plot_data(x, variable = variable, resample = resample, trim = trim, ...)
 
   if (resample || x$resample) {
     resample <- TRUE
@@ -252,7 +267,7 @@ powerscale_plot_dens.powerscaled_sequence <- function(x, variable = NULL, resamp
         )
       ) +
     ggdist::stat_slab(
-      ggplot2::aes(color = .data$alpha),
+      ggplot2::aes(color = .data$alpha, limits = c(lower_lim, upper_lim),),
       fill = NA,
       linewidth = 0.5,
       trim = FALSE,
