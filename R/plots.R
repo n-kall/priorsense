@@ -149,6 +149,7 @@ prepare_plot <- function(d, resample, variable, colors, ...) {
       ggplot2::aes(
         x = .data$value,
         group = .data$alpha,
+        color = .data$alpha,
         linetype = .data$pareto_k_value
       )
     )
@@ -159,6 +160,7 @@ prepare_plot <- function(d, resample, variable, colors, ...) {
         x = .data$value,
         weight = exp(.data$.log_weight),
         group = .data$alpha,
+        color = .data$alpha,
         linetype = .data$pareto_k_value
       )
     )
@@ -167,8 +169,7 @@ prepare_plot <- function(d, resample, variable, colors, ...) {
   p <- p +
     ggplot2::scale_linetype_manual(
       values = c("solid", "dashed"),
-      drop = TRUE,
-      guide = ggplot2::guide_legend(override.aes = ggplot2::aes(colour = "black"))
+      drop = TRUE
     ) +
     ggplot2::scale_color_gradientn(
       name = "Power-scaling alpha",
@@ -193,7 +194,6 @@ prepare_plot <- function(d, resample, variable, colors, ...) {
         round(max(d$alpha), digits = 3)
       )
     )
-
 
   return(p)
 
@@ -280,8 +280,7 @@ powerscale_plot_dens.powerscaled_sequence <- function(x,
   # https://github.com/mjskay/ggdist/issues/134
   out <- out +
     ggdist::stat_slab(
-       ggplot2::aes(color = .data$alpha),
-       fill = "black",
+      fill = "black",
        alpha = 0,
        linewidth = 0.5,
        trim = FALSE,
@@ -290,7 +289,6 @@ powerscale_plot_dens.powerscaled_sequence <- function(x,
        ...
      ) +
      ggdist::stat_slab(
-       ggplot2::aes(color = .data$alpha),
        fill = NA,
        alpha = 1,
        linewidth = 0.5,
