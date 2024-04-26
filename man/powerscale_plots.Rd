@@ -19,6 +19,7 @@ powerscale_plot_ecdf(x, ...)
   resample = FALSE,
   switch_facets = FALSE,
   help_text = getOption("priorsense.plot_help_text", TRUE),
+  colors = NULL,
   variables = lifecycle::deprecated(),
   ...
 )
@@ -35,6 +36,8 @@ powerscale_plot_quantities(x, ...)
   mcse = TRUE,
   quantity_args = NULL,
   help_text = getOption("priorsense.plot_help_text", TRUE),
+  colors = NULL,
+  switch_facets = FALSE,
   quantities = deprecated(),
   variables = deprecated(),
   ...
@@ -55,13 +58,19 @@ resampled based on calculated importance weights.}
 
 \item{switch_facets}{Logical indicating whether facets should we
 switched. If \code{FALSE} (the default), variables will be plotted in
-different rows, and component in columns. If \code{TRUE} these will
-be switched.}
+different rows, and component/quantities in columns. If \code{TRUE}
+these will be switched.}
 
 \item{help_text}{Logical indicating whether title and subtitle
 with explanatory description should be included in the
 plot. Default is TRUE. Can be set via option
 "priorsense.show_help_text".}
+
+\item{colors}{Character vector of colors to be used for
+plots. Either length 3 for \code{powerscale_plot_ecdf} and
+\code{powerscale_plot_dens} with order lowest, base, highest; or
+length 2 for \code{powerscale_plot_quantities} with order low Pareto
+k, high Pareto k. If \code{NULL} the defaults will be used.}
 
 \item{variables}{(deprecated) Use variable instead.}
 

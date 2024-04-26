@@ -11,10 +11,15 @@
 ##'   with explanatory description should be included in the
 ##'   plot. Default is TRUE. Can be set via option
 ##'   "priorsense.show_help_text".
+##' @param colors Character vector of colors to be used for
+##'   plots. Either length 3 for `powerscale_plot_ecdf` and
+##'   `powerscale_plot_dens` with order lowest, base, highest; or
+##'   length 2 for `powerscale_plot_quantities` with order low Pareto
+##'   k, high Pareto k. If `NULL` the defaults will be used.
 ##' @param switch_facets Logical indicating whether facets should we
 ##'   switched. If `FALSE` (the default), variables will be plotted in
-##'   different rows, and component in columns. If `TRUE` these will
-##'   be switched.
+##'   different rows, and component/quantities in columns. If `TRUE`
+##'   these will be switched.
 ##' @template ggplot_return
 ##' @section Plot Descriptions: \describe{
 ##'   \item{`powerscale_plot_dens()`}{ Kernel density plot of
@@ -137,7 +142,7 @@ prepare_plot_data <- function(x, variable, resample, ...) {
   return(d)
 }
 
-prepare_plot <- function(d, resample, variable, ...) {
+prepare_plot <- function(d, resample, variable, colors, ...) {
   if (resample) {
     p <- ggplot2::ggplot(
       data = d,
@@ -162,11 +167,12 @@ prepare_plot <- function(d, resample, variable, ...) {
   p <- p +
     ggplot2::scale_linetype_manual(
       values = c("solid", "dashed"),
-      drop = TRUE
+      drop = TRUE,
+      guide = ggplot2::guide_legend(override.aes = ggplot2::aes(colour = "black"))
     ) +
     ggplot2::scale_color_gradientn(
       name = "Power-scaling alpha",
-      colours = cetcolor::cet_pal(3, "d8"),
+      colours = colors[1:3],
       trans = "log",
       limits = c(min(d$alpha) - 0.01, max(d$alpha) + 0.01),
       breaks = c(min(d$alpha), 1, max(d$alpha)),
@@ -177,7 +183,7 @@ prepare_plot <- function(d, resample, variable, ...) {
       )
     ) +
     ggplot2::scale_fill_gradientn(
-      colours = cetcolor::cet_pal(3, "d8"),
+      colours = c(colors[1:3]),
       trans = "log",
       limits = c(min(d$alpha) - 0.01, max(d$alpha) + 0.01),
       breaks = c(min(d$alpha), 1, max(d$alpha)),
@@ -200,7 +206,13 @@ powerscale_plot_dens <- function(x, ...) {
 }
 
 ##' @export
-powerscale_plot_dens.default <- function(x, variable = NULL, resample = FALSE, switch_facets = FALSE, help_text = getOption("priorsense.plot_help_text", TRUE), variables = deprecated(), ...) {
+powerscale_plot_dens.default <- function(x,
+                                         variable = NULL,
+                                         resample = FALSE,
+                                         switch_facets = FALSE,
+                                         help_text = getOption("priorsense.plot_help_text", TRUE),
+                                         colors = NULL,
+                                         variables = deprecated(), ...) {
   ps <- powerscale_sequence(x, ...)
   powerscale_plot_dens(
     ps,
@@ -208,13 +220,19 @@ powerscale_plot_dens.default <- function(x, variable = NULL, resample = FALSE, s
     resample = resample,
     switch_facets = switch_facets,
     help_text = help_text,
+    colors = colors,
     variables = variables
   )
 }
 
 
 ##' @export
-powerscale_plot_dens.powerscaled_sequence <- function(x, variable = NULL, resample = FALSE, switch_facets = FALSE, help_text = getOption("priorsense.plot_help_text", TRUE),
+powerscale_plot_dens.powerscaled_sequence <- function(x,
+                                                      variable = NULL,
+                                                      resample = FALSE,
+                                                      switch_facets = FALSE,
+                                                      help_text = getOption("priorsense.plot_help_text", TRUE),
+                                                      colors = NULL,
                                                       variables = deprecated(),
                                                       ...) {
 
@@ -227,6 +245,11 @@ powerscale_plot_dens.powerscaled_sequence <- function(x, variable = NULL, resamp
   checkmate::assert_character(variable, null.ok = TRUE)
   checkmate::assert_logical(resample, len = 1)
   checkmate::assert_logical(help_text, len = 1)
+  checkmate::assertCharacter(colors, len = 3, null.ok = TRUE)
+
+  if (is.null(colors)) {
+    colors <- default_priorsense_colors()[1:3]
+  }
 
   if (is.null(variable)) {
     variable <- posterior::variables(x$base_draws)
@@ -244,21 +267,39 @@ powerscale_plot_dens.powerscaled_sequence <- function(x, variable = NULL, resamp
 
   n_components <- length(unique(d$component))
 
-  out <- prepare_plot(d, resample, ...) +
+  out <- prepare_plot(d, resample = resample, colors = colors, ...) +
       ggplot2::ylab("Density") +
       ggplot2::guides(
         linetype = ggplot2::guide_legend(
           title = "Pareto k"
         )
-      ) +
-    ggdist::stat_slab(
-      ggplot2::aes(color = .data$alpha),
-      fill = NA,
-      linewidth = 0.5,
-      trim = FALSE,
-      normalize = "xy",
-      ...,
       )
+
+    # here we have to draw 2 stat slabs (one with alpha 0 and black fill,
+    # one with fill as NA) to get the legend correct see
+  # https://github.com/mjskay/ggdist/issues/134
+  out <- out +
+    ggdist::stat_slab(
+       ggplot2::aes(color = .data$alpha),
+       fill = "black",
+       alpha = 0,
+       linewidth = 0.5,
+       trim = FALSE,
+       normalize = "xy",
+       key_glyph = "smooth",
+       ...
+     ) +
+     ggdist::stat_slab(
+       ggplot2::aes(color = .data$alpha),
+       fill = NA,
+       alpha = 1,
+       linewidth = 0.5,
+       trim = FALSE,
+       normalize = "xy",
+       key_glyph = "smooth",
+       ...
+     )
+
 
   if (switch_facets) {
     out <- out +
@@ -328,7 +369,13 @@ powerscale_plot_ecdf <- function(x, ...) {
 
 
 ##' @export
-powerscale_plot_ecdf.default <- function(x, variable = NULL, resample = FALSE, switch_facets = FALSE, help_text = getOption("priorsense.plot_help_text", TRUE), variables = lifecycle::deprecated(), ...) {
+powerscale_plot_ecdf.default <- function(x,
+                                         variable = NULL,
+                                         resample = FALSE,
+                                         switch_facets = FALSE,
+                                         help_text = getOption("priorsense.plot_help_text", TRUE),
+                                         colors = NULL,
+                                         variables = lifecycle::deprecated(), ...) {
   ps <- powerscale_sequence(x, ...)
   powerscale_plot_ecdf(
     ps,
@@ -336,13 +383,20 @@ powerscale_plot_ecdf.default <- function(x, variable = NULL, resample = FALSE, s
     resample = resample,
     switch_facets = switch_facets,
     help_text = help_text,
+    colors = colors,
     variables = variables
   )
 }
 
 ##' @rdname powerscale_plots
 ##' @export
-powerscale_plot_ecdf.powerscaled_sequence <- function(x, variable = NULL, resample = FALSE, switch_facets = FALSE, help_text = getOption("priorsense.plot_help_text", TRUE), variables = lifecycle::deprecated(), ...) {
+powerscale_plot_ecdf.powerscaled_sequence <- function(x,
+                                                      variable = NULL,
+                                                      resample = FALSE,
+                                                      switch_facets = FALSE,
+                                                      help_text = getOption("priorsense.plot_help_text", TRUE),
+                                                      colors = NULL,
+                                                      variables = lifecycle::deprecated(), ...) {
 
   if (lifecycle::is_present(variables)) {
     lifecycle::deprecate_warn("0.9", "powerscale_plot_ecdf(variables)", "powerscale_plot_ecdf(variable)")
@@ -353,6 +407,11 @@ powerscale_plot_ecdf.powerscaled_sequence <- function(x, variable = NULL, resamp
   checkmate::assert_character(variable, null.ok = TRUE)
   checkmate::assert_logical(resample, len = 1)
   checkmate::assert_logical(help_text, len = 1)
+  checkmate::assertCharacter(colors, len = 3, null.ok = TRUE)
+
+  if (is.null(colors)) {
+    colors <- default_priorsense_colors()[1:3]
+  }
 
   if (is.null(variable)) {
     variable <- posterior::variables(x$base_draws)
@@ -369,7 +428,7 @@ powerscale_plot_ecdf.powerscaled_sequence <- function(x, variable = NULL, resamp
   if (resample || x$resample) {
     resample <- TRUE
   }
-  p <- prepare_plot(d, resample, ...) +
+  p <- prepare_plot(d, resample = resample, colors = colors, ...) +
     ggplot2::guides(
       linetype = ggplot2::guide_legend(
         title = "Pareto k"
@@ -402,7 +461,7 @@ powerscale_plot_ecdf.powerscaled_sequence <- function(x, variable = NULL, resamp
     switch = "y"
     )
   } else {
-    ggh4x::facet_grid2(
+   p <- p + ggh4x::facet_grid2(
       rows = ggplot2::vars(.data$variable),
       cols = ggplot2::vars(.data$component),
     labeller = ggplot2::labeller(
@@ -452,6 +511,8 @@ powerscale_plot_quantities.default <- function(x, variable = NULL,
                                        mcse = TRUE,
                                        quantity_args = NULL,
                                        help_text = getOption("priorsense.plot_help_text", TRUE),
+                                       colors = NULL,
+                                       switch_facets = FALSE,
                                        variables = lifecycle::deprecated(),
                                        quantities = lifecycle::deprecated(),
 
@@ -468,6 +529,8 @@ powerscale_plot_quantities.default <- function(x, variable = NULL,
     mcse = mcse,
     quantity_args = quantity_args,
     help_text = help_text,
+    colors = colors,
+    switch_facets = switch_facets,
     quantities = quantities,
     variables = variables
   )
@@ -483,6 +546,8 @@ powerscale_plot_quantities.powerscaled_sequence <- function(x, variable = NULL,
                                        mcse = TRUE,
                                        quantity_args = NULL,
                                        help_text = getOption("priorsense.plot_help_text", TRUE),
+                                       colors = NULL,
+                                       switch_facets = FALSE,
                                        quantities = deprecated(),
                                        variables = deprecated(),
                                        ...) {
@@ -506,6 +571,11 @@ powerscale_plot_quantities.powerscaled_sequence <- function(x, variable = NULL,
   checkmate::assertLogical(mcse, len = 1)
   checkmate::assertList(quantity_args, null.ok = TRUE)
   checkmate::assertLogical(help_text, len = 1)
+  checkmate::assertCharacter(colors, len = 2, null.ok = TRUE)
+
+  if (is.null(colors)) {
+    colors <- default_priorsense_colors()[4:5]
+  }
 
   names(quantity) <- quantity
 
@@ -590,6 +660,7 @@ powerscale_plot_quantities.powerscaled_sequence <- function(x, variable = NULL,
       base_mcse = base_mcse,
       switch_facets = switch_facets,
       help_text = help_text,
+      colors = colors,
       ...
     )
   )
@@ -601,6 +672,7 @@ powerscale_summary_plot <- function(x,
                                     base_mcse = NULL,
                                     switch_facets,
                                     help_text,
+                                    colors,
                                     ...) {
 
 
@@ -664,7 +736,7 @@ powerscale_summary_plot <- function(x,
   ) +
     ggplot2::scale_shape_manual(
       values = c("likelihood" = 22, "prior" = 15)) +
-  ggplot2::scale_color_viridis_d() +
+  ggplot2::scale_color_manual(values = colors[4:5]) +
   ggplot2::guides(
     color = ggplot2::guide_legend(
       title = "Pareto k",
