@@ -27,5 +27,5 @@ theme_priorsense <- function() {
 }
 
 default_priorsense_colors <- function() {
-  return(c("#1981FA", "#221F21", "#E65041", "#440154FF", "#FDE725FF"))
+  return(c("#1981FA", "#221F21", "#E65041", "#440154", "#FDE725"))
 }

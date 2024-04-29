@@ -7,6 +7,8 @@
 ##' @template plot_args
 ##' @template div_measure_arg
 ##' @template resample_arg
+##' @param intervals Logical indicating whether density plot should
+##'   include intervals. Default is `FALSE`.
 ##' @param help_text Logical indicating whether title and subtitle
 ##'   with explanatory description should be included in the
 ##'   plot. Default is TRUE. Can be set via option
@@ -195,7 +197,7 @@ prepare_plot <- function(d, resample, variable, colors, ...) {
       )
     )
 
-  
+
   if (length(unique(d$alpha)) == 3) {
 
     p <- p +
@@ -204,10 +206,10 @@ prepare_plot <- function(d, resample, variable, colors, ...) {
           override.aes = ggplot2::aes(linetype = "solid")
         )
       )
-    
+
   }
 
-  
+
 
   return(p)
 
@@ -223,6 +225,7 @@ powerscale_plot_dens <- function(x, ...) {
 powerscale_plot_dens.default <- function(x,
                                          variable = NULL,
                                          resample = FALSE,
+                                         intervals = FALSE,
                                          switch_facets = FALSE,
                                          help_text = getOption("priorsense.plot_help_text", TRUE),
                                          colors = NULL,
@@ -244,6 +247,7 @@ powerscale_plot_dens.default <- function(x,
 powerscale_plot_dens.powerscaled_sequence <- function(x,
                                                       variable = NULL,
                                                       resample = FALSE,
+                                                      intervals = FALSE,
                                                       switch_facets = FALSE,
                                                       help_text = getOption("priorsense.plot_help_text", TRUE),
                                                       colors = NULL,
@@ -260,6 +264,7 @@ powerscale_plot_dens.powerscaled_sequence <- function(x,
   checkmate::assert_logical(resample, len = 1)
   checkmate::assert_logical(help_text, len = 1)
   checkmate::assertCharacter(colors, len = 3, null.ok = TRUE)
+  checkmate::assert_logical(intervals, len = 1)
 
   if (is.null(colors)) {
     colors <- default_priorsense_colors()[1:3]
@@ -311,6 +316,20 @@ powerscale_plot_dens.powerscaled_sequence <- function(x,
        key_glyph = "smooth",
        ...
      )
+
+  if (intervals) {
+  out <- out +
+    ggdist::stat_pointinterval(
+      position = ggplot2::position_dodge(width = 0.1),
+       fill = NA,
+       alpha = 1,
+       linewidth = 0.5,
+       trim = FALSE,
+       normalize = "xy",
+       key_glyph = "smooth",
+       ...
+     )
+  }
 
 
   if (switch_facets) {
@@ -369,7 +388,7 @@ powerscale_plot_dens.powerscaled_sequence <- function(x,
     out <- out +
       ggplot2::theme(legend.position = "bottom")
   }
-  
+
   return(out)
 }
 
@@ -693,6 +712,8 @@ powerscale_summary_plot <- function(x,
                                     ...) {
 
 
+  pareto_k_colours <- colors
+
   # get default quantities
   quantities <- setdiff(
     colnames(x[[1]]),
@@ -753,7 +774,7 @@ powerscale_summary_plot <- function(x,
   ) +
     ggplot2::scale_shape_manual(
       values = c("likelihood" = 22, "prior" = 15)) +
-  ggplot2::scale_color_manual(values = colors[4:5]) +
+  ggplot2::scale_color_manual(values = pareto_k_colours) +
   ggplot2::guides(
     color = ggplot2::guide_legend(
       title = "Pareto k",

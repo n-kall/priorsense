@@ -104,6 +104,9 @@ quantity functions. Passed as \code{.args} to
 \verb{[posterior::summarise_draws]}.}
 
 \item{quantities}{(deprecated) Use quantity instead.}
+
+\item{intervals}{Logical indicating whether density plot should
+include intervals. Default is \code{FALSE}.}
 }
 \value{
 A ggplot object that can be further customized using the \strong{ggplot2} package.
