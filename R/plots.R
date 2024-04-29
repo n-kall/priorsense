@@ -195,6 +195,20 @@ prepare_plot <- function(d, resample, variable, colors, ...) {
       )
     )
 
+  
+  if (length(unique(d$alpha)) == 3) {
+
+    p <- p +
+      ggplot2::guides(
+        color = ggplot2::guide_legend(
+          override.aes = ggplot2::aes(linetype = "solid")
+        )
+      )
+    
+  }
+
+  
+
   return(p)
 
 }
@@ -355,7 +369,7 @@ powerscale_plot_dens.powerscaled_sequence <- function(x,
     out <- out +
       ggplot2::theme(legend.position = "bottom")
   }
-
+  
   return(out)
 }
 
@@ -487,6 +501,11 @@ powerscale_plot_ecdf.powerscaled_sequence <- function(x,
     p <- p +
       ggplot2::xlab("") +
       theme_priorsense()
+  }
+
+  if (switch_facets) {
+    p <- p +
+      ggplot2::theme(legend.position = "bottom")
   }
 
   return(p)
