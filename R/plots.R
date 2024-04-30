@@ -293,7 +293,7 @@ powerscale_plot_dens.powerscaled_sequence <- function(x,
   interval_positions$interval_y <- (0.5 - (interval_positions$interval_y)) / (6 * nrow(interval_positions))
 
   d <- merge(d, interval_positions)
-  
+
   if (resample || x$resample) {
     resample <- TRUE
   }
@@ -325,7 +325,7 @@ powerscale_plot_dens.powerscaled_sequence <- function(x,
      )
 
   if (!is.null(intervals)) {
-    
+
   out <- out +
     ggdist::stat_pointinterval(
       ggplot2::aes(y = .data$interval_y),
@@ -335,7 +335,7 @@ powerscale_plot_dens.powerscaled_sequence <- function(x,
       trim = FALSE,
       normalize = "xy",
       key_glyph = "smooth"
-    ) 
+    )
   }
 
 
@@ -527,6 +527,13 @@ powerscale_plot_ecdf.powerscaled_sequence <- function(x,
     independent = "all",
     switch = "y"
     )
+
+  }
+
+  if (!(any(d$pareto_k_value == "High"))) {
+
+    p <- p +
+      ggplot2::guides(linetype = "none")
 
   }
 
@@ -819,7 +826,6 @@ powerscale_summary_plot <- function(x,
   )
 
   if (!(any(summaries$pareto_k_value == "High"))) {
-
     p <- p +
       ggplot2::guides(
         colour = "none"
