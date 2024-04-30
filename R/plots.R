@@ -7,8 +7,9 @@
 ##' @template plot_args
 ##' @template div_measure_arg
 ##' @template resample_arg
-##' @param intervals Logical indicating whether density plot should
-##'   include intervals. Default is `FALSE`.
+##' @param intervals Numeric vector of length 3 indicating which
+##'   intervals to plot below density estimates. Default is c(0.5,
+##'   0.8, 0.95). If `NULL`, no intervals will be plotted.
 ##' @param help_text Logical indicating whether title and subtitle
 ##'   with explanatory description should be included in the
 ##'   plot. Default is TRUE. Can be set via option
@@ -225,7 +226,7 @@ powerscale_plot_dens <- function(x, ...) {
 powerscale_plot_dens.default <- function(x,
                                          variable = NULL,
                                          resample = FALSE,
-                                         intervals = FALSE,
+                                         intervals = c(0.5, 0.8, 0.95),
                                          switch_facets = FALSE,
                                          help_text = getOption("priorsense.plot_help_text", TRUE),
                                          colors = NULL,
@@ -248,7 +249,7 @@ powerscale_plot_dens.default <- function(x,
 powerscale_plot_dens.powerscaled_sequence <- function(x,
                                                       variable = NULL,
                                                       resample = FALSE,
-                                                      intervals = FALSE,
+                                                      intervals = c(0.5, 0.8, 0.95),
                                                       switch_facets = FALSE,
                                                       help_text = getOption("priorsense.plot_help_text", TRUE),
                                                       colors = NULL,
@@ -265,7 +266,7 @@ powerscale_plot_dens.powerscaled_sequence <- function(x,
   checkmate::assert_logical(resample, len = 1)
   checkmate::assert_logical(help_text, len = 1)
   checkmate::assertCharacter(colors, len = 3, null.ok = TRUE)
-  checkmate::assert_logical(intervals, len = 1)
+  checkmate::assert_numeric(intervals, len = 3, null.ok = TRUE)
 
   if (is.null(colors)) {
     colors <- default_priorsense_colors()[1:3]
@@ -281,6 +282,15 @@ powerscale_plot_dens.powerscaled_sequence <- function(x,
 
   d <- prepare_plot_data(x, variable = variable, resample = resample, ...)
 
+  interval_positions <- data.frame(
+    alpha = unique(d$alpha),
+    interval_y = as.numeric(as.factor(unique(d$alpha)))
+  )
+
+  interval_positions$interval_y <- (0.5 - (interval_positions$interval_y)) / (6 * nrow(interval_positions))
+
+  d <- merge(d, interval_positions)
+  
   if (resample || x$resample) {
     resample <- TRUE
   }
@@ -308,7 +318,7 @@ powerscale_plot_dens.powerscaled_sequence <- function(x,
        key_glyph = "smooth",
        ...
      ) +
-     ggdist::stat_slab(
+    ggdist::stat_slab(
        fill = NA,
        alpha = 1,
        linewidth = 0.5,
@@ -318,18 +328,19 @@ powerscale_plot_dens.powerscaled_sequence <- function(x,
        ...
      )
 
-  if (intervals) {
+  if (!is.null(intervals)) {
+    
   out <- out +
     ggdist::stat_pointinterval(
-      position = ggplot2::position_dodge(width = 0.1),
-       fill = NA,
-       alpha = 1,
-       linewidth = 0.5,
-       trim = FALSE,
-       normalize = "xy",
-       key_glyph = "smooth",
-       ...
-     )
+      aes(y = interval_y),
+      .width = intervals,
+      fill = NA,
+      alpha = 1,
+      trim = FALSE,
+      normalize = "xy",
+      key_glyph = "smooth",
+      ...
+    ) 
   }
 
 
@@ -381,7 +392,8 @@ powerscale_plot_dens.powerscaled_sequence <- function(x,
       ggplot2::ylab(NULL) +
       ggplot2::theme(
         axis.text.y = ggplot2::element_blank(),
-        axis.ticks.y = ggplot2::element_blank()
+        axis.ticks.y = ggplot2::element_blank(),
+        axis.line.y = ggplot2::element_blank()
       )
   }
 

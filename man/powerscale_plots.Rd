@@ -105,8 +105,9 @@ quantity functions. Passed as \code{.args} to
 
 \item{quantities}{(deprecated) Use quantity instead.}
 
-\item{intervals}{Logical indicating whether density plot should
-include intervals. Default is \code{FALSE}.}
+\item{intervals}{Numeric vector of length 3 indicating which
+intervals to plot below density estimates. Default is c(0.5,
+0.8, 0.95). If \code{NULL}, no intervals will be plotted.}
 }
 \value{
 A ggplot object that can be further customized using the \strong{ggplot2} package.
