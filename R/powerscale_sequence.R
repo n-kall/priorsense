@@ -87,14 +87,12 @@ powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
         x,
         component = comp,
         alpha_bound = lower_alpha,
-        k_threshold = k_threshold,
         moment_match = moment_match
       )
       upper_alpha <- find_alpha_threshold(
         x,
         component = comp,
         alpha_bound = upper_alpha,
-        k_threshold = k_threshold,
         moment_match = moment_match
       )
       alpha_range[[comp]] <- list(lower_alpha, upper_alpha)

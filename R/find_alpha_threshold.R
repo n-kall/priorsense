@@ -16,11 +16,9 @@ find_alpha_threshold.default <- function(x, ...) {
 find_alpha_threshold.priorsense_data <- function(x,
                                                  component,
                                                  alpha_bound,
-                                                 k_threshold = 0.5,
-                                                 epsilon = 0.001,
+                                                 epsilon = 0.00001,
                                                  moment_match = FALSE, ...) {
   checkmate::assert_number(alpha_bound, lower = 0)
-  checkmate::assert_number(k_threshold)
   checkmate::assert_number(epsilon, lower = 0)
   checkmate::assert_choice(component, c("prior", "likelihood"))
 
@@ -45,7 +43,7 @@ find_alpha_threshold.priorsense_data <- function(x,
   while (continue) {
 
     # calculate criterion
-    new_pareto_k <- get_powerscaling_details(
+    new_pareto_k_diags <- get_powerscaling_details(
       suppressWarnings(
       powerscale(
         x = x,
@@ -53,9 +51,12 @@ find_alpha_threshold.priorsense_data <- function(x,
         component = component,
         moment_match = moment_match
       )
-    ))$diagnostics$khat
+      ))$diagnostics
 
-    compare <- comparison(new_pareto_k, pareto_k, k_threshold, epsilon)
+    new_pareto_k <- new_pareto_k_diags$khat
+    new_khat_threshold <- new_pareto_k_diags$khat_threshold
+
+    compare <- comparison(new_pareto_k, pareto_k, new_khat_threshold, epsilon)
 
     # check criterion
     if (compare == "left") {

@@ -17,10 +17,12 @@ powerscale_plot_ecdf(x, ...)
   x,
   variable = NULL,
   resample = FALSE,
-  switch_facets = FALSE,
+  length = 3,
+  facet_rows = "component",
   help_text = getOption("priorsense.plot_help_text", TRUE),
   colors = NULL,
-  variables = lifecycle::deprecated(),
+  switch_facets = deprecated(),
+  variables = deprecated(),
   ...
 )
 
@@ -37,7 +39,7 @@ powerscale_plot_quantities(x, ...)
   quantity_args = NULL,
   help_text = getOption("priorsense.plot_help_text", TRUE),
   colors = NULL,
-  switch_facets = FALSE,
+  switch_facets = deprecated(),
   quantities = deprecated(),
   variables = deprecated(),
   ...
@@ -56,10 +58,11 @@ of class \code{powerscaled_sequence}.}
 \item{resample}{Logical; Indicate whether or not draws should be
 resampled based on calculated importance weights.}
 
-\item{switch_facets}{Logical indicating whether facets should we
-switched. If \code{FALSE} (the default), variables will be plotted in
-different rows, and component/quantities in columns. If \code{TRUE}
-these will be switched.}
+\item{length}{Numeric specifying how many alpha values should be
+used. Ignored of the object is of class \code{powerscaled_sequence}.}
+
+\item{facet_rows}{Character defining the rows of the plot facets,
+either "variable" or "component". Default is "variable".}
 
 \item{help_text}{Logical indicating whether title and subtitle
 with explanatory description should be included in the
@@ -71,6 +74,8 @@ plots. Either length 3 for \code{powerscale_plot_ecdf} and
 \code{powerscale_plot_dens} with order lowest, base, highest; or
 length 2 for \code{powerscale_plot_quantities} with order low Pareto
 k, high Pareto k. If \code{NULL} the defaults will be used.}
+
+\item{switch_facets}{(deprecated) Use facet_rows instead.}
 
 \item{variables}{(deprecated) Use variable instead.}
 
@@ -104,10 +109,6 @@ quantity functions. Passed as \code{.args} to
 \verb{[posterior::summarise_draws]}.}
 
 \item{quantities}{(deprecated) Use quantity instead.}
-
-\item{intervals}{Numeric vector indicating which
-intervals to plot below density estimates. Default is c(0.5,
-0.8, 0.95). If \code{NULL}, no intervals will be plotted.}
 }
 \value{
 A ggplot object that can be further customized using the \strong{ggplot2} package.

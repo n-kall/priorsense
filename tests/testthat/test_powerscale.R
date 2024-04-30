@@ -91,7 +91,7 @@ test_that("powerscale_sequence uses input alphas correctly", {
 )
 
 test_that("powerscale_sequence adapts alphas and keeps pareto-k low", {
-  k_threshold <- 0.5
+  k_threshold <- 0.7
   pss <- suppressWarnings(powerscale_sequence(
     x = univariate_normal_draws,
     auto_alpha_range = TRUE
