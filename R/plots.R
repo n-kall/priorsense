@@ -7,7 +7,7 @@
 ##' @template plot_args
 ##' @template div_measure_arg
 ##' @template resample_arg
-##' @param intervals Numeric vector of length 3 indicating which
+##' @param intervals Numeric vector indicating which
 ##'   intervals to plot below density estimates. Default is c(0.5,
 ##'   0.8, 0.95). If `NULL`, no intervals will be plotted.
 ##' @param help_text Logical indicating whether title and subtitle
@@ -266,7 +266,7 @@ powerscale_plot_dens.powerscaled_sequence <- function(x,
   checkmate::assert_logical(resample, len = 1)
   checkmate::assert_logical(help_text, len = 1)
   checkmate::assertCharacter(colors, len = 3, null.ok = TRUE)
-  checkmate::assert_numeric(intervals, len = 3, null.ok = TRUE)
+  checkmate::assert_numeric(intervals, null.ok = TRUE)
 
   if (is.null(colors)) {
     colors <- default_priorsense_colors()[1:3]

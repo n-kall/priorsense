@@ -105,7 +105,7 @@ quantity functions. Passed as \code{.args} to
 
 \item{quantities}{(deprecated) Use quantity instead.}
 
-\item{intervals}{Numeric vector of length 3 indicating which
+\item{intervals}{Numeric vector indicating which
 intervals to plot below density estimates. Default is c(0.5,
 0.8, 0.95). If \code{NULL}, no intervals will be plotted.}
 }
