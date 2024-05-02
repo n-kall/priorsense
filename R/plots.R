@@ -183,7 +183,6 @@ prepare_plot <- function(d, resample, variable, colors, ...) {
       )
     )
 
-
   if (length(unique(d$alpha)) == 3) {
     p <- p +
       ggplot2::guides(
@@ -216,6 +215,7 @@ powerscale_plot_dens.default <- function(x,
                                          length = 3,
                                          resample = FALSE,
                                          intervals = c(0.5, 0.8, 0.95),
+                                         trim = NULL,
                                          facet_rows = "component",
                                          help_text = getOption("priorsense.plot_help_text", TRUE),
                                          colors = NULL,
@@ -228,6 +228,7 @@ powerscale_plot_dens.default <- function(x,
     length = length,
     resample = resample,
     intervals = intervals,
+    trim = trim,
     facet_rows = facet_rows,
     help_text = help_text,
     colors = colors,
@@ -242,6 +243,7 @@ powerscale_plot_dens.powerscaled_sequence <- function(x,
                                                       variable = NULL,
                                                       resample = FALSE,
                                                       intervals = c(0.5, 0.8, 0.95),
+                                                      trim = NULL,
                                                       facet_rows = "component",
                                                       help_text = getOption("priorsense.plot_help_text", TRUE),
                                                       colors = NULL,
@@ -397,6 +399,23 @@ powerscale_plot_dens.powerscaled_sequence <- function(x,
       ggplot2::theme(legend.position = "bottom")
   }
 
+
+  if (!is.null(trim)) {
+  position_scales <- lapply(
+    variable, FUN =
+    function(.x, prob) {
+      limits <- quantile2(x$base_draws[[.x]], probs = c((1 - prob)/2, prob + (1 - prob)/2))
+      return(scale_x_continuous(limits = limits))
+    }, prob = trim
+  )
+
+  if (facet_rows == "component") {
+    out <- out + ggh4x::facetted_pos_scales(x = rep(position_scales, times = 2))
+  } else {
+    out <- out + ggh4x::facetted_pos_scales(x = rep(position_scales, each = 2))
+  }
+  }
+
   return(out)
 }
 
@@ -509,7 +528,7 @@ powerscale_plot_ecdf.powerscaled_sequence <- function(x,
         prior = "Prior power-scaling"
       )
     ),
-    scales = "free",
+    scales = "free_x",
     independent = "all",
     switch = "y"
     )
