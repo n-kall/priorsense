@@ -528,7 +528,7 @@ powerscale_plot_ecdf.powerscaled_sequence <- function(x,
         prior = "Prior power-scaling"
       )
     ),
-    scales = "free_x",
+    scales = "free",
     independent = "all",
     switch = "y"
     )
