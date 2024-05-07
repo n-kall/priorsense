@@ -17,8 +17,12 @@ powerscale_plot_ecdf(x, ...)
   x,
   variable = NULL,
   resample = FALSE,
+  length = 3,
+  facet_rows = "component",
   help_text = getOption("priorsense.plot_help_text", TRUE),
-  variables = lifecycle::deprecated(),
+  colors = NULL,
+  switch_facets = deprecated(),
+  variables = deprecated(),
   ...
 )
 
@@ -34,6 +38,8 @@ powerscale_plot_quantities(x, ...)
   mcse = TRUE,
   quantity_args = NULL,
   help_text = getOption("priorsense.plot_help_text", TRUE),
+  colors = NULL,
+  switch_facets = deprecated(),
   quantities = deprecated(),
   variables = deprecated(),
   ...
@@ -52,10 +58,24 @@ of class \code{powerscaled_sequence}.}
 \item{resample}{Logical; Indicate whether or not draws should be
 resampled based on calculated importance weights.}
 
+\item{length}{Numeric specifying how many alpha values should be
+used. Ignored of the object is of class \code{powerscaled_sequence}.}
+
+\item{facet_rows}{Character defining the rows of the plot facets,
+either "variable" or "component". Default is "variable".}
+
 \item{help_text}{Logical indicating whether title and subtitle
 with explanatory description should be included in the
 plot. Default is TRUE. Can be set via option
 "priorsense.show_help_text".}
+
+\item{colors}{Character vector of colors to be used for
+plots. Either length 3 for \code{powerscale_plot_ecdf} and
+\code{powerscale_plot_dens} with order lowest, base, highest; or
+length 2 for \code{powerscale_plot_quantities} with order low Pareto
+k, high Pareto k. If \code{NULL} the defaults will be used.}
+
+\item{switch_facets}{(deprecated) Use facet_rows instead.}
 
 \item{variables}{(deprecated) Use variable instead.}
 

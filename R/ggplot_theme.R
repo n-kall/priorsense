@@ -25,3 +25,7 @@ theme_priorsense <- function() {
       axis.text = ggplot2::element_text(colour = "black")
     )
 }
+
+default_priorsense_colors <- function() {
+  return(c("#1981FA", "#221F21", "#E65041", "#440154", "#FDE725"))
+}

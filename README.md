@@ -120,7 +120,7 @@ plot functions. Estimates with high Pareto-k values may be inaccurate
 and are indicated.
 
 ``` r
-powerscale_plot_ecdf(fit)
+powerscale_plot_dens(fit)
 ```
 
 <img src="man/figures/README-ecdf_plot-1.png" width="70%" height="70%" />
@@ -136,7 +136,7 @@ estimates at the cost of some further computation. This requires the
 [`iwmm` package](https://github.com/topipa/iwmm).
 
 ``` r
-powerscale_plot_ecdf(fit, moment_match = TRUE)
+powerscale_plot_dens(fit, moment_match = TRUE)
 ```
 
 <img src="man/figures/README-ecdf_plot_mm-1.png" width="70%" height="70%" />
