@@ -384,22 +384,13 @@ powerscale_plot_dens.powerscaled_sequence <- function(x,
       )
   }
 
-  if (getOption("priorsense.use_plot_theme", TRUE)) {
-    out <- out +
-      theme_priorsense() +
-      ggplot2::theme(
-        axis.text.y = ggplot2::element_blank(),
-        axis.ticks.y = ggplot2::element_blank(),
-        axis.line.y = ggplot2::element_blank()
-      )
-  } else {
-    out <- out +
-      ggplot2::theme(
-        axis.line.y = element_blank(),
-        axis.text.y = element_blank(),
-        axis.ticks.y = element_blank()
-      )
-  }
+  # additional theming
+  out <- out +
+    ggplot2::theme(
+      axis.line.y = ggplot2::element_blank(),
+      axis.text.y = ggplot2::element_blank(),
+      axis.ticks.y = ggplot2::element_blank()
+    )
 
   if (facet_rows == "component") {
     out <- out +
@@ -570,11 +561,6 @@ powerscale_plot_ecdf.powerscaled_sequence <- function(x,
     label = "Power-scaling sensitivity",
     subtitle = "Posterior ECDF depending on amount of power-scaling (alpha).\nOverlapping lines indicate low sensitivity.\nWider gaps between lines indicate greater sensitivity.\nEstimates with high Pareto k (dashed lines) may be inaccurate."
   )
-  }
-
-  if (getOption("priorsense.use_plot_theme", TRUE)) {
-    p <- p +
-      theme_priorsense()
   }
   if (facet_rows == "component") {
     p <- p +
@@ -887,9 +873,5 @@ powerscale_summary_plot <- function(x,
       )
   }
 
-  if (getOption("priorsense.use_plot_theme", TRUE)) {
-    p <- p +
-      theme_priorsense()
-  }
   return(p)
 }

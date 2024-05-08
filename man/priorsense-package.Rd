@@ -30,8 +30,6 @@ posteriors, and then a plot function such as
 
 The following global options are available:
 \itemize{
-\item \code{priorsense.use_plot_theme}: If \code{TRUE} (the default),
-priorsense plots will use the priorsense theme. If \code{FALSE} they will use the current \code{ggplot2} theme.
 \item \code{priorsense.plot_help_text}: If \code{TRUE} (the default), priorsense plots will include a title and explanatory text. If \code{FALSE} they will not.
 }
 }

@@ -5,6 +5,9 @@ output: github_document
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
+
+ggplot2::theme_set(bayesplot::theme_default(base_family = "sans"))
+
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
