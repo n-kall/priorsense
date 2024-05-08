@@ -4,9 +4,8 @@
 #'
 #' @return A ggplot2 theme
 #' @export
-
-theme_priorsense <- function() {
-  ggplot2::theme_bw() +
+theme_priorsense <- function(base_size = 13) {
+  ggplot2::theme_bw(base_size = base_size) +
     ggplot2::theme(
       panel.grid = ggplot2::element_blank(),
       strip.background = ggplot2::element_blank(),

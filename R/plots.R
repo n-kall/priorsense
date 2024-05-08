@@ -513,7 +513,8 @@ powerscale_plot_ecdf.powerscaled_sequence <- function(x,
         title = "Pareto k"
       )
     ) +
-    ggplot2::ylab("ECDF")
+    ggplot2::ylab("ECDF") +
+    ggplot2::xlab(NULL)
 
   if (resample || x$resampled) {
     p <- p +
@@ -573,7 +574,6 @@ powerscale_plot_ecdf.powerscaled_sequence <- function(x,
 
   if (getOption("priorsense.use_plot_theme", TRUE)) {
     p <- p +
-      ggplot2::xlab(NULL) +
       theme_priorsense()
   }
   if (facet_rows == "component") {
