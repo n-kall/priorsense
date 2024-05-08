@@ -324,7 +324,9 @@ powerscale_plot_dens.powerscaled_sequence <- function(x,
        trim = FALSE,
        normalize = "xy",
        key_glyph = "smooth"
-     )
+    ) +
+    ggplot2::xlab(NULL) +
+    ggplot2::ylab(NULL)
 
   if (!is.null(intervals)) {
 
@@ -385,12 +387,17 @@ powerscale_plot_dens.powerscaled_sequence <- function(x,
   if (getOption("priorsense.use_plot_theme", TRUE)) {
     out <- out +
       theme_priorsense() +
-      ggplot2::xlab(NULL) +
-      ggplot2::ylab(NULL) +
       ggplot2::theme(
         axis.text.y = ggplot2::element_blank(),
         axis.ticks.y = ggplot2::element_blank(),
         axis.line.y = ggplot2::element_blank()
+      )
+  } else {
+    out <- out +
+      ggplot2::theme(
+        axis.line.y = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank()
       )
   }
 
@@ -569,7 +576,6 @@ powerscale_plot_ecdf.powerscaled_sequence <- function(x,
       ggplot2::xlab(NULL) +
       theme_priorsense()
   }
-
   if (facet_rows == "component") {
     p <- p +
       ggplot2::theme(legend.position = "bottom")
@@ -647,7 +653,7 @@ powerscale_plot_quantities.powerscaled_sequence <- function(x, variable = NULL,
   }
 
     if (lifecycle::is_present(switch_facets)) {
-    lifecycle::deprecate_warn("0.9.1", "powerscale_plot_dens(switch_facets)", "powerscale_plot_dens(facet_rows)")
+    lifecycle::deprecate_warn("0.9.1", "powerscale_plot_quantities(switch_facets)", "powerscale_plot_quantities(facet_rows)")
     if (switch_facets) {
       facet_rows <- "variable"
     } else {
@@ -885,6 +891,5 @@ powerscale_summary_plot <- function(x,
     p <- p +
       theme_priorsense()
   }
-
   return(p)
 }
