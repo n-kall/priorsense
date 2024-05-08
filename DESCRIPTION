@@ -1,6 +1,6 @@
 Package: priorsense
 Title: Prior Diagnostics and Sensitivity Analysis
-Version: 0.9.1
+Version: 0.9.2
 Authors@R: c(person("Noa", "Kallioinen", email = "noa.kallioinen@aalto.fi", role = c("aut", "cre")),
 	     person("Paul-Christian", "Bürkner", role = c("aut")),
 	     person("Topi", "Paananen", role = c("aut")),
