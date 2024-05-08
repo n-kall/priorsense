@@ -324,7 +324,9 @@ powerscale_plot_dens.powerscaled_sequence <- function(x,
        trim = FALSE,
        normalize = "xy",
        key_glyph = "smooth"
-     )
+    ) +
+    ggplot2::xlab(NULL) +
+    ggplot2::ylab(NULL)
 
   if (!is.null(intervals)) {
 
@@ -382,17 +384,13 @@ powerscale_plot_dens.powerscaled_sequence <- function(x,
       )
   }
 
-  if (getOption("priorsense.use_plot_theme", TRUE)) {
-    out <- out +
-      theme_priorsense() +
-      ggplot2::xlab(NULL) +
-      ggplot2::ylab(NULL) +
-      ggplot2::theme(
-        axis.text.y = ggplot2::element_blank(),
-        axis.ticks.y = ggplot2::element_blank(),
-        axis.line.y = ggplot2::element_blank()
-      )
-  }
+  # additional theming
+  out <- out +
+    ggplot2::theme(
+      axis.line.y = ggplot2::element_blank(),
+      axis.text.y = ggplot2::element_blank(),
+      axis.ticks.y = ggplot2::element_blank()
+    )
 
   if (facet_rows == "component") {
     out <- out +
@@ -506,7 +504,8 @@ powerscale_plot_ecdf.powerscaled_sequence <- function(x,
         title = "Pareto k"
       )
     ) +
-    ggplot2::ylab("ECDF")
+    ggplot2::ylab("ECDF") +
+    ggplot2::xlab(NULL)
 
   if (resample || x$resampled) {
     p <- p +
@@ -563,13 +562,6 @@ powerscale_plot_ecdf.powerscaled_sequence <- function(x,
     subtitle = "Posterior ECDF depending on amount of power-scaling (alpha).\nOverlapping lines indicate low sensitivity.\nWider gaps between lines indicate greater sensitivity.\nEstimates with high Pareto k (dashed lines) may be inaccurate."
   )
   }
-
-  if (getOption("priorsense.use_plot_theme", TRUE)) {
-    p <- p +
-      ggplot2::xlab(NULL) +
-      theme_priorsense()
-  }
-
   if (facet_rows == "component") {
     p <- p +
       ggplot2::theme(legend.position = "bottom")
@@ -647,7 +639,7 @@ powerscale_plot_quantities.powerscaled_sequence <- function(x, variable = NULL,
   }
 
     if (lifecycle::is_present(switch_facets)) {
-    lifecycle::deprecate_warn("0.9.1", "powerscale_plot_dens(switch_facets)", "powerscale_plot_dens(facet_rows)")
+    lifecycle::deprecate_warn("0.9.1", "powerscale_plot_quantities(switch_facets)", "powerscale_plot_quantities(facet_rows)")
     if (switch_facets) {
       facet_rows <- "variable"
     } else {
@@ -879,11 +871,6 @@ powerscale_summary_plot <- function(x,
         data = base_mcse,
         color = "black"
       )
-  }
-
-  if (getOption("priorsense.use_plot_theme", TRUE)) {
-    p <- p +
-      theme_priorsense()
   }
 
   return(p)

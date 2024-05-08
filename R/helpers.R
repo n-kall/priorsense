@@ -16,15 +16,18 @@ remove_unwanted_vars <- function(x, excluded_variables = c("lprior", "log_lik", 
 
   draws <- posterior::as_draws_df(x, variable = variable, regex = regex)
 
-    # remove unnecessary variables
-    variable <- posterior::variables(draws)
+  # remove unnecessary variables
+  variable <- posterior::variables(draws)
 
-    has_prefix <- sapply(
-      excluded_variables,
-      function(p) startsWith(variable, p)
-    )
-    variable <- variable[!(apply(has_prefix, 1, any))]
-    draws <- posterior::subset_draws(draws, variable = variable)
+  has_prefix <- sapply(
+    excluded_variables,
+    function(p) startsWith(variable, p)
+  )
+
+  dim(has_prefix) <- c(length(variable), length(excluded_variables))
+
+  variable <- variable[!(apply(has_prefix, 1, any))]
+  draws <- posterior::subset_draws(draws, variable = variable)
 
   return(draws)
 }
