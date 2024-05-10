@@ -350,8 +350,8 @@ powerscale_plot_dens.powerscaled_sequence <- function(x,
         cols = ggplot2::vars(.data$variable),
         labeller = ggplot2::labeller(
           component = c(
-            likelihood = "Likelihood power-scaling",
-            prior = "Prior power-scaling"
+            likelihood = "Likelihood\npower-scaling",
+            prior = "Prior\npower-scaling"
           )
         ),
         independent = "all",
@@ -365,8 +365,8 @@ powerscale_plot_dens.powerscaled_sequence <- function(x,
       cols = ggplot2::vars(.data$component),
       labeller = ggplot2::labeller(
         component = c(
-          likelihood = "Likelihood power-scaling",
-          prior = "Prior power-scaling"
+          likelihood = "Likelihood\npower-scaling",
+          prior = "Prior\npower-scaling"
         )
       ),
       independent = "all",
@@ -523,8 +523,8 @@ powerscale_plot_ecdf.powerscaled_sequence <- function(x,
       cols = ggplot2::vars(.data$variable),
     labeller = ggplot2::labeller(
       component = c(
-        likelihood = "Likelihood power-scaling",
-        prior = "Prior power-scaling"
+        likelihood = "Likelihood\npower-scaling",
+        prior = "Prior\npower-scaling"
       )
     ),
     scales = "free",
@@ -537,8 +537,8 @@ powerscale_plot_ecdf.powerscaled_sequence <- function(x,
       cols = ggplot2::vars(.data$component),
     labeller = ggplot2::labeller(
       component = c(
-        likelihood = "Likelihood power-scaling",
-        prior = "Prior power-scaling"
+        likelihood = "Likelihood\npower-scaling",
+        prior = "Prior\npower-scaling"
       )
     ),
     scales = "free",
