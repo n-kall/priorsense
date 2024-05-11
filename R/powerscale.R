@@ -171,6 +171,7 @@ powerscale.priorsense_data <- function(x,
     # posterior release
     smoothed_log_ratios <- posterior::pareto_smooth(
       exp(as.numeric(log_ratios - max(log_ratios))),
+      r_eff = NULL,
       return_k = TRUE,
       extra_diags = TRUE,
       verbose = FALSE
