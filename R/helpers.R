@@ -24,7 +24,9 @@ remove_unwanted_vars <- function(x, excluded_variables = c("lprior", "log_lik", 
     function(p) startsWith(variable, p)
   )
 
-  dim(has_prefix) <- c(length(variable), length(excluded_variables))
+  if (is.null(dim(has_prefix))) {
+    dim(has_prefix) <- c(length(variable), length(excluded_variables))
+  }
 
   variable <- variable[!(apply(has_prefix, 1, any))]
   draws <- posterior::subset_draws(draws, variable = variable)
