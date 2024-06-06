@@ -232,3 +232,13 @@ summarise_draws.powerscaled_sequence <- function(.x,
 
   return(summaries)
 }
+
+##' @export
+summarise_draws.whitened_draws <- function(.x, ...) {
+  class(.x) <- class(.x)[-1]
+  summary <- posterior::summarise_draws(.x, ...)
+  attr(summary, "loadings") <- attr(.x, "loadings")
+  class(summary) <- c("whitened_draws_summary", class(summary))
+  return(summary)
+}
+                                           

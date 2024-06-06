@@ -94,3 +94,22 @@ print.powerscaled_sensitivity_summary <- function(x, ..., num_args = NULL) {
   }
   invisible(x)
 }
+
+
+##' @export
+print.whitened_draws <- function(x, ...) {
+  NextMethod()
+  cat("Factor loadings:\n")
+  print(attr(x, "loadings"), ...)
+  invisible(x)
+
+}
+
+##' @export
+print.whitened_draws_summary <- function(x, ...) {
+  NextMethod()
+  cat("Factor loadings:\n")
+  print(attr(x, "loadings"), ...)
+  invisible(x)
+
+}

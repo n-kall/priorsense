@@ -73,6 +73,7 @@ get_draws_brmsfit <- function(x, variable = NULL, regex = FALSE, log_prior_name 
 predictions_as_draws <- function(x, predict_fn, prediction_names = NULL,
                                  warn_dims = getOption("priorsense.warn", TRUE),
                                  ...) {
+  require_package("brms")
   terms <- brms::brmsterms(x$formula)
   if(inherits(terms, "mvbrmsterms")) {
     responses <- brms::brmsterms(x$formula)$responses

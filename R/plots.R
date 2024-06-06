@@ -403,7 +403,7 @@ powerscale_plot_dens.powerscaled_sequence <- function(x,
     variable, FUN =
     function(.x, prob) {
       limits <- quantile2(x$base_draws[[.x]], probs = c((1 - prob)/2, prob + (1 - prob)/2))
-      return(scale_x_continuous(limits = limits))
+      return(ggplot2::scale_x_continuous(limits = limits))
     }, prob = trim
   )
 

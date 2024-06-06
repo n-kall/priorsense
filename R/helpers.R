@@ -4,12 +4,12 @@ SW <- function(...) {
 
 rowsums_draws <- function(x) {
   posterior::draws_array(
-        sum = rowSums(
-          posterior::as_draws_array(x),
-          dims = 2
-        ),
-        .nchains = posterior::nchains(x)
-      )
+    sum = rowSums(
+      posterior::as_draws_array(x),
+      dims = 2
+    ),
+    .nchains = posterior::nchains(x)
+  )
 }
 
 remove_unwanted_vars <- function(x, excluded_variables = c("lprior", "log_lik", "lp__"), regex, ...) {
