@@ -61,8 +61,8 @@ Computing}. 31(16).  \code{doi:10.1007/s11222-020-09982-2}
 
 Authors:
 \itemize{
-  \item Paul-Christian Bürkner
   \item Topi Paananen
+  \item Paul-Christian Bürkner
   \item Aki Vehtari
 }
 
