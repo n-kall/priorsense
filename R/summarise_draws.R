@@ -1,11 +1,3 @@
-##' @export
-summary.powerscaled_draws <- function(object, ...) {
-
-  summarise_draws.powerscaled_draws(object, ...)
-
-}
-
-
 ##' Summarise draws
 ##'
 ##' Summarise power-scaled draws

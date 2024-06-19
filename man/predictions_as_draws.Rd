@@ -37,8 +37,6 @@ library(brms)
 
 fit <- brm(yield ~ N * P * K, data = npk, prior = prior(normal(0, 1), class = "b"), refresh = 0)
 
-predictions <- predictions_as_draws(fit, brms::posterior_epred)
-
 if ("log_prior_draws.brmsfit" \%in\% methods(log_prior_draws) && ("log_lik_draws.brmsfit" \%in\% methods(log_lik_draws))) {
 
 powerscale_sensitivity(
