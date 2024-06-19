@@ -26,7 +26,7 @@
 ##'   powerscale_sensitivity(
 ##'       fit,
 ##'       variable = "_pred",
-##'       oprediction = function(x) predictions_as_draws(x, brms::posterior_epred)
+##'       prediction = function(x) predictions_as_draws(x, brms::posterior_epred)
 ##' )
 ##' }
 ##' @export
