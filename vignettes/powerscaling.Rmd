@@ -1,5 +1,5 @@
 ---
-title: "Powerscaling sensitivity analysis"
+title: "Power-scaling sensitivity analysis"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Powerscaling sensitivity analysis}

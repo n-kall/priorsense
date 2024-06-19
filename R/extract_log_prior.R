@@ -8,7 +8,7 @@
 ##' @param log_prior_name Name of parameter in Stan model
 ##'   corresponding to log prior, default is "lprior".
 ##' @param ... Arguments passed to individual methods.
-##' @return A draws_array obejct containing log_prior values.
+##' @return A draws_array object containing log_prior values.
 ##' @export
 log_prior_draws <- function(x, ...) {
   UseMethod("log_prior_draws")

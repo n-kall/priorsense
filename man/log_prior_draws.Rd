@@ -24,7 +24,7 @@ log_prior_draws(x, ...)
 corresponding to log prior, default is "lprior".}
 }
 \value{
-A draws_array obejct containing log_prior values.
+A draws_array object containing log_prior values.
 }
 \description{
 Extract log prior from variable in fitted Stan model.
