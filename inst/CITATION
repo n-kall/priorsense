@@ -1,5 +1,5 @@
 bibentry(
-  bibtype = "Misc",
+  bibtype = "article",
   title = "Detecting and diagnosing prior and likelihood sensitivity with power-scaling",
   author = c(
     person(given = "Noa", family = "Kallioinen"),
@@ -7,19 +7,21 @@ bibentry(
     person(given = "Paul-Christian", family = "Bürkner"),
     person(given = "Aki", family = "Vehtari")
   ),
-  year = "2021",
-  eprint = "arXiv:2107.14054",
+  year = "2023",
+  journal = "Statistics and Computing",
+  volume = 34,
+  issue = 57,
+  doi = "doi:10.1007/s11222-023-10366-5",
   header = "To cite the priorsense package and power-scaling sensitivity:",
-  textVersion = paste(
-    "Noa Kallioinen, Topi Paananen, Paul-Christian Bürkner, Aki Vehtari (2021).",
-    "Detecting and diagnosing prior and likelihood sensitivity with power-scaling.",
-    "arXiv:2107:14054"
-  ),
+  textVersion = paste("Kallioinen, N., Paananen, T., Bürkner, P-C., Vehtari, A. (2023).",
+                      "Detecting and diagnosing prior and likelihood sensitivity with power-scaling.",
+                      "Statistics and Computing. 34(57).",
+                      "doi:10.1007/s11222-023-10366-5"),
   encoding = "UTF-8"
 )
 
 bibentry(
-  bibtype = "Misc",
+  bibtype = "article",
   title = "Pareto smoothed importance sampling",
   author = c(
     person(given = "Aki", family = "Vehtari"),
@@ -28,13 +30,16 @@ bibentry(
     person(given = "Yuling", family = "Yao"),
     person(given = "Jonah", family = "Gabry")
   ),
-  year = "2021",
-  eprint = "arXiv:1507.02646",
+  journal = "Journal of Machine Learning Research",
+  volume = 25,
+  issue = 72,
+  year = "2024",
   header = "To cite Pareto-smoothed importance sampling:",
   textVersion = paste(
-    "Aki Vehtari, Daniel Simpson, Andrew Gelman, Yuling Yao, Jonah Gabry (2021).",
+    "Aki Vehtari, Daniel Simpson, Andrew Gelman, Yuling Yao, Jonah Gabry (2024).",
     "Pareto smoothed importance sampling.",
-    "arXiv:1507.02646"
+    "Journal of Machine Learning Research 25(72)",
+    "https://jmlr.org/papers/v25/19-556.html"
   )
 )
 
