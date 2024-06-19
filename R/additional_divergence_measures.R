@@ -1,7 +1,8 @@
 ##' Multivariate Kullback-Leibler divergence
 ##'
 ##' @param weights importance weights (unnormalized)
-##' @param ... unused
+##' @param ... unuse
+##' @noRd
 mv_kl_div <- function(weights, ...) {
 
   return(-mean(log(weights, base = 2)))
@@ -15,6 +16,7 @@ mv_kl_div <- function(weights, ...) {
 ##' @param weights2 weights for second distribution
 ##' @param subsample_size size of subsamples
 ##' @param ... unused
+##' @noRd
 mv_wasserstein_dist <- function(draws1,
                                 draws2,
                                 weights1 = NULL,
@@ -71,6 +73,7 @@ mv_wasserstein_dist <- function(draws1,
 ##' @param y_weights Weights of second distribution
 ##' @param ... unused
 ##' @return numeric
+##' @noRd
 js_div <- function(x, y, x_weights, y_weights, ...) {
 
   require_package("philentropy")
@@ -110,6 +113,7 @@ js_div <- function(x, y, x_weights, y_weights, ...) {
 ##' @param y_weights Weights of second distribution
 ##' @param ... unused
 ##' @return numeric
+##' @noRd
 js_dist <- function(x, y, x_weights, y_weights, ...) {
 
   dist <- sqrt(
@@ -131,6 +135,7 @@ js_dist <- function(x, y, x_weights, y_weights, ...) {
 ##' @param y_weights Weights of second distribution
 ##' @param ... unused
 ##' @return numeric
+##' @noRd
 hellinger_dist <- function(x, y, x_weights, y_weights, ...) {
 
   require_package("philentropy")
@@ -168,6 +173,7 @@ hellinger_dist <- function(x, y, x_weights, y_weights, ...) {
 ##' @param ... unused
 ##' @return numeric value of approximate KL(p_x||p_y) based on
 ##'   estimated densitites
+##' @noRd
 kl_div <- function(x, y, x_weights, y_weights, ...) {
 
 
@@ -209,6 +215,7 @@ kl_div <- function(x, y, x_weights, y_weights, ...) {
 ##' @param ... unused
 ##' @return numeric value of approximate KL(p_x||p_y) based on
 ##'   estimated densitites
+##' @noRd
 kl_dist <- function(x, y, x_weights, y_weights, ...) {
 
   dist <- sqrt(
@@ -230,6 +237,7 @@ kl_dist <- function(x, y, x_weights, y_weights, ...) {
 ##' @param y_weights vector of weights
 ##' @param ... ununsed
 ##' @return numeric value of Kolmogorov Smirnov distance
+##' @noRd
 ks_dist <- function(x, y, x_weights, y_weights, ...) {
 
   if (is.null(x_weights)) {
@@ -255,6 +263,7 @@ ks_dist <- function(x, y, x_weights, y_weights, ...) {
 ##' @param p degree
 ##' @param ... unused
 ##' @return numeric value of Wassterstein distance
+##' @noRd
 ws_dist <- function(x, y, x_weights, y_weights, p = 1, ...) {
 
   require_package("transport")

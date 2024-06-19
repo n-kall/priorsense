@@ -4,6 +4,7 @@
 ##' @param alpha scaling factor
 ##' @param ... unused
 ##' @return log ratio
+##' @keywords internal
 scaled_log_ratio <- function(component_draws, alpha,
                              ...) {
 

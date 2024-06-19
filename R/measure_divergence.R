@@ -6,6 +6,7 @@
 ##' @param measure_args arguments for divergence measure
 ##' @param ... unused
 ##' @return a tibble
+##' @keywords internal
 measure_divergence <- function(draws1, draws2,
                                 measure,
                                 measure_args = list(),

@@ -833,7 +833,8 @@ powerscale_summary_plot <- function(x,
     trans = "log2",
     limits = c(0.95 * min(summaries$alpha), 1.05 * max(summaries$alpha)),
     breaks = c(min(summaries$alpha), 1, max(summaries$alpha)),
-    labels = round(c(min(summaries$alpha), 1, max(summaries$alpha)), digits = 3)
+    labels = round(c(min(summaries$alpha), 1, max(summaries$alpha)), digits = 3),
+    name = "Power-scaling alpha"
   )
 
   if (!(any(summaries$pareto_k_value == "High"))) {

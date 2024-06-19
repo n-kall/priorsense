@@ -22,7 +22,8 @@ summary.powerscaled_draws <- function(object, ...) {
 ##' @param div_measures divergence measures
 ##' @param measure_args arguments for divergence measures
 ##' @param resample resample draws
-##' @export
+##' @noRd
+##' @exportS3Method posterior::summarise_draws
 summarise_draws.powerscaled_draws <- function(.x,
                                               ...,
                                               .num_args = NULL,
@@ -112,7 +113,8 @@ summarise_draws.powerscaled_draws <- function(.x,
 ##' @param measure_args arguments for divergence measures
 ##' @param resample resample
 ##' @return powerscaled_sequence_summary
-##' @export
+##' @noRd
+##' @exportS3Method posterior::summarise_draws
 summarise_draws.powerscaled_sequence <- function(.x,
                                                  ...,
                                                  .args = list(),

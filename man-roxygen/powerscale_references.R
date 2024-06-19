@@ -1,6 +1,6 @@
 ##' @references
 ##' 
-##' Kallioinen, N., Paananen, T., Bürkner, P-C., Vehtari, A. (2024).
+##' Kallioinen, N., Paananen, T., Bürkner, P-C., Vehtari, A. (2023).
 ##' Detecting and diagnosing prior and likelihood sensitivity with
 ##' power-scaling perturbations.  \emph{Statstics and
 ##' Computing}. 34(57).  \code{doi:10.1007/s11222-023-10366-5}

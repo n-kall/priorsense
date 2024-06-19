@@ -1,19 +1,15 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-<img src='man/figures/logo.png' align="right" height="139" />
-
 # priorsense
 
 <!-- badges: start -->
 
 [![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+experimental](https://img.shields.io/badge/lifecycle-stable.svg)](https://www.tidyverse.org/lifecycle/#table)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/priorsense)](https://CRAN.R-project.org/package=priorsense)
 [![R-CMD-check](https://github.com/n-kall/priorsense/workflows/R-CMD-check/badge.svg)](https://github.com/n-kall/priorsense/actions)
-[![Codecov test
-coverage](https://codecov.io/gh/n-kall/priorsense/branch/master/graph/badge.svg)](https://app.codecov.io/gh/n-kall/priorsense?branch=master)
 <!-- badges: end -->
 
 ## Overview
@@ -26,11 +22,11 @@ analysis on Stan models. This is a way to check how sensitive a
 posterior is to perturbations of the prior and likelihood and diagnose
 the cause of sensitivity. For efficient computation, power-scaling
 sensitivity analysis relies on Pareto smoothed importance sampling
-(Vehtari et al., 2021) and importance weighted moment matching (Paananen
+(Vehtari et al., 2024) and importance weighted moment matching (Paananen
 et al., 2021).
 
 Power-scaling sensitivity analysis and priorsense are described in
-Kallioinen et al. (2022).
+Kallioinen et al. (2023).
 
 ## Installation
 
@@ -123,6 +119,12 @@ and are indicated.
 powerscale_plot_dens(fit)
 ```
 
+<img src="man/figures/README-dens_plot-1.png" width="70%" height="70%" />
+
+``` r
+powerscale_plot_ecdf(fit)
+```
+
 <img src="man/figures/README-ecdf_plot-1.png" width="70%" height="70%" />
 
 ``` r
@@ -135,22 +137,10 @@ In some cases, setting `moment_match = TRUE` will improve the unreliable
 estimates at the cost of some further computation. This requires the
 [`iwmm` package](https://github.com/topipa/iwmm).
 
-``` r
-powerscale_plot_dens(fit, moment_match = TRUE)
-```
-
-<img src="man/figures/README-ecdf_plot_mm-1.png" width="70%" height="70%" />
-
-``` r
-powerscale_plot_quantities(fit, moment_match = TRUE)
-```
-
-<img src="man/figures/README-quants_plot_mm-1.png" width="70%" height="70%" />
-
 ## References
 
 Noa Kallioinen, Topi Paananen, Paul-Christian Bürkner, Aki Vehtari
-(2024). Detecting and diagnosing prior and likelihood sensitivity with
+(2023). Detecting and diagnosing prior and likelihood sensitivity with
 power-scaling. Statstics and Computing. 34, 57.
 <https://doi.org/10.1007/s11222-023-10366-5>
 

@@ -1,4 +1,4 @@
-##' Power-scale gradients
+##' Power-scaling gradients
 ##'
 ##' Calculate the numerical derivative of posterior
 ##' quantities/divergence with respect to power-scaling the specified

@@ -2,6 +2,7 @@
 ##' @param draws draws to be transformed
 ##' @param ... unused
 ##' @return transformed draws
+##' @noRd
 whiten_draws <- function(draws, ...) {
 
   base_draws <- posterior::as_draws_matrix(

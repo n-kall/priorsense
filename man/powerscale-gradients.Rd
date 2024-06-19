@@ -5,7 +5,7 @@
 \alias{powerscale_gradients}
 \alias{powerscale_gradients.default}
 \alias{powerscale_gradients.priorsense_data}
-\title{Power-scale gradients}
+\title{Power-scaling gradients}
 \usage{
 powerscale_gradients(x, ...)
 

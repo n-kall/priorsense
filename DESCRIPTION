@@ -1,6 +1,6 @@
 Package: priorsense
 Title: Prior Diagnostics and Sensitivity Analysis
-Version: 0.9.2
+Version: 1.0.0
 Authors@R: c(person("Noa", "Kallioinen", email = "noa.kallioinen@aalto.fi", role = c("aut", "cre")),
 	     person("Paul-Christian", "Bürkner", role = c("aut")),
 	     person("Topi", "Paananen", role = c("aut")),
@@ -36,8 +36,7 @@ Suggests:
     rstan (>= 2.32.6),
     testthat (>= 3.0.0),
     transport (>= 0.15),
-    rmarkdown (>= 2.27),
-    covr (>= 3.6.4)
+    rmarkdown (>= 2.27)
 Config/testthat/edition: 3
 Depends:
     R (>= 3.6.0)
