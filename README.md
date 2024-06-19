@@ -6,7 +6,7 @@
 <!-- badges: start -->
 
 [![Lifecycle:
-stable](https://img.shields.io/badge/lifecycle-stable-green.svg)](https://www.tidyverse.org/lifecycle/#stable)
+stable](https://img.shields.io/badge/lifecycle-stable-green.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/priorsense)](https://CRAN.R-project.org/package=priorsense)
 [![R-CMD-check](https://github.com/n-kall/priorsense/workflows/R-CMD-check/badge.svg)](https://github.com/n-kall/priorsense/actions)
@@ -33,8 +33,6 @@ Kallioinen et al. (2023).
 Download the stable version from CRAN with:
 
 ``` r
-# install.packages("remotes")
-# remotes::install_github("topipa/iwmm") # needed for moment matching
 install.packages("priorsense")
 ```
 
@@ -43,7 +41,6 @@ with:
 
 ``` r
 # install.packages("remotes")
-# remotes::install_github("topipa/iwmm")
 remotes::install_github("n-kall/priorsense", ref = "development")
 ```
 
