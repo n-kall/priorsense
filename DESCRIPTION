@@ -14,33 +14,33 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
 Imports:
-    checkmate,
+    checkmate (>= 2.3.1),
     ggdist (>= 3.3.2),
-    ggh4x,
-    ggplot2,
-    lifecycle,
-    matrixStats,
+    ggh4x (>= 0.2.5),
+    ggplot2 (>= 3.5.1),
+    lifecycle (>= 1.0.4),
+    matrixStats (>= 1.3.0),
     methods,
-    posterior,
-    rlang,
+    posterior (>= 1.5.0),
+    rlang (>= 1.1.4),
     stats,
-    tibble,
+    tibble (>= 3.2.1),
     utils
 Suggests:
-    bayesplot,
-    brms,
-    cmdstanr,
-    iwmm,
-    knitr,
-    philentropy,
-    rstan,
+    bayesplot (>= 1.11.1),
+    brms (>= 2.21.0),
+    cmdstanr (>= 0.8.1),
+    iwmm (>= 0.0.1),
+    knitr (>= 1.47),
+    philentropy (>= 0.8.0),
+    rstan (>= 2.32.6),
     testthat (>= 3.0.0),
-    transport,
-    rmarkdown,
-    covr
+    transport (>= 0.15),
+    rmarkdown (>= 2.27),
+    covr (>= 3.6.4)
 Config/testthat/edition: 3
 Depends:
     R (>= 3.6.0)
 VignetteBuilder: knitr
-Remotes:
-    topipa/iwmm
+Additional_repositories:
+    https://topipa.r-universe.dev

@@ -16,12 +16,12 @@ mv_kl_div <- function(weights, ...) {
 ##' @param subsample_size size of subsamples
 ##' @param ... unused
 mv_wasserstein_dist <- function(draws1,
-                                   draws2,
-                                   weights1 = NULL,
-                                   weights2 = NULL,
-                                   subsample_size = 100,
-                                   ...
-                                   ) {
+                                draws2,
+                                weights1 = NULL,
+                                weights2 = NULL,
+                                subsample_size = 100,
+                                ...
+                                ) {
 
 
   require_package("transport")
