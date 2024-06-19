@@ -57,7 +57,7 @@ Computing}. 31(16).  \code{doi:10.1007/s11222-020-09982-2}
 \code{\link{powerscale_plot_quantities}}
 }
 \author{
-\strong{Maintainer}: Noa Kallioinen \email{noa.kallioinen@aalto.fi}
+\strong{Maintainer}: Noa Kallioinen \email{noa.kallioinen@aalto.fi} [copyright holder]
 
 Authors:
 \itemize{

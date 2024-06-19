@@ -25,6 +25,12 @@
 ##'   power-scaling perturbations and details of the perturbation and
 ##'   estimation methods.
 ##' @template powerscale_references
+##' @examples
+##' ex <- example_powerscale_model()
+##'
+##' powerscale(ex$draws, component = "prior", alpha = 0.5)
+##'
+##' powerscale_sequence(ex$draws)
 ##' @export
 powerscale <- function(x, ...) {
   UseMethod("powerscale")

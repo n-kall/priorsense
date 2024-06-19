@@ -5,7 +5,7 @@
 \alias{powerscale_gradients}
 \alias{powerscale_gradients.default}
 \alias{powerscale_gradients.priorsense_data}
-\title{Power-scaling gradients}
+\title{Power-scale gradients}
 \usage{
 powerscale_gradients(x, ...)
 
@@ -32,7 +32,7 @@ powerscale_gradients(x, ...)
 )
 }
 \arguments{
-\item{x}{Model fit object or a priorsense_data object.}
+\item{x}{Model fit or draws object.}
 
 \item{...}{Further arguments passed to functions.}
 
@@ -103,4 +103,10 @@ Calculate the numerical derivative of posterior
 quantities/divergence with respect to power-scaling the specified
 component (prior or likelihood). This is done using importance
 sampling (and optionally moment matching).
+}
+\examples{
+ex <- example_powerscale_model()
+drw <- ex$draws
+
+powerscale_gradients(drw)
 }

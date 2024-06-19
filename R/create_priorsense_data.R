@@ -13,6 +13,11 @@
 ##' @param ... arguments passed to methods
 ##' @return A `priorsense_data` object, which contains the data and
 ##'   functions to run sensitivity analyses.
+##' @examples
+##' x <- example_powerscale_model()
+##' drw <- x$draws
+##'
+##' psd <- create_priorsense_data(drw)
 ##' @export
 create_priorsense_data <- function(x, ...) {
   UseMethod("create_priorsense_data")

@@ -1,11 +1,11 @@
-##' Power-scaling gradients
+##' Power-scale gradients
 ##'
 ##' Calculate the numerical derivative of posterior
 ##' quantities/divergence with respect to power-scaling the specified
 ##' component (prior or likelihood). This is done using importance
 ##' sampling (and optionally moment matching).
 ##' @name powerscale-gradients
-##' @param x Model fit object or a priorsense_data object.
+##' @param x Model fit or draws object.
 ##' @param variable Variables to compute sensitivity of. If NULL
 ##'   (default) sensitivity is computed for all variables.
 ##' @param component Component to power-scale (prior or likelihood).
@@ -28,6 +28,11 @@
 ##' @param ... Further arguments passed to functions.
 ##' @return Maximum of the absolute derivatives above and below alpha
 ##'   = 1.
+##' @examples
+##' ex <- example_powerscale_model()
+##' drw <- ex$draws
+##'
+##' powerscale_gradients(drw)
 ##' @export
 powerscale_gradients <- function(x, ...) {
 

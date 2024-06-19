@@ -6,6 +6,10 @@
 ##'   return. Currently "univariate_normal" and "eight_schools" are
 ##'   implemented.
 ##' @return List containing model code and corresponding data.
+##' @examples
+##' ex_normal <- example_powerscale_model(model = "univariate_normal")
+##'
+##' ex_eightschools <- example_powerscale_model(model = "eight_schools")
 ##' @export
 example_powerscale_model <- function(model = "univariate_normal") {
 

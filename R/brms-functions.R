@@ -1,4 +1,4 @@
-##' Predictions as draws
+##' brms predictions as draws
 ##'
 ##' Create predictions using brms functions and convert them into
 ##' draws format
@@ -10,6 +10,21 @@
 ##'   margins to 2 margins?
 ##' @param ... further arguments passed to predict_fn
 ##' @return draws array of predictions
+##' @examples 
+##' library(brms)
+##'
+##' 
+##' fit <- brm(yield ~ N * P * K, data = npk, prior = prior(normal(0, 1), class = "b"), refresh = 0)
+##'
+##' if ("log_prior_draws.brmsfit" %in% methods(log_prior_draws) && ("log_lik_draws.brmsfit" %in% methods(log_lik_draws))) {
+##'
+##' powerscale_sensitivity(
+##'     fit,
+##'     variable = "_pred",
+##'     prediction = function(x) predictions_as_draws(x, brms::posterior_epred)
+##' )
+##'
+##' }
 ##' @export
 predictions_as_draws <- function(x, predict_fn, prediction_names = NULL,
                                  warn_dims = getOption("priorsense.warn", TRUE),

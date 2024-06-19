@@ -32,14 +32,25 @@
 ##'   and Knowledge Discovery in Databases.  ECML PKDD 2015. Lecture
 ##'   Notes in Computer Science, vol 9285.  Springer, Cham.
 ##'   \code{doi:10.1007/978-3-319-23525-7_11}
+##' @examples
+##' x <- rnorm(100)
+##' y <- rnorm(100, 2, 2)
+##' cjs_dist(x, y, x_weights = NULL, y_weights = NULL)
 ##' @export
 cjs_dist <- function(x,
                      y,
-                     x_weights,
-                     y_weights,
+                     x_weights = NULL,
+                     y_weights = NULL,
                      metric = TRUE,
                      unsigned = TRUE,
                      ...) {
+
+  checkmate::assert_numeric(x, min.len = 1)
+  checkmate::assert_numeric(y, min.len = 1)
+  checkmate::assert_numeric(x_weights, len = length(x), null.ok = TRUE)
+  checkmate::assert_numeric(y_weights, len = length(y), null.ok = TRUE)
+  checkmate::assert_logical(metric, len = 1)
+  checkmate::assert_logical(unsigned, len = 1)
 
   if (
     all(is.na(x)) ||

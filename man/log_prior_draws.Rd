@@ -5,20 +5,23 @@
 \alias{log_prior_draws.stanfit}
 \alias{log_prior_draws.CmdStanFit}
 \alias{log_prior_draws.draws}
-\title{Extract log prior from fitted model}
+\title{Extract log prior draws}
 \usage{
 log_prior_draws(x, ...)
 
-\method{log_prior_draws}{stanfit}(x, log_prior_name = "lprior", ...)
+\method{log_prior_draws}{stanfit}(x, joint = FALSE, log_prior_name = "lprior", ...)
 
-\method{log_prior_draws}{CmdStanFit}(x, log_prior_name = "lprior", ...)
+\method{log_prior_draws}{CmdStanFit}(x, joint = FALSE, log_prior_name = "lprior", ...)
 
-\method{log_prior_draws}{draws}(x, log_prior_name = "lprior", ...)
+\method{log_prior_draws}{draws}(x, joint = FALSE, log_prior_name = "lprior", ...)
 }
 \arguments{
-\item{x}{Model fit.}
+\item{x}{Model fit or draws object.}
 
 \item{...}{Arguments passed to individual methods.}
+
+\item{joint}{Logical indicating whether to return the joint log prior
+or array. Default is FALSE.}
 
 \item{log_prior_name}{Name of parameter in Stan model
 corresponding to log prior, default is "lprior".}
@@ -27,5 +30,12 @@ corresponding to log prior, default is "lprior".}
 A draws_array object containing log_prior values.
 }
 \description{
-Extract log prior from variable in fitted Stan model.
+Extract log likelihood from fitted model and return as a draws object.
+}
+\examples{
+ex <- example_powerscale_model()
+drw <- ex$draws
+
+log_prior_draws(drw)
+
 }

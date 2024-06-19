@@ -5,27 +5,37 @@
 \alias{log_lik_draws.stanfit}
 \alias{log_lik_draws.CmdStanFit}
 \alias{log_lik_draws.draws}
-\title{Extract log likelihood from fitted model}
+\title{Extract log likelihood draws}
 \usage{
 log_lik_draws(x, ...)
 
-\method{log_lik_draws}{stanfit}(x, log_lik_name = "log_lik", ...)
+\method{log_lik_draws}{stanfit}(x, joint = FALSE, log_lik_name = "log_lik", ...)
 
-\method{log_lik_draws}{CmdStanFit}(x, log_lik_name = "log_lik", ...)
+\method{log_lik_draws}{CmdStanFit}(x, joint = FALSE, log_lik_name = "log_lik", ...)
 
-\method{log_lik_draws}{draws}(x, log_lik_name = "log_lik", ...)
+\method{log_lik_draws}{draws}(x, joint = FALSE, log_lik_name = "log_lik", ...)
 }
 \arguments{
-\item{x}{Model fit.}
+\item{x}{Model fit or draws object.}
 
 \item{...}{Arguments passed to individual methods.}
 
-\item{log_lik_name}{Name of parameter in Stan model
-corresponding to log likelihood, default is "log_lik".}
+\item{joint}{Logical indicating whether to return the joint log
+likelihood or array. Default is FALSE.}
+
+\item{log_lik_name}{Name of parameter in Stan model corresponding
+to log likelihood, default is "log_lik".}
 }
 \value{
 A draws_array object containing log_lik values.
 }
 \description{
-Extract log likelihood from fitted model
+Extract log likelihood from fitted model and return as a draws object.
+}
+\examples{
+ex <- example_powerscale_model()
+drw <- ex$draws
+
+log_lik_draws(drw)
+
 }

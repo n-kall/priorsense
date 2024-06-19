@@ -21,8 +21,6 @@ powerscale_plot_ecdf(x, ...)
   facet_rows = "component",
   help_text = getOption("priorsense.plot_help_text", TRUE),
   colors = NULL,
-  switch_facets = deprecated(),
-  variables = deprecated(),
   ...
 )
 
@@ -39,9 +37,6 @@ powerscale_plot_quantities(x, ...)
   quantity_args = NULL,
   help_text = getOption("priorsense.plot_help_text", TRUE),
   colors = NULL,
-  switch_facets = deprecated(),
-  quantities = deprecated(),
-  variables = deprecated(),
   ...
 )
 }
@@ -75,10 +70,6 @@ plots. Either length 3 for \code{powerscale_plot_ecdf} and
 length 2 for \code{powerscale_plot_quantities} with order low Pareto
 k, high Pareto k. If \code{NULL} the defaults will be used.}
 
-\item{switch_facets}{(deprecated) Use facet_rows instead.}
-
-\item{variables}{(deprecated) Use variable instead.}
-
 \item{quantity}{A character vector specifying one or several
 quantities to plot. Options are "mean", "median", "sd", "mad",
 "quantile".}
@@ -107,8 +98,6 @@ standard error of the base quantity on the quantities plot.}
 \item{quantity_args}{Named list of further arguments passed to
 quantity functions. Passed as \code{.args} to
 \verb{[posterior::summarise_draws]}.}
-
-\item{quantities}{(deprecated) Use quantity instead.}
 }
 \value{
 A ggplot object that can be further customized using the \strong{ggplot2} package.
@@ -127,3 +116,10 @@ respect to power-scaling.  }
 quantities with respect to power-scaling.} }
 }
 
+\examples{
+ex <- example_powerscale_model()
+
+powerscale_plot_dens(ex$draws)
+powerscale_plot_ecdf(ex$draws)
+powerscale_plot_quantities(ex$draws)
+}

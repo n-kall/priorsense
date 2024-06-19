@@ -142,6 +142,13 @@ Estimate posterior draws based on power-scaling perturbations of
 prior or likelihood using importance sampling (and optionally
 moment matching).
 }
+\examples{
+ex <- example_powerscale_model()
+
+powerscale(ex$draws, component = "prior", alpha = 0.5)
+
+powerscale_sequence(ex$draws)
+}
 \references{
 Kallioinen, N., Paananen, T., Bürkner, P-C., Vehtari, A. (2023).
 Detecting and diagnosing prior and likelihood sensitivity with

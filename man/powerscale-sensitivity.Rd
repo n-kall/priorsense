@@ -123,6 +123,10 @@ Calculates the prior/likelihood sensitivity based on power-scaling
 perturbations. This is done using importance sampling (and
 optionally moment matching).
 }
+\examples{
+ex <- example_powerscale_model()
+powerscale_sensitivity(ex$draws)
+}
 \references{
 Kallioinen, N., Paananen, T., Bürkner, P-C., Vehtari, A. (2023).
 Detecting and diagnosing prior and likelihood sensitivity with

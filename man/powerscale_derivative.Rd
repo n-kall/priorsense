@@ -25,21 +25,12 @@ Calculate the analytical derivative of a quantity with respect to
 power-scaling prior or likelihood.
 }
 \examples{
-\dontrun{
 example_model <- example_powerscale_model()
-fit <- rstan::stan(
-    model_code = example_model$model_code,
-    data = example_model$data
-)
-draws <- posterior::subset_draws(
-    posterior::as_draws_df(fit),
-    variable = c("mu", "sigma")
-)
-log_prior <- log_prior_stanfit(fit)
+draws <- example_model$draws
+log_prior <- log_prior_draws(draws, joint = TRUE)
 posterior::summarise_draws(
-    draws,
+    posterior::subset_draws(draws, variable = c("mu", "sigma")),
     mean,
-    ~powerscale_derivative(.x, log_prior, quantity = "mean")
+    mean_sens = ~powerscale_derivative(.x, log_prior, quantity = "mean")
 )
-}
 }

@@ -30,12 +30,12 @@ Kallioinen et al. (2023).
 
 ## Installation
 
-Download the stable version from [GitHub](https://github.com/) with:
+Download the stable version from CRAN with:
 
 ``` r
 # install.packages("remotes")
-# remotes::install_github("topipa/iwmm")
-remotes::install_github("n-kall/priorsense")
+# remotes::install_github("topipa/iwmm") # needed for moment matching
+install.packages("priorsense")
 ```
 
 Download the development version from [GitHub](https://github.com/)

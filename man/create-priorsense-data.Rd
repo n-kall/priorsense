@@ -53,3 +53,9 @@ functions to run sensitivity analyses.
 Create a data structure that contains all required data and
 functions for priorsense
 }
+\examples{
+x <- example_powerscale_model()
+drw <- x$draws
+
+psd <- create_priorsense_data(drw)
+}
