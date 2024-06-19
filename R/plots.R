@@ -22,8 +22,6 @@
 ##' ex <- example_powerscale_model()
 ##'
 ##' powerscale_plot_dens(ex$draws)
-##' powerscale_plot_ecdf(ex$draws)
-##' powerscale_plot_quantities(ex$draws)
 NULL
 
 prepare_plot_data <- function(x, variable, resample, ...) {

@@ -45,8 +45,26 @@ jobs:
           extra-packages: |
             any::pkgdown
             local::.
+            XML
             stan-dev/cmdstanr
             topipa/iwmm
+            rcmdcheck
+            rstan
+            checkmate
+            jsonlite
+            posterior
+            processx
+            R6
+            BH
+            RcppEigen
+            StanHeaders
+            RcppParallel
+            withr
+            testthat
+            rmarkdown
+            knitr
+            any::XML
+            any::textshaping
           needs: website
 
       - name: Build site
