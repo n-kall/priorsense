@@ -18,3 +18,8 @@ List containing model code and corresponding data.
 Provides example models (with data) that are ready for use with
 power-scaling.
 }
+\examples{
+ex_normal <- example_powerscale_model(model = "univariate_normal")
+
+ex_eightschools <- example_powerscale_model(model = "eight_schools")
+}

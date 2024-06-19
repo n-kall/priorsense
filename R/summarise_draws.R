@@ -1,11 +1,3 @@
-##' @export
-summary.powerscaled_draws <- function(object, ...) {
-
-  summarise_draws.powerscaled_draws(object, ...)
-
-}
-
-
 ##' Summarise draws
 ##'
 ##' Summarise power-scaled draws
@@ -22,7 +14,8 @@ summary.powerscaled_draws <- function(object, ...) {
 ##' @param div_measures divergence measures
 ##' @param measure_args arguments for divergence measures
 ##' @param resample resample draws
-##' @export
+##' @noRd
+##' @exportS3Method posterior::summarise_draws
 summarise_draws.powerscaled_draws <- function(.x,
                                               ...,
                                               .num_args = NULL,
@@ -112,7 +105,8 @@ summarise_draws.powerscaled_draws <- function(.x,
 ##' @param measure_args arguments for divergence measures
 ##' @param resample resample
 ##' @return powerscaled_sequence_summary
-##' @export
+##' @noRd
+##' @exportS3Method posterior::summarise_draws
 summarise_draws.powerscaled_sequence <- function(.x,
                                                  ...,
                                                  .args = list(),
@@ -232,3 +226,13 @@ summarise_draws.powerscaled_sequence <- function(.x,
 
   return(summaries)
 }
+
+##' @export
+summarise_draws.whitened_draws <- function(.x, ...) {
+  class(.x) <- class(.x)[-1]
+  summary <- posterior::summarise_draws(.x, ...)
+  attr(summary, "loadings") <- attr(.x, "loadings")
+  class(summary) <- c("whitened_draws_summary", class(summary))
+  return(summary)
+}
+                                           

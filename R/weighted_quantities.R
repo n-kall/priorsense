@@ -10,10 +10,9 @@
 ##' @param ... Currently unused.
 ##' @return Named vector of calculated quantity.
 ##' @name weighted_quantities
+##' @keywords internal
 NULL
 
-##' @export
-##' @rdname weighted_quantities
 median_weighted <- function(x, weights, ...) {
 
   weighted_median <- matrixStats::weightedMedian(
@@ -25,8 +24,6 @@ median_weighted <- function(x, weights, ...) {
 }
 
 
-##' @export
-##' @rdname weighted_quantities
 mad_weighted <- function(x, weights, ...) {
 
   weighted_mad <- matrixStats::weightedMad(
@@ -37,8 +34,7 @@ mad_weighted <- function(x, weights, ...) {
   return(c(mad = weighted_mad))
 }
 
-##' @export
-##' @rdname weighted_quantities
+
 var_weighted <- function(x, weights, ...) {
 
   if (is.null(weights)) {
@@ -49,8 +45,7 @@ var_weighted <- function(x, weights, ...) {
   return(c(var = var))
 }
 
-##' @export
-##' @rdname weighted_quantities
+
 sd_weighted <- function(x, weights, ...) {
 
   if (is.null(weights)) {
@@ -61,8 +56,7 @@ sd_weighted <- function(x, weights, ...) {
   return(c(sd = sd))
 }
 
-##' @export
-##' @rdname weighted_quantities
+
 mean_weighted  <- function(x, weights, ...) {
 
   weighted_mean <- matrixStats::weightedMean(
@@ -80,7 +74,7 @@ mean_weighted  <- function(x, weights, ...) {
 ##' `posterior::summarise_draws()`.
 ##' @param x draws object to extract weights from
 ##' @return Vector of formulas for use with `posterior::summarise_draws()`
-##' @export
+##' @keywords internal
 weighted_summary_measures <- function(x) {
   funcs <- c(
     stats::as.formula(paste0("~mean_weighted(.x, weights(", x, "))")),
@@ -93,8 +87,6 @@ weighted_summary_measures <- function(x) {
 }
 
 ## Following is adapted from Andrey Akinshin (2023) "Weighted quantile estimators" arXiv:2304.07265 [stat.ME]
-##' @export
-##' @rdname weighted_quantities
 quantile_weighted <- function(x, weights, probs = c(0.05, 0.95),
                               type = "7", ...) {
   if (type == "7") {
@@ -146,8 +138,6 @@ quantile_weighted <- function(x, weights, probs = c(0.05, 0.95),
   })
 }
 
-##' @export
-##' @rdname weighted_quantities
 quantile2_weighted <- quantile_weighted
 
 # always use quantile2 internally

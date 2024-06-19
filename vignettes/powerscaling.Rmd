@@ -1,8 +1,8 @@
 ---
-title: "Powerscaling sensitivity analysis"
+title: "Power-scaling sensitivity analysis"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Powerscaling sensitivity analysis}
+  %\VignetteIndexEntry{Power-scaling sensitivity analysis}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -23,21 +23,11 @@ priorsense is a package for prior diagnostics in Bayesian models. It
 currently implements power-scaling sensitivity analysis but may be
 extended in the future to include other diagnostics.
 
-# Installation
-
-priorsense can be installed via:
-
-```{r, eval = FALSE}
-# install.packages("remotes")
-remotes::install_github("n-kall/priorsense")
-```
-
 # Power-scaling sensitivity analysis
 
-In brief, power-scaling sensitivity analysis tries to determine how
-small changes to the prior or likelihood affect the posterior. We do
-this by power-scaling the prior or likelihood by raising it to some
-$\alpha > 0$.
+Power-scaling sensitivity analysis tries to determine how small
+changes to the prior or likelihood affect the posterior. This is done
+by power-scaling the prior or likelihood by raising it to some $\alpha > 0$.
 
 - For prior power-scaling: $p(\theta \mid y) \propto p(\theta)^\alpha
   p(y \mid \theta)$

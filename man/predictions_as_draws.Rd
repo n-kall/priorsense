@@ -2,7 +2,7 @@
 % Please edit documentation in R/brms-functions.R
 \name{predictions_as_draws}
 \alias{predictions_as_draws}
-\title{Predictions as draws}
+\title{brms predictions as draws}
 \usage{
 predictions_as_draws(
   x,
@@ -30,4 +30,24 @@ draws array of predictions
 \description{
 Create predictions using brms functions and convert them into
 draws format
+}
+\examples{
+library(brms)
+
+fit <- brm(
+  yield ~ N * P * K,
+  data = npk,
+  prior = prior(normal(0, 1), class = "b"),
+  refresh = 0
+)
+
+if ("log_prior_draws.brmsfit" \%in\% methods(log_prior_draws) &&
+    ("log_lik_draws.brmsfit" \%in\% methods(log_lik_draws))) {
+
+  powerscale_sensitivity(
+      fit,
+      variable = "_pred",
+      prediction = function(x) predictions_as_draws(x, brms::posterior_epred)
+)
+}
 }

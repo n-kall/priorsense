@@ -23,8 +23,5 @@
 ##'   k, high Pareto k. If `NULL` the defaults will be used.
 ##' @param facet_rows Character defining the rows of the plot facets,
 ##'   either "variable" or "component". Default is "variable".
-##' @param switch_facets (deprecated) Use facet_rows instead.
-##' @param variables (deprecated) Use variable instead.
-##' @param quantities (deprecated) Use quantity instead.
 ##' @param ... Arguments passed to `powerscale_sequence` if `x` is not
 ##'   of class `powerscaled_sequence`.

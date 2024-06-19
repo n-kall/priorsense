@@ -18,7 +18,10 @@
 ##'   quantities with respect to power-scaling.} }
 ##'
 ##' @importFrom rlang .data
-##' @importFrom lifecycle deprecated
+##' @examples
+##' ex <- example_powerscale_model()
+##'
+##' powerscale_plot_dens(ex$draws)
 NULL
 
 prepare_plot_data <- function(x, variable, resample, ...) {
@@ -219,8 +222,8 @@ powerscale_plot_dens.default <- function(x,
                                          facet_rows = "component",
                                          help_text = getOption("priorsense.plot_help_text", TRUE),
                                          colors = NULL,
-                                         switch_facets = deprecated(),
-                                         variables = deprecated(), ...) {
+                                         ...
+                                         ) {
   ps <- powerscale_sequence(x, length = length, ...)
   powerscale_plot_dens(
     ps,
@@ -231,9 +234,7 @@ powerscale_plot_dens.default <- function(x,
     trim = trim,
     facet_rows = facet_rows,
     help_text = help_text,
-    colors = colors,
-    switch_facets = switch_facets,
-    variables = variables
+    colors = colors
   )
 }
 
@@ -247,23 +248,8 @@ powerscale_plot_dens.powerscaled_sequence <- function(x,
                                                       facet_rows = "component",
                                                       help_text = getOption("priorsense.plot_help_text", TRUE),
                                                       colors = NULL,
-                                                      switch_facets = deprecated(),
-                                                      variables = deprecated(),
-                                                      ...) {
-
-    if (lifecycle::is_present(variables)) {
-    lifecycle::deprecate_warn("0.9", "powerscale_plot_dens(variables)", "powerscale_plot_dens(variable)")
-    variable <- variables
-    }
-
-  if (lifecycle::is_present(switch_facets)) {
-    lifecycle::deprecate_warn("0.9.1", "powerscale_plot_dens(switch_facets)", "powerscale_plot_dens(facet_rows)")
-    if (switch_facets) {
-      facet_rows <- "variable"
-    } else {
-      facet_rows <- "component"
-    }
-  }
+                                                      ...
+                                                      ) {
 
   # input checks
   checkmate::assert_character(variable, null.ok = TRUE)
@@ -403,7 +389,7 @@ powerscale_plot_dens.powerscaled_sequence <- function(x,
     variable, FUN =
     function(.x, prob) {
       limits <- quantile2(x$base_draws[[.x]], probs = c((1 - prob)/2, prob + (1 - prob)/2))
-      return(scale_x_continuous(limits = limits))
+      return(ggplot2::scale_x_continuous(limits = limits))
     }, prob = trim
   )
 
@@ -432,7 +418,7 @@ powerscale_plot_ecdf.default <- function(x,
                                          facet_rows = "component",
                                          help_text = getOption("priorsense.plot_help_text", TRUE),
                                          colors = NULL,
-                                         variables = lifecycle::deprecated(), ...) {
+                                         ...) {
   ps <- powerscale_sequence(x, length = length, ...)
   powerscale_plot_ecdf(
     ps,
@@ -440,8 +426,7 @@ powerscale_plot_ecdf.default <- function(x,
     resample = resample,
     facet_rows = facet_rows,
     help_text = help_text,
-    colors = colors,
-    variables = variables
+    colors = colors
   )
 }
 
@@ -454,23 +439,7 @@ powerscale_plot_ecdf.powerscaled_sequence <- function(x,
                                                       facet_rows = "component",
                                                       help_text = getOption("priorsense.plot_help_text", TRUE),
                                                       colors = NULL,
-                                                      switch_facets = deprecated(),
-                                                      variables = deprecated(), ...) {
-
-  if (lifecycle::is_present(variables)) {
-    lifecycle::deprecate_warn("0.9", "powerscale_plot_ecdf(variables)", "powerscale_plot_ecdf(variable)")
-    variable <- variables
-  }
-
-  if (lifecycle::is_present(switch_facets)) {
-    lifecycle::deprecate_warn("0.9.1", "powerscale_plot_dens(switch_facets)", "powerscale_plot_dens(facet_rows)")
-    if (switch_facets) {
-      facet_rows <- "variable"
-    } else {
-      facet_rows <- "component"
-    }
-  }
-
+                                                      ...) {
 
   # input checks
   checkmate::assert_character(variable, null.ok = TRUE)
@@ -589,9 +558,6 @@ powerscale_plot_quantities.default <- function(x, variable = NULL,
                                        quantity_args = NULL,
                                        help_text = getOption("priorsense.plot_help_text", TRUE),
                                        colors = NULL,
-                                       switch_facets = deprecated(),
-                                       variables = deprecated(),
-                                       quantities = deprecated(),
                                        ...) {
   ps <- powerscale_sequence(x, length = length, ...)
 
@@ -605,10 +571,7 @@ powerscale_plot_quantities.default <- function(x, variable = NULL,
     mcse = mcse,
     quantity_args = quantity_args,
     help_text = help_text,
-    colors = colors,
-    switch_facets = switch_facets,
-    quantities = quantities,
-    variables = variables
+    colors = colors
   )
 }
 
@@ -623,30 +586,7 @@ powerscale_plot_quantities.powerscaled_sequence <- function(x, variable = NULL,
                                        quantity_args = NULL,
                                        help_text = getOption("priorsense.plot_help_text", TRUE),
                                        colors = NULL,
-                                       switch_facets = deprecated(),
-                                       quantities = deprecated(),
-                                       variables = deprecated(),
                                        ...) {
-
-  if (lifecycle::is_present(variables)) {
-    lifecycle::deprecate_warn("0.9", "powerscale_plot_quantities(variables)", "powerscale_plot_quantities(variable)")
-    variable <- variables
-  }
-
-  if (lifecycle::is_present(quantities)) {
-    lifecycle::deprecate_warn("0.9", "powerscale_plot_quantities(quantities)", "powerscale_plot_quantities(quantity)")
-    quantity <- quantities
-  }
-
-    if (lifecycle::is_present(switch_facets)) {
-    lifecycle::deprecate_warn("0.9.1", "powerscale_plot_quantities(switch_facets)", "powerscale_plot_quantities(facet_rows)")
-    if (switch_facets) {
-      facet_rows <- "variable"
-    } else {
-      facet_rows <- "component"
-    }
-  }
-
 
   checkmate::assertCharacter(variable, null.ok = TRUE)
   checkmate::assertCharacter(quantity)
@@ -833,7 +773,8 @@ powerscale_summary_plot <- function(x,
     trans = "log2",
     limits = c(0.95 * min(summaries$alpha), 1.05 * max(summaries$alpha)),
     breaks = c(min(summaries$alpha), 1, max(summaries$alpha)),
-    labels = round(c(min(summaries$alpha), 1, max(summaries$alpha)), digits = 3)
+    labels = round(c(min(summaries$alpha), 1, max(summaries$alpha)), digits = 3),
+    name = "Power-scaling alpha"
   )
 
   if (!(any(summaries$pareto_k_value == "High"))) {

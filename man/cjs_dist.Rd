@@ -4,7 +4,15 @@
 \alias{cjs_dist}
 \title{Cumulative Jensen-Shannon divergence}
 \usage{
-cjs_dist(x, y, x_weights, y_weights, metric = TRUE, unsigned = TRUE, ...)
+cjs_dist(
+  x,
+  y,
+  x_weights = NULL,
+  y_weights = NULL,
+  metric = TRUE,
+  unsigned = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{numeric vector of samples from first distribution}
@@ -43,6 +51,11 @@ The symmetric metric is defined as:
 \deqn{CJS_{dist}(P || Q) = \sqrt{CJS(P || Q) + CJS(Q || P)}}
 
 This has an upper bound of \eqn{\sqrt{ \sum (P(x) + Q(x))}}
+}
+\examples{
+x <- rnorm(100)
+y <- rnorm(100, 2, 2)
+cjs_dist(x, y, x_weights = NULL, y_weights = NULL)
 }
 \references{
 Nguyen H-V., Vreeken J. (2015).  Non-parametric

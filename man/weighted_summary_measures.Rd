@@ -17,3 +17,4 @@ Returns weighted versions of
 \code{posterior::default_summary_measures()} to be used with
 \code{posterior::summarise_draws()}.
 }
+\keyword{internal}

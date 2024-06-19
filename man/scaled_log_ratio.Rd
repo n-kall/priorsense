@@ -19,3 +19,4 @@ log ratio
 \description{
 Calculate importance ratios based on scaling of component
 }
+\keyword{internal}

@@ -2,40 +2,18 @@
 % Please edit documentation in R/weighted_quantities.R
 \name{weighted_quantities}
 \alias{weighted_quantities}
-\alias{median_weighted}
-\alias{mad_weighted}
-\alias{var_weighted}
-\alias{sd_weighted}
-\alias{mean_weighted}
-\alias{quantile_weighted}
-\alias{quantile2_weighted}
 \title{Weighted quantities}
-\usage{
-median_weighted(x, weights, ...)
-
-mad_weighted(x, weights, ...)
-
-var_weighted(x, weights, ...)
-
-sd_weighted(x, weights, ...)
-
-mean_weighted(x, weights, ...)
-
-quantile_weighted(x, weights, probs = c(0.05, 0.95), type = "7", ...)
-
-quantile2_weighted(x, weights, probs = c(0.05, 0.95), type = "7", ...)
-}
 \arguments{
 \item{x}{Numeric vector to calculate quantity from.}
 
 \item{weights}{Vector of weights corresponding to values in x.}
 
-\item{...}{Currently unused.}
-
 \item{probs}{Vector of probabilities for quantiles.}
 
 \item{type}{Character vector specifying type of quantiles (either
 "7" for Type 7 (default) or "hd" for Harrell-Davis)}
+
+\item{...}{Currently unused.}
 }
 \value{
 Named vector of calculated quantity.
@@ -43,3 +21,4 @@ Named vector of calculated quantity.
 \description{
 Weighted version of common quantities of interest.
 }
+\keyword{internal}

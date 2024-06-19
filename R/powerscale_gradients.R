@@ -5,7 +5,7 @@
 ##' component (prior or likelihood). This is done using importance
 ##' sampling (and optionally moment matching).
 ##' @name powerscale-gradients
-##' @param x Model fit object or a priorsense_data object.
+##' @param x Model fit or draws object.
 ##' @param variable Variables to compute sensitivity of. If NULL
 ##'   (default) sensitivity is computed for all variables.
 ##' @param component Component to power-scale (prior or likelihood).
@@ -28,6 +28,11 @@
 ##' @param ... Further arguments passed to functions.
 ##' @return Maximum of the absolute derivatives above and below alpha
 ##'   = 1.
+##' @examples
+##' ex <- example_powerscale_model()
+##' drw <- ex$draws
+##'
+##' powerscale_gradients(drw)
 ##' @export
 powerscale_gradients <- function(x, ...) {
 
@@ -104,8 +109,8 @@ powerscale_gradients.priorsense_data <- function(x,
   }
   if (transform == "whiten") {
     whitened_draws <- whiten_draws(base_draws, ...)
-    base_draws_t <- whitened_draws$draws
-    loadings <- as.data.frame(whitened_draws$loadings)
+    base_draws_t <- whitened_draws
+    loadings <- as.data.frame(attr(whitened_draws, "loadings"))
   } else if (transform == "scale") {
     base_draws_t <- scale_draws(base_draws, ...)
   } else {

@@ -23,3 +23,4 @@ a tibble
 \description{
 Calculate specified divergence measures for each posterior
 }
+\keyword{internal}

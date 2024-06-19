@@ -71,7 +71,7 @@ powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
   checkmate::assertLogical(symmetric, len = 1)
   checkmate::assertNumber(k_threshold, null.ok = TRUE)
   checkmate::assertLogical(resample, len = 1)
-  checkmate::assertCharacter(transform, null.ok = TRUE, len = 1)
+  checkmate::assertChoice(transform, c("whiten", "scale", "identity"), null.ok = TRUE)
   checkmate::assertFunction(prediction, null.ok = TRUE)
   checkmate::assertCharacter(variable, null.ok = TRUE)
   checkmate::assertNumeric(prior_selection, null.ok = TRUE)
@@ -157,12 +157,8 @@ powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
     base_draws_tr <- whiten_draws(base_draws, ...)
     transform_details <- list(
       transform = transform,
-      loadings = stats::cor(
-        base_draws_tr[, 1:posterior::nvariables(base_draws_tr)],
-        base_draws[, 1:posterior::nvariables(base_draws)]
-      )
+      loadings = attr(base_draws_tr, "loadings")
     )
-
     base_draws <- base_draws_tr
   } else if (transform == "scale") {
     base_draws <- scale_draws(base_draws, ...)

@@ -2,6 +2,7 @@
 ##' @param draws draws to be transformed
 ##' @param ... unused
 ##' @return transformed draws
+##' @noRd
 whiten_draws <- function(draws, ...) {
 
   base_draws <- posterior::as_draws_matrix(
@@ -48,5 +49,9 @@ whiten_draws <- function(draws, ...) {
   colnames(loadings) <- posterior::variables(draws_tr)
   rownames(loadings) <- posterior::variables(base_draws)
 
-  return(list(draws = draws_tr, loadings = t(loadings)))
+  attr(draws_tr, "loadings") <- t(loadings)
+
+  class(draws_tr) <- c("whitened_draws", class(draws_tr))
+  
+  return(draws_tr)  
 }

@@ -25,8 +25,10 @@
 ##'   [option][base::options].
 ##' @return Table of sensitivity values for each specified variable.
 ##' @template powerscale_references
+##' @examples
+##' ex <- example_powerscale_model()
+##' powerscale_sensitivity(ex$draws)
 ##' @export
-##'
 powerscale_sensitivity <- function(x, ...) {
   UseMethod("powerscale_sensitivity")
 }
