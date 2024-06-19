@@ -44,3 +44,4 @@ Depends:
 VignetteBuilder: knitr
 Additional_repositories:
     https://topipa.r-universe.dev
+URL: https://n-kall.github.io/priorsense/
