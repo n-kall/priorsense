@@ -11,7 +11,7 @@ bibentry(
   journal = "Statistics and Computing",
   volume = 34,
   issue = 57,
-  doi = "0.1007/s11222-023-10366-5",
+  doi = "10.1007/s11222-023-10366-5",
   header = "To cite the priorsense package and power-scaling sensitivity:",
   textVersion = paste("Kallioinen, N., Paananen, T., Bürkner, P-C., Vehtari, A. (2023).",
                       "Detecting and diagnosing prior and likelihood sensitivity with power-scaling.",
