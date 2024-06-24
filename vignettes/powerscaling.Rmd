@@ -59,7 +59,7 @@ We first fit the model using Stan:
 ```{stan, eval = F, output.var = "stancode"}
 data {
   int<lower=1> N;
-  real y[N];
+  array[N] real y;
 }
 parameters {
   real mu;
