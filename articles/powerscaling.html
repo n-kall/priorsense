@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">priorsense</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -124,7 +124,7 @@ the perturbed posteriors differ from the base posterior.</p>
 first fit the model using Stan:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="kw">data</span> {</span>
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; N;</span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="dt">real</span> y[N];</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="dt">array</span>[N] <span class="dt">real</span> y;</span>
 <span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>}</span>
 <span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="kw">parameters</span> {</span>
 <span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  <span class="dt">real</span> mu;</span>
