@@ -85,10 +85,10 @@ model {
 }
 generated quantities {
   vector[N] log_lik;
-  // likelihood
   real lprior;
+  // log likelihood
   for (n in 1:N) log_lik[n] =  normal_lpdf(y[n] | mu, sigma);
-  // joint prior specification
+  // joint log prior
   lprior = normal_lpdf(mu | 0, 1) +
 	normal_lpdf(sigma | 0, 2.5);
 ```
@@ -117,15 +117,15 @@ To visually inspect changes to the posterior, use one of the
 diagnostic plot functions. Estimates with high Pareto-k values may be
 inaccurate and are indicated.
 
-```{r dens_plot, eval = T, out.width = '70%', out.height = '70%'}
+```{r dens_plot, eval = T, out.width = '70%'}
 powerscale_plot_dens(fit)
 ```
 
-```{r ecdf_plot, eval = T, out.width = '70%', out.height = '70%'}
+```{r ecdf_plot, eval = T, out.width = '70%'}
 powerscale_plot_ecdf(fit)
 ```
 
-```{r quants_plot, eval = T, out.width = '70%', out.height = '70%'}
+```{r quants_plot, eval = T, out.width = '70%'}
 powerscale_plot_quantities(fit)
 ```
 

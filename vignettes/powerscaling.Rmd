@@ -74,15 +74,15 @@ model {
 }
 generated quantities {
   vector[N] log_lik;
-  // likelihood
   real lprior;
-  // joint prior
+  // log likelihood
   for (n in 1:N) log_lik[n] =  normal_lpdf(y[n] | mu, sigma);
+  // joint log prior
   lprior = normal_lpdf(mu | 0, 1) + normal_lpdf(sigma | 0, 2.5);
 }
 ```
 
-```{r}
+```{r, message = F, warning = F, eval = F}
 normal_model <- example_powerscale_model("univariate_normal")
 
 fit <- stan(
@@ -94,6 +94,12 @@ fit <- stan(
 
 ```
 
+```{r, echo = F, warning = F, message = F}
+normal_model <- example_powerscale_model("univariate_normal")
+fit <- normal_model$draws
+
+```
+
 Next, we check the sensitivity of the prior and likelihood to
 power-scaling. The sensitivity values shown below are an indication of
 how much the posterior changes with respect to power-scaling. Larger
@@ -101,7 +107,7 @@ values indicate more sensitivity. By default these values are derived
 from the gradient of the Cumulative Jensen-Shannon distance between
 the base posterior and posteriors resulting from power-scaling.
 
-```{r}
+```{r, message = F, warning = F}
 powerscale_sensitivity(fit, variable = c("mu", "sigma"))
 ```
 
@@ -114,17 +120,17 @@ estimates of posteriors for a range of power-scaling amounts.
 There are three plots currently available:
 
 - Kernel density estimates:
-```{r}
-powerscale_plot_dens(fit, variable = "mu")
+```{r, message=FALSE, warning = FALSE, fig.width = 6, fig.height = 4}
+powerscale_plot_dens(fit, variable = "mu", facet_rows = "variable")
 ```
 
 - Empirical cumulative distribution functions:
-```{r}
-powerscale_plot_ecdf(fit, variable = "mu")
+```{r, message = F, warning = F, fig.width = 6, fig.height = 4}
+powerscale_plot_ecdf(fit, variable = "mu", facet_rows = "variable")
 ```
 
 - Quantities:
-```{r, fig.width = 12, fig.height = 4}
+```{r, message = F, warning = F, fig.width = 12, fig.height = 4}
 powerscale_plot_quantities(fit, variable = "mu")
 ```
 
