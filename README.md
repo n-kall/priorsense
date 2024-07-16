@@ -72,10 +72,10 @@ model {
 }
 generated quantities {
   vector[N] log_lik;
-  // likelihood
   real lprior;
+  // log likelihood
   for (n in 1:N) log_lik[n] =  normal_lpdf(y[n] | mu, sigma);
-  // joint prior specification
+  // joint log prior
   lprior = normal_lpdf(mu | 0, 1) +
     normal_lpdf(sigma | 0, 2.5);
 ```
@@ -99,13 +99,12 @@ Once fit, sensitivity can be checked as follows:
 
 ``` r
 powerscale_sensitivity(fit)
-#> Loading required namespace: testthat
 #> Sensitivity based on cjs_dist:
 #> # A tibble: 2 × 4
 #>   variable prior likelihood diagnosis          
 #>   <chr>    <dbl>      <dbl> <chr>              
-#> 1 mu       0.433      0.641 prior-data conflict
-#> 2 sigma    0.358      0.671 prior-data conflict
+#> 1 mu       0.392      0.561 prior-data conflict
+#> 2 sigma    0.290      0.530 prior-data conflict
 ```
 
 To visually inspect changes to the posterior, use one of the diagnostic

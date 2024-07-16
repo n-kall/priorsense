@@ -116,7 +116,7 @@ powerscale.priorsense_data <- function(x,
       transform_details <- list(transform = transform)
     }
 
-  
+
   # if alpha is 1, just return the draws with the powerscaling details
   if (alpha == 1) {
 
@@ -218,18 +218,16 @@ powerscale.priorsense_data <- function(x,
     } else {
 
       # no moment matching
-
-      # TODO: change to use the are_log_weights functionality when new
-      # posterior release
       smoothed_log_ratios <- posterior::pareto_smooth(
-        exp(as.numeric(log_ratios - max(log_ratios))),
+        log_ratios,
         r_eff = NULL,
         return_k = TRUE,
         extra_diags = TRUE,
+        are_log_weights = TRUE,
         verbose = FALSE
       )
 
-      smoothed_log_ratios$x <- log(smoothed_log_ratios$x)
+      smoothed_log_ratios$x <- as.numeric(smoothed_log_ratios$x)
     }
 
     # keep track of base log-ratios for diagnostics

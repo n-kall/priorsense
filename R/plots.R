@@ -799,7 +799,7 @@ powerscale_summary_plot <- function(x,
       ggplot2::geom_hline(
         ggplot2::aes(
           yintercept = .data$mcse_min,
-          linetype = "+-2MCSE"
+          linetype = "+/-2MCSE"
         ),
         data = base_mcse,
         color = "black"
@@ -807,7 +807,7 @@ powerscale_summary_plot <- function(x,
       ggplot2::geom_hline(
         ggplot2::aes(
           yintercept = .data$mcse_max,
-          linetype = "+-2MCSE"
+          linetype = "+/-2MCSE"
         ),
         data = base_mcse,
         color = "black"
