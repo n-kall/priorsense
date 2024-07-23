@@ -79,10 +79,11 @@ extract_stanreg_prior <- function(x) {
   return(paste0(prior_eq, collapse = "+"))
 }
 
-
+##' @rdname log_prior_draws
+##' @export
 log_prior_draws.stanreg <- function(x, joint = FALSE, ...) {
   
-  prior_fun <- stanreg_prior(x)
+  prior_fun <- extract_stanreg_prior(x)
 
   lprior <- apply(
     posterior::as_draws_df(x),
@@ -94,7 +95,9 @@ log_prior_draws.stanreg <- function(x, joint = FALSE, ...) {
 }
 
 
-log_lik_draws.stanreg <- function(x, joint = FALSE) {
+##' @rdname log_lik_draws
+##' @export
+log_lik_draws.stanreg <- function(x, joint = FALSE, ...) {
 
   ll <- rstanarm::log_lik(x)
 
