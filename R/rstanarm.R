@@ -15,69 +15,103 @@ create_priorsense_data.stanreg <- function(x, ...) {
 
 }
 
-extract_stanreg_prior <- function(x) {
 
+extract_stanreg_prior <- function(x) {
+  # Mapping distributions to their corresponding density functions
   dist_to_density <- list(
     "normal" = "dnorm",
-    "exponential" = "dexp"
+    "student_t" = "dt",
+    "cauchy" = "dcauchy",
+    "exponential" = "dexp",
+    "laplace" = "dlaplace",  ## From the VGAM package
+    "lasso" = "dlasso",      ## From the LaplacesDemon package
+    "hs" = "dhs",            ## From the LaplacesDemon package
+    "dirichlet" = "ddirichlet" ## From the LaplacesDemon package
   )
 
   fit_summary <- summary(x)
   priors <- attr(fit_summary, "priors")
 
   draws <- as_draws(x)
-
   vars <- variables(draws)
 
   prior_eq <- list()
 
-  # handle intercept prior
+  # Handle intercept prior
   if ("(Intercept)" %in% vars) {
-
     prior_eq["(Intercept)"] <- paste0(
       dist_to_density[[priors$prior_intercept$dist]],
       "(",
       "`(Intercept)`",
-      ",",
+      ", ",
       priors$prior_intercept$location,
-      ",",
+      ", ",
       priors$prior_intercept$adjusted_scale,
       ", log = TRUE)"
     )
-
-    # remove intercept from vars
-    vars <- vars[c(which(vars != "(Intercept)"))]  
+    vars <- vars[which(vars != "(Intercept)")]  # Remove intercept from vars
   }
 
-  # handle coefficient prior
+  # Handle coefficient prior
+  for (b in seq_along(vars)) {
+    dist_name <- priors$prior$dist[[b]]
+    dist_func <- dist_to_density[[dist_name]]
+    args_list <- list()
 
-  for (b in 1:length(priors$prior$location)) {
-    
-    prior_eq[[vars[[b]]]] <- paste0(
-      dist_to_density[[priors$prior$dist]],
-      "(",
-      "`", vars[[b]], "`",
-      ",",
-      priors$prior$location[[b]],
-      ",",
-      priors$prior$adjusted_scale[[b]],
-      ", log = TRUE)"
+    switch(dist_name,
+      normal = {
+        args_list <- c("`", vars[[b]], "`", ", ", priors$prior$location[[b]], ", ", priors$prior$scale[[b]])
+      },
+      student_t = {
+        args_list <- c("`", vars[[b]], "`", ", ", priors$prior$df[[b]], ", ", priors$prior$location[[b]], ", ", priors$prior$scale[[b]])
+      },
+      cauchy = {
+        args_list <- c("`", vars[[b]], "`", ", ", priors$prior$location[[b]], ", ", priors$prior$scale[[b]])
+      },
+      exponential = {
+        args_list <- c("`", vars[[b]], "`", ", ", "1/", priors$prior$rate[[b]])
+      },
+      laplace = {
+        args_list <- c("`", vars[[b]], "`", ", ", priors$prior$location[[b]], ", ", priors$prior$scale[[b]])
+      },
+      lasso = {
+        args_list <- c("`", vars[[b]], "`", ", ", priors$prior$sigma[[b]], ", ", priors$prior$tau[[b]], ", ", priors$prior$lambda[[b]], ", a=1, b=1")
+      },
+      hs = {
+        args_list <- c("`", vars[[b]], "`", ", ", priors$prior$lambda[[b]], ", ", priors$prior$tau[[b]])
+      },
+      dirichlet = {
+        args_list <- c("`", vars[[b]], "`", ", ", priors$prior$alpha[[b]])
+      }
     )
+    
+    # Construct the prior equation
+    args_list <- c(args_list, ", log = TRUE)")
+    prior_eq[[vars[[b]]]] <- do.call("paste0", c(list(dist_func, "("), args_list))
   }
 
-  # handle aux parameter
+  # Handle auxiliary parameters, if they exist
+  if (!is.null(priors$prior_aux)) {
+    aux_vars <- names(priors$prior_aux)
+    for (aux in aux_vars) {
+      dist_name <- priors$prior_aux[[aux]]$dist
+      if (dist_name %in% names(dist_to_density)) {
+        dist_func <- dist_to_density[[dist_name]]
+        args_list <- list(
+          aux, 
+          priors$prior_aux[[aux]]$location, 
+          priors$prior_aux[[aux]]$scale
+        )
+        args_list <- c(args_list, ", log = TRUE)")
+        prior_eq[[aux]] <- do.call("paste0", c(list(dist_func, "("), args_list))
+      }
+    }
+  }
 
-  prior_eq[[priors$prior_aux$aux_name]] <- paste0(
-    dist_to_density[[priors$prior_aux$dist]],
-    "(",
-    priors$prior_aux$aux_name,
-    ",",
-    "1/", priors$prior_aux$adjusted_scale,
-    ", log = TRUE)"
-  )
-
-  return(paste0(prior_eq, collapse = "+"))
+  # Return the combined prior equations
+  return(paste0(prior_eq, collapse = " + "))
 }
+
 
 ##' @rdname log_prior_draws
 ##' @export
