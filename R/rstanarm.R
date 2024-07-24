@@ -14,7 +14,55 @@ create_priorsense_data.stanreg <- function(x, ...) {
   )
 
 }
+extract_and_create_function <- function(x) {
+  # Extract the priors
+  prior_string <- extract_stanreg_prior(x)
 
+  # Extract variable names from the model
+  fit_summary <- summary(x)
+  priors <- attr(fit_summary, "priors")
+  vars <- names(priors$prior$location)  # Assuming location is always present
+  
+  # Handle Intercept
+  if ("(Intercept)" %in% vars) {
+    intercept_index <- which(vars == "(Intercept)")
+    vars[intercept_index] <- "theta[1]"  # Assuming theta[1] is always the intercept if present
+    # Adjust other indices accordingly
+    for (i in (intercept_index + 1):length(vars)) {
+      vars[i] <- paste0("theta[", i, "]")
+    }
+  } else {
+    # Map vars to theta indices directly if no intercept or already handled
+    vars <- sapply(seq_along(vars), function(i) paste0("theta[", i, "]"))
+  }
+
+  # Replace variable names in prior string with theta indices
+  modified_prior_string <- prior_string
+  for (i in seq_along(vars)) {
+    modified_prior_string <- gsub(sprintf("`%s`", names(priors$prior$location)[i]), vars[i], modified_prior_string)
+  }
+
+  # Create the function expression
+  func_expression <- paste("function(theta) {", modified_prior_string, "}")
+  prior_function <- eval(parse(text = func_expression))
+
+  return(prior_function)
+}
+
+log_prior_pdf <- function(x, theta){
+    library(VGAM)
+    library(LaplacesDemon)
+    prior_function <- extract_and_create_function(x)
+    create_prior_function <- function(prior_string) {
+    func_expression <- paste("function(theta) {", prior_string, "}")
+    prior_function <- eval(parse(text = func_expression))
+    return(prior_function)
+  }
+
+  prior_function <- create_prior_function(prior_string)
+  log_probability <- prior_function(theta)
+  return(log_probability)
+}
 
 extract_stanreg_prior <- function(x) {
   # Mapping distributions to their corresponding density functions
