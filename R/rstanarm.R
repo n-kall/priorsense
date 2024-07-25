@@ -56,6 +56,9 @@ extract_stanreg_prior <- function(x) {
         dist_func <- dist_info$func
         param_mapping <- dist_info$params
         param_values <- sapply(param_mapping, function(p) priors[[prior_name]][[p]])
+        if (is.matrix(param_values)) {
+            param_values <- param_values[1,]
+        }
         # Constructing the function call with parameters
         func_call <- paste0(dist_func, "(`", var, "`, ", paste(param_values, collapse=", "), ", log = TRUE)")
         prior_eq[[var]] <- func_call
