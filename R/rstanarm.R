@@ -16,15 +16,15 @@ create_priorsense_data.stanreg <- function(x, ...) {
 }
 
 extract_stanreg_prior <- function(x) {
-  # Mapping distributions to their corresponding density functions
+  # Mapping distributions to their corresponding density functions with expected parameters
   dist_to_density <- list(
-    "normal" = "dnorm",
-    "student_t" = "dt",
-    "cauchy" = "dcauchy",
-    "exponential" = "dexp",
-    "laplace" = "dlaplace",
-    "lasso" = "dlasso",
-    "dirichlet" = "ddirichlet"
+    "normal" = list(func="dnorm", params=c("mean"="location", "sd"="scale")),
+    "student_t" = list(func="dt", params=c("df"="df", "x"="location", "ncp"="scale")),
+    "cauchy" = list(func="dcauchy", params=c("location"="location", "scale"="scale")),
+    "exponential" = list(func="dexp", params=c("rate"="scale")),
+    "laplace" = list(func="dlaplace", params=c("location"="location", "scale"="scale")),
+    "lasso" = list(func="dlasso", params=c("location"="location", "scale"="scale")),
+    "dirichlet" = list(func="ddirichlet", params=c("alpha"="scale"))
   )
 
   fit_summary <- summary(x)
@@ -40,31 +40,21 @@ extract_stanreg_prior <- function(x) {
   # Construct the prior equations
   prior_eq <- list()
 
-  # Check if a common prior is used across all coefficients
-  common_dist <- priors$prior$dist
-  if (length(unique(common_dist)) == 1 && !is.null(dist_to_density[[common_dist[1]]])) {
-    # Apply the same distribution to all non-intercept coefficients
-    dist_func <- dist_to_density[[common_dist[1]]]
-    for (var in vars) {
-      if (var != "(Intercept)") {
-        prior_eq[[var]] <- paste0(
-          dist_func, "(`", var, "`, ", 
-          priors$prior$location, ", ", 
-          priors$prior$scale, ", log = TRUE)"
-        )
+  # Iterate through each variable and apply the appropriate prior
+  for (var in vars) {
+    prior_name <- if (var == "(Intercept)") "prior_intercept" else "prior"
+    if (!is.null(priors[[prior_name]])) {
+      dist_name <- priors[[prior_name]]$dist
+      dist_info <- dist_to_density[[dist_name]]
+      if (!is.null(dist_info)) {
+        dist_func <- dist_info$func
+        param_mapping <- dist_info$params
+        param_values <- sapply(param_mapping, function(p) priors[[prior_name]][[p]])
+        # Constructing the function call with parameters
+        func_call <- paste0(dist_func, "(`", var, "`, ", paste(param_values, collapse=", "), ", log = TRUE)")
+        prior_eq[[var]] <- func_call
       }
     }
-  }
-
-  # Handle intercept separately if present
-  if ("(Intercept)" %in% vars) {
-    intercept_prior <- priors$prior_intercept
-    dist_func <- dist_to_density[[intercept_prior$dist]]
-    prior_eq["(Intercept)"] <- paste0(
-      dist_func, "(`(Intercept)`, ", 
-      intercept_prior$location, ", ", 
-      intercept_prior$adjusted_scale, ", log = TRUE)"
-    )
   }
 
   # Combine all priors into a single expression
