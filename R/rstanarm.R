@@ -21,7 +21,7 @@ extract_stanreg_prior <- function(x) {
     "normal" = list(func="dnorm", params=c("mean"="location", "sd"="scale")),
     "student_t" = list(func="dt", params=c("df"="df", "x"="location", "ncp"="scale")),
     "cauchy" = list(func="dcauchy", params=c("location"="location", "scale"="scale")),
-    "exponential" = list(func="dexp", params=c("rate"="scale")),
+    "exponential" = list(func="dexp", params=c("rate"="rate")),
     "laplace" = list(func="dlaplace", params=c("location"="location", "scale"="scale")),
     "lasso" = list(func="dlasso", params=c("location"="location", "scale"="scale")),
     "dirichlet" = list(func="ddirichlet", params=c("alpha"="scale"))
