@@ -52,9 +52,8 @@ extract_and_create_function <- function(x) {
 
 log_prior_pdf <- function(x, theta){
     print("Loading additional libraries")
-    library(VGAM)
-    library(LaplacesDemon)
-    prior_function <- extract_and_create_function(x)
+    library(extraDistr)
+    prior_string <- extract_and_create_function(x)
     create_prior_function <- function(prior_string) {
     func_expression <- paste("function(theta) {", prior_string, "}")
     prior_function <- eval(parse(text = func_expression))
@@ -74,7 +73,6 @@ extract_stanreg_prior <- function(x) {
     "exponential" = "dexp",
     "laplace" = "dlaplace",
     "lasso" = "dlasso",
-    "hs" = "dhs",
     "dirichlet" = "ddirichlet"
   )
 
