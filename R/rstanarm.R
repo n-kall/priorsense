@@ -14,7 +14,27 @@ create_priorsense_data.stanreg <- function(x, ...) {
   )
 
 }
+eval_expr_with_vars <- function(expr_string, vars) {
+  # Parse the expression string
+  parsed_expr <- parse(text = expr_string)[[1]]
+  
+  # Create an environment with the variables
+  env <- new.env()
+  for (var_name in names(vars)) {
+    assign(var_name, vars[var_name], envir = env)
+  }
+  
+  # Evaluate the expression in the created environment
+  result <- eval(parsed_expr, envir = env)
+  result <- as.numeric(result)
+  return(result)
+}
 
+log_prior_pdf <- function(x, theta){
+    prior_string <- extract_stanreg_prior(x)
+    val <- eval_expr_with_vars(prior_string, theta)
+    return(val)
+}
 extract_stanreg_prior <- function(x) {
   # Mapping distributions to their corresponding density functions with expected parameters
   dist_to_density <- list(
