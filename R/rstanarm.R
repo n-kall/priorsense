@@ -14,57 +14,6 @@ create_priorsense_data.stanreg <- function(x, ...) {
   )
 
 }
-extract_and_create_function <- function(x) {
-  # Extract the priors
-  prior_string <- extract_stanreg_prior(x)
-  print("String received")
-  # Extract variable names from the model
-  fit_summary <- summary(x)
-  priors <- attr(fit_summary, "priors")
-  vars <- names(priors$prior$location)  # Assuming location is always present
-  
-  # Adjust indices: Map all vars to theta indices
-  for (i in 1:length(vars)) {
-    vars[i] <- paste0("theta[", i, "]")
-  }
-  
-  # Special handling for Intercept if it exists and is last
-  if ("(Intercept)" %in% vars) {
-    intercept_index <- which(vars == "(Intercept)")
-    if (intercept_index != length(vars)) {
-      # Move the intercept to the last position in theta notation
-      vars[intercept_index] <- vars[length(vars)]
-      vars[length(vars)] <- "theta[length(vars)]"
-    }
-  }
-
-  # Replace variable names in prior string with theta indices
-  modified_prior_string <- prior_string
-  original_vars <- names(priors$prior$location)
-  for (i in seq_along(vars)) {
-    modified_prior_string <- gsub(sprintf("\\b%s\\b", original_vars[i]), vars[i], modified_prior_string)
-  }
-
-  # Create the function expression
-  func_expression <- paste("function(theta) {", modified_prior_string, "}")
-  return(func_expression)  # Return the expression as a string
-}
-
-
-log_prior_pdf <- function(x, theta){
-  print("Loading additional libraries")
-  library(extraDistr)
-  func_expression <- extract_and_create_function(x)
-  create_prior_function <- function(func_expression) {
-    prior_function <- eval(parse(text = func_expression))
-    return(prior_function)
-  }
-
-  prior_function <- create_prior_function(func_expression)
-  log_probability <- prior_function(theta)
-  return(log_probability)
-}
-
 
 extract_stanreg_prior <- function(x) {
   # Mapping distributions to their corresponding density functions
