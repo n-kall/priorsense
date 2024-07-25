@@ -94,8 +94,7 @@ extract_stanreg_prior <- function(x) {
 
 ##' @rdname log_prior_draws
 ##' @export
-log_prior_draws.stanreg <- function(x, joint = FALSE, ...) {
-  
+log_prior_draws.stanreg <- function(x, joint = FALSE, ...) {  
   # Get the draws as a dataframe
   draws_matrix <- posterior::as_draws_matrix(x)
   # Initialize vector to store log prior values
@@ -107,10 +106,7 @@ log_prior_draws.stanreg <- function(x, joint = FALSE, ...) {
     names(row) <- colnames(draws_matrix)
     lprior[i] <- log_prior_pdf(x, row)
   }
-  ##add a new, empty column to the draws object
-  draws_matrix <- cbind(draws_matrix, lprior)
-  colnames(draws_matrix)[ncol(draws_matrix)] <- "log_prior"
-  return(draws_matrix)
+  return(posterior::draws_matrix("lprior" = lprior))
 }
 
 ##' @rdname log_lik_draws
