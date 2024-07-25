@@ -14,7 +14,6 @@ create_priorsense_data.stanreg <- function(x, ...) {
   )
 
 }
-
 extract_and_create_function <- function(x) {
   # Extract the priors
   prior_string <- extract_stanreg_prior(x)
@@ -22,18 +21,19 @@ extract_and_create_function <- function(x) {
   # Extract variable names from the model
   fit_summary <- summary(x)
   priors <- attr(fit_summary, "priors")
-  vars <- names(priors$prior$location)  # Assuming location is always present
-  
+  if (is.null(priors$prior$location)) {
+    stop("Priors or location attribute is missing.")
+  }
+  vars <- names(priors$prior$location)
+
   # Handle Intercept
   if ("(Intercept)" %in% vars) {
     intercept_index <- which(vars == "(Intercept)")
-    vars[intercept_index] <- "theta[1]"  # Assuming theta[1] is always the intercept if present
-    # Adjust other indices accordingly
+    vars[intercept_index] <- "theta[1]"
     for (i in (intercept_index + 1):length(vars)) {
       vars[i] <- paste0("theta[", i, "]")
     }
   } else {
-    # Map vars to theta indices directly if no intercept or already handled
     vars <- sapply(seq_along(vars), function(i) paste0("theta[", i, "]"))
   }
 
@@ -51,19 +51,16 @@ extract_and_create_function <- function(x) {
 }
 
 log_prior_pdf <- function(x, theta){
-    print("Loading additional libraries")
-    library(extraDistr)
-    prior_string <- extract_and_create_function(x)
-    create_prior_function <- function(prior_string) {
-    func_expression <- paste("function(theta) {", prior_string, "}")
-    prior_function <- eval(parse(text = func_expression))
-    return(prior_function)
-  }
-
-  prior_function <- create_prior_function(prior_string)
+  print("Loading additional libraries")
+  library(extraDistr)
+  
+  # Directly use the function returned by extract_and_create_function
+  prior_function <- extract_and_create_function(x)
   log_probability <- prior_function(theta)
+  
   return(log_probability)
 }
+
 extract_stanreg_prior <- function(x) {
   # Mapping distributions to their corresponding density functions
   dist_to_density <- list(
