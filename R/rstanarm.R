@@ -42,7 +42,13 @@ extract_stanreg_prior <- function(x) {
 
   # Iterate through each variable and apply the appropriate prior
   for (var in vars) {
-    prior_name <- if (var == "(Intercept)") "prior_intercept" else "prior"
+    if (var == "sigma") {
+      # Special handling for sigma variable
+      prior_name <- "prior_aux"
+    } else {
+      prior_name <- if (var == "(Intercept)") "prior_intercept" else "prior"
+    }
+
     if (!is.null(priors[[prior_name]])) {
       dist_name <- priors[[prior_name]]$dist
       dist_info <- dist_to_density[[dist_name]]
@@ -60,6 +66,7 @@ extract_stanreg_prior <- function(x) {
   # Combine all priors into a single expression
   return(paste0(prior_eq, collapse = " + "))
 }
+
 
 ##' @rdname log_prior_draws
 ##' @export
