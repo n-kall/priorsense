@@ -45,6 +45,7 @@ extract_stanreg_prior <- function(x) {
     "laplace" = list(func="dlaplace", params=c("location"="location", "scale"="scale")),
     "lasso" = list(func="dlasso", params=c("location"="location", "scale"="scale")),
     "dirichlet" = list(func="ddirichlet", params=c("alpha"="scale"))
+    ##HS, HS PLUS, Product normal and the prior_smooth family is not implemented right now
   )
 
   fit_summary <- summary(x)
@@ -95,17 +96,22 @@ extract_stanreg_prior <- function(x) {
 ##' @export
 log_prior_draws.stanreg <- function(x, joint = FALSE, ...) {
   
-  prior_fun <- extract_stanreg_prior(x)
-
-  lprior <- apply(
-    posterior::as_draws_df(x),
-    1,
-    function(row) rlang::eval_tidy(parse(text = prior_fun)[[1]], data = as.list(row))
-  )
-
-  return(draws_matrix("lprior" = lprior))
+  # Get the draws as a dataframe
+  draws_matrix <- posterior::as_draws_matrix(x)
+  # Initialize vector to store log prior values
+  lprior <- numeric(nrow(draws_matrix))
+  
+  # Calculate log prior for each row of the draws object
+  for (i in 1:nrow(draws_matrix)) {
+    row <- as.vector(draws_matrix[i, ])
+    names(row) <- colnames(draws_matrix)
+    lprior[i] <- log_prior_pdf(x, row)
+  }
+  ##add a new, empty column to the draws object
+  draws_matrix <- cbind(draws_matrix, lprior)
+  colnames(draws_matrix)[ncol(draws_matrix)] <- "log_prior"
+  return(draws_matrix)
 }
-
 
 ##' @rdname log_lik_draws
 ##' @export
