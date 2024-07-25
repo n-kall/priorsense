@@ -17,7 +17,7 @@ create_priorsense_data.stanreg <- function(x, ...) {
 extract_and_create_function <- function(x) {
   # Extract the priors
   prior_string <- extract_stanreg_prior(x)
-
+  print("String received")
   # Extract variable names from the model
   fit_summary <- summary(x)
   priors <- attr(fit_summary, "priors")
