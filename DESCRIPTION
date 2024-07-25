@@ -5,7 +5,8 @@ Authors@R: c(person("Noa", "Kallioinen", email = "noa.kallioinen@aalto.fi", role
 	     person("Topi", "Paananen", role = c("aut")),
 	     person("Paul-Christian", "Bürkner", role = c("aut")),
 	     person("Aki", "Vehtari", role = c("aut")),
-	     person("Frank", "Weber", role = c("ctb"))
+	     person("Frank", "Weber", role = c("ctb"),
+	     person("Giorgio", "Micaletto", role = c("ctb")
 	     )
 Description: Provides functions for prior and likelihood sensitivity analysis in Bayesian models. Currently it implements methods to determine the sensitivity of the posterior to power-scaling perturbations of the prior and likelihood.
 License: GPL (>= 3)
@@ -29,6 +30,7 @@ Suggests:
     bayesplot (>= 1.11.1),
     brms (>= 2.21.0),
     cmdstanr (>= 0.8.1),
+    extraDistr (>= 1.10.0),
     iwmm (>= 0.0.1),
     knitr (>= 1.47),
     philentropy (>= 0.8.0),
