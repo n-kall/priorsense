@@ -17,7 +17,7 @@ create_priorsense_data.stanreg <- function(x, ...) {
 extract_and_create_function <- function(x) {
   # Extract the priors
   prior_string <- extract_stanreg_prior(x)
-
+  print(1)
   # Extract variable names from the model
   fit_summary <- summary(x)
   priors <- attr(fit_summary, "priors")
@@ -56,7 +56,9 @@ log_prior_pdf <- function(x, theta){
   
   # Directly use the function returned by extract_and_create_function
   prior_function <- extract_and_create_function(x)
+  print(2)
   log_probability <- prior_function(theta)
+    
   
   return(log_probability)
 }
