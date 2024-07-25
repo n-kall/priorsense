@@ -14,6 +14,7 @@ create_priorsense_data.stanreg <- function(x, ...) {
   )
 
 }
+
 extract_and_create_function <- function(x) {
   # Extract the priors
   prior_string <- extract_stanreg_prior(x)
@@ -81,7 +82,7 @@ extract_stanreg_prior <- function(x) {
   priors <- attr(fit_summary, "priors")
 
   draws <- as_draws(x)
-  vars <- variables(draws)
+  vars <- posterior::variables(draws)
 
   prior_eq <- list()
 
@@ -102,6 +103,7 @@ extract_stanreg_prior <- function(x) {
 
   # Handle coefficient prior
   for (b in seq_along(vars)) {
+    print(vars[b])
     dist_name <- priors$prior$dist[[b]]
     dist_func <- dist_to_density[[dist_name]]
     args_list <- list()
