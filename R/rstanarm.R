@@ -51,6 +51,7 @@ extract_and_create_function <- function(x) {
 }
 
 log_prior_pdf <- function(x, theta){
+    print("Loading additional libraries")
     library(VGAM)
     library(LaplacesDemon)
     prior_function <- extract_and_create_function(x)
@@ -64,7 +65,6 @@ log_prior_pdf <- function(x, theta){
   log_probability <- prior_function(theta)
   return(log_probability)
 }
-
 extract_stanreg_prior <- function(x) {
   # Mapping distributions to their corresponding density functions
   dist_to_density <- list(
@@ -72,96 +72,55 @@ extract_stanreg_prior <- function(x) {
     "student_t" = "dt",
     "cauchy" = "dcauchy",
     "exponential" = "dexp",
-    "laplace" = "dlaplace",  ## From the VGAM package
-    "lasso" = "dlasso",      ## From the LaplacesDemon package
-    "hs" = "dhs",            ## From the LaplacesDemon package
-    "dirichlet" = "ddirichlet" ## From the LaplacesDemon package
+    "laplace" = "dlaplace",
+    "lasso" = "dlasso",
+    "hs" = "dhs",
+    "dirichlet" = "ddirichlet"
   )
 
   fit_summary <- summary(x)
   priors <- attr(fit_summary, "priors")
-
+  
+  if (is.null(priors)) {
+    stop("No priors found in model summary.")
+  }
+  
   draws <- as_draws(x)
   vars <- posterior::variables(draws)
 
+  # Construct the prior equations
   prior_eq <- list()
 
-  # Handle intercept prior
-  if ("(Intercept)" %in% vars) {
-    prior_eq["(Intercept)"] <- paste0(
-      dist_to_density[[priors$prior_intercept$dist]],
-      "(",
-      "`(Intercept)`",
-      ", ",
-      priors$prior_intercept$location,
-      ", ",
-      priors$prior_intercept$adjusted_scale,
-      ", log = TRUE)"
-    )
-    vars <- vars[which(vars != "(Intercept)")]  # Remove intercept from vars
-  }
-
-  # Handle coefficient prior
-  for (b in seq_along(vars)) {
-    print(vars[b])
-    dist_name <- priors$prior$dist[[b]]
-    dist_func <- dist_to_density[[dist_name]]
-    args_list <- list()
-
-    switch(dist_name,
-      normal = {
-        args_list <- c("`", vars[[b]], "`", ", ", priors$prior$location[[b]], ", ", priors$prior$scale[[b]])
-      },
-      student_t = {
-        args_list <- c("`", vars[[b]], "`", ", ", priors$prior$df[[b]], ", ", priors$prior$location[[b]], ", ", priors$prior$scale[[b]])
-      },
-      cauchy = {
-        args_list <- c("`", vars[[b]], "`", ", ", priors$prior$location[[b]], ", ", priors$prior$scale[[b]])
-      },
-      exponential = {
-        args_list <- c("`", vars[[b]], "`", ", ", "1/", priors$prior$rate[[b]])
-      },
-      laplace = {
-        args_list <- c("`", vars[[b]], "`", ", ", priors$prior$location[[b]], ", ", priors$prior$scale[[b]])
-      },
-      lasso = {
-        args_list <- c("`", vars[[b]], "`", ", ", priors$prior$sigma[[b]], ", ", priors$prior$tau[[b]], ", ", priors$prior$lambda[[b]], ", a=1, b=1")
-      },
-      hs = {
-        args_list <- c("`", vars[[b]], "`", ", ", priors$prior$lambda[[b]], ", ", priors$prior$tau[[b]])
-      },
-      dirichlet = {
-        args_list <- c("`", vars[[b]], "`", ", ", priors$prior$alpha[[b]])
-      }
-    )
-    
-    # Construct the prior equation
-    args_list <- c(args_list, ", log = TRUE)")
-    prior_eq[[vars[[b]]]] <- do.call("paste0", c(list(dist_func, "("), args_list))
-  }
-
-  # Handle auxiliary parameters, if they exist
-  if (!is.null(priors$prior_aux)) {
-    aux_vars <- names(priors$prior_aux)
-    for (aux in aux_vars) {
-      dist_name <- priors$prior_aux[[aux]]$dist
-      if (dist_name %in% names(dist_to_density)) {
-        dist_func <- dist_to_density[[dist_name]]
-        args_list <- list(
-          aux, 
-          priors$prior_aux[[aux]]$location, 
-          priors$prior_aux[[aux]]$scale
+  # Check if a common prior is used across all coefficients
+  common_dist <- priors$prior$dist
+  if (length(unique(common_dist)) == 1 && !is.null(dist_to_density[[common_dist[1]]])) {
+    # Apply the same distribution to all non-intercept coefficients
+    dist_func <- dist_to_density[[common_dist[1]]]
+    for (var in vars) {
+      if (var != "(Intercept)") {
+        prior_eq[[var]] <- paste0(
+          dist_func, "(`", var, "`, ", 
+          priors$prior$location, ", ", 
+          priors$prior$scale, ", log = TRUE)"
         )
-        args_list <- c(args_list, ", log = TRUE)")
-        prior_eq[[aux]] <- do.call("paste0", c(list(dist_func, "("), args_list))
       }
     }
   }
 
-  # Return the combined prior equations
+  # Handle intercept separately if present
+  if ("(Intercept)" %in% vars) {
+    intercept_prior <- priors$prior_intercept
+    dist_func <- dist_to_density[[intercept_prior$dist]]
+    prior_eq["(Intercept)"] <- paste0(
+      dist_func, "(`(Intercept)`, ", 
+      intercept_prior$location, ", ", 
+      intercept_prior$adjusted_scale, ", log = TRUE)"
+    )
+  }
+
+  # Combine all priors into a single expression
   return(paste0(prior_eq, collapse = " + "))
 }
-
 
 ##' @rdname log_prior_draws
 ##' @export
