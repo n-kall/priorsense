@@ -70,10 +70,16 @@ extract_stanreg_prior <- function(x) {
 
   aux_vars <- c("sigma", "reciprocal_dispersion", "shape", "lambda")
 
-  coef_vars <- setdiff(vars, c("(Intercept)", aux_vars))
+  covar_vars <- vars[grep("^Sigma\\[", vars)]
+
+  grouplevel_vars <- vars[grep("^b\\[", vars)]
+
+  coef_vars <- setdiff(vars, c("(Intercept)", aux_vars, covar_vars, grouplevel_vars))
+
+  global_vars <- setdiff(vars, c(grouplevel_vars, covar_vars))
 
   # Iterate through each variable and apply the appropriate prior
-  for (var in vars) {
+  for (var in global_vars) {
     if (var %in% aux_vars) {
       # Special handling for aux variables
       prior_name <- "prior_aux"
