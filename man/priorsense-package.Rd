@@ -69,6 +69,7 @@ Authors:
 Other contributors:
 \itemize{
   \item Frank Weber [contributor]
+  \item Giorgio Micaletto [contributor]
 }
 
 }

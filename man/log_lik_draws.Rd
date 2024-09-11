@@ -16,7 +16,7 @@ log_lik_draws(x, ...)
 
 \method{log_lik_draws}{draws}(x, joint = FALSE, log_lik_name = "log_lik", ...)
 
-\method{log_lik_draws}{stanreg}(x, joint = FALSE)
+\method{log_lik_draws}{stanreg}(x, joint = FALSE, ...)
 }
 \arguments{
 \item{x}{Model fit or draws object.}
