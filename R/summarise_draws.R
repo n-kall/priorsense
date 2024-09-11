@@ -135,7 +135,7 @@ summarise_draws.powerscaled_sequence <- function(.x,
     .num_args = .num_args
   )
 
-  base_quantities$alpha <- 1
+  base_quantities[[".powerscale_alpha"]] <- 1
   base_quantities$pareto_k_threshold <- Inf
   base_quantities$pareto_k <- -Inf
 
@@ -175,7 +175,7 @@ summarise_draws.powerscaled_sequence <- function(.x,
 
       ps_details <- get_powerscaling_details(quantities)
       
-      quantities$alpha <- ps_details$alpha
+      quantities[[".powerscale_alpha"]] <- ps_details$alpha
       quantities$component <- ps_details$component
       quantities$pareto_k <- ps_details$diagnostics$khat
       quantities$pareto_k_threshold <- ps_details$diagnostics$khat_threshold
@@ -204,7 +204,7 @@ summarise_draws.powerscaled_sequence <- function(.x,
 
       ps_details <- get_powerscaling_details(quantities)
       
-      quantities$alpha <- ps_details$alpha
+      quantities[[".powerscale_alpha"]] <- ps_details$alpha
       quantities$component <- ps_details$component
       quantities$pareto_k <- ps_details$diagnostics$khat
       quantities$pareto_k_threshold <- ps_details$diagnostics$khat_threshold
