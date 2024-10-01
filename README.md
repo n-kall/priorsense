@@ -115,19 +115,19 @@ and are indicated.
 powerscale_plot_dens(fit)
 ```
 
-<img src="man/figures/README-dens_plot-1.png" width="70%" height="70%" />
+<img src="man/figures/README-dens_plot-1.png" width="70%" />
 
 ``` r
 powerscale_plot_ecdf(fit)
 ```
 
-<img src="man/figures/README-ecdf_plot-1.png" width="70%" height="70%" />
+<img src="man/figures/README-ecdf_plot-1.png" width="70%" />
 
 ``` r
 powerscale_plot_quantities(fit)
 ```
 
-<img src="man/figures/README-quants_plot-1.png" width="70%" height="70%" />
+<img src="man/figures/README-quants_plot-1.png" width="70%" />
 
 In some cases, setting `moment_match = TRUE` will improve the unreliable
 estimates at the cost of some further computation. This requires the
@@ -137,7 +137,7 @@ estimates at the cost of some further computation. This requires the
 
 Noa Kallioinen, Topi Paananen, Paul-Christian Bürkner, Aki Vehtari
 (2023). Detecting and diagnosing prior and likelihood sensitivity with
-power-scaling. Statstics and Computing. 34, 57.
+power-scaling. Statistics and Computing. 34, 57.
 <https://doi.org/10.1007/s11222-023-10366-5>
 
 Topi Paananen, Juho Piironen, Paul-Christian Bürkner, Aki Vehtari
