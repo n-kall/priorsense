@@ -10,7 +10,8 @@
 ##'   margins to 2 margins?
 ##' @param ... further arguments passed to predict_fn
 ##' @return draws array of predictions
-##' @examples 
+##' @examples
+##' \dontrun{
 ##' library(brms)
 ##'
 ##' if ("log_prior_draws.brmsfit" %in% methods(log_prior_draws) &&
@@ -29,6 +30,7 @@
 ##'                                  x, brms::posterior_epred
 ##'                                )
 ##'   )
+##' }
 ##' }
 ##' @export
 predictions_as_draws <- function(x, predict_fn, prediction_names = NULL,

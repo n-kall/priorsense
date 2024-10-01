@@ -32,6 +32,7 @@ Create predictions using brms functions and convert them into
 draws format
 }
 \examples{
+\dontrun{
 library(brms)
 
 if ("log_prior_draws.brmsfit" \%in\% methods(log_prior_draws) &&
@@ -50,5 +51,6 @@ if ("log_prior_draws.brmsfit" \%in\% methods(log_prior_draws) &&
                                  x, brms::posterior_epred
                                )
   )
+}
 }
 }
