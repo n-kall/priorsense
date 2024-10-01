@@ -1,3 +1,7 @@
+priorsense 1.0.3
+---
++ Fix issue with model parameter named "alpha"
+
 priorsense 1.0.2
 ---
 + Fix to Pareto smoothing of weights
