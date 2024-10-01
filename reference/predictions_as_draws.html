@@ -9,7 +9,7 @@ draws format"><meta property="og:image" content="https://n-kall.github.io/priors
 
     <a class="navbar-brand me-2" href="../index.html">priorsense</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -87,7 +87,7 @@ margins to 2 margins?</p></dd>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/paul-buerkner/brms" class="external-link">brms</a></span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: Rcpp</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading 'brms' package (version 2.21.0). Useful instructions</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading 'brms' package (version 2.22.0). Useful instructions</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> can be found by typing help('brms'). A more detailed introduction</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> to the package is available through vignette('brms_overview').</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
@@ -98,10 +98,10 @@ margins to 2 margins?</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="st">"log_prior_draws.brmsfit"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/methods.html" class="external-link">methods</a></span><span class="op">(</span><span class="va">log_prior_draws</span><span class="op">)</span> <span class="op">&amp;&amp;</span></span></span>
 <span class="r-in"><span>    <span class="op">(</span><span class="st">"log_lik_draws.brmsfit"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/methods.html" class="external-link">methods</a></span><span class="op">(</span><span class="va">log_lik_draws</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://paul-buerkner.github.io/brms/reference/brm.html" class="external-link">brm</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://paulbuerkner.com/brms/reference/brm.html" class="external-link">brm</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    <span class="va">yield</span> <span class="op">~</span> <span class="va">N</span> <span class="op">*</span> <span class="va">P</span> <span class="op">*</span> <span class="va">K</span>,</span></span>
 <span class="r-in"><span>    data <span class="op">=</span> <span class="va">npk</span>,</span></span>
-<span class="r-in"><span>    prior <span class="op">=</span> <span class="fu"><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">prior</a></span><span class="op">(</span><span class="fu">normal</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, class <span class="op">=</span> <span class="st">"b"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    prior <span class="op">=</span> <span class="fu"><a href="https://paulbuerkner.com/brms/reference/set_prior.html" class="external-link">prior</a></span><span class="op">(</span><span class="fu">normal</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, class <span class="op">=</span> <span class="st">"b"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    refresh <span class="op">=</span> <span class="fl">0</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -113,6 +113,23 @@ margins to 2 margins?</p></dd>
 <span class="r-in"><span>                               <span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Compiling Stan program...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Start sampling</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sensitivity based on cjs_dist:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 24 × 4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    variable   prior likelihood diagnosis          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> _pred[1]  0.084<span style="text-decoration: underline;">9</span>     0.136  prior-data conflict</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> _pred[2]  0.078<span style="text-decoration: underline;">9</span>     0.098<span style="text-decoration: underline;">8</span> prior-data conflict</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> _pred[3]  0.025<span style="text-decoration: underline;">1</span>     0.085<span style="text-decoration: underline;">3</span> -                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> _pred[4]  0.039<span style="text-decoration: underline;">4</span>     0.054<span style="text-decoration: underline;">6</span> -                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> _pred[5]  0.074<span style="text-decoration: underline;">6</span>     0.115  prior-data conflict</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> _pred[6]  0.051<span style="text-decoration: underline;">9</span>     0.058<span style="text-decoration: underline;">6</span> prior-data conflict</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> _pred[7]  0.062<span style="text-decoration: underline;">1</span>     0.115  prior-data conflict</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> _pred[8]  0.033<span style="text-decoration: underline;">3</span>     0.087<span style="text-decoration: underline;">9</span> -                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> _pred[9]  0.033<span style="text-decoration: underline;">3</span>     0.087<span style="text-decoration: underline;">9</span> -                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> _pred[10] 0.051<span style="text-decoration: underline;">9</span>     0.058<span style="text-decoration: underline;">6</span> prior-data conflict</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 14 more rows</span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -124,7 +141,7 @@ margins to 2 margins?</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer></div>
