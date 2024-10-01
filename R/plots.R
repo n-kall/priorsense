@@ -55,7 +55,7 @@ prepare_plot_data <- function(x, variable, resample, ...) {
 
       prior_ps_details <- get_powerscaling_details(prior_scaled[[i]])
 
-      prior_draws[[i]]$alpha <- prior_ps_details$alpha
+      prior_draws[[i]][[".powerscale_alpha"]] <- prior_ps_details$alpha
       prior_draws[[i]]$component <- "prior"
       prior_draws[[i]]$pareto_k <- prior_ps_details$diagnostics$khat
       prior_draws[[i]]$pareto_k_threshold <- prior_ps_details$diagnostics$khat_threshold
@@ -63,7 +63,7 @@ prepare_plot_data <- function(x, variable, resample, ...) {
     }
 
     base_draws_prior <- base_draws
-    base_draws_prior$alpha <- 1
+    base_draws_prior[[".powerscale_alpha"]] <- 1
     base_draws_prior$component <- "prior"
     base_draws_prior$pareto_k <- -Inf
     base_draws_prior$pareto_k_threshold <- Inf
@@ -86,7 +86,7 @@ prepare_plot_data <- function(x, variable, resample, ...) {
 
       likelihood_ps_details <- get_powerscaling_details(likelihood_scaled[[i]])
 
-      likelihood_draws[[i]]$alpha <- likelihood_ps_details$alpha
+      likelihood_draws[[i]][[".powerscale_alpha"]] <- likelihood_ps_details$alpha
       likelihood_draws[[i]]$component <- "likelihood"
       likelihood_draws[[i]]$pareto_k <- likelihood_ps_details$diagnostics$khat
       likelihood_draws[[i]]$pareto_k_threshold <- likelihood_ps_details$diagnostics$khat_threshold
@@ -95,7 +95,7 @@ prepare_plot_data <- function(x, variable, resample, ...) {
     }
 
     base_draws_lik <- base_draws
-    base_draws_lik$alpha <- 1
+    base_draws_lik[[".powerscale_alpha"]] <- 1
     base_draws_lik$component <- "likelihood"
     base_draws_lik$pareto_k <- -Inf
     base_draws_lik$pareto_k_threshold <- Inf
@@ -138,8 +138,8 @@ prepare_plot <- function(d, resample, variable, colors, ...) {
       data = d,
       ggplot2::aes(
         x = .data$value,
-        group = .data$alpha,
-        color = .data$alpha,
+        group = .data[[".powerscale_alpha"]],
+        color = .data[[".powerscale_alpha"]],
         linetype = .data$pareto_k_value
       )
     )
@@ -149,8 +149,8 @@ prepare_plot <- function(d, resample, variable, colors, ...) {
       ggplot2::aes(
         x = .data$value,
         weight = exp(.data$.log_weight),
-        group = .data$alpha,
-        color = .data$alpha,
+        group = .data[[".powerscale_alpha"]],
+        color = .data[[".powerscale_alpha"]],
         linetype = .data$pareto_k_value
       )
     )
@@ -166,27 +166,27 @@ prepare_plot <- function(d, resample, variable, colors, ...) {
       name = "Power-scaling alpha",
       colours = colors[1:3],
       trans = "log",
-      limits = c(min(d$alpha) - 0.01, max(d$alpha) + 0.01),
-      breaks = c(min(d$alpha), 1, max(d$alpha)),
+      limits = c(min(d[[".powerscale_alpha"]]) - 0.01, max(d[[".powerscale_alpha"]]) + 0.01),
+      breaks = c(min(d[[".powerscale_alpha"]]), 1, max(d[[".powerscale_alpha"]])),
       labels = c(
-        round(min(d$alpha), digits = 3),
+        round(min(d[[".powerscale_alpha"]]), digits = 3),
         "1",
-        round(max(d$alpha), digits = 3)
+        round(max(d[[".powerscale_alpha"]]), digits = 3)
       )
     ) +
     ggplot2::scale_fill_gradientn(
       colours = c(colors[1:3]),
       trans = "log",
-      limits = c(min(d$alpha) - 0.01, max(d$alpha) + 0.01),
-      breaks = c(min(d$alpha), 1, max(d$alpha)),
+      limits = c(min(d[[".powerscale_alpha"]]) - 0.01, max(d[[".powerscale_alpha"]]) + 0.01),
+      breaks = c(min(d[[".powerscale_alpha"]]), 1, max(d[[".powerscale_alpha"]])),
       labels = c(
-        round(min(d$alpha), digits = 3),
+        round(min(d[[".powerscale_alpha"]]), digits = 3),
         "1",
-        round(max(d$alpha), digits = 3)
+        round(max(d[[".powerscale_alpha"]]), digits = 3)
       )
     )
 
-  if (length(unique(d$alpha)) == 3) {
+  if (length(unique(d[[".powerscale_alpha"]])) == 3) {
     p <- p +
       ggplot2::guides(
         color = ggplot2::guide_legend(
@@ -274,8 +274,8 @@ powerscale_plot_dens.powerscaled_sequence <- function(x,
   d <- prepare_plot_data(x, variable = variable, resample = resample, ...)
 
   interval_positions <- data.frame(
-    alpha = unique(d$alpha),
-    interval_y = as.numeric(as.factor(unique(d$alpha)))
+    ".powerscale_alpha" = unique(d[[".powerscale_alpha"]]),
+    interval_y = as.numeric(as.factor(unique(d[[".powerscale_alpha"]])))
   )
 
   interval_positions$interval_y <- (0.5 - (interval_positions$interval_y)) / (6 * nrow(interval_positions))
@@ -478,10 +478,10 @@ powerscale_plot_ecdf.powerscaled_sequence <- function(x,
 
   if (resample || x$resampled) {
     p <- p +
-      ggplot2::stat_ecdf(ggplot2::aes(color = .data$alpha))
+      ggplot2::stat_ecdf(ggplot2::aes(color = .data[[".powerscale_alpha"]]))
   } else {
     p <- p +
-      stat_ewcdf(ggplot2::aes(color = .data$alpha))
+      stat_ewcdf(ggplot2::aes(color = .data[[".powerscale_alpha"]]))
   }
 
 
@@ -625,13 +625,13 @@ powerscale_plot_quantities.powerscaled_sequence <- function(x, variable = NULL,
   if (mcse) {
     quants <- setdiff(
       colnames(summ[[1]]),
-      c("variable", "alpha", "component",
+      c("variable", ".powerscale_alpha", "component",
         "pareto_k", "pareto_kf", "pareto_k_threshold", "n_eff", div_measure)
     )
 
     mcse_functions <- paste0("mcse_", quantity)
 
-    base_quantities <- summ[[1]][which(summ[[1]]$alpha == 1), ]
+    base_quantities <- summ[[1]][which(summ[[1]] == 1), ]
     base_quantities <- unique(base_quantities[c("variable", quants)])
 
     base_q <- as.data.frame(base_quantities)
@@ -704,7 +704,7 @@ powerscale_summary_plot <- function(x,
   # get default quantities
   quantities <- setdiff(
     colnames(x[[1]]),
-    c("variable", "alpha", "component",
+    c("variable", ".powerscale_alpha", "component",
       "pareto_k", "pareto_kf", "n_eff", "pareto_k_threshold")
   )
 
@@ -733,12 +733,12 @@ powerscale_summary_plot <- function(x,
   )
 
   # subset for plotting points at ends of lines
-  points <- summaries[summaries$alpha == min(summaries$alpha) |
-                        summaries$alpha == max(summaries$alpha), ]
+  points <- summaries[summaries[[".powerscale_alpha"]] == min(summaries[[".powerscale_alpha"]]) |
+                        summaries[[".powerscale_alpha"]] == max(summaries[[".powerscale_alpha"]]), ]
 
   p <- ggplot2::ggplot(
     data = summaries,
-    mapping = ggplot2::aes(x = .data$alpha, y = .data$value)
+    mapping = ggplot2::aes(x = .data[[".powerscale_alpha"]], y = .data$value)
   ) +
     ggplot2::geom_line(ggplot2::aes(
       color = .data$pareto_k_value, group = .data$component)) +
@@ -751,7 +751,7 @@ powerscale_summary_plot <- function(x,
   ) +
   ggplot2::geom_point(
     ggplot2::aes(
-      x = .data$alpha,
+      x = .data[[".powerscale_alpha"]],
       y = .data$value,
       shape = .data$component
     ),
@@ -771,9 +771,9 @@ powerscale_summary_plot <- function(x,
   ggplot2::ylab(NULL) +
   ggplot2::scale_x_continuous(
     trans = "log2",
-    limits = c(0.95 * min(summaries$alpha), 1.05 * max(summaries$alpha)),
-    breaks = c(min(summaries$alpha), 1, max(summaries$alpha)),
-    labels = round(c(min(summaries$alpha), 1, max(summaries$alpha)), digits = 3),
+    limits = c(0.95 * min(summaries[[".powerscale_alpha"]]), 1.05 * max(summaries[[".powerscale_alpha"]])),
+    breaks = c(min(summaries[[".powerscale_alpha"]]), 1, max(summaries[[".powerscale_alpha"]])),
+    labels = round(c(min(summaries[[".powerscale_alpha"]]), 1, max(summaries[[".powerscale_alpha"]])), digits = 3),
     name = "Power-scaling alpha"
   )
 
