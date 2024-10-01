@@ -137,7 +137,7 @@ requires the [`iwmm` package](https://github.com/topipa/iwmm).
 
 Noa Kallioinen, Topi Paananen, Paul-Christian Bürkner, Aki Vehtari
 (2023).  Detecting and diagnosing prior and likelihood sensitivity
-with power-scaling. Statstics and Computing. 34, 57.
+with power-scaling. Statistics and Computing. 34, 57.
 https://doi.org/10.1007/s11222-023-10366-5
 
 Topi Paananen, Juho Piironen, Paul-Christian Bürkner, Aki Vehtari (2021).
