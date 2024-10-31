@@ -325,14 +325,15 @@ powerscale_divergence_gradients <- function(lower_divergences,
 
   variable <- lower_divergences$variable
 
-  ## second-order centered difference approximation
-  ## f''(x) = (f(x + dx) - 2f(x) + f(x - dx)) / dx^2
-  ## here it is wrt log_2 alpha
   upper_diff <- subset(upper_divergences, select = -c(variable))
   lower_diff <- subset(lower_divergences, select = -c(variable))
-  logdiffsquare <- 2 * log(upper_alpha, base = 2)
-  grad <- (upper_diff + lower_diff) / logdiffsquare
 
-  return(tibble::as_tibble(cbind(variable, grad)))
+  log_upper_alpha <- log(upper_alpha, base = 2)
+  log_lower_alpha <- log(lower_alpha, base = 2)
+  grad_upper <- upper_diff / log_upper_alpha
+  grad_lower <- -1 * lower_diff / log_lower_alpha
 
+  mean_grad <- (grad_upper + grad_lower) / 2
+
+  return(tibble::as_tibble(cbind(variable, mean_grad)))
 }
