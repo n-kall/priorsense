@@ -1,3 +1,8 @@
+priorsense 1.0.4
+---
++ Fix an issue where `lower_alpha` was not taken into account when
+  calculating the gradient of the divergence.
+
 priorsense 1.0.3
 ---
 + Fix issue with model parameter named "alpha"
