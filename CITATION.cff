@@ -1,43 +1,24 @@
 cff-version: "1.2.0"
-authors:
-  - family-names: Kallioinen
-    given-names: Noa
-    orcid: "https://orcid.org/0000-0003-1586-8382"
-  - family-names: Paananen
-    given-names: Topi
-    orcid: "https://orcid.org/0000-0002-6542-407X"
-  - family-names: Bürkner
-    given-names: Paul-Christian
-    orcid: "https://orcid.org/0000-0001-5765-8995"
-  - family-names: Vehtari
-    given-names: Aki
-    orcid: "https://orcid.org/0000-0003-2164-9469"
-contact:
-  - family-names: Kallioinen
-    given-names: Noa
-    orcid: "https://orcid.org/0000-0003-1586-8382"
 message: If you use this software, please cite our article in Statistics and Computing.
-preferred-citation:
-  - family-names: Kallioinen
-    given-names: Noa
-    orcid: "https://orcid.org/0000-0003-1586-8382"
-  - family-names: Paananen
-    given-names: Topi
-    orcid: "https://orcid.org/0000-0002-6542-407X"
-  - family-names: Bürkner
-    given-names: Paul-Christian
-    orcid: "https://orcid.org/0000-0001-5765-8995"
-  - family-names: Vehtari
-    given-names: Aki
-    orcid: "https://orcid.org/0000-0003-2164-9469"
-  date-published: 2023-12-31
-  doi: 10.1007/s11222-023-10366-5
-  issue: 56
-  journal: Statistics and Computing
-  publisher:
-    name: Springer
-  start: 34
-  title: "Detecting and diagnosing prior and likelihood sensitivity with power-scaling"
-  type: article
-  url: "https://link.springer.com/article/10.1007/s11222-023-10366-5"
-title: "priorsense: A tool for prior and likelihood sensitivity checks"
+- family-names: Kallioinen
+  given-names: Noa
+  orcid: "https://orcid.org/0000-0003-1586-8382"
+- family-names: Paananen
+  given-names: Topi
+  orcid: "https://orcid.org/0000-0002-6542-407X"
+- family-names: Bürkner
+  given-names: Paul-Christian
+  orcid: "https://orcid.org/0000-0001-5765-8995"
+- family-names: Vehtari
+  given-names: Aki
+  orcid: "https://orcid.org/0000-0003-2164-9469"
+date-published: 2023-12-31
+doi: 10.1007/s11222-023-10366-5
+issue: 34
+journal: Statistics and Computing
+publisher:
+  name: Springer Nature
+start: 56
+title: "Detecting and diagnosing prior and likelihood sensitivity with power-scaling"
+type: article
+url: "https://link.springer.com/article/10.1007/s11222-023-10366-5"
