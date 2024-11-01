@@ -17,10 +17,10 @@ preferred-citation:
     orcid: "https://orcid.org/0000-0003-2164-9469"
   year: 2023
   doi: 10.1007/s11222-023-10366-5
-  issue: 34
+  issue: 56
   journal: Statistics and Computing
   publisher:
     name: Springer Nature
-  start: 56
+  volume: 34
   title: "Detecting and diagnosing prior and likelihood sensitivity with power-scaling"
   url: "https://link.springer.com/article/10.1007/s11222-023-10366-5"
