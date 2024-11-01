@@ -3,24 +3,24 @@ message: If you use this software, please cite our article in Statistics and Com
 preferred-citation:
   type: article
   authors:
- - family-names: Kallioinen
-   given-names: Noa
-   orcid: "https://orcid.org/0000-0003-1586-8382"
- - family-names: Paananen
-   given-names: Topi
-   orcid: "https://orcid.org/0000-0002-6542-407X"
- - family-names: Bürkner
-   given-names: Paul-Christian
-   orcid: "https://orcid.org/0000-0001-5765-8995"
- - family-names: Vehtari
-   given-names: Aki
-   orcid: "https://orcid.org/0000-0003-2164-9469"
- year: 2023
- doi: 10.1007/s11222-023-10366-5
- issue: 34
- journal: Statistics and Computing
- publisher:
-  name: Springer Nature
- start: 56
- title: "Detecting and diagnosing prior and likelihood sensitivity with power-scaling"
- url: "https://link.springer.com/article/10.1007/s11222-023-10366-5"
+  - family-names: Kallioinen
+    given-names: Noa
+    orcid: "https://orcid.org/0000-0003-1586-8382"
+  - family-names: Paananen
+    given-names: Topi
+    orcid: "https://orcid.org/0000-0002-6542-407X"
+  - family-names: Bürkner
+    given-names: Paul-Christian
+    orcid: "https://orcid.org/0000-0001-5765-8995"
+  - family-names: Vehtari
+    given-names: Aki
+    orcid: "https://orcid.org/0000-0003-2164-9469"
+  year: 2023
+  doi: 10.1007/s11222-023-10366-5
+  issue: 34
+  journal: Statistics and Computing
+  publisher:
+    name: Springer Nature
+  start: 56
+  title: "Detecting and diagnosing prior and likelihood sensitivity with power-scaling"
+  url: "https://link.springer.com/article/10.1007/s11222-023-10366-5"
