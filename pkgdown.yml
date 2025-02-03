@@ -3,7 +3,8 @@ pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   powerscaling: powerscaling.html
-last_built: 2024-11-01T13:16Z
+  online-only/sensitivity_diagnostic: online-only/sensitivity_diagnostic.html
+last_built: 2025-02-03T10:36Z
 urls:
   reference: https://n-kall.github.io/priorsense/reference
   article: https://n-kall.github.io/priorsense/articles
