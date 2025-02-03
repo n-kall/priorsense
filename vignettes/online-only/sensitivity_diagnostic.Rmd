@@ -1,0 +1,64 @@
+---
+title: "Interpreting sensitivity diagnostics"
+date: First version 2025-02-03. Last modified `r format(Sys.Date())`
+output:
+  html_document:
+    number_sections: TRUE
+    bibliography: sensitivity_diagnostic.bib
+    csl: harvard-cite-them-right.csl
+    link-citations: yes
+---
+
+Priorsense provides numerical diagnostics for sensitivity along with
+graphics. Here we describe the interpretation of the sensitivity
+diagnostics.
+
+# Diagnostic value
+
+The sensitivity diagnostic value given by `powerscale_sensitivity()`
+is based on a measure of how much the posterior would change if the
+prior or likelihood is changed. This value is provided for each
+marginal posterior specified in the `variable` argument. In simple
+models with few parameters, it is reasonable to look at sensitivity
+for all the parameters. But as model complexity increases, and there
+are more parameters or strong posterior dependencies, it is better to
+focus on sensitivity of specific parameters with meaningful
+interpretations or on derived quantities of interest.
+
+# Diagnostic messages
+
+Sensitivity diagnostic values are given for both prior and likelihood
+sensitivity. These values should be considered and interpreted
+together. Based on the values, a diagnosis is also given. Currently,
+this is either "strong prior / weak likelihood" (if the prior
+sensitivity is higher than a threshold and the likelihood sensitivity
+is lower than a threshold) or "prior-data conflict" (if both types of
+sensitivity are higher than the threshold).
+
+**These diagnostic messages do not necessarily indicate problems with the
+model.** They are informative messages that describe the
+interplay between the chosen prior and likelihood. If your prior is
+meant to be informative, influence on the posterior is desired and
+prior-data conflict may not be an issue. However, if you did not put
+much effort into choosing the priors, these messages can let you know
+if you should be more deliberate in your prior specification.
+
+## Strong prior / weak likelihood
+
+This can occur when:
+
+- the prior is completely dominating the likelihood such that changing
+the likelihood strength has little to no impact on the posterior. The
+prior may be extremely informative and a using a weaker prior may
+remove this domination.
+
+- the likelihood is uninformative and no information is gained by
+increasing the strength of the likelihood. The prior will always have
+an effect in this case.
+
+## Prior-data conflict
+
+This occurs when the posterior is sensitive to changes to both the
+prior and the likelihood. This indicates that the prior and likelihood
+are both influencing the posterior and may be in conflict with
+one-another.
