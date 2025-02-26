@@ -83,8 +83,6 @@ powerscale_gradients.priorsense_data <- function(x,
   checkmate::assertFunction(prediction, null.ok = TRUE)
   checkmate::assertLogical(scale, len = 1)
   checkmate::assertLogical(moment_match, len = 1)
-  checkmate::assertNumeric(prior_selection, null.ok = TRUE)
-  checkmate::assertNumeric(likelihood_selection, null.ok = TRUE)
 
   # extract the draws
   base_draws <- x$draws

@@ -23,6 +23,7 @@ print.powerscaling_details <- function(x, ...) {
     "\npower-scaling\n",
     paste("alpha:", x$alpha, "\n"),
     paste("scaled component:", x$component, "\n"),
+    "selection:", x$selection, "\n",
     pareto_k_print,
     paste("pareto-k threshold:", round(pareto_k_threshold, 2), "\n"),
     paste("resampled:", x$resampled, "\n"),

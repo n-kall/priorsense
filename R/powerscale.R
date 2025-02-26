@@ -47,8 +47,11 @@ powerscale.default <- function(x, component, alpha,
                                prediction = NULL,
                                variable = NULL,
                                selection = NULL,
+                               log_prior_name = "lprior",
+                               log_lik_name = "log_lik",
                                ...) {
-  psd <- create_priorsense_data(x, ...)
+
+  psd <- create_priorsense_data(x, log_prior_name = log_prior_name, ...)
   powerscale(
     psd,
     component = component,
@@ -76,6 +79,8 @@ powerscale.priorsense_data <- function(x,
                                        prediction = NULL,
                                        variable = NULL,
                                        selection = NULL,
+                                       log_prior_name = "lprior",
+                                       log_lik_name = "log_lik",
                                        ...) {
 
   # input checks
@@ -88,8 +93,22 @@ powerscale.priorsense_data <- function(x,
   checkmate::assertCharacter(transform, null.ok = TRUE, len = 1)
   checkmate::assertFunction(prediction, null.ok = TRUE)
   checkmate::assertCharacter(variable, null.ok = TRUE)
-  checkmate::assertNumeric(selection, null.ok = TRUE)
 
+
+  log_component_name <- ifelse(component == "prior", log_prior_name, log_lik_name)
+
+
+  # handle selection as either numeric or character
+  orig_selection <- selection
+  
+  if (is.numeric(selection)) {
+      selection <- paste0(log_component_name, "[", selection, "]")
+  } else if (is.character(selection)) {
+    selection <- paste0(log_component_name, "_", selection)
+  } else if (is.null(selection)) {
+    selection <- log_component_name
+  }
+  
   draws <- x$draws
 
   if (is.null(k_threshold)) {
@@ -161,9 +180,9 @@ powerscale.priorsense_data <- function(x,
     }
 
     # subset component draws if specified
-    if (!(is.null(selection))) {
-      log_comp_draws <- log_comp_draws[, , selection]
-    }
+    log_comp_draws <- posterior::subset_draws(
+      log_comp_draws, variable = selection
+    )
 
     # sum component draws
     log_comp_draws <- rowsums_draws(log_comp_draws)
@@ -171,7 +190,7 @@ powerscale.priorsense_data <- function(x,
     # calculate the log weights
     log_ratios <- scaled_log_ratio(
       component_draws = log_comp_draws,
-      alpha = alpha
+      alpha = alpha,
     )
 
     if (moment_match) {
@@ -195,6 +214,8 @@ powerscale.priorsense_data <- function(x,
         alpha = alpha,
         component_fn = component_fn,
         k_threshold = k_threshold,
+        log_prior_name = log_prior_name,
+        log_lik_name = log_lik_name,
         ...
       )
 
@@ -254,6 +275,7 @@ powerscale.priorsense_data <- function(x,
     powerscaling_details <- list(
       alpha = alpha,
       component = component,
+      selection = orig_selection,
       moment_match = moment_match,
       diagnostics = smoothed_log_ratios$diagnostics,
       resampled = resample,
