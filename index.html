@@ -128,8 +128,8 @@
 <span><span class="co">#&gt; # A tibble: 2 × 4</span></span>
 <span><span class="co">#&gt;   variable prior likelihood diagnosis          </span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;    &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;              </span></span>
-<span><span class="co">#&gt; 1 mu       0.392      0.561 prior-data conflict</span></span>
-<span><span class="co">#&gt; 2 sigma    0.290      0.530 prior-data conflict</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 mu       0.363      0.516 prior-data conflict</span></span>
+<span><span class="co">#&gt; 2 sigma    0.268      0.522 prior-data conflict</span></span></code></pre></div>
 <p>To visually inspect changes to the posterior, use one of the diagnostic plot functions. Estimates with high Pareto-k values may be inaccurate and are indicated.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/powerscale_plots.html">powerscale_plot_dens</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
@@ -142,6 +142,11 @@
 <p><img src="reference/figures/README-quants_plot-1.png" width="70%"></p>
 <p>In some cases, setting <code>moment_match = TRUE</code> will improve the unreliable estimates at the cost of some further computation. This requires the <a href="https://github.com/topipa/iwmm" class="external-link"><code>iwmm</code> package</a>.</p>
 </div>
+</div>
+<div class="section level2">
+<h2 id="contributing">Contributing<a class="anchor" aria-label="anchor" href="#contributing"></a>
+</h2>
+<p>Contributions are welcome! If you find an bug or have an idea for a feature, open an issue. If you are able to fix an issue, fork the repository and make a pull request to the <code>development</code> branch.</p>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
