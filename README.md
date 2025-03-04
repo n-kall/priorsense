@@ -103,8 +103,8 @@ powerscale_sensitivity(fit)
 #> # A tibble: 2 × 4
 #>   variable prior likelihood diagnosis          
 #>   <chr>    <dbl>      <dbl> <chr>              
-#> 1 mu       0.392      0.561 prior-data conflict
-#> 2 sigma    0.290      0.530 prior-data conflict
+#> 1 mu       0.363      0.516 prior-data conflict
+#> 2 sigma    0.268      0.522 prior-data conflict
 ```
 
 To visually inspect changes to the posterior, use one of the diagnostic
@@ -132,6 +132,12 @@ powerscale_plot_quantities(fit)
 In some cases, setting `moment_match = TRUE` will improve the unreliable
 estimates at the cost of some further computation. This requires the
 [`iwmm` package](https://github.com/topipa/iwmm).
+
+## Contributing
+
+Contributions are welcome! If you find an bug or have an idea for a
+feature, open an issue. If you are able to fix an issue, fork the
+repository and make a pull request to the `development` branch.
 
 ## References
 
