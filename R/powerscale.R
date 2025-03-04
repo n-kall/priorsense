@@ -93,7 +93,7 @@ powerscale.priorsense_data <- function(x,
   draws <- x$draws
 
   if (is.null(k_threshold)) {
-    k_threshold <- min(1 - 1 / log10(ndraws(draws)), 0.7)
+    k_threshold <- min(1 - 1 / log10(posterior::ndraws(draws)), 0.7)
   }
 
     # transform the draws if specified
