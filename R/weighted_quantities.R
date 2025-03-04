@@ -130,12 +130,14 @@ quantile_weighted <- function(x, weights, probs = c(0.05, 0.95),
   weights <- weights / sum(weights)
   cdf_probs <- cumsum(c(0, weights))
 
-  sapply(probs, function(p) {
-    cdf <- cdf_fun(nw, p)
-    q <- cdf(cdf_probs)
-    w <- utils::tail(q, -1) - utils::head(q, -1)
-    sum(w * x)
-  })
+  vapply(probs,
+         function(p) {
+          cdf <- cdf_fun(nw, p)
+          q <- cdf(cdf_probs)
+          w <- utils::tail(q, -1) - utils::head(q, -1)
+          sum(w * x)
+  },
+  FUN.VALUE = c(1))
 }
 
 quantile2_weighted <- quantile_weighted
