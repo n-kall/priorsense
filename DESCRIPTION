@@ -44,3 +44,4 @@ Additional_repositories:
     https://topipa.r-universe.dev,
     https://stan-dev.r-universe.dev
 URL: https://n-kall.github.io/priorsense/
+BugReports: https://github.com/n-kall/priorsense/issues
