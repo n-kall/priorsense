@@ -19,6 +19,7 @@
 ##' @template prediction_arg
 ##' @template resample_arg
 ##' @template selection_arg
+##' @template log_comp_name
 ##' @param num_args (named list) Optional arguments passed to
 ##'   [num()][tibble::num] for pretty printing of summaries. Can be
 ##'   controlled globally via the `posterior.num_args`
@@ -53,12 +54,16 @@ powerscale_sensitivity.default <- function(x,
                                            prediction = NULL,
                                            prior_selection = NULL,
                                            likelihood_selection = NULL,
+                                           log_prior_name = "lprior",
+                                           log_lik_name = "log_lik",
                                            num_args = NULL,
                                            ...
                                            ) {
 
   psd <- create_priorsense_data(
     x = x,
+    log_prior_name = log_prior_name,
+    log_lik_name = log_lik_name,
     ...
   )
 

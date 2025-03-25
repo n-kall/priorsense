@@ -13,11 +13,13 @@
 ##' @param component Component to be power-scaled (either "prior" or
 ##'   "likelihood"). For powerscale_sequence, this can be both "prior"
 ##'   and "likelihood".
-##' @param selection Numeric vector specifying partitions of component
-##'   to be included in power-scaling. Default is NULL, which takes
-##'   all partitions.
-##' @template selection_arg
+##' @param selection Vector specifying partitions of component to be
+##'   included in power-scaling. Default is NULL, which takes all
+##'   partitions. If this is a character, then it is appended to the
+##'   variable name (`log_prior_name` or `log_lik_name`) with an `_`
+##'   between them.
 ##' @template powerscale_args
+##' @template log_comp_name
 ##' @template prediction_arg
 ##' @param ... Further arguments passed to internal functions.
 ##' @return A `powerscaled_draws` or `powerscaled_sequence` object,
@@ -51,7 +53,7 @@ powerscale.default <- function(x, component, alpha,
                                log_lik_name = "log_lik",
                                ...) {
 
-  psd <- create_priorsense_data(x, log_prior_name = log_prior_name, ...)
+  psd <- create_priorsense_data(x, log_prior_name = log_prior_name, log_lik_name = log_lik_name, ...)
   powerscale(
     psd,
     component = component,

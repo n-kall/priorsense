@@ -19,6 +19,8 @@ create_priorsense_data(x, ...)
   log_prior = NULL,
   log_lik = NULL,
   log_ratio_fn = NULL,
+  log_prior_name = "lprior",
+  log_lik_name = "log_lik",
   ...
 )
 
