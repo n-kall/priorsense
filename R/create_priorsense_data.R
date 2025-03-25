@@ -10,6 +10,7 @@
 ##' @param log_prior draws from log prior
 ##' @param log_lik draws from log likelihood
 ##' @param log_ratio_fn function for moment matching
+##' @template log_comp_name
 ##' @param ... arguments passed to methods
 ##' @return A `priorsense_data` object, which contains the data and
 ##'   functions to run sensitivity analyses.

@@ -18,6 +18,7 @@
 ##'   partitions. If this is a character, then it is appended to the
 ##'   variable name (`log_prior_name` or `log_lik_name`) with an `_`
 ##'   between them.
+##' @template selection_arg
 ##' @template powerscale_args
 ##' @template log_comp_name
 ##' @template prediction_arg

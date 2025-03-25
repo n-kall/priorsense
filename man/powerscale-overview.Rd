@@ -136,6 +136,18 @@ values below threshold?}
 
 \item{symmetric}{Boolean. Should the alpha range be symmetrical
 around alpha = 1, on log-space?}
+
+\item{prior_selection}{Vector specifying partitions of component to be
+included in power-scaling. Default is NULL, which takes all
+partitions. If this is a character, then it is appended to the
+variable name (specified by \code{log_prior_name}) with an \verb{_}
+between them. If numeric, then it is appended inside \verb{[]}.}
+
+\item{likelihood_selection}{Vector specifying partitions of component to be
+included in power-scaling. Default is NULL, which takes all
+partitions. If this is a character, then it is appended to the
+variable name (specified by \code{log_lik_name}) with an \verb{_}
+between them. If numeric, then it is appended inside \verb{[]}.}
 }
 \value{
 A \code{powerscaled_draws} or \code{powerscaled_sequence} object,
