@@ -4,9 +4,11 @@ inst/doc
 .Rhistory
 .Rdata
 priorsense.Rcheck
-priorsense_0.0.0.9000.tar.gz
 .httr-oauth
 .DS_Store
 docs
 /doc/
 /Meta/
+/pkgdown/
+/..Rcheck/
+README.html
