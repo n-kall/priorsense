@@ -12,11 +12,20 @@ rowsums_draws <- function(x) {
   )
 }
 
-remove_unwanted_vars <- function(x, excluded_variables = c("lprior", "log_lik", "lp__"), regex = TRUE, ...) {
+remove_unwanted_vars <- function(x,
+                                 excluded_variables = c(
+                                   "lprior",
+                                   "log_lik",
+                                   "lp__"
+                                 ),
+                                 regex = TRUE, ...) {
 
   draws <- posterior::as_draws_df(x)
 
-  draws <- posterior::subset_draws(draws, variable = excluded_variables, exclude = TRUE, regex = regex)
+  draws <- posterior::subset_draws(draws,
+                                   variable = excluded_variables,
+                                   exclude = TRUE,
+                                   regex = regex)
 
   return(draws)
 }
