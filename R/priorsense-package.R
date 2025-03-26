@@ -3,8 +3,7 @@
 #'
 #' @name priorsense-package
 #' @aliases priorsense
-#' @import methods
-#' @import posterior
+#' @importFrom posterior summarise_draws
 #'
 #' @description The \pkg{priorsense} package provides functions for
 #'   prior and likelihood sensitivity analysis of Bayesian
