@@ -1,3 +1,8 @@
+priorsense 1.1.0
+---
++ Add pagination of plots when there are many variables
++ Selection of priors updated to work with brms prior tags
+
 priorsense 1.0.4
 ---
 + Fix an issue where `lower_alpha` was not taken into account when
