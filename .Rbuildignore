@@ -15,5 +15,6 @@
 ^doc$
 ^Meta$
 ^CRAN-SUBMISSION$
-^CONTRIBUTIONG\.md$
+^codemeta\.json$
+^CONTRIBUTING\.md$
 ^CITATION\.cff$
