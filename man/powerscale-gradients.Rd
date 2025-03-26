@@ -9,7 +9,12 @@
 \usage{
 powerscale_gradients(x, ...)
 
-\method{powerscale_gradients}{default}(x, ...)
+\method{powerscale_gradients}{default}(
+  x,
+  log_prior_name = "lprior",
+  log_lik_name = "log_lik",
+  ...
+)
 
 \method{powerscale_gradients}{priorsense_data}(
   x,
@@ -35,6 +40,10 @@ powerscale_gradients(x, ...)
 \item{x}{Model fit or draws object.}
 
 \item{...}{Further arguments passed to functions.}
+
+\item{log_prior_name}{Character indicating name of the variable storing the log prior evaluations}
+
+\item{log_lik_name}{Character indicating name of the variable storing the log likelihood evaluations}
 
 \item{variable}{Variables to compute sensitivity of. If NULL
 (default) sensitivity is computed for all variables.}

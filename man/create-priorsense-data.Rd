@@ -19,6 +19,8 @@ create_priorsense_data(x, ...)
   log_prior = NULL,
   log_lik = NULL,
   log_ratio_fn = NULL,
+  log_prior_name = "lprior",
+  log_lik_name = "log_lik",
   ...
 )
 
@@ -44,6 +46,10 @@ create_priorsense_data(x, ...)
 \item{log_lik}{draws from log likelihood}
 
 \item{log_ratio_fn}{function for moment matching}
+
+\item{log_prior_name}{Character indicating name of the variable storing the log prior evaluations}
+
+\item{log_lik_name}{Character indicating name of the variable storing the log likelihood evaluations}
 }
 \value{
 A \code{priorsense_data} object, which contains the data and
