@@ -19,7 +19,6 @@ Imports:
     ggh4x (>= 0.2.5),
     ggplot2 (>= 3.5.1),
     matrixStats (>= 1.3.0),
-    methods,
     posterior (>= 1.6.0),
     rlang (>= 1.1.4),
     stats,
