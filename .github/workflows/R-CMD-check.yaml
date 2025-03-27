@@ -70,6 +70,7 @@ jobs:
             RcppEigen
             StanHeaders
             RcppParallel
+            R2jags
             withr
             testthat
             rmarkdown

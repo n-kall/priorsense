@@ -26,6 +26,7 @@ Imports:
     tibble (>= 3.2.1),
     utils
 Suggests:
+    R2jags (>= 0.8),
     bayesplot (>= 1.11.1),
     brms (>= 2.22.0),
     cmdstanr (>= 0.8.1),
