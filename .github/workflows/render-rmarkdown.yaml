@@ -27,7 +27,11 @@ jobs:
         with:
           cache-version: 3
           extra-packages: |
+            XML
+            stan-dev/cmdstanr
+            topipa/iwmm
             rcmdcheck
+            rstan
             checkmate
             jsonlite
             posterior
