@@ -250,7 +250,7 @@ powerscale_plot_dens.powerscaled_sequence <- function(x,
                                                       facet_rows = "component",
                                                       help_text = getOption("priorsense.plot_help_text", TRUE),
                                                       colors = NULL,
-                                                      variables_per_page = 6,
+                                                      variables_per_page = getOption("priorsense.plot_variables_per_page", 6),
                                                       ...
                                                       ) {
 
@@ -450,7 +450,7 @@ powerscale_plot_ecdf.default <- function(x,
                                          facet_rows = "component",
                                          help_text = getOption("priorsense.plot_help_text", TRUE),
                                          colors = NULL,
-                                         variables_per_page = 6,
+                                         variables_per_page = getOption("priorsense.plot_variables_per_page", 6),
                                          ...) {
   ps <- powerscale_sequence(x, length = length, ...)
   powerscale_plot_ecdf(
@@ -473,7 +473,7 @@ powerscale_plot_ecdf.powerscaled_sequence <- function(x,
                                                       facet_rows = "component",
                                                       help_text = getOption("priorsense.plot_help_text", TRUE),
                                                       colors = NULL,
-                                                      variables_per_page = 6,
+                                                      variables_per_page = getOption("priorsense.plot_variables_per_page", 6),
                                                       ...) {
 
   # input checks
@@ -622,7 +622,7 @@ powerscale_plot_quantities.default <- function(x, variable = NULL,
                                        quantity_args = NULL,
                                        help_text = getOption("priorsense.plot_help_text", TRUE),
                                        colors = NULL,
-                                       variables_per_page = 6,
+                                       variables_per_page = getOption("priorsense.plot_variables_per_page", 6),
                                        ...) {
   ps <- powerscale_sequence(x, length = length, ...)
 
@@ -652,7 +652,7 @@ powerscale_plot_quantities.powerscaled_sequence <- function(x, variable = NULL,
                                        quantity_args = NULL,
                                        help_text = getOption("priorsense.plot_help_text", TRUE),
                                        colors = NULL,
-                                       variables_per_page = 6,
+                                       variables_per_page = getOption("priorsense.plot_variables_per_page", 6),
                                        ...) {
 
   checkmate::assertCharacter(variable, null.ok = TRUE)
@@ -910,7 +910,7 @@ powerscale_summary_plot <- function(x,
 }
 
 ##' @exportS3Method
-plot.priorsense_plot <- function(x, ask = TRUE, ...) {
+plot.priorsense_plot <- function(x, ask = getOption("priorsense.plot_ask", TRUE), ...) {
 
   grDevices::devAskNewPage(ask = FALSE)
   on.exit(grDevices::devAskNewPage(ask = FALSE))

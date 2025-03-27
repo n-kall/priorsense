@@ -31,6 +31,9 @@ posteriors, and then a plot function such as
 The following global options are available:
 \itemize{
 \item \code{priorsense.plot_help_text}: If \code{TRUE} (the default), priorsense plots will include a title and explanatory text. If \code{FALSE} they will not.
+\item \code{priorsense.plot_variables_per_page}: Number specifying the maximum number of variables to be plotted on one page of a plot.
+\item \code{priorsense.plot_ask}: If \code{TRUE} (the default), when multiple pages are plotted input is required before each subsequent page is rendered.
+If \code{FALSE} no input is required.
 }
 }
 \references{
