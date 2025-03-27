@@ -1,5 +1,5 @@
 ---
-title: "Power-scaling sensitivity analysis"
+title: "Using priorsense with JAGS"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Power-scaling sensitivity analysis}

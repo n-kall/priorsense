@@ -109,3 +109,15 @@ create_priorsense_data.draws <- function(x, ...) {
     ...
   )
 }
+
+
+
+##' @rdname create-priorsense-data
+##' @export
+create_priorsense_data.rjags <- function(x, ...) {
+
+  create_priorsense_data(
+    x = posterior::as_draws(x$BUGSoutput$sims.array),
+    ...
+  )
+}

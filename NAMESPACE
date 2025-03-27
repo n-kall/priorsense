@@ -3,6 +3,7 @@
 S3method(create_priorsense_data,CmdStanFit)
 S3method(create_priorsense_data,default)
 S3method(create_priorsense_data,draws)
+S3method(create_priorsense_data,rjags)
 S3method(create_priorsense_data,stanfit)
 S3method(find_alpha_threshold,default)
 S3method(find_alpha_threshold,priorsense_data)
