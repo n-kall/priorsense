@@ -106,7 +106,9 @@ quantity functions. Passed as \code{.args} to
 \verb{[posterior::summarise_draws]}.}
 }
 \value{
-A ggplot object that can be further customized using the \strong{ggplot2} package.
+A ggplot object (or a list of ggplot objects if there us
+more than one page) that can be further customized using the
+\strong{ggplot2} package.
 }
 \description{
 Various diagnostic plots for power-scaling sensitivity. See \strong{Plot Descriptions} below for details.

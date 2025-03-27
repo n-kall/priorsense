@@ -276,13 +276,13 @@ powerscale_plot_dens.powerscaled_sequence <- function(x,
   }
 
   nvars <- length(variable)
-  
+
   if (is.null(variables_per_page) || is.infinite(variables_per_page)) {
     variables_per_page <- nvars
   }
 
   variables_per_page <- floor(variables_per_page)
-  
+
   n_plots <- ceiling(nvars / variables_per_page)
   plots <- vector(mode = "list", length = n_plots)
 
@@ -292,15 +292,15 @@ powerscale_plot_dens.powerscaled_sequence <- function(x,
     ".powerscale_alpha" = unique(d[[".powerscale_alpha"]]),
     interval_y = as.numeric(as.factor(unique(d[[".powerscale_alpha"]])))
   )
-  
+
   interval_positions$interval_y <- (0.5 - (interval_positions$interval_y)) / (6 * nrow(interval_positions))
-  
+
   d <- merge(d, interval_positions)
-  
+
   n_components <- length(unique(d$component))
-  
+
   for (i in seq_len(n_plots)) {
-    
+
     sub <- ((i - 1) * variables_per_page + 1):min(i * variables_per_page, nvars)
     sub_variable <- variable[sub]
 
@@ -309,7 +309,7 @@ powerscale_plot_dens.powerscaled_sequence <- function(x,
     }
 
     dsub <- d[d$variable %in% sub_variable, ]
-   
+
     plot <- prepare_plot(dsub, resample = resample, colors = colors, ...) +
       ggplot2::ylab("Density")
 
@@ -427,7 +427,11 @@ powerscale_plot_dens.powerscaled_sequence <- function(x,
   }
 
   class(plots) <- c("priorsense_plot", class(plots))
-  
+
+  if (length(plots) == 1) {
+    plots <- plots[[1]]
+  }
+
   return(plots)
 }
 
@@ -501,23 +505,23 @@ powerscale_plot_ecdf.powerscaled_sequence <- function(x,
     }
 
   nvars <- length(variable)
-  
+
   if (is.null(variables_per_page) || is.infinite(variables_per_page)) {
     variables_per_page <- nvars
   }
 
   variables_per_page <- floor(variables_per_page)
-  
+
   n_plots <- ceiling(nvars / variables_per_page)
   plots <- vector(mode = "list", length = n_plots)
-  
+
   for (i in seq_len(n_plots)) {
-    
+
     sub <- ((i - 1) * variables_per_page + 1):min(i * variables_per_page, nvars)
     sub_variable <- variable[sub]
-    
+
     dsub <- d[d$variable %in% sub_variable, ]
-    
+
     p <- prepare_plot(dsub, resample = resample, colors = colors, ...) +
       ggplot2::guides(
         linetype = ggplot2::guide_legend(
@@ -526,7 +530,7 @@ powerscale_plot_ecdf.powerscaled_sequence <- function(x,
       ) +
       ggplot2::ylab("ECDF") +
       ggplot2::xlab(NULL)
-    
+
     if (resample || x$resampled) {
       p <- p +
         ggplot2::stat_ecdf(ggplot2::aes(color = .data[[".powerscale_alpha"]]))
@@ -534,8 +538,8 @@ powerscale_plot_ecdf.powerscaled_sequence <- function(x,
       p <- p +
         stat_ewcdf(ggplot2::aes(color = .data[[".powerscale_alpha"]]))
     }
-    
-    
+
+
     if (facet_rows == "component") {
       p <- p +
         ggh4x::facet_grid2(
@@ -567,14 +571,14 @@ powerscale_plot_ecdf.powerscaled_sequence <- function(x,
       )
 
     }
-    
+
     if (!(any(d$pareto_k_value == "High"))) {
-      
+
       p <- p +
         ggplot2::guides(linetype = "none")
-      
+
     }
-    
+
     if (help_text) {
       p <- p +
         ggplot2::ggtitle(
@@ -586,13 +590,17 @@ powerscale_plot_ecdf.powerscaled_sequence <- function(x,
       p <- p +
         ggplot2::theme(legend.position = "bottom")
     }
-    
+
     plots[[i]] <- p
-    
+
   }
 
   class(plots) <- c("priorsense_plot", class(plots))
-  
+
+  if (length(plots) == 1) {
+    plots <- plots[[1]]
+  }
+
   return(plots)
 }
 
@@ -661,7 +669,7 @@ powerscale_plot_quantities.powerscaled_sequence <- function(x, variable = NULL,
   if (is.null(colors)) {
     colors <- default_priorsense_colors()[4:5]
   }
-  
+
   names(quantity) <- quantity
 
   summ <- summarise_draws(
@@ -764,12 +772,12 @@ powerscale_summary_plot <- function(x,
   }
 
   variables_per_page <- floor(variables_per_page)
-  
+
   n_plots <- ceiling(nvars / variables_per_page)
-  plots <- vector(mode = "list", length = n_plots)  
-  
+  plots <- vector(mode = "list", length = n_plots)
+
   pareto_k_colours <- colors
-  
+
   # get default quantities
   quantities <- setdiff(
     colnames(x[[1]]),
@@ -778,7 +786,7 @@ powerscale_summary_plot <- function(x,
   )
 
   for (i in seq_len(n_plots)) {
-    
+
     sub <- ((i - 1) * variables_per_page + 1):min(i * variables_per_page, nvars)
     sub_variable <- variable[sub]
     # select only specified variables
@@ -810,7 +818,7 @@ powerscale_summary_plot <- function(x,
   # subset for plotting points at ends of lines
   points <- summaries[summaries[[".powerscale_alpha"]] == min(summaries[[".powerscale_alpha"]]) |
                         summaries[[".powerscale_alpha"]] == max(summaries[[".powerscale_alpha"]]), ]
-  
+
   p <- ggplot2::ggplot(
     data = summaries,
     mapping = ggplot2::aes(x = .data[[".powerscale_alpha"]], y = .data$value)
@@ -892,22 +900,25 @@ powerscale_summary_plot <- function(x,
     plots[[i]] <- p
   }
 
-
   class(plots) <- c("priorsense_plot", class(plots))
+
+  if (length(plots) == 1) {
+    plots <- plots[[1]]
+  }
 
   return(plots)
 }
 
 ##' @exportS3Method
-plot.priorsense_plot <- function(x, ...) {
+plot.priorsense_plot <- function(x, ask = TRUE, ...) {
 
-  on.exit(grDevices::devAskNewPage(TRUE))
   grDevices::devAskNewPage(ask = FALSE)
+  on.exit(grDevices::devAskNewPage(ask = FALSE))
 
   for (i in seq_along(x)) {
     plot(x[[i]], newpage = TRUE)
     if (i == 1) {
-      grDevices::devAskNewPage(ask = TRUE)
+      grDevices::devAskNewPage(ask = ask)
     }
   }
   invisible(x)
