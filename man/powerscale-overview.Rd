@@ -73,7 +73,7 @@ powerscale_sequence(x, ...)
   variable = NULL,
   component = c("prior", "likelihood"),
   moment_match = FALSE,
-  k_threshold = 0.5,
+  k_threshold = NULL,
   resample = FALSE,
   transform = NULL,
   prediction = NULL,

@@ -180,6 +180,8 @@ powerscale_sensitivity.priorsense_data <- function(x,
   attr(out, "num_args") <- num_args
   attr(out, "div_measure") <- div_measure
   attr(out, "loadings") <- gradients$loadings
+  attr(out, "prior_selection") <- prior_selection
+  attr(out, "likelihood_selection") <- likelihood_selection
 
   return(out)
 }
