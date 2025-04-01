@@ -18,6 +18,7 @@ library(priorsense)
 library(posterior)
 
 options(priorsense.plot_help_text = FALSE)
+options(brms.backend = "rstan")
 ```
 
 We use the `airquality` data set, and fit a model predicting the amount of ozone based on the temperature.
