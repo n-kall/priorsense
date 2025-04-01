@@ -129,8 +129,7 @@ fit_lin2 <- brm(
     prior(normal(0, 5), class = "b", coef = "Temp", tag = "b"),
     prior(normal(0, 30), class = "sigma", tag = "sigma"),
     prior(normal(0, 100), class = "Intercept", tag = "intercept")
-  ),
-  backend = "cmdstanr"
+  )
 )
 
 post_draws_lin2 <- as_draws_df(fit_lin2) |>
@@ -182,8 +181,7 @@ fit_spline1 <- brm(
     prior(normal(0, 10), class = "sds", coef = "s(Temp)", tag = "sds"),
     prior(normal(0, 30), class = "sigma", tag = "sigma"),
     prior(normal(0, 100), class = "Intercept", tag = "intercept")
-  ),
-  backend = "cmdstanr"
+  )
 )
 ```
 
@@ -274,8 +272,7 @@ fit_spline2 <- brm(
     prior(normal(0, 30), class = "sds", coef = "s(Temp)", tag = "sds"),
     prior(normal(0, 30), class = "sigma", tag = "sigma"),
     prior(normal(30, 30), class = "Intercept", tag = "intercept")
-  ),
-  backend = "cmdstanr"
+  )
 )
 ```
 
