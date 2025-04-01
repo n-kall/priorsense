@@ -53,7 +53,6 @@ powerscale.default <- function(x, component, alpha,
                                log_prior_name = "lprior",
                                log_lik_name = "log_lik",
                                ...) {
-
   psd <- create_priorsense_data(x, log_prior_name = log_prior_name, log_lik_name = log_lik_name, ...)
   powerscale(
     psd,

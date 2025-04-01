@@ -86,7 +86,9 @@ print.powerscaled_sensitivity_summary <- function(x, ..., num_args = NULL) {
       x[[i]] <- do.call(tibble::set_num_opts, c(list(x[[i]]), num_args))
     }
   }
-  cat(paste0("Sensitivity based on ", attr(x, "div_measure"), ":\n"))
+  cat(paste0("Sensitivity based on ", attr(x, "div_measure"), "\n"))
+  cat(paste0("Prior selection: ", attr(x, "prior_selection"), "\n"))
+  cat(paste0("Likelihood selection: ", attr(x, "likelihood_selection"), "\n"))
 
   NextMethod()
   if (!is.null(attr(x, "loadings"))) {
