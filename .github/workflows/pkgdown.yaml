@@ -47,6 +47,7 @@ jobs:
             local::.
             XML
             stan-dev/cmdstanr
+            paul-buerkner/brms
             topipa/iwmm
             rcmdcheck
             rstan
