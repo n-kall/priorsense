@@ -50,7 +50,7 @@ powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
                                                 length = 3, variable = NULL,
                                                 component = c("prior", "likelihood"),
                                                 moment_match = FALSE,
-                                                k_threshold = 0.5,
+                                                k_threshold = NULL,
                                                 resample = FALSE,
                                                 transform = NULL,
                                                 prediction = NULL,
@@ -74,10 +74,7 @@ powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
   checkmate::assertChoice(transform, c("whiten", "scale", "identity"), null.ok = TRUE)
   checkmate::assertFunction(prediction, null.ok = TRUE)
   checkmate::assertCharacter(variable, null.ok = TRUE)
-  checkmate::assertNumeric(prior_selection, null.ok = TRUE)
-  checkmate::assertNumeric(likelihood_selection, null.ok = TRUE)
 
-  
 
   # adapt alpha range to ensure pareto-k < theshold
   if (auto_alpha_range) {
@@ -87,13 +84,16 @@ powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
         x,
         component = comp,
         alpha_bound = lower_alpha,
-        moment_match = moment_match
+        moment_match = moment_match,
+        selection = get(paste0(comp, "_selection"))
       )
+
       upper_alpha <- find_alpha_threshold(
         x,
         component = comp,
         alpha_bound = upper_alpha,
-        moment_match = moment_match
+        moment_match = moment_match,
+        selection = get(paste0(comp, "_selection"))
       )
       alpha_range[[comp]] <- list(lower_alpha, upper_alpha)
     }
@@ -192,20 +192,19 @@ powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
         component = scaled_component,
         alpha = alpha_seq[i],
         moment_match = moment_match,
+        k_threshold = k_threshold,
         resample = resample,
         transform = transform,
         prediction = prediction,
         selection = prior_selection,
         ...
       )
-
     }
 
     prior_scaled <- list(
       draws_sequence = scaled_draws_list,
       component = scaled_component
     )
-
   }
   if ("likelihood" %in% component) {
 
@@ -225,7 +224,7 @@ powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
         component = scaled_component,
         alpha = alpha_seq[i],
         moment_match = moment_match,
-        k_treshold = k_threshold,
+        k_threshold = k_threshold,
         resample = resample,
         transform = transform,
         prediction = prediction,
