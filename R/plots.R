@@ -699,7 +699,8 @@ powerscale_plot_quantities.powerscaled_sequence <- function(x, variable = NULL,
 
     mcse_functions <- paste0("mcse_", quantity)
 
-    base_quantities <- summ[[1]][which(summ[[1]] == 1), ]
+    base_quantities <- summ[[1]][which(summ[[1]][[".powerscale_alpha"]] == 1), ]
+
     base_quantities <- unique(base_quantities[c("variable", quants)])
 
     base_q <- as.data.frame(base_quantities)
