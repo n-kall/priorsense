@@ -85,9 +85,9 @@ post_draws_lin <- as_draws_df(fit_lin) |>
   bind_draws(log_lik_draws(fit_lin))
 ```
 
-As the model is simple, and each parameter is directly interpretable,
-we can perform the power-scaling sensitivity check directly on all the
-parameters.
+As the model is simple, with only one predictor, and each parameter is
+directly interpretable, we can perform the power-scaling sensitivity
+check directly on all the marginal posteriors of the parameters.
 
 ```{r}
 powerscale_sensitivity(
