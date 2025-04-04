@@ -63,8 +63,7 @@ jobs:
             RcppParallel
             withr
             testthat
-            rmarkdown
-            knitr
+            quarto
             any::XML
             any::textshaping
           needs: website
