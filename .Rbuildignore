@@ -23,3 +23,6 @@
 ^vignettes/articles/\.quarto$
 ^vignettes/articles/*_files$
 ^vignettes/articles$
+^vignettes/selecting_priors_and_quantities.qmd$
+^vignettes/quantity_of_interest.qmd$
+^vignettes/sensitivity_diagnostic.qmd$
