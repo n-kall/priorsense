@@ -44,7 +44,7 @@ jobs:
         with:
           cache-version: 3
           extra-packages: |
-            any::pkgdown
+            pkgdown
             local::.
             XML
             stan-dev/cmdstanr
