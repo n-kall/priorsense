@@ -1,8 +1,7 @@
 ---
 title: "Interpreting sensitivity diagnostics"
-date: First version 2025-02-21. Last modified `r format(Sys.Date())`
 vignette: >
-  %\VignetteIndexEntry{Selecting priors to power-scale and posterior quantities to check}
+  %\VignetteIndexEntry{Interpreting sensitivity diagnostics}
   %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---

@@ -20,3 +20,6 @@
 ^codemeta\.json$
 ^CONTRIBUTING\.md$
 ^CITATION\.cff$
+^vignettes/articles/\.quarto$
+^vignettes/articles/*_files$
+^vignettes/articles$

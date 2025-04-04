@@ -1,33 +1,32 @@
 ---
-title: "Quantities of interest in sensitivity checks"
-date: First version 2025-02-21. Last modified `r format(Sys.Date())`
+title: "Quantities of interest for sensitivity checks"
 vignette: >
-  %\VignetteIndexEntry{Selecting priors to power-scale and posterior quantities to check}
+  %\VignetteIndexEntry{Quantities of interest for sensitivity checks}
   %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
 
-# Choosing a quantity of interest
+## Choosing a quantity of interest
 
 There is no quantity to check the sensitivity of in all models. What
 you should look at depends on the model and what it is used for. Here
 we outline three options: measures of model fit, predictions, and
 parameters.
 
-## Measures of model fit
+### Measures of model fit
 
 If you are evaluating the model based on some measure, it can be
 useful to assess how this measure of performance changes when changing
 the prior or likelihood. Examples of measures of model fit include
 log-score, R2, and metrics such as MAE or RMSE.
 
-## Predictions
+### Predictions
 
 If you are interested in the predictions your model makes for some
 specific quantity, then you can look at how those predictions would
 change depending on the prior/likelihood perturbations.
 
-## Parameters
+### Parameters
 
 If your model has parameters that are meaningful and interpretable,
 then you can look at those parameters specifically. In many cases
