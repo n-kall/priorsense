@@ -103,11 +103,9 @@ powerscale_sensitivity(fit)
     Sensitivity based on cjs_dist
     Prior selection: all priors
     Likelihood selection: all data
-    # A tibble: 2 × 4
-      variable prior likelihood diagnosis                    
-      <chr>    <dbl>      <dbl> <chr>                        
-    1 mu       0.433      0.641 potential prior-data conflict
-    2 sigma    0.360      0.674 potential prior-data conflict
+     variable prior likelihood                     diagnosis
+           mu  0.43       0.64 potential prior-data conflict
+        sigma  0.36       0.67 potential prior-data conflict
 
 To visually inspect changes to the posterior, use one of the diagnostic
 plot functions. Estimates with high Pareto-k values may be inaccurate
