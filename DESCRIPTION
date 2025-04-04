@@ -31,7 +31,7 @@ Suggests:
     brms (>= 2.22.0),
     cmdstanr (>= 0.8.1),
     iwmm (>= 0.0.1),
-    quarto (>= 1.4.4),
+    quarto,
     philentropy (>= 0.8.0),
     rstan (>= 2.32.6),
     testthat (>= 3.0.0),
@@ -45,3 +45,4 @@ Additional_repositories:
     https://stan-dev.r-universe.dev
 URL: https://github.com/n-kall/priorsense, https://n-kall.github.io/priorsense/
 BugReports: https://github.com/n-kall/priorsense/issues
+Config/Needs/website: quarto
