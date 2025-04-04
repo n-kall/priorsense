@@ -82,7 +82,7 @@ print.powerscaled_sensitivity_summary <- function(x, digits = 2, ...) {
   cat(paste0("Sensitivity based on ", attr(x, "div_measure"), "\n"))
   cat(paste0("Prior selection: ", ifelse(is.null(attr(x, "prior_selection")), "all priors", attr(x, "prior_selection")), "\n"))
   cat(paste0("Likelihood selection: ", ifelse(is.null(attr(x, "likelihood_selection")), "all data", attr(x, "likelihood_selection")), "\n"))
-
+  cat("\n")
   print.data.frame(x, digits = digits, row.names = FALSE)
   if (!is.null(attr(x, "loadings"))) {
     cat("Factor loadings:\n")
