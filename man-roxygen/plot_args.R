@@ -23,5 +23,8 @@
 ##'   k, high Pareto k. If `NULL` the defaults will be used.
 ##' @param facet_rows Character defining the rows of the plot facets,
 ##'   either "variable" or "component". Default is "variable".
+##' @param variables_per_page Number specifying the maximum number of
+##'   variables to show on each page of the plot. Default is 6. If
+##'   `NULL` or `Inf`, all variables will be plotted on the same page.
 ##' @param ... Arguments passed to `powerscale_sequence` if `x` is not
 ##'   of class `powerscaled_sequence`.

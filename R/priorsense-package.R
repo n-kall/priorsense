@@ -3,8 +3,7 @@
 #'
 #' @name priorsense-package
 #' @aliases priorsense
-#' @import methods
-#' @import posterior
+#' @importFrom posterior summarise_draws
 #'
 #' @description The \pkg{priorsense} package provides functions for
 #'   prior and likelihood sensitivity analysis of Bayesian
@@ -28,7 +27,9 @@
 #'
 #' The following global options are available:
 #'    * `priorsense.plot_help_text`: If `TRUE` (the default), priorsense plots will include a title and explanatory text. If `FALSE` they will not.
-#'
+#'    * `priorsense.plot_variables_per_page`: Number specifying the maximum number of variables to be plotted on one page of a plot.
+#'    * `priorsense.plot_ask`: If `TRUE` (the default), when multiple pages are plotted input is required before each subsequent page is rendered.
+#'       If `FALSE` no input is required.
 #'
 #' @seealso
 #' \code{\link{powerscale_sensitivity}}

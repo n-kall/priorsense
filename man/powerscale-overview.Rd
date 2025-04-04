@@ -23,6 +23,8 @@ powerscale(x, ...)
   prediction = NULL,
   variable = NULL,
   selection = NULL,
+  log_prior_name = "lprior",
+  log_lik_name = "log_lik",
   ...
 )
 
@@ -37,6 +39,8 @@ powerscale(x, ...)
   prediction = NULL,
   variable = NULL,
   selection = NULL,
+  log_prior_name = "lprior",
+  log_lik_name = "log_lik",
   ...
 )
 
@@ -69,7 +73,7 @@ powerscale_sequence(x, ...)
   variable = NULL,
   component = c("prior", "likelihood"),
   moment_match = FALSE,
-  k_threshold = 0.5,
+  k_threshold = NULL,
   resample = FALSE,
   transform = NULL,
   prediction = NULL,
@@ -111,9 +115,15 @@ draws_df of predictions to be appended to the posterior draws}
 \item{variable}{Vector of variable names to return estimated
 posterior draws for. If \code{NULL} all variables will be included.}
 
-\item{selection}{Numeric vector specifying partitions of component
-to be included in power-scaling. Default is NULL, which takes
-all partitions.}
+\item{selection}{Vector specifying partitions of component to be
+included in power-scaling. Default is NULL, which takes all
+partitions. If this is a character, then it is appended to the
+variable name (\code{log_prior_name} or \code{log_lik_name}) with an \verb{_}
+between them.}
+
+\item{log_prior_name}{Character indicating name of the variable storing the log prior evaluations}
+
+\item{log_lik_name}{Character indicating name of the variable storing the log likelihood evaluations}
 
 \item{lower_alpha}{Lower power-scaling alpha value in sequence.}
 
@@ -127,9 +137,17 @@ values below threshold?}
 \item{symmetric}{Boolean. Should the alpha range be symmetrical
 around alpha = 1, on log-space?}
 
-\item{prior_selection}{Numeric vector of prior partitions to include in power-scaling. Default is NULL, which takes all partitions.}
+\item{prior_selection}{Vector specifying partitions of component to be
+included in power-scaling. Default is NULL, which takes all
+partitions. If this is a character, then it is appended to the
+variable name (specified by \code{log_prior_name}) with an \verb{_}
+between them. If numeric, then it is appended inside \verb{[]}.}
 
-\item{likelihood_selection}{Numeric vector of likelihood partitions to include in power-scaling. Default is NULL, which takes all partitions.}
+\item{likelihood_selection}{Vector specifying partitions of component to be
+included in power-scaling. Default is NULL, which takes all
+partitions. If this is a character, then it is appended to the
+variable name (specified by \code{log_lik_name}) with an \verb{_}
+between them. If numeric, then it is appended inside \verb{[]}.}
 }
 \value{
 A \code{powerscaled_draws} or \code{powerscaled_sequence} object,

@@ -17,7 +17,9 @@ find_alpha_threshold.priorsense_data <- function(x,
                                                  component,
                                                  alpha_bound,
                                                  epsilon = 0.00001,
-                                                 moment_match = FALSE, ...) {
+                                                 moment_match = FALSE,
+                                                 selection = NULL,
+                                                 ...) {
   checkmate::assert_number(alpha_bound, lower = 0)
   checkmate::assert_number(epsilon, lower = 0)
   checkmate::assert_choice(component, c("prior", "likelihood"))
@@ -49,7 +51,9 @@ find_alpha_threshold.priorsense_data <- function(x,
         x = x,
         alpha = alpha,
         component = component,
-        moment_match = moment_match
+        moment_match = moment_match,
+        selection = selection,
+        ...
       )
       ))$diagnostics
 

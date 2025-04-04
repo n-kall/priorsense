@@ -21,6 +21,7 @@ powerscale_plot_ecdf(x, ...)
   facet_rows = "component",
   help_text = getOption("priorsense.plot_help_text", TRUE),
   colors = NULL,
+  variables_per_page = getOption("priorsense.plot_variables_per_page", 6),
   ...
 )
 
@@ -37,6 +38,7 @@ powerscale_plot_quantities(x, ...)
   quantity_args = NULL,
   help_text = getOption("priorsense.plot_help_text", TRUE),
   colors = NULL,
+  variables_per_page = getOption("priorsense.plot_variables_per_page", 6),
   ...
 )
 }
@@ -70,6 +72,10 @@ plots. Either length 3 for \code{powerscale_plot_ecdf} and
 length 2 for \code{powerscale_plot_quantities} with order low Pareto
 k, high Pareto k. If \code{NULL} the defaults will be used.}
 
+\item{variables_per_page}{Number specifying the maximum number of
+variables to show on each page of the plot. Default is 6. If
+\code{NULL} or \code{Inf}, all variables will be plotted on the same page.}
+
 \item{quantity}{A character vector specifying one or several
 quantities to plot. Options are "mean", "median", "sd", "mad",
 "quantile".}
@@ -100,7 +106,9 @@ quantity functions. Passed as \code{.args} to
 \verb{[posterior::summarise_draws]}.}
 }
 \value{
-A ggplot object that can be further customized using the \strong{ggplot2} package.
+A ggplot object (or a \code{priorsense_plot} object which is a
+list of ggplot objects if there is more than one page) that can
+be further customized using the \strong{ggplot2} package.
 }
 \description{
 Various diagnostic plots for power-scaling sensitivity. See \strong{Plot Descriptions} below for details.

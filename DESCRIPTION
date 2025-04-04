@@ -1,6 +1,6 @@
 Package: priorsense
 Title: Prior Diagnostics and Sensitivity Analysis
-Version: 1.0.4
+Version: 1.1.0
 Authors@R: c(person("Noa", "Kallioinen", email = "noa.kallioinen@aalto.fi", role = c("aut", "cre", "cph")),
 	     person("Topi", "Paananen", role = c("aut")),
 	     person("Paul-Christian", "Bürkner", role = c("aut")),
@@ -18,29 +18,31 @@ Imports:
     ggdist (>= 3.3.2),
     ggh4x (>= 0.2.5),
     ggplot2 (>= 3.5.1),
+    grDevices (>= 3.6.2),
     matrixStats (>= 1.3.0),
-    methods,
     posterior (>= 1.6.0),
     rlang (>= 1.1.4),
     stats,
     tibble (>= 3.2.1),
     utils
 Suggests:
+    R2jags (>= 0.8),
     bayesplot (>= 1.11.1),
     brms (>= 2.22.0),
     cmdstanr (>= 0.8.1),
     iwmm (>= 0.0.1),
-    knitr (>= 1.47),
+    quarto,
     philentropy (>= 0.8.0),
     rstan (>= 2.32.6),
     testthat (>= 3.0.0),
-    transport (>= 0.15),
-    rmarkdown (>= 2.27)
+    transport (>= 0.15)
 Config/testthat/edition: 3
 Depends:
     R (>= 3.6.0)
-VignetteBuilder: knitr
+VignetteBuilder: quarto
 Additional_repositories:
     https://topipa.r-universe.dev,
     https://stan-dev.r-universe.dev
-URL: https://n-kall.github.io/priorsense/
+URL: https://github.com/n-kall/priorsense, https://n-kall.github.io/priorsense/
+BugReports: https://github.com/n-kall/priorsense/issues
+Config/Needs/website: quarto

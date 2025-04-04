@@ -58,6 +58,8 @@ cjs_dist <- function(x,
       (all(y_weights == 0) && !is.null(y_weights))
   ) {
     cjs <- NA
+  } else if (identical(x, y) && identical(x_weights, y_weights)) {
+    cjs <- 0
   } else {
     cjs <- .cjs_dist(x, y, x_weights, y_weights, metric, ...)
     if (unsigned) {
@@ -85,7 +87,7 @@ cjs_dist <- function(x,
     wq <- rep(1 / length(y), length(y))
   }
 
-  if (all(x == y)) {
+  if (identical(x, y)) {
     # if all x and y are same, but y is a weighted version of x
     # calculate weighted ecdf via cumsum of weights and use natural
     # bins from stepfun

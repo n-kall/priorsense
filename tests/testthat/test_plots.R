@@ -48,12 +48,14 @@ test_that("plots contain expected data", {
 test_that("help_text behaves as expected in plots", {
 
  psq_title <- powerscale_plot_quantities(
-    ps,
+   ps,
+   variable = c("mu"),
     help_text = TRUE
  )
 
   psq_notitle <- powerscale_plot_quantities(
     ps,
+    variable = c("mu"),
     help_text = FALSE
   )
 
@@ -82,4 +84,25 @@ test_that("help_text behaves as expected in plots", {
 
   expect_null(psdens_notitle$labels$title)
   expect_null(psdens_notitle$labels$subtitle)
+})
+
+test_that("pagination of plots works as expected", {
+
+    expect_length(
+      powerscale_plot_quantities(
+        ps,
+        variables_per_page = 1    
+      ), 18)
+    
+    expect_length(
+      powerscale_plot_quantities(
+        ps,
+        variables_per_page = 2 
+      ), 9)
+
+    expect_length(
+      powerscale_plot_quantities(
+        ps,
+        variables_per_page = Inf
+      ), 11)
 })

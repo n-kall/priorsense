@@ -25,6 +25,7 @@
 ##'   standard deviation.
 ##' @template powerscale_args
 ##' @template prediction_arg
+##' @template log_comp_name
 ##' @param ... Further arguments passed to functions.
 ##' @return Maximum of the absolute derivatives above and below alpha
 ##'   = 1.
@@ -41,7 +42,7 @@ powerscale_gradients <- function(x, ...) {
 
 ##' @rdname powerscale-gradients
 ##' @export
-powerscale_gradients.default <- function(x, ...) {
+powerscale_gradients.default <- function(x, log_prior_name = "lprior", log_lik_name = "log_lik", ...) {
 
   psd <- create_priorsense_data(x)
 
@@ -83,8 +84,6 @@ powerscale_gradients.priorsense_data <- function(x,
   checkmate::assertFunction(prediction, null.ok = TRUE)
   checkmate::assertLogical(scale, len = 1)
   checkmate::assertLogical(moment_match, len = 1)
-  checkmate::assertNumeric(prior_selection, null.ok = TRUE)
-  checkmate::assertNumeric(likelihood_selection, null.ok = TRUE)
 
   # extract the draws
   base_draws <- x$draws

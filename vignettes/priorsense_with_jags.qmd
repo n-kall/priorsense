@@ -1,0 +1,80 @@
+---
+title: "Using priorsense with JAGS"
+vignette: >
+  %\VignetteIndexEntry{Using priorsense with JAGS}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+```{r}
+#| include: false
+ggplot2::theme_set(bayesplot::theme_default(base_family = "sans"))
+
+options(priorsense.plot_help_text = FALSE)
+```
+
+
+```{r}
+#| message: false
+#| warning: false
+library(R2jags)
+library(posterior)
+library(priorsense)
+```
+
+To use `priorsense` with a JAGS model, the log prior and log likelihood
+evaluations should be added to the model code.
+
+```{r}
+model_string <- "
+model {
+  for(n in 1:N) {
+    y[n] ~ dnorm(mu, tau)
+    log_lik[n] <- likelihood_alpha * logdensity.norm(y[n], mu, tau)
+  }
+  mu ~ dnorm(0, 1)
+  sigma ~ dnorm(0, 1 / 2.5^2) T(0,)
+  tau <- 1 / sigma^2
+  lprior <- prior_alpha * logdensity.norm(mu, 0, 1) + logdensity.norm(sigma, 0, 1 / 2.5^2)
+}
+"
+```
+
+Using `R2jags::jags()` to fit the model.
+
+```{r}
+#| message: false
+#| warning: false
+model_con <- textConnection(model_string)
+data <- example_powerscale_model()$data
+
+set.seed(123)
+
+# monitor parameters of interest along with log-likelihood and log-prior
+variables <- c("mu", "sigma", "log_lik", "lprior")
+
+jags_fit <- jags(
+  data,
+  model.file = model_con,
+  parameters.to.save = variables,
+  n.chains = 4,
+  DIC = FALSE,
+  quiet = TRUE,
+  progress.bar = "none"
+  )
+```
+
+Then the `priorsense` functions will work as usual.
+
+```{r}
+powerscale_sensitivity(jags_fit)
+
+
+```{r}
+#| message: false
+#| warning: false
+#| fig-width: 6
+#| fig-height: 4
+powerscale_plot_dens(jags_fit)
+```

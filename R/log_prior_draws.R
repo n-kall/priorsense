@@ -39,8 +39,8 @@ log_prior_draws.stanfit <- function(x, joint = FALSE, log_prior_name = "lprior",
   checkmate::assert_character(log_prior_name, len = 1)
   
   log_prior <- posterior::subset_draws(
-    posterior::as_draws_array(x, variable = log_prior_name),
-    variable = log_prior_name
+    posterior::as_draws_array(x),
+    variable = paste0("^", log_prior_name), regex = TRUE
   )
 
   if (joint) {
@@ -57,8 +57,14 @@ log_prior_draws.CmdStanFit <- function(x, joint = FALSE, log_prior_name = "lprio
 
   checkmate::assert_logical(joint, len = 1)
   checkmate::assert_character(log_prior_name, len = 1)
+
+  all_draws <- x$draws()
   
-  log_prior <- x$draws(variables = log_prior_name)
+  log_prior <- posterior::subset_draws(
+    all_draws,
+    variables = paste0("^", log_prior_name),
+    regex = TRUE
+  )
 
   if (joint) {
     log_prior <- rowsums_draws(log_prior)
@@ -76,7 +82,7 @@ log_prior_draws.draws <- function(x, joint = FALSE, log_prior_name = "lprior", .
   checkmate::assert_logical(joint, len = 1)
   checkmate::assert_character(log_prior_name, len = 1)
   
-  log_prior <- posterior::subset_draws(x, variable = log_prior_name)
+  log_prior <- posterior::subset_draws(x, variable = paste0("^", log_prior_name), regex = TRUE)
 
   if (joint) {
     log_prior <- rowsums_draws(log_prior)

@@ -10,6 +10,7 @@
 ##' @param log_prior draws from log prior
 ##' @param log_lik draws from log likelihood
 ##' @param log_ratio_fn function for moment matching
+##' @template log_comp_name
 ##' @param ... arguments passed to methods
 ##' @return A `priorsense_data` object, which contains the data and
 ##'   functions to run sensitivity analyses.
@@ -32,13 +33,15 @@ create_priorsense_data.default <- function(x,
                                            log_prior = NULL,
                                            log_lik = NULL,
                                            log_ratio_fn = NULL,
+                                           log_prior_name = "lprior",
+                                           log_lik_name = "log_lik",
                                            ...) {
 
   if (is.null(log_prior)) {
     if (is.null(fit)) {
-      log_prior <- log_prior_fn(x, ...)
+      log_prior <- log_prior_fn(x, log_prior_name = log_prior_name, ...)
     } else {
-      log_prior <- log_prior_fn(fit, ...)
+      log_prior <- log_prior_fn(fit, log_prior_name = log_prior_name, ...)
     }
   }
 
@@ -103,6 +106,18 @@ create_priorsense_data.draws <- function(x, ...) {
 
   create_priorsense_data.default(
     x = x,
+    ...
+  )
+}
+
+
+
+##' @rdname create-priorsense-data
+##' @export
+create_priorsense_data.rjags <- function(x, ...) {
+
+  create_priorsense_data(
+    x = posterior::as_draws(x$BUGSoutput$sims.array),
     ...
   )
 }

@@ -1,7 +1,7 @@
-
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
 # priorsense
+
+
+<!-- README.md is generated from README.qmd. Please edit that file -->
 
 <!-- badges: start -->
 
@@ -46,8 +46,8 @@ remotes::install_github("n-kall/priorsense", ref = "development")
 
 ## Usage
 
-priorsense works with models created with rstan, cmdstanr or brms, or
-with draws objects from the posterior package.
+priorsense works with models created with rstan, cmdstanr, brms, R2jags,
+or with draws objects from the posterior package.
 
 ### Example
 
@@ -99,13 +99,15 @@ Once fit, sensitivity can be checked as follows:
 
 ``` r
 powerscale_sensitivity(fit)
-#> Sensitivity based on cjs_dist:
-#> # A tibble: 2 × 4
-#>   variable prior likelihood diagnosis          
-#>   <chr>    <dbl>      <dbl> <chr>              
-#> 1 mu       0.363      0.516 prior-data conflict
-#> 2 sigma    0.268      0.522 prior-data conflict
 ```
+
+    Sensitivity based on cjs_dist
+    Prior selection: all priors
+    Likelihood selection: all data
+
+     variable prior likelihood                     diagnosis
+           mu  0.43       0.64 potential prior-data conflict
+        sigma  0.36       0.67 potential prior-data conflict
 
 To visually inspect changes to the posterior, use one of the diagnostic
 plot functions. Estimates with high Pareto-k values may be inaccurate
@@ -115,19 +117,20 @@ and are indicated.
 powerscale_plot_dens(fit)
 ```
 
-<img src="man/figures/README-dens_plot-1.png" width="70%" />
+<img src="man/figures/powerscale-plot_dens-1.png" style="width:70.0%" />
 
 ``` r
 powerscale_plot_ecdf(fit)
 ```
 
-<img src="man/figures/README-ecdf_plot-1.png" width="70%" />
+<img src="man/figures/powerscale_plot_ecdf-1.png" style="width:70.0%" />
 
 ``` r
 powerscale_plot_quantities(fit)
 ```
 
-<img src="man/figures/README-quants_plot-1.png" width="70%" />
+<img src="man/figures/powerscale_plot_quantities-1.png"
+style="width:70.0%" />
 
 In some cases, setting `moment_match = TRUE` will improve the unreliable
 estimates at the cost of some further computation. This requires the
@@ -144,12 +147,12 @@ repository and make a pull request to the `development` branch.
 Noa Kallioinen, Topi Paananen, Paul-Christian Bürkner, Aki Vehtari
 (2023). Detecting and diagnosing prior and likelihood sensitivity with
 power-scaling. Statistics and Computing. 34, 57.
-<https://doi.org/10.1007/s11222-023-10366-5>
+https://doi.org/10.1007/s11222-023-10366-5
 
 Topi Paananen, Juho Piironen, Paul-Christian Bürkner, Aki Vehtari
 (2021). Implicitly adaptive importance sampling. Statistics and
-Computing 31, 16. <https://doi.org/10.1007/s11222-020-09982-2>
+Computing 31, 16. https://doi.org/10.1007/s11222-020-09982-2
 
 Aki Vehtari, Daniel Simpson, Andrew Gelman, Yuling Yao, Jonah Gabry
 (2024). Pareto smoothed importance sampling. Journal of Machine Learning
-Research. 25, 72. <https://jmlr.org/papers/v25/19-556.html>
+Research. 25, 72. https://jmlr.org/papers/v25/19-556.html

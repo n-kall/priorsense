@@ -1,0 +1,445 @@
+{
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+  "@type": "SoftwareSourceCode",
+  "identifier": "priorsense",
+  "description": "Provides functions for prior and likelihood sensitivity analysis in Bayesian models. Currently it implements methods to determine the sensitivity of the posterior to power-scaling perturbations of the prior and likelihood.",
+  "name": "priorsense: Prior Diagnostics and Sensitivity Analysis",
+  "codeRepository": "https://github.com/n-kall/priorsense",
+  "issueTracker": "https://github.com/n-kall/priorsense/issues",
+  "license": "https://spdx.org/licenses/GPL-3.0",
+  "version": "1.1",
+  "programmingLanguage": {
+    "@type": "ComputerLanguage",
+    "name": "R",
+    "url": "https://r-project.org"
+  },
+  "runtimePlatform": "R version 4.4.3 (2025-02-28)",
+  "provider": {
+    "@id": "https://cran.r-project.org",
+    "@type": "Organization",
+    "name": "Comprehensive R Archive Network (CRAN)",
+    "url": "https://cran.r-project.org"
+  },
+  "author": [
+    {
+      "@type": "Person",
+      "givenName": "Noa",
+      "familyName": "Kallioinen",
+      "email": "noa.kallioinen@aalto.fi"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Topi",
+      "familyName": "Paananen"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Paul-Christian",
+      "familyName": "Bürkner"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Aki",
+      "familyName": "Vehtari"
+    }
+  ],
+  "contributor": [
+    {
+      "@type": "Person",
+      "givenName": "Frank",
+      "familyName": "Weber"
+    }
+  ],
+  "copyrightHolder": [
+    {
+      "@type": "Person",
+      "givenName": "Noa",
+      "familyName": "Kallioinen",
+      "email": "noa.kallioinen@aalto.fi"
+    }
+  ],
+  "maintainer": [
+    {
+      "@type": "Person",
+      "givenName": "Noa",
+      "familyName": "Kallioinen",
+      "email": "noa.kallioinen@aalto.fi"
+    }
+  ],
+  "softwareSuggestions": [
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "bayesplot",
+      "name": "bayesplot",
+      "version": ">= 1.11.1",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=bayesplot"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "brms",
+      "name": "brms",
+      "version": ">= 2.22.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=brms"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "cmdstanr",
+      "name": "cmdstanr",
+      "version": ">= 0.8.1"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "iwmm",
+      "name": "iwmm",
+      "version": ">= 0.0.1"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "knitr",
+      "name": "knitr",
+      "version": ">= 1.47",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=knitr"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "philentropy",
+      "name": "philentropy",
+      "version": ">= 0.8.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=philentropy"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "rstan",
+      "name": "rstan",
+      "version": ">= 2.32.6",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=rstan"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "testthat",
+      "name": "testthat",
+      "version": ">= 3.0.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=testthat"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "transport",
+      "name": "transport",
+      "version": ">= 0.15",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=transport"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "rmarkdown",
+      "name": "rmarkdown",
+      "version": ">= 2.27",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=rmarkdown"
+    }
+  ],
+  "softwareRequirements": {
+    "1": {
+      "@type": "SoftwareApplication",
+      "identifier": "checkmate",
+      "name": "checkmate",
+      "version": ">= 2.3.1",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=checkmate"
+    },
+    "2": {
+      "@type": "SoftwareApplication",
+      "identifier": "ggdist",
+      "name": "ggdist",
+      "version": ">= 3.3.2",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=ggdist"
+    },
+    "3": {
+      "@type": "SoftwareApplication",
+      "identifier": "ggh4x",
+      "name": "ggh4x",
+      "version": ">= 0.2.5",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=ggh4x"
+    },
+    "4": {
+      "@type": "SoftwareApplication",
+      "identifier": "ggplot2",
+      "name": "ggplot2",
+      "version": ">= 3.5.1",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=ggplot2"
+    },
+    "5": {
+      "@type": "SoftwareApplication",
+      "identifier": "grDevices",
+      "name": "grDevices",
+      "version": ">= 3.6.2"
+    },
+    "6": {
+      "@type": "SoftwareApplication",
+      "identifier": "matrixStats",
+      "name": "matrixStats",
+      "version": ">= 1.3.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=matrixStats"
+    },
+    "7": {
+      "@type": "SoftwareApplication",
+      "identifier": "posterior",
+      "name": "posterior",
+      "version": ">= 1.6.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=posterior"
+    },
+    "8": {
+      "@type": "SoftwareApplication",
+      "identifier": "rlang",
+      "name": "rlang",
+      "version": ">= 1.1.4",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=rlang"
+    },
+    "9": {
+      "@type": "SoftwareApplication",
+      "identifier": "stats",
+      "name": "stats"
+    },
+    "10": {
+      "@type": "SoftwareApplication",
+      "identifier": "tibble",
+      "name": "tibble",
+      "version": ">= 3.2.1",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=tibble"
+    },
+    "11": {
+      "@type": "SoftwareApplication",
+      "identifier": "utils",
+      "name": "utils"
+    },
+    "12": {
+      "@type": "SoftwareApplication",
+      "identifier": "R",
+      "name": "R",
+      "version": ">= 3.6.0"
+    },
+    "SystemRequirements": null
+  },
+  "fileSize": "1449.887KB",
+  "citation": [
+    {
+      "@type": "ScholarlyArticle",
+      "datePublished": "2023",
+      "author": [
+        {
+          "@type": "Person",
+          "givenName": "Noa",
+          "familyName": "Kallioinen"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Topi",
+          "familyName": "Paananen"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Paul-Christian",
+          "familyName": "Bürkner"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Aki",
+          "familyName": "Vehtari"
+        }
+      ],
+      "name": "Detecting and diagnosing prior and likelihood sensitivity with power-scaling",
+      "identifier": "10.1007/s11222-023-10366-5",
+      "@id": "https://doi.org/10.1007/s11222-023-10366-5",
+      "sameAs": "https://doi.org/10.1007/s11222-023-10366-5",
+      "isPartOf": {
+        "@type": "PublicationIssue",
+        "datePublished": "2023",
+        "isPartOf": {
+          "@type": ["PublicationVolume", "Periodical"],
+          "volumeNumber": "34",
+          "name": "Statistics and Computing"
+        }
+      }
+    },
+    {
+      "@type": "ScholarlyArticle",
+      "datePublished": "2024",
+      "author": [
+        {
+          "@type": "Person",
+          "givenName": "Aki",
+          "familyName": "Vehtari"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Daniel",
+          "familyName": "Simpson"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Andrew",
+          "familyName": "Gelman"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Yuling",
+          "familyName": "Yao"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Jonah",
+          "familyName": "Gabry"
+        }
+      ],
+      "name": "Pareto smoothed importance sampling",
+      "isPartOf": {
+        "@type": "PublicationIssue",
+        "datePublished": "2024",
+        "isPartOf": {
+          "@type": ["PublicationVolume", "Periodical"],
+          "volumeNumber": "25",
+          "name": "Journal of Machine Learning Research"
+        }
+      }
+    },
+    {
+      "@type": "ScholarlyArticle",
+      "datePublished": "2021",
+      "author": [
+        {
+          "@type": "Person",
+          "givenName": "Topi",
+          "familyName": "Paananen"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Juho",
+          "familyName": "Piironen"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Paul-Christian",
+          "familyName": "Bürkner"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Aki",
+          "familyName": "Vehtari"
+        }
+      ],
+      "name": "Implicitly adaptive importance sampling",
+      "identifier": "10.1007/s11222-020-09982-2",
+      "pagination": "1--19",
+      "@id": "https://doi.org/10.1007/s11222-020-09982-2",
+      "sameAs": "https://doi.org/10.1007/s11222-020-09982-2",
+      "isPartOf": {
+        "@type": "PublicationIssue",
+        "datePublished": "2021",
+        "isPartOf": {
+          "@type": ["PublicationVolume", "Periodical"],
+          "volumeNumber": "31",
+          "name": "Statistics and Computing"
+        }
+      }
+    }
+  ],
+  "relatedLink": ["https://n-kall.github.io/priorsense/", "https://CRAN.R-project.org/package=priorsense"],
+  "releaseNotes": "https://github.com/n-kall/priorsense/blob/master/NEWS.md",
+  "readme": "https://github.com/n-kall/priorsense/blob/main/README.md",
+  "contIntegration": "https://github.com/n-kall/priorsense/actions",
+  "developmentStatus": "https://lifecycle.r-lib.org/articles/stages.html#stable",
+  "keywords": ["bayesian-data-analysis", "bayesian-methods", "prior-distribution", "r-package", "sensitivity-analysis", "stan", "bayesian", "r", "bayes"]
+}

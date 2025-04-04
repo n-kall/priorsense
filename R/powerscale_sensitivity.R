@@ -19,6 +19,7 @@
 ##' @template prediction_arg
 ##' @template resample_arg
 ##' @template selection_arg
+##' @template log_comp_name
 ##' @param num_args (named list) Optional arguments passed to
 ##'   [num()][tibble::num] for pretty printing of summaries. Can be
 ##'   controlled globally via the `posterior.num_args`
@@ -53,12 +54,16 @@ powerscale_sensitivity.default <- function(x,
                                            prediction = NULL,
                                            prior_selection = NULL,
                                            likelihood_selection = NULL,
+                                           log_prior_name = "lprior",
+                                           log_lik_name = "log_lik",
                                            num_args = NULL,
                                            ...
                                            ) {
 
   psd <- create_priorsense_data(
     x = x,
+    log_prior_name = log_prior_name,
+    log_lik_name = log_lik_name,
     ...
   )
 
@@ -69,6 +74,7 @@ powerscale_sensitivity.default <- function(x,
     upper_alpha = upper_alpha,
     div_measure = div_measure,
     measure_args = measure_args,
+    component = component,
     sensitivity_threshold = sensitivity_threshold,
     moment_match = moment_match,
     k_threshold = k_threshold,
@@ -118,8 +124,6 @@ powerscale_sensitivity.priorsense_data <- function(x,
   checkmate::assertLogical(resample, len = 1)
   checkmate::assertCharacter(transform, null.ok = TRUE, len = 1)
   checkmate::assertFunction(prediction, null.ok = TRUE)
-  checkmate::assertNumeric(prior_selection, null.ok = TRUE)
-  checkmate::assertNumeric(likelihood_selection, null.ok = TRUE)
 
   gradients <- powerscale_gradients(
     x = x,
@@ -153,7 +157,7 @@ powerscale_sensitivity.priorsense_data <- function(x,
   varnames <- unique(c(as.character(gradients$divergence$prior$variable),
                        as.character(gradients$divergence$likelihood$variable)))
 
-  sense <- tibble::tibble(
+  sense <- data.frame(
     variable = varnames,
     prior = prior_sense,
     likelihood = lik_sense
@@ -163,9 +167,9 @@ powerscale_sensitivity.priorsense_data <- function(x,
   # likelihood
 
   sense$diagnosis <- ifelse(
-    sense$prior >= sensitivity_threshold & sense$likelihood >= sensitivity_threshold, "prior-data conflict",
+    sense$prior >= sensitivity_threshold & sense$likelihood >= sensitivity_threshold, "potential prior-data conflict",
     ifelse(sense$prior > sensitivity_threshold & sense$likelihood < sensitivity_threshold,
-           "strong prior / weak likelihood",
+           "potential strong prior / weak likelihood",
            "-"
            )
   )
@@ -177,6 +181,8 @@ powerscale_sensitivity.priorsense_data <- function(x,
   attr(out, "num_args") <- num_args
   attr(out, "div_measure") <- div_measure
   attr(out, "loadings") <- gradients$loadings
+  attr(out, "prior_selection") <- prior_selection
+  attr(out, "likelihood_selection") <- likelihood_selection
 
   return(out)
 }

@@ -36,11 +36,34 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::pkgdown, local::.
+          extra-packages: |
+            any::pkgdown
+            local::.
+            XML
+            stan-dev/cmdstanr
+            paul-buerkner/brms
+            topipa/iwmm
+            rcmdcheck
+            rstan
+            checkmate
+            jsonlite
+            posterior
+            processx
+            R6
+            BH
+            R2jags
+            RcppEigen
+            StanHeaders
+            RcppParallel
+            withr
+            testthat
+            quarto
+            any::XML
+            any::textshaping
           needs: website
 
       - name: Build site
-        run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
+        run: pkgdown::build_site_github_pages(new_process = FALSE, install = TRUE)
         shell: Rscript {0}
 
       - name: Deploy to GitHub pages 🚀
