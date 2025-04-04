@@ -36,7 +36,30 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::pkgdown, local::., stan-dev/cmdstanr, topipa/iwmm
+          extra-packages: |
+            any::pkgdown
+            local::.
+            XML
+            stan-dev/cmdstanr
+            paul-buerkner/brms
+            topipa/iwmm
+            rcmdcheck
+            rstan
+            checkmate
+            jsonlite
+            posterior
+            processx
+            R6
+            BH
+            R2jags
+            RcppEigen
+            StanHeaders
+            RcppParallel
+            withr
+            testthat
+            quarto
+            any::XML
+            any::textshaping
           needs: website
 
       - name: Build site
