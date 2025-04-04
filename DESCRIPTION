@@ -31,16 +31,15 @@ Suggests:
     brms (>= 2.22.0),
     cmdstanr (>= 0.8.1),
     iwmm (>= 0.0.1),
-    knitr (>= 1.47),
+    quarto (>= 1.4.4),
     philentropy (>= 0.8.0),
     rstan (>= 2.32.6),
     testthat (>= 3.0.0),
-    transport (>= 0.15),
-    rmarkdown (>= 2.27)
+    transport (>= 0.15)
 Config/testthat/edition: 3
 Depends:
     R (>= 3.6.0)
-VignetteBuilder: knitr
+VignetteBuilder: quarto
 Additional_repositories:
     https://topipa.r-universe.dev,
     https://stan-dev.r-universe.dev

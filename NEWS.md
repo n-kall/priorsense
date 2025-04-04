@@ -2,6 +2,10 @@ priorsense 1.1.0
 ---
 + Add pagination of plots when there are many variables
 + Selection of priors updated to work with brms prior tags
++ Fix issue with component argument in powerscale_sensitivity
++ Fix MCSE not displaying in powerscale_plot_quantities
++ Switch to quarto for vignettes
++ Add support for rjags objects from R2jags
 
 priorsense 1.0.4
 ---

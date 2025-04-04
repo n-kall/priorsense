@@ -1,22 +1,15 @@
 ---
-output: github_document
+title: "priorsense"
+format: gfm
+default-image-extension: ""
 ---
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
+<!-- README.md is generated from README.qmd. Please edit that file -->
 
-```{r, include = FALSE}
-
+```{r}
+#| include: false
 ggplot2::theme_set(bayesplot::theme_default(base_family = "sans"))
-
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
-)
 ```
-
-# priorsense
 
 <!-- badges: start -->
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-green.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
@@ -44,14 +37,16 @@ Kallioinen et al. (2023).
 
 Download the stable version from CRAN with:
 
-```{r, eval = F}
+```{r}
+#| eval: false
 install.packages("priorsense")
 ```
 
 
 Download the development version from [GitHub](https://github.com/) with:
 
-```{r, eval = F}
+```{r}
+#| eval: false
 # install.packages("remotes")
 remotes::install_github("n-kall/priorsense", ref = "development")
 ```
@@ -95,7 +90,7 @@ generated quantities {
 
 We first fit the model using Stan:
 
-```{r, eval = T, results = F, message = F, warning = F}
+```r
 library(priorsense)
 
 normal_model <- example_powerscale_model("univariate_normal")
@@ -108,8 +103,16 @@ fit <- rstan::stan(
 )
 ```
 
+```{r}
+#| include: false
+devtools::load_all()
+normal_model <- example_powerscale_model("univariate_normal")
+fit <- normal_model$draws
+```
+
+
 Once fit, sensitivity can be checked as follows:
-```{r, eval = T}
+```{r}
 powerscale_sensitivity(fit)
 ```
 
@@ -117,15 +120,18 @@ To visually inspect changes to the posterior, use one of the
 diagnostic plot functions. Estimates with high Pareto-k values may be
 inaccurate and are indicated.
 
-```{r dens_plot, eval = T, out.width = '70%'}
+```{r, powerscale-plot_dens}
+#| out.width: "70%"
 powerscale_plot_dens(fit)
 ```
 
-```{r ecdf_plot, eval = T, out.width = '70%'}
+```{r, powerscale_plot_ecdf}
+#| out.width: "70%"
 powerscale_plot_ecdf(fit)
 ```
 
-```{r quants_plot, eval = T, out.width = '70%'}
+```{r, powerscale_plot_quantities}
+#| out.width: "70%"
 powerscale_plot_quantities(fit)
 ```
 

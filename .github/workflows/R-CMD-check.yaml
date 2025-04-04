@@ -73,8 +73,7 @@ jobs:
             R2jags
             withr
             testthat
-            rmarkdown
-            knitr
+            quarto
             any::XML
             any::textshaping
 

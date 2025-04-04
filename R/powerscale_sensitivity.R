@@ -157,7 +157,7 @@ powerscale_sensitivity.priorsense_data <- function(x,
   varnames <- unique(c(as.character(gradients$divergence$prior$variable),
                        as.character(gradients$divergence$likelihood$variable)))
 
-  sense <- tibble::tibble(
+  sense <- data.frame(
     variable = varnames,
     prior = prior_sense,
     likelihood = lik_sense

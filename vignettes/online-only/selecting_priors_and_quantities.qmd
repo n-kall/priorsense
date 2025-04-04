@@ -1,11 +1,15 @@
 ---
 title: "Selecting priors to power-scale and posterior quantities to check"
-output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Selecting priors to power-scale and posterior quantities to check}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
+
+```{r}
+#| include: false
+ggplot2::theme_set(bayesplot::theme_default(base_family = "sans"))
+```
 
 # Introduction
 
@@ -34,7 +38,9 @@ The main takeaways for this vignette are:
 - in more complex models, it is often better to check the sensitivity
   of predictions or preditive measures rather than the parameters
 
-```{r, message = FALSE}
+```{r}
+#| message: false
+#| warning: false
 library(brms)
 library(priorsense)
 library(posterior)
@@ -57,7 +63,9 @@ We first fit a linear model, with some priors specified. For each of
 the priors we add a `tag` as these will be used for selectively
 power-scaling the priors.
 
-```{r, message = FALSE}
+```{r}
+#| message: false
+#| warning: false
 fit_lin <- brm(
   formula = bf(Ozone ~ Temp),
   data = aq,
@@ -66,7 +74,8 @@ fit_lin <- brm(
     prior(normal(0, 5), class = "b", coef = "Temp", tag = "b"),
     prior(normal(0, 10), class = "sigma", tag = "sigma"),
     prior(normal(0, 100), class = "Intercept", tag = "intercept")
-  )
+  ),
+  seed = 123
 )
 ```
 
@@ -160,7 +169,11 @@ powerscale_sensitivity(
 
 And we can visualise the conflict.
 
-```{r, message = F, warning = F, fig.width = 12, fig.height = 4}
+```{r}
+#| message: false
+#| warning: false
+#| fig.width: 4
+#| fig.height: 4
 powerscale_plot_dens(
   post_draws_lin,
   variable = "sigma",
@@ -176,28 +189,30 @@ that informed the prior, so we can consider a wider prior for sigma.
 
 # Spline model
 
-Next we extend our model by adding splines.
+Next we extend our model by adding splines (and use a wider prior on
+sigma). This model is more complex, so it is more important to focus
+on checking the sensitivity of specific posterior quantities, rather
+than all the parameters. Here we will focus on the Bayesian R2, the
+log-score and the predictions at the minimum, median and maximum of
+the observed temperature.
+
 
 ```{r}
+#| message: false
+#| warning: false
 fit_spline <- brm(
-  formula = bf(Ozone ~ s(Temp) + s(Wind)),
+  formula = bf(Ozone ~ s(Temp)),
   data = aq,
   family = gaussian(),
   prior = c(
     prior(normal(0, 5), class = "b", coef = "sTemp_1", tag = "b"),
     prior(normal(0, 10), class = "sds", coef = "s(Temp)", tag = "sds"),
-    prior(normal(0, 10), class = "sigma", tag = "sigma"),
+    prior(normal(0, 30), class = "sigma", tag = "sigma"),
     prior(normal(0, 100), class = "Intercept", tag = "intercept")
-  )
+  ),
+  seed = 123
 )
 ```
-
-This model is more complex, so it is more important to focus on
-checking the sensitivity of specific posterior quantities, rather than
-all the parameters. Here we will focus on the Bayesian R2, the
-log-score and the predictions at the minimum, median and maximum of
-the observed temperature.
-
 
 ```{r}
 post_draws_spline <- as_draws_df(fit_spline) |>
@@ -219,7 +234,7 @@ post_draws_spline <- as_draws_df(fit_spline) |>
         x = fit_spline,
         predict_fn = posterior_epred,
         prediction_names = c("pred_minTemp", "pred_medianTemp", "pred_maxTemp"),
-      newdata = data.frame(Temp = c(min(aq$Temp), median(aq$Temp), max(aq$Temp)), Wind = median(aq$Wind))
+      newdata = data.frame(Temp = c(min(aq$Temp), median(aq$Temp), max(aq$Temp)))
       )
     )
 ```
@@ -265,7 +280,11 @@ We can visualise the effect of power-scaling the `sds` prior on the
 posterior `R2`, `logscore` and the predictions. Here we visualise the
 change in posterior mean and standard deviation.
 
-```{r, message = F, warning = F, fig.width = 12, fig.height = 4}
+```{r}
+#| message: false
+#| warning: false
+#| fig.width: 5
+#| fig.height: 5
 powerscale_plot_quantities(
   post_draws_spline,
   div_measure = NULL,

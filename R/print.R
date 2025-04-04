@@ -77,20 +77,13 @@ print.powerscaled_sequence <- function(x, ...) {
 
 
 ##' @export
-print.powerscaled_sensitivity_summary <- function(x, ..., num_args = NULL) {
+print.powerscaled_sensitivity_summary <- function(x, digits = 2, ...) {
 
-  num_args <- num_args %||% attr(x, "num_args")
-
-  for (i in seq_cols(x)) {
-    if (is.numeric(x[[i]])) {
-      x[[i]] <- do.call(tibble::set_num_opts, c(list(x[[i]]), num_args))
-    }
-  }
   cat(paste0("Sensitivity based on ", attr(x, "div_measure"), "\n"))
   cat(paste0("Prior selection: ", ifelse(is.null(attr(x, "prior_selection")), "all priors", attr(x, "prior_selection")), "\n"))
   cat(paste0("Likelihood selection: ", ifelse(is.null(attr(x, "likelihood_selection")), "all data", attr(x, "likelihood_selection")), "\n"))
-
-  NextMethod()
+  cat("\n")
+  print.data.frame(x, digits = digits, row.names = FALSE)
   if (!is.null(attr(x, "loadings"))) {
     cat("Factor loadings:\n")
     print(round(attr(x, "loadings"), 2))
