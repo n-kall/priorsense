@@ -11,7 +11,7 @@ optionally moment matching)."><meta property="og:image" content="https://n-kall.
 
     <a class="navbar-brand me-2" href="../index.html">priorsense</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -23,11 +23,15 @@ optionally moment matching)."><meta property="og:image" content="https://n-kall.
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/powerscaling.html">Power-scaling sensitivity analysis</a></li>
-    <li><a class="dropdown-item" href="../articles/online-only/sensitivity_diagnostic.html">Interpreting sensitivity diagnostics</a></li>
+    <li><a class="dropdown-item" href="../articles/priorsense_with_jags.html">Using priorsense with JAGS</a></li>
+    <li><a class="dropdown-item" href="../articles/quantity_of_interest.html">Quantities of interest for sensitivity checks</a></li>
+    <li><a class="dropdown-item" href="../articles/selecting_priors_and_quantities.html">Selecting priors to power-scale and posterior quantities to check</a></li>
+    <li><a class="dropdown-item" href="../articles/sensitivity_diagnostic.html">Interpreting sensitivity diagnostics</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/n-kall/priorsense/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -36,7 +40,7 @@ optionally moment matching)."><meta property="og:image" content="https://n-kall.
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Power-scaling sensitivity analysis</h1>
-
+      <small class="dont-index">Source: <a href="https://github.com/n-kall/priorsense/blob/main/R/powerscale_sensitivity.R" class="external-link"><code>R/powerscale_sensitivity.R</code></a></small>
       <div class="d-none name"><code>powerscale-sensitivity.Rd</code></div>
     </div>
 
@@ -67,6 +71,8 @@ optionally moment matching).</p>
 <span>  prediction <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  prior_selection <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  likelihood_selection <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  log_prior_name <span class="op">=</span> <span class="st">"lprior"</span>,</span>
+<span>  log_lik_name <span class="op">=</span> <span class="st">"log_lik"</span>,</span>
 <span>  num_args <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
@@ -180,11 +186,27 @@ draws_df of predictions to be appended to the posterior draws</p></dd>
 
 
 <dt id="arg-prior-selection">prior_selection<a class="anchor" aria-label="anchor" href="#arg-prior-selection"></a></dt>
-<dd><p>Numeric vector of prior partitions to include in power-scaling. Default is NULL, which takes all partitions.</p></dd>
+<dd><p>Vector specifying partitions of component to be
+included in power-scaling. Default is NULL, which takes all
+partitions. If this is a character, then it is appended to the
+variable name (specified by <code>log_prior_name</code>) with an <code>_</code>
+between them. If numeric, then it is appended inside <code>[]</code>.</p></dd>
 
 
 <dt id="arg-likelihood-selection">likelihood_selection<a class="anchor" aria-label="anchor" href="#arg-likelihood-selection"></a></dt>
-<dd><p>Numeric vector of likelihood partitions to include in power-scaling. Default is NULL, which takes all partitions.</p></dd>
+<dd><p>Vector specifying partitions of component to be
+included in power-scaling. Default is NULL, which takes all
+partitions. If this is a character, then it is appended to the
+variable name (specified by <code>log_lik_name</code>) with an <code>_</code>
+between them. If numeric, then it is appended inside <code>[]</code>.</p></dd>
+
+
+<dt id="arg-log-prior-name">log_prior_name<a class="anchor" aria-label="anchor" href="#arg-log-prior-name"></a></dt>
+<dd><p>Character indicating name of the variable storing the log prior evaluations</p></dd>
+
+
+<dt id="arg-log-lik-name">log_lik_name<a class="anchor" aria-label="anchor" href="#arg-log-lik-name"></a></dt>
+<dd><p>Character indicating name of the variable storing the log likelihood evaluations</p></dd>
 
 
 <dt id="arg-num-args">num_args<a class="anchor" aria-label="anchor" href="#arg-num-args"></a></dt>
@@ -217,12 +239,13 @@ Computing</em>. 31(16).  <code>doi:10.1007/s11222-020-09982-2</code></p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">ex</span> <span class="op">&lt;-</span> <span class="fu"><a href="example_powerscale_model.html">example_powerscale_model</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">powerscale_sensitivity</span><span class="op">(</span><span class="va">ex</span><span class="op">$</span><span class="va">draws</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sensitivity based on cjs_dist:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 4</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   variable prior likelihood diagnosis          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> mu       0.433      0.641 prior-data conflict</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> sigma    0.360      0.674 prior-data conflict</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sensitivity based on cjs_dist</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Prior selection: all priors</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Likelihood selection: all data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  variable prior likelihood                     diagnosis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        mu  0.43       0.64 potential prior-data conflict</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     sigma  0.36       0.67 potential prior-data conflict</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

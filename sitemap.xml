@@ -1,9 +1,13 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://n-kall.github.io/priorsense/404.html</loc></url>
+<url><loc>https://n-kall.github.io/priorsense/CONTRIBUTING.html</loc></url>
 <url><loc>https://n-kall.github.io/priorsense/LICENSE.html</loc></url>
 <url><loc>https://n-kall.github.io/priorsense/articles/index.html</loc></url>
-<url><loc>https://n-kall.github.io/priorsense/articles/online-only/sensitivity_diagnostic.html</loc></url>
 <url><loc>https://n-kall.github.io/priorsense/articles/powerscaling.html</loc></url>
+<url><loc>https://n-kall.github.io/priorsense/articles/priorsense_with_jags.html</loc></url>
+<url><loc>https://n-kall.github.io/priorsense/articles/quantity_of_interest.html</loc></url>
+<url><loc>https://n-kall.github.io/priorsense/articles/selecting_priors_and_quantities.html</loc></url>
+<url><loc>https://n-kall.github.io/priorsense/articles/sensitivity_diagnostic.html</loc></url>
 <url><loc>https://n-kall.github.io/priorsense/authors.html</loc></url>
 <url><loc>https://n-kall.github.io/priorsense/index.html</loc></url>
 <url><loc>https://n-kall.github.io/priorsense/news/index.html</loc></url>

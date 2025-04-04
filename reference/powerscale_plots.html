@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">priorsense</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,11 +19,15 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/powerscaling.html">Power-scaling sensitivity analysis</a></li>
-    <li><a class="dropdown-item" href="../articles/online-only/sensitivity_diagnostic.html">Interpreting sensitivity diagnostics</a></li>
+    <li><a class="dropdown-item" href="../articles/priorsense_with_jags.html">Using priorsense with JAGS</a></li>
+    <li><a class="dropdown-item" href="../articles/quantity_of_interest.html">Quantities of interest for sensitivity checks</a></li>
+    <li><a class="dropdown-item" href="../articles/selecting_priors_and_quantities.html">Selecting priors to power-scale and posterior quantities to check</a></li>
+    <li><a class="dropdown-item" href="../articles/sensitivity_diagnostic.html">Interpreting sensitivity diagnostics</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/n-kall/priorsense/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -32,7 +36,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Diagnostic plots for power-scaling sensitivity</h1>
-
+      <small class="dont-index">Source: <a href="https://github.com/n-kall/priorsense/blob/main/R/plots.R" class="external-link"><code>R/plots.R</code></a></small>
       <div class="d-none name"><code>powerscale_plots.Rd</code></div>
     </div>
 
@@ -55,6 +59,7 @@
 <span>  facet_rows <span class="op">=</span> <span class="st">"component"</span>,</span>
 <span>  help_text <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"priorsense.plot_help_text"</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>  colors <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  variables_per_page <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"priorsense.plot_variables_per_page"</span>, <span class="fl">6</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -72,6 +77,7 @@
 <span>  quantity_args <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  help_text <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"priorsense.plot_help_text"</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>  colors <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  variables_per_page <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"priorsense.plot_variables_per_page"</span>, <span class="fl">6</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -125,6 +131,12 @@ length 2 for <code>powerscale_plot_quantities</code> with order low Pareto
 k, high Pareto k. If <code>NULL</code> the defaults will be used.</p></dd>
 
 
+<dt id="arg-variables-per-page">variables_per_page<a class="anchor" aria-label="anchor" href="#arg-variables-per-page"></a></dt>
+<dd><p>Number specifying the maximum number of
+variables to show on each page of the plot. Default is 6. If
+<code>NULL</code> or <code>Inf</code>, all variables will be plotted on the same page.</p></dd>
+
+
 <dt id="arg-quantity">quantity<a class="anchor" aria-label="anchor" href="#arg-quantity"></a></dt>
 <dd><p>A character vector specifying one or several
 quantities to plot. Options are "mean", "median", "sd", "mad",
@@ -164,7 +176,9 @@ quantity functions. Passed as <code>.args</code> to
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A ggplot object that can be further customized using the <strong>ggplot2</strong> package.</p>
+    <p>A ggplot object (or a <code>priorsense_plot</code> object which is a
+list of ggplot objects if there is more than one page) that can
+be further customized using the <strong>ggplot2</strong> package.</p>
     </div>
     <div class="section level2">
     <h2 id="plot-descriptions">Plot Descriptions<a class="anchor" aria-label="anchor" href="#plot-descriptions"></a></h2>

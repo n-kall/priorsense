@@ -3,8 +3,11 @@ pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   powerscaling: powerscaling.html
-  online-only/sensitivity_diagnostic: online-only/sensitivity_diagnostic.html
-last_built: 2025-03-04T10:43Z
+  priorsense_with_jags: priorsense_with_jags.html
+  quantity_of_interest: quantity_of_interest.html
+  selecting_priors_and_quantities: selecting_priors_and_quantities.html
+  sensitivity_diagnostic: sensitivity_diagnostic.html
+last_built: 2025-04-04T17:38Z
 urls:
   reference: https://n-kall.github.io/priorsense/reference
   article: https://n-kall.github.io/priorsense/articles

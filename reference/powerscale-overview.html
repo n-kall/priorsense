@@ -11,7 +11,7 @@ moment matching)."><meta property="og:image" content="https://n-kall.github.io/p
 
     <a class="navbar-brand me-2" href="../index.html">priorsense</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -23,11 +23,15 @@ moment matching)."><meta property="og:image" content="https://n-kall.github.io/p
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/powerscaling.html">Power-scaling sensitivity analysis</a></li>
-    <li><a class="dropdown-item" href="../articles/online-only/sensitivity_diagnostic.html">Interpreting sensitivity diagnostics</a></li>
+    <li><a class="dropdown-item" href="../articles/priorsense_with_jags.html">Using priorsense with JAGS</a></li>
+    <li><a class="dropdown-item" href="../articles/quantity_of_interest.html">Quantities of interest for sensitivity checks</a></li>
+    <li><a class="dropdown-item" href="../articles/selecting_priors_and_quantities.html">Selecting priors to power-scale and posterior quantities to check</a></li>
+    <li><a class="dropdown-item" href="../articles/sensitivity_diagnostic.html">Interpreting sensitivity diagnostics</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/n-kall/priorsense/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -36,7 +40,7 @@ moment matching)."><meta property="og:image" content="https://n-kall.github.io/p
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Prior/likelihood power-scaling perturbation</h1>
-
+      <small class="dont-index">Source: <a href="https://github.com/n-kall/priorsense/blob/main/R/powerscale.R" class="external-link"><code>R/powerscale.R</code></a>, <a href="https://github.com/n-kall/priorsense/blob/main/R/powerscale_sequence.R" class="external-link"><code>R/powerscale_sequence.R</code></a></small>
       <div class="d-none name"><code>powerscale-overview.Rd</code></div>
     </div>
 
@@ -62,6 +66,8 @@ moment matching).</p>
 <span>  prediction <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  variable <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  selection <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  log_prior_name <span class="op">=</span> <span class="st">"lprior"</span>,</span>
+<span>  log_lik_name <span class="op">=</span> <span class="st">"log_lik"</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -77,6 +83,8 @@ moment matching).</p>
 <span>  prediction <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  variable <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  selection <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  log_prior_name <span class="op">=</span> <span class="st">"lprior"</span>,</span>
+<span>  log_lik_name <span class="op">=</span> <span class="st">"log_lik"</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -111,7 +119,7 @@ moment matching).</p>
 <span>  variable <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  component <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"prior"</span>, <span class="st">"likelihood"</span><span class="op">)</span>,</span>
 <span>  moment_match <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  k_threshold <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  k_threshold <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  resample <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  transform <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  prediction <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -178,9 +186,19 @@ posterior draws for. If <code>NULL</code> all variables will be included.</p></d
 
 
 <dt id="arg-selection">selection<a class="anchor" aria-label="anchor" href="#arg-selection"></a></dt>
-<dd><p>Numeric vector specifying partitions of component
-to be included in power-scaling. Default is NULL, which takes
-all partitions.</p></dd>
+<dd><p>Vector specifying partitions of component to be
+included in power-scaling. Default is NULL, which takes all
+partitions. If this is a character, then it is appended to the
+variable name (<code>log_prior_name</code> or <code>log_lik_name</code>) with an <code>_</code>
+between them.</p></dd>
+
+
+<dt id="arg-log-prior-name">log_prior_name<a class="anchor" aria-label="anchor" href="#arg-log-prior-name"></a></dt>
+<dd><p>Character indicating name of the variable storing the log prior evaluations</p></dd>
+
+
+<dt id="arg-log-lik-name">log_lik_name<a class="anchor" aria-label="anchor" href="#arg-log-lik-name"></a></dt>
+<dd><p>Character indicating name of the variable storing the log likelihood evaluations</p></dd>
 
 
 <dt id="arg-lower-alpha">lower_alpha<a class="anchor" aria-label="anchor" href="#arg-lower-alpha"></a></dt>
@@ -206,11 +224,19 @@ around alpha = 1, on log-space?</p></dd>
 
 
 <dt id="arg-prior-selection">prior_selection<a class="anchor" aria-label="anchor" href="#arg-prior-selection"></a></dt>
-<dd><p>Numeric vector of prior partitions to include in power-scaling. Default is NULL, which takes all partitions.</p></dd>
+<dd><p>Vector specifying partitions of component to be
+included in power-scaling. Default is NULL, which takes all
+partitions. If this is a character, then it is appended to the
+variable name (specified by <code>log_prior_name</code>) with an <code>_</code>
+between them. If numeric, then it is appended inside <code>[]</code>.</p></dd>
 
 
 <dt id="arg-likelihood-selection">likelihood_selection<a class="anchor" aria-label="anchor" href="#arg-likelihood-selection"></a></dt>
-<dd><p>Numeric vector of likelihood partitions to include in power-scaling. Default is NULL, which takes all partitions.</p></dd>
+<dd><p>Vector specifying partitions of component to be
+included in power-scaling. Default is NULL, which takes all
+partitions. If this is a character, then it is appended to the
+variable name (specified by <code>log_lik_name</code>) with an <code>_</code>
+between them. If numeric, then it is appended inside <code>[]</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -258,6 +284,7 @@ Computing</em>. 31(16).  <code>doi:10.1007/s11222-020-09982-2</code></p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> power-scaling</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  alpha: 0.5 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  scaled component: prior </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  selection: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  pareto-k: 0.2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  pareto-k threshold: 0.72 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  resampled: FALSE </span>

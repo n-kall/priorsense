@@ -23,7 +23,7 @@
 
     <a class="navbar-brand me-2" href="index.html">priorsense</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,7 +37,10 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="articles/powerscaling.html">Power-scaling sensitivity analysis</a></li>
-    <li><a class="dropdown-item" href="articles/online-only/sensitivity_diagnostic.html">Interpreting sensitivity diagnostics</a></li>
+    <li><a class="dropdown-item" href="articles/priorsense_with_jags.html">Using priorsense with JAGS</a></li>
+    <li><a class="dropdown-item" href="articles/quantity_of_interest.html">Quantities of interest for sensitivity checks</a></li>
+    <li><a class="dropdown-item" href="articles/selecting_priors_and_quantities.html">Selecting priors to power-scale and posterior quantities to check</a></li>
+    <li><a class="dropdown-item" href="articles/sensitivity_diagnostic.html">Interpreting sensitivity diagnostics</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
@@ -46,6 +49,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
 </form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/n-kall/priorsense/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -58,6 +62,7 @@
 <img src="logo.png" class="logo" alt=""><h1 id="priorsense">priorsense<a class="anchor" aria-label="anchor" href="#priorsense"></a>
 </h1>
 </div>
+<!-- README.md is generated from README.qmd. Please edit that file -->
 <!-- badges: start -->
 
 <div class="section level2">
@@ -81,7 +86,7 @@
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
-<p>priorsense works with models created with rstan, cmdstanr or brms, or with draws objects from the posterior package.</p>
+<p>priorsense works with models created with rstan, cmdstanr, brms, R2jags, or with draws objects from the posterior package.</p>
 <div class="section level3">
 <h3 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h3>
@@ -111,7 +116,7 @@
 <span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a>    normal_lpdf(sigma | <span class="dv">0</span>, <span class="fl">2.5</span>);</span></code></pre></div>
 <p>We first fit the model using Stan:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://n-kall.github.io/priorsense/">priorsense</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/n-kall/priorsense" class="external-link">priorsense</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">normal_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/example_powerscale_model.html">example_powerscale_model</a></span><span class="op">(</span><span class="st">"univariate_normal"</span><span class="op">)</span></span>
 <span></span>
@@ -123,23 +128,24 @@
 <span><span class="op">)</span></span></code></pre></div>
 <p>Once fit, sensitivity can be checked as follows:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/powerscale-sensitivity.html">powerscale_sensitivity</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Sensitivity based on cjs_dist:</span></span>
-<span><span class="co">#&gt; # A tibble: 2 × 4</span></span>
-<span><span class="co">#&gt;   variable prior likelihood diagnosis          </span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;    &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;              </span></span>
-<span><span class="co">#&gt; 1 mu       0.363      0.516 prior-data conflict</span></span>
-<span><span class="co">#&gt; 2 sigma    0.268      0.522 prior-data conflict</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/powerscale-sensitivity.html">powerscale_sensitivity</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>Sensitivity based on cjs_dist</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>Prior selection<span class="sc">:</span> all priors</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>Likelihood selection<span class="sc">:</span> all data</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a> variable prior likelihood                     diagnosis</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>       mu  <span class="fl">0.43</span>       <span class="fl">0.64</span> potential prior<span class="sc">-</span>data conflict</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>    sigma  <span class="fl">0.36</span>       <span class="fl">0.67</span> potential prior<span class="sc">-</span>data conflict</span></code></pre></div>
 <p>To visually inspect changes to the posterior, use one of the diagnostic plot functions. Estimates with high Pareto-k values may be inaccurate and are indicated.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/powerscale_plots.html">powerscale_plot_dens</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-dens_plot-1.png" width="70%"></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/powerscale_plots.html">powerscale_plot_ecdf</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-ecdf_plot-1.png" width="70%"></p>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/powerscale_plots.html">powerscale_plot_dens</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/powerscale-plot_dens-1.png" style="width:70.0%"></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/powerscale_plots.html">powerscale_plot_ecdf</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/powerscale_plot_ecdf-1.png" style="width:70.0%"></p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/powerscale_plots.html">powerscale_plot_quantities</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-quants_plot-1.png" width="70%"></p>
+<p><img src="reference/figures/powerscale_plot_quantities-1.png" style="width:70.0%"></p>
 <p>In some cases, setting <code>moment_match = TRUE</code> will improve the unreliable estimates at the cost of some further computation. This requires the <a href="https://github.com/topipa/iwmm" class="external-link"><code>iwmm</code> package</a>.</p>
 </div>
 </div>
@@ -160,6 +166,8 @@
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
 <li><a href="https://cloud.r-project.org/package=priorsense" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/n-kall/priorsense/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/n-kall/priorsense/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
@@ -171,6 +179,12 @@
 </ul>
 </div>
 
+<div class="community">
+<h2 data-toc-skip>Community</h2>
+<ul class="list-unstyled">
+<li><a href="CONTRIBUTING.html">Contributing guide</a></li>
+</ul>
+</div>
 
 <div class="citation">
 <h2 data-toc-skip>Citation</h2>
