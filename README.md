@@ -7,7 +7,7 @@
 [![Lifecycle:
 stable](https://img.shields.io/badge/lifecycle-stable-green.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![CRAN
-status](https://www.r-pkg.org/badges/version/priorsense.png)](https://CRAN.R-project.org/package=priorsense)
+status](https://www.r-pkg.org/badges/version/priorsense)](https://CRAN.R-project.org/package=priorsense)
 [![R-CMD-check](https://github.com/n-kall/priorsense/workflows/R-CMD-check/badge.svg)](https://github.com/n-kall/priorsense/actions)
 <!-- badges: end -->
 
@@ -117,21 +117,22 @@ and are indicated.
 powerscale_plot_dens(fit)
 ```
 
-<img src="README_files/figure-commonmark/unnamed-chunk-6-1.png"
+<img src="README_files/figure-commonmark/powerscale-plot_dens-1.png"
 style="width:70.0%" />
 
 ``` r
 powerscale_plot_ecdf(fit)
 ```
 
-<img src="README_files/figure-commonmark/unnamed-chunk-7-1.png"
+<img src="README_files/figure-commonmark/powerscale_plot_ecdf-1.png"
 style="width:70.0%" />
 
 ``` r
 powerscale_plot_quantities(fit)
 ```
 
-<img src="README_files/figure-commonmark/unnamed-chunk-8-1.png"
+<img
+src="README_files/figure-commonmark/powerscale_plot_quantities-1.png"
 style="width:70.0%" />
 
 In some cases, setting `moment_match = TRUE` will improve the unreliable

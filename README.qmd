@@ -1,6 +1,7 @@
 ---
 title: "priorsense"
 format: gfm
+default-image-extension: ""
 ---
 
 <!-- README.md is generated from README.qmd. Please edit that file -->
@@ -114,17 +115,17 @@ To visually inspect changes to the posterior, use one of the
 diagnostic plot functions. Estimates with high Pareto-k values may be
 inaccurate and are indicated.
 
-```{r}
+```{r, powerscale-plot_dens}
 #| out.width: "70%"
 powerscale_plot_dens(fit)
 ```
 
-```{r}
+```{r, powerscale_plot_ecdf}
 #| out.width: "70%"
 powerscale_plot_ecdf(fit)
 ```
 
-```{r}
+```{r, powerscale_plot_quantities}
 #| out.width: "70%"
 powerscale_plot_quantities(fit)
 ```
