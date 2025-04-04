@@ -2,6 +2,7 @@
 
 
 <!-- README.md is generated from README.qmd. Please edit that file -->
+
 <!-- badges: start -->
 
 [![Lifecycle:
@@ -45,8 +46,8 @@ remotes::install_github("n-kall/priorsense", ref = "development")
 
 ## Usage
 
-priorsense works with models created with rstan, cmdstanr or brms, or
-with draws objects from the posterior package.
+priorsense works with models created with rstan, cmdstanr, brms, R2jags,
+or with draws objects from the posterior package.
 
 ### Example
 

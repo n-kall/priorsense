@@ -1,9 +1,10 @@
 ---
-title: Quantities of interest in sensitivity checks
+title: "Quantities of interest in sensitivity checks"
 date: First version 2025-02-21. Last modified `r format(Sys.Date())`
-output:
-  html_document:
-    number_sections: TRUE
+vignette: >
+  %\VignetteIndexEntry{Selecting priors to power-scale and posterior quantities to check}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
 ---
 
 # Choosing a quantity of interest
