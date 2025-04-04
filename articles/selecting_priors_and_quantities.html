@@ -112,120 +112,21 @@
 <span>    <span class="fu"><a href="https://paulbuerkner.com/brms/reference/set_prior.html" class="external-link">prior</a></span><span class="op">(</span><span class="fu">normal</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span><span class="op">)</span>, class <span class="op">=</span> <span class="st">"sigma"</span>, tag <span class="op">=</span> <span class="st">"sigma"</span><span class="op">)</span>,</span>
 <span>    <span class="fu"><a href="https://paulbuerkner.com/brms/reference/set_prior.html" class="external-link">prior</a></span><span class="op">(</span><span class="fu">normal</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span><span class="op">)</span>, class <span class="op">=</span> <span class="st">"Intercept"</span>, tag <span class="op">=</span> <span class="st">"intercept"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
-<span>  seed <span class="op">=</span> <span class="fl">123</span></span>
+<span>  seed <span class="op">=</span> <span class="fl">123</span>,</span>
+<span>  refresh <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  open_progress <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  silent <span class="op">=</span> <span class="fl">2</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).
-Chain 1:
-Chain 1: Gradient evaluation took 1.1e-05 seconds
-Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.11 seconds.
-Chain 1: Adjust your expectations accordingly!
-Chain 1:
-Chain 1:
-Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)
-Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)
-Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)
-Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)
-Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)
-Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
-Chain 1:
-Chain 1:  Elapsed Time: 0.016 seconds (Warm-up)
-Chain 1:                0.011 seconds (Sampling)
-Chain 1:                0.027 seconds (Total)
-Chain 1:
-
-SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).
-Chain 2:
-Chain 2: Gradient evaluation took 4e-06 seconds
-Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.04 seconds.
-Chain 2: Adjust your expectations accordingly!
-Chain 2:
-Chain 2:
-Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)
-Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)
-Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)
-Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)
-Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)
-Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
-Chain 2:
-Chain 2:  Elapsed Time: 0.018 seconds (Warm-up)
-Chain 2:                0.01 seconds (Sampling)
-Chain 2:                0.028 seconds (Total)
-Chain 2:
-
-SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 3).
-Chain 3:
-Chain 3: Gradient evaluation took 4e-06 seconds
-Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.04 seconds.
-Chain 3: Adjust your expectations accordingly!
-Chain 3:
-Chain 3:
-Chain 3: Iteration:    1 / 2000 [  0%]  (Warmup)
-Chain 3: Iteration:  200 / 2000 [ 10%]  (Warmup)
-Chain 3: Iteration:  400 / 2000 [ 20%]  (Warmup)
-Chain 3: Iteration:  600 / 2000 [ 30%]  (Warmup)
-Chain 3: Iteration:  800 / 2000 [ 40%]  (Warmup)
-Chain 3: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-Chain 3: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-Chain 3: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-Chain 3: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
-Chain 3:
-Chain 3:  Elapsed Time: 0.016 seconds (Warm-up)
-Chain 3:                0.013 seconds (Sampling)
-Chain 3:                0.029 seconds (Total)
-Chain 3:
-
-SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 4).
-Chain 4:
-Chain 4: Gradient evaluation took 3e-06 seconds
-Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.03 seconds.
-Chain 4: Adjust your expectations accordingly!
-Chain 4:
-Chain 4:
-Chain 4: Iteration:    1 / 2000 [  0%]  (Warmup)
-Chain 4: Iteration:  200 / 2000 [ 10%]  (Warmup)
-Chain 4: Iteration:  400 / 2000 [ 20%]  (Warmup)
-Chain 4: Iteration:  600 / 2000 [ 30%]  (Warmup)
-Chain 4: Iteration:  800 / 2000 [ 40%]  (Warmup)
-Chain 4: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-Chain 4: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-Chain 4: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-Chain 4: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
-Chain 4:
-Chain 4:  Elapsed Time: 0.017 seconds (Warm-up)
-Chain 4:                0.011 seconds (Sampling)
-Chain 4:                0.028 seconds (Total)
-Chain 4: </code></pre>
-</div>
 </div>
 <p>We will work with the posterior draws, rather than the entire <code>brmsfit</code> object. This requires binding the <code>log_lik</code> to the draws object.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">post_draws_lin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/posterior/reference/draws_df.html" class="external-link">as_draws_df</a></span><span class="op">(</span><span class="va">fit_lin</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://mc-stan.org/posterior/reference/bind_draws.html" class="external-link">bind_draws</a></span><span class="op">(</span><span class="fu"><a href="../reference/log_lik_draws.html">log_lik_draws</a></span><span class="op">(</span><span class="va">fit_lin</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <p>As the model is simple, with only one predictor, and each parameter is directly interpretable, we can perform the power-scaling sensitivity check directly on all the marginal posteriors of the parameters.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/powerscale-sensitivity.html">powerscale_sensitivity</a></span><span class="op">(</span></span>
 <span>  <span class="va">post_draws_lin</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -247,14 +148,14 @@ Likelihood selection: all data
 <p>For predictive performance measures, we will use Bayesian R2 and log-score.</p>
 <p>We first define a log-score function.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">logscore</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowSums</a></span><span class="op">(</span><span class="fu"><a href="https://mc-stan.org/rstantools/reference/log_lik.html" class="external-link">log_lik</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 </div>
 <p>And then bind the draws of the predictions and measures to the posterior draws. For this we will use the <code>predictions_as_draws</code> helper function provided by <code>priorsense</code> which transforms predictions from <code>brms</code> to draws objects.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">post_draws_lin</span> <span class="op">&lt;-</span> <span class="va">post_draws_lin</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://mc-stan.org/posterior/reference/bind_draws.html" class="external-link">bind_draws</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="../reference/predictions_as_draws.html">predictions_as_draws</a></span><span class="op">(</span></span>
@@ -302,7 +203,7 @@ Likelihood selection: all data
 <p>In this case, these predictive metrics do not appear to be sensitive to power-scaling the prior. If we are focused on prediction, we might not be concerned about the potential prior-data conflict for the sigma parameter. However, as the model is simple and sigma is interpretable we can continue investigation.</p>
 <p>We can confirm that it is the sigma prior that is causing the possible prior-data conflict, by using the <code>prior_selection</code> argument and specifying the <code>tag</code> we defined when creating the priors.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/powerscale-sensitivity.html">powerscale_sensitivity</a></span><span class="op">(</span></span>
 <span>  <span class="va">post_draws_lin</span>,</span>
 <span>  prior_selection <span class="op">=</span> <span class="st">"sigma"</span></span>
@@ -326,7 +227,7 @@ Likelihood selection: all data
 </div>
 <p>And we can visualise the conflict.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/powerscale_plots.html">powerscale_plot_dens</a></span><span class="op">(</span></span>
 <span>  <span class="va">post_draws_lin</span>,</span>
 <span>  variable <span class="op">=</span> <span class="st">"sigma"</span>,</span>
@@ -344,7 +245,7 @@ Likelihood selection: all data
 </h2>
 <p>Next we extend our model by adding splines (and use a wider prior on sigma). This model is more complex, so it is more important to focus on checking the sensitivity of specific posterior quantities, rather than all the parameters. Here we will focus on the Bayesian R2, the log-score and the predictions at the minimum, median and maximum of the observed temperature.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_spline</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://paulbuerkner.com/brms/reference/brm.html" class="external-link">brm</a></span><span class="op">(</span></span>
 <span>  formula <span class="op">=</span> <span class="fu"><a href="https://paulbuerkner.com/brms/reference/brmsformula.html" class="external-link">bf</a></span><span class="op">(</span><span class="va">Ozone</span> <span class="op">~</span> <span class="fu"><a href="https://paulbuerkner.com/brms/reference/s.html" class="external-link">s</a></span><span class="op">(</span><span class="va">Temp</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">aq</span>,</span>
@@ -355,113 +256,14 @@ Likelihood selection: all data
 <span>    <span class="fu"><a href="https://paulbuerkner.com/brms/reference/set_prior.html" class="external-link">prior</a></span><span class="op">(</span><span class="fu">normal</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">30</span><span class="op">)</span>, class <span class="op">=</span> <span class="st">"sigma"</span>, tag <span class="op">=</span> <span class="st">"sigma"</span><span class="op">)</span>,</span>
 <span>    <span class="fu"><a href="https://paulbuerkner.com/brms/reference/set_prior.html" class="external-link">prior</a></span><span class="op">(</span><span class="fu">normal</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span><span class="op">)</span>, class <span class="op">=</span> <span class="st">"Intercept"</span>, tag <span class="op">=</span> <span class="st">"intercept"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
-<span>  seed <span class="op">=</span> <span class="fl">123</span></span>
+<span>  seed <span class="op">=</span> <span class="fl">123</span>,</span>
+<span>  refresh <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  open_progress <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  silent <span class="op">=</span> <span class="fl">2</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).
-Chain 1:
-Chain 1: Gradient evaluation took 4.5e-05 seconds
-Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.45 seconds.
-Chain 1: Adjust your expectations accordingly!
-Chain 1:
-Chain 1:
-Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)
-Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)
-Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)
-Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)
-Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)
-Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
-Chain 1:
-Chain 1:  Elapsed Time: 0.283 seconds (Warm-up)
-Chain 1:                0.2 seconds (Sampling)
-Chain 1:                0.483 seconds (Total)
-Chain 1:
-
-SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).
-Chain 2:
-Chain 2: Gradient evaluation took 1.5e-05 seconds
-Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.15 seconds.
-Chain 2: Adjust your expectations accordingly!
-Chain 2:
-Chain 2:
-Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)
-Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)
-Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)
-Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)
-Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)
-Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
-Chain 2:
-Chain 2:  Elapsed Time: 0.281 seconds (Warm-up)
-Chain 2:                0.194 seconds (Sampling)
-Chain 2:                0.475 seconds (Total)
-Chain 2:
-
-SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 3).
-Chain 3:
-Chain 3: Gradient evaluation took 1.5e-05 seconds
-Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.15 seconds.
-Chain 3: Adjust your expectations accordingly!
-Chain 3:
-Chain 3:
-Chain 3: Iteration:    1 / 2000 [  0%]  (Warmup)
-Chain 3: Iteration:  200 / 2000 [ 10%]  (Warmup)
-Chain 3: Iteration:  400 / 2000 [ 20%]  (Warmup)
-Chain 3: Iteration:  600 / 2000 [ 30%]  (Warmup)
-Chain 3: Iteration:  800 / 2000 [ 40%]  (Warmup)
-Chain 3: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-Chain 3: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-Chain 3: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-Chain 3: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
-Chain 3:
-Chain 3:  Elapsed Time: 0.299 seconds (Warm-up)
-Chain 3:                0.194 seconds (Sampling)
-Chain 3:                0.493 seconds (Total)
-Chain 3:
-
-SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 4).
-Chain 4:
-Chain 4: Gradient evaluation took 1.6e-05 seconds
-Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.16 seconds.
-Chain 4: Adjust your expectations accordingly!
-Chain 4:
-Chain 4:
-Chain 4: Iteration:    1 / 2000 [  0%]  (Warmup)
-Chain 4: Iteration:  200 / 2000 [ 10%]  (Warmup)
-Chain 4: Iteration:  400 / 2000 [ 20%]  (Warmup)
-Chain 4: Iteration:  600 / 2000 [ 30%]  (Warmup)
-Chain 4: Iteration:  800 / 2000 [ 40%]  (Warmup)
-Chain 4: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-Chain 4: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-Chain 4: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-Chain 4: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
-Chain 4:
-Chain 4:  Elapsed Time: 0.269 seconds (Warm-up)
-Chain 4:                0.195 seconds (Sampling)
-Chain 4:                0.464 seconds (Total)
-Chain 4: </code></pre>
-</div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">post_draws_spline</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/posterior/reference/draws_df.html" class="external-link">as_draws_df</a></span><span class="op">(</span><span class="va">fit_spline</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://mc-stan.org/posterior/reference/bind_draws.html" class="external-link">bind_draws</a></span><span class="op">(</span><span class="fu"><a href="../reference/log_lik_draws.html">log_lik_draws</a></span><span class="op">(</span><span class="va">fit_spline</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://mc-stan.org/posterior/reference/bind_draws.html" class="external-link">bind_draws</a></span><span class="op">(</span></span>
@@ -487,7 +289,7 @@ Chain 4: </code></pre>
 </div>
 <p>We start with power-scaling all priors, but only looking at the effect on <code>R2</code> and <code>logscore</code> and the predictions.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/powerscale-sensitivity.html">powerscale_sensitivity</a></span><span class="op">(</span></span>
 <span>  <span class="va">post_draws_spline</span>,</span>
 <span>  variable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"R2"</span>, <span class="st">"logscore"</span>, <span class="st">"pred_minTemp"</span>, <span class="st">"pred_medianTemp"</span>, <span class="st">"pred_maxTemp"</span><span class="op">)</span></span>
@@ -508,7 +310,7 @@ Likelihood selection: all data
 <p>We see sensitivity in both measures. Next, we selectively power-scale different priors by specifying the corresponding <code>tag</code> in <code>prior_selection</code>.</p>
 <p>As this model introduced a prior on the <code>sds</code> term, we can start there.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/powerscale-sensitivity.html">powerscale_sensitivity</a></span><span class="op">(</span></span>
 <span>  <span class="va">post_draws_spline</span>,</span>
 <span>  variable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"R2"</span>, <span class="st">"logscore"</span>, <span class="st">"pred_minTemp"</span>, <span class="st">"pred_medianTemp"</span>, <span class="st">"pred_maxTemp"</span><span class="op">)</span>,</span>
@@ -529,7 +331,7 @@ Likelihood selection: all data
 </div>
 <p>There is clear sensitivity to this prior. We can check all the other priors at once by providing a vector as the <code>prior_selection</code> argument.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/powerscale-sensitivity.html">powerscale_sensitivity</a></span><span class="op">(</span></span>
 <span>  <span class="va">post_draws_spline</span>,</span>
 <span>  variable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"R2"</span>, <span class="st">"logscore"</span>, <span class="st">"pred_minTemp"</span>, <span class="st">"pred_minTemp"</span>, <span class="st">"pred_maxTemp"</span><span class="op">)</span>,</span>
@@ -549,7 +351,7 @@ Likelihood selection: all data
 </div>
 <p>We can visualise the effect of power-scaling the <code>sds</code> prior on the posterior <code>R2</code>, <code>logscore</code> and the predictions. Here we visualise the change in posterior mean and standard deviation.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/powerscale_plots.html">powerscale_plot_quantities</a></span><span class="op">(</span></span>
 <span>  <span class="va">post_draws_spline</span>,</span>
 <span>  div_measure <span class="op">=</span> <span class="cn">NULL</span>,</span>
