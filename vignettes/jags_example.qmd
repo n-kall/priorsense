@@ -11,11 +11,6 @@ vignette: >
 #| include: false
 ggplot2::theme_set(bayesplot::theme_default(base_family = "sans"))
 
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-
 options(priorsense.plot_help_text = FALSE)
 ```
 
