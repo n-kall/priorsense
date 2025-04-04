@@ -7,8 +7,8 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
-
+```{r}
+#| include: false
 ggplot2::theme_set(bayesplot::theme_default(base_family = "sans"))
 
 knitr::opts_chunk$set(
