@@ -1,6 +1,5 @@
 ---
 title: "Interpreting sensitivity diagnostics"
-date: First version 2025-02-21. Last modified `r format(Sys.Date())`
 vignette: >
   %\VignetteIndexEntry{Interpreting sensitivity diagnostics}
   %\VignetteEngine{quarto::html}

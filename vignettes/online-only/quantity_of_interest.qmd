@@ -1,6 +1,5 @@
 ---
 title: "Quantities of interest for sensitivity checks"
-date: First version 2025-02-21. Last modified `r format(Sys.Date())`
 vignette: >
   %\VignetteIndexEntry{Quantities of interest for sensitivity checks}
   %\VignetteEngine{quarto::html}
