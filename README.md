@@ -103,6 +103,7 @@ powerscale_sensitivity(fit)
     Sensitivity based on cjs_dist
     Prior selection: all priors
     Likelihood selection: all data
+
      variable prior likelihood                     diagnosis
            mu  0.43       0.64 potential prior-data conflict
         sigma  0.36       0.67 potential prior-data conflict
