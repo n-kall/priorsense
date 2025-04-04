@@ -117,22 +117,19 @@ and are indicated.
 powerscale_plot_dens(fit)
 ```
 
-<img src="README_files/figure-commonmark/powerscale-plot_dens-1.png"
-style="width:70.0%" />
+<img src="man/figures/powerscale-plot_dens-1.png" style="width:70.0%" />
 
 ``` r
 powerscale_plot_ecdf(fit)
 ```
 
-<img src="README_files/figure-commonmark/powerscale_plot_ecdf-1.png"
-style="width:70.0%" />
+<img src="man/figures/powerscale_plot_ecdf-1.png" style="width:70.0%" />
 
 ``` r
 powerscale_plot_quantities(fit)
 ```
 
-<img
-src="README_files/figure-commonmark/powerscale_plot_quantities-1.png"
+<img src="man/figures/powerscale_plot_quantities-1.png"
 style="width:70.0%" />
 
 In some cases, setting `moment_match = TRUE` will improve the unreliable

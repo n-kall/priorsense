@@ -121,16 +121,19 @@ diagnostic plot functions. Estimates with high Pareto-k values may be
 inaccurate and are indicated.
 
 ```{r, powerscale-plot_dens}
+#| fig.path: "man/figures/"
 #| out.width: "70%"
 powerscale_plot_dens(fit)
 ```
 
 ```{r, powerscale_plot_ecdf}
+#| fig.path: "man/figures/"
 #| out.width: "70%"
 powerscale_plot_ecdf(fit)
 ```
 
 ```{r, powerscale_plot_quantities}
+#| fig.path: "man/figures/"
 #| out.width: "70%"
 powerscale_plot_quantities(fit)
 ```
