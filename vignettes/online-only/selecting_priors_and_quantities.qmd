@@ -85,9 +85,9 @@ post_draws_lin <- as_draws_df(fit_lin) |>
   bind_draws(log_lik_draws(fit_lin))
 ```
 
-As the model is simple, and each parameter is directly interpretable,
-we can perform the power-scaling sensitivity check directly on all the
-parameters.
+As the model is simple, with only one predictor, and each parameter is
+directly interpretable, we can perform the power-scaling sensitivity
+check directly on all the marginal posteriors of the parameters.
 
 ```{r}
 powerscale_sensitivity(
@@ -249,9 +249,9 @@ powerscale_sensitivity(
 )
 ```
 
-We see sensitivity in both measures and the prediction at the median
-temperature. Next, we selectively power-scale different priors by
-specifying the corresponding `tag` in `prior_selection`.
+We see sensitivity in both measures. Next, we selectively power-scale
+different priors by specifying the corresponding `tag` in
+`prior_selection`.
 
 As this model introduced a prior on the `sds` term, we can start
 there.
@@ -283,8 +283,8 @@ change in posterior mean and standard deviation.
 ```{r}
 #| message: false
 #| warning: false
-#| fig.width: 5
-#| fig.height: 5
+#| fig.width: 6
+#| fig.height: 10
 powerscale_plot_quantities(
   post_draws_spline,
   div_measure = NULL,
