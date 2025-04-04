@@ -1,14 +1,14 @@
 ---
 title: "Using priorsense with JAGS"
-output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Using priorsense with JAGS}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
 
 
-```{r, include = FALSE}
+```{r}
+#| include: false
 ggplot2::theme_set(bayesplot::theme_default(base_family = "sans"))
 
 knitr::opts_chunk$set(
@@ -21,6 +21,8 @@ options(priorsense.plot_help_text = FALSE)
 
 
 ```{r}
+#| message: false
+#| warning: false
 library(R2jags)
 library(posterior)
 library(priorsense)
@@ -47,6 +49,8 @@ model {
 Using `R2jags::jags()` to fit the model.
 
 ```{r}
+#| message: false
+#| warning: false
 model_con <- textConnection(model_string)
 data <- example_powerscale_model()$data
 
@@ -72,6 +76,10 @@ Then the `priorsense` functions will work as usual.
 powerscale_sensitivity(jags_fit)
 
 
-```{r, message=FALSE, warning = FALSE, fig.width = 6, fig.height = 4}
+```{r}
+#| message: false
+#| warning: false
+#| fig-width: 6
+#| fig-height: 4
 powerscale_plot_dens(jags_fit)
 ```
