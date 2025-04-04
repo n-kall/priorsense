@@ -58,84 +58,87 @@ cjs_dist <- function(x,
       (all(y_weights == 0) && !is.null(y_weights))
   ) {
     cjs <- NA
+  } else if (identical(x, y) && identical(x_weights, y_weights)) {
+    cjs <- 0
   } else {
-    cjs <- .cjs_dist(x, y, x_weights, y_weights, metric, ...)
-    if (unsigned) {
-      cjsm <- .cjs_dist(-x, -y, x_weights, y_weights, metric, ...)
-      cjs <- max(cjs, cjsm)
+      cjs <- .cjs_dist(x, y, x_weights, y_weights, metric, ...)
+      if (unsigned) {
+        cjsm <- .cjs_dist(-x, -y, x_weights, y_weights, metric, ...)
+        cjs <- max(cjs, cjsm)
+      }
     }
-  }
-  return(c(cjs = cjs))
-}
-
-.cjs_dist <- function(x, y, x_weights, y_weights, metric = TRUE, ...) {
-  # sort draws and weights
-  x_idx <- order(x)
-  x <- x[x_idx]
-  wp <- x_weights[x_idx]
-
-  y_idx <- order(y)
-  y <- y[y_idx]
-  wq <- y_weights[y_idx]
-
-  if (is.null(wp)) {
-    wp <- rep(1 / length(x), length(x))
-  }
-  if (is.null(wq)) {
-    wq <- rep(1 / length(y), length(y))
+    return(c(cjs = cjs))
   }
 
-  if (all(x == y)) {
-    # if all x and y are same, but y is a weighted version of x
-    # calculate weighted ecdf via cumsum of weights and use natural
-    # bins from stepfun
-    bins <- x[-length(x)]
-    binwidth <- diff(x)
-    px <- cumsum(wp / sum(wp))
-    px <- px[-length(px)]
-    qx <- cumsum(wq / sum(wq))
-    qx <- qx[-length(qx)]
-  } else {
-    # otherwise the draws are not the same (e.g. resampled) we use
-    # approximation with bins and ewcdf. There is a slight bias in
-    # this case which overestimates the cjs compared to weighted
-    # version
-    nbins <- max(length(x), length(y))
-    bins <- seq(
-      from = min(min(x), min(y)),
-      to = max(max(x), max(y)),
-      length.out = nbins
-    )
-    binwidth <- bins[2] - bins[1]
+  .cjs_dist <- function(x, y, x_weights, y_weights, metric = TRUE, ...) {
+    # sort draws and weights
+    x_idx <- order(x)
+    x <- x[x_idx]
+    wp <- x_weights[x_idx]
 
-    # calculate required weighted ecdfs
-    px <- ewcdf(x, wp)(bins)
-    qx <- ewcdf(y, wq)(bins)
+    y_idx <- order(y)
+    y <- y[y_idx]
+    wq <- y_weights[y_idx]
+
+    if (is.null(wp)) {
+      wp <- rep(1 / length(x), length(x))
+    }
+    if (is.null(wq)) {
+      wq <- rep(1 / length(y), length(y))
+    }
+
+    if (all(x == y)) {
+      # if all x and y are same, but y is a weighted version of x
+      # calculate weighted ecdf via cumsum of weights and use natural
+      # bins from stepfun
+      bins <- x[-length(x)]
+      binwidth <- diff(x)
+      px <- cumsum(wp / sum(wp))
+      px <- px[-length(px)]
+      qx <- cumsum(wq / sum(wq))
+      qx <- qx[-length(qx)]
+    } else {
+      # otherwise the draws are not the same (e.g. resampled) we use
+      # approximation with bins and ewcdf. There is a slight bias in
+      # this case which overestimates the cjs compared to weighted
+      # version
+      nbins <- max(length(x), length(y))
+      bins <- seq(
+        from = min(min(x), min(y)),
+        to = max(max(x), max(y)),
+        length.out = nbins
+      )
+      binwidth <- bins[2] - bins[1]
+
+      # calculate required weighted ecdfs
+      px <- ewcdf(x, wp)(bins)
+      qx <- ewcdf(y, wq)(bins)
+    }
+
+    # calculate integral of ecdfs
+    px_int <- sum(px * binwidth)
+    qx_int <- sum(qx * binwidth)
+
+    # calculate cjs
+    cjs_pq <-  sum(binwidth * (
+      px * (log(px, base = 2) -
+              log(0.5 * px + 0.5 * qx, base = 2)
+      )), na.rm = TRUE) + 0.5 / log(2) * (qx_int - px_int)
+
+    cjs_qp <- sum(binwidth * (
+      qx * (log(qx, base = 2) -
+              log(0.5 * qx + 0.5 * px, base = 2)
+      )), na.rm = TRUE) + 0.5 / log(2) * (px_int - qx_int)
+
+    # calculate upper bound
+    bound <- px_int + qx_int
+
+    # normalise with respect to upper bound
+    out <- (cjs_pq + cjs_qp) / bound
+
+    if (metric) {
+      out <- sqrt(out)
+    }
+    return(out)
   }
 
-  # calculate integral of ecdfs
-  px_int <- sum(px * binwidth)
-  qx_int <- sum(qx * binwidth)
-
-  # calculate cjs
-  cjs_pq <-  sum(binwidth * (
-    px * (log(px, base = 2) -
-            log(0.5 * px + 0.5 * qx, base = 2)
-    )), na.rm = TRUE) + 0.5 / log(2) * (qx_int - px_int)
-
-  cjs_qp <- sum(binwidth * (
-    qx * (log(qx, base = 2) -
-            log(0.5 * qx + 0.5 * px, base = 2)
-    )), na.rm = TRUE) + 0.5 / log(2) * (px_int - qx_int)
-
-  # calculate upper bound
-  bound <- px_int + qx_int
-
-  # normalise with respect to upper bound
-  out <- (cjs_pq + cjs_qp) / bound
-
-  if (metric) {
-    out <- sqrt(out)
-  }
-  return(out)
-}
