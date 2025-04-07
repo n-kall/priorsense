@@ -13,6 +13,7 @@
 ##' @keywords internal
 NULL
 
+##' @rdname weighted_quantities
 median_weighted <- function(x, weights, ...) {
 
   weighted_median <- matrixStats::weightedMedian(
@@ -23,7 +24,7 @@ median_weighted <- function(x, weights, ...) {
   return(c(median = weighted_median))
 }
 
-
+##' @rdname weighted_quantities
 mad_weighted <- function(x, weights, ...) {
 
   weighted_mad <- matrixStats::weightedMad(
@@ -34,7 +35,7 @@ mad_weighted <- function(x, weights, ...) {
   return(c(mad = weighted_mad))
 }
 
-
+##' @rdname weighted_quantities
 var_weighted <- function(x, weights, ...) {
 
   if (is.null(weights)) {
@@ -45,7 +46,7 @@ var_weighted <- function(x, weights, ...) {
   return(c(var = var))
 }
 
-
+##' @rdname weighted_quantities
 sd_weighted <- function(x, weights, ...) {
 
   if (is.null(weights)) {
@@ -56,7 +57,7 @@ sd_weighted <- function(x, weights, ...) {
   return(c(sd = sd))
 }
 
-
+##' @rdname weighted_quantities
 mean_weighted  <- function(x, weights, ...) {
 
   weighted_mean <- matrixStats::weightedMean(
@@ -86,9 +87,20 @@ weighted_summary_measures <- function(x) {
   return(funcs)
 }
 
-## Following is adapted from Andrey Akinshin (2023) "Weighted quantile estimators" arXiv:2304.07265 [stat.ME]
+##' quantile weighted
+##'
+##' @param x numeric vector of draws
+##' @param weights numeric vector of weights
+##' @param probs numeric vector specifying probabilities
+##' @param type type of quantile calculation
+##' @param ... unused
+##' @return numeric vector of quantiles
+##' @keywords internal
+##' @noRd
 quantile_weighted <- function(x, weights, probs = c(0.05, 0.95),
                               type = "7", ...) {
+  ## Following is adapted from Andrey Akinshin (2023) "Weighted
+  ## quantile estimators" arXiv:2304.07265 [stat.ME]
   if (type == "7") {
     # Weighted Type 7 quantile estimator
     cdf_fun <- function(n, p) {
@@ -115,7 +127,14 @@ quantile_weighted <- function(x, weights, probs = c(0.05, 0.95),
   names(quants) <- paste0("q", probs * 100)
   return(quants)
 }
-
+##' calculation of weighted quantile
+##' @param x numeric vector of draws
+##' @param probs numeric vector specifying probabilities
+##' @param cdf_fun cumulative distribution function
+##' @param weights numeric vector of weights
+##' @param type type of quantile calculation
+##' @param ... unused
+##' @return vector of quantiles
 .quantile_weighted <- function(x, probs, cdf_fun, weights) {
   # Weighted generic quantile estimator
   n <- length(x)

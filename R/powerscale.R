@@ -28,6 +28,8 @@
 ##'   power-scaling perturbations and details of the perturbation and
 ##'   estimation methods.
 ##' @template powerscale_references
+##' @srrstats {G2.0} Assertions are made on the lengths of inputs via the checkmate package
+##' @srrstats {G2.1} Assertions on types of inputs are made via the checkmate package
 ##' @examples
 ##' ex <- example_powerscale_model()
 ##'
@@ -70,6 +72,8 @@ powerscale.default <- function(x, component, alpha,
 
 
 ##' @rdname powerscale-overview
+##' @srrstats {G2.3b} tolower() used for component
+##' @srrstats {G2.3a} checkmate functions used to allow only specific argument values
 ##' @export
 powerscale.priorsense_data <- function(x,
                                        component,
@@ -85,6 +89,8 @@ powerscale.priorsense_data <- function(x,
                                        log_lik_name = "log_lik",
                                        ...) {
 
+  component <- tolower(component)
+  
   # input checks
   checkmate::assertNumber(alpha, lower = 0)
   checkmate::assertChoice(component, c("prior", "likelihood"))

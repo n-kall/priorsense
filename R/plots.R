@@ -24,6 +24,14 @@
 ##' powerscale_plot_dens(ex$draws)
 NULL
 
+##' prepare plot data
+##' @param x priorsense_data object
+##' @param variable character vector specifying variables to plot
+##' @param resample boolean flag specifying whether to resample
+##' @param ... unused
+##' @return data frame with data for plotting
+##' @keywords internal
+##' @noRd
 prepare_plot_data <- function(x, variable, resample, ...) {
 
   base_draws <- posterior::merge_chains(x$base_draws)
@@ -131,7 +139,15 @@ prepare_plot_data <- function(x, variable, resample, ...) {
 
   return(d)
 }
-
+##' prepare plot
+##' @param d data frame of data from plotting
+##' @param resample boolean flag specifying whether to resample
+##' @param variable character vector specifying variables to plot
+##' @param colors character vector specifying colors
+##' @param ... unused
+##' @return ggplot object
+##' @keywords internal
+##' @noRd
 prepare_plot <- function(d, resample, variable, colors, ...) {
   if (resample) {
     p <- ggplot2::ggplot(
@@ -756,7 +772,19 @@ powerscale_plot_quantities.powerscaled_sequence <- function(x, variable = NULL,
     )
 
 }
-
+##' power-scale summary plot
+##'
+##' internal function for powerscale_plot_quantities
+##' @param x data frame of plotting data
+##' @param variable character vector specifying variables to plot
+##' @param base_mcse base Monte Carlo standard error estimates
+##' @param help_text boolean flag indicating whether or not to show helper text
+##' @param colors character vector specifying colors
+##' @param variables_per_page number specifying how many variables to plot on each page
+##' @param ... unused
+##' @return ggplot object
+##' @keywords internal
+##' @noRd
 powerscale_summary_plot <- function(x,
                                     variable,
                                     base_mcse = NULL,

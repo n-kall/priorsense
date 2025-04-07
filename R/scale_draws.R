@@ -1,3 +1,9 @@
+##' scale draws
+##' @param draws draws object
+##' @param center boolean flag indicating whether or not to center draws
+##' @param scale boolean flag indicating whether or not to scale draws by standard deviation
+##' @param ... unused
+##' @return draws object with variables centered and/or scaled
 scale_draws <- function(draws, center = TRUE, scale = TRUE, ...) {
 
   draws <- posterior::as_draws_matrix(draws)

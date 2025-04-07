@@ -1,3 +1,6 @@
+##' find alpha value with pareto-k lower than threshold
+##' @param x object
+##' @param ... additional arguments passed to methods
 find_alpha_threshold <- function(x, ...) {
   UseMethod("find_alpha_threshold")
 

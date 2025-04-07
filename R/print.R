@@ -14,7 +14,7 @@ print.powerscaling_details <- function(x, ...) {
       "moment-matched\n",
       pareto_k_print,
       paste("pareto-kf",
-            round(pareto_kf, digits = 3),
+            round(pareto_kf, digits = 2),
             "\n")
     )
   }

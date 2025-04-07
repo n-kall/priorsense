@@ -14,6 +14,8 @@
 ##' @param ... arguments passed to methods
 ##' @return A `priorsense_data` object, which contains the data and
 ##'   functions to run sensitivity analyses.
+##' @srrstats {G2.8} the `priorsense_data` class is constructed to
+##'   contain all the required data for the primary functions in the package
 ##' @examples
 ##' x <- example_powerscale_model()
 ##' drw <- x$draws

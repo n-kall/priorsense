@@ -9,7 +9,10 @@
 #'   prior and likelihood sensitivity analysis of Bayesian
 #'   models. Currently it implements methods to determine the
 #'   sensitivity of the posterior to power-scaling perturbations of
-#'   the prior and likelihood.
+#'   the prior and likelihood and is the first implementation of the
+#'   method described in Kallioinen et al. (2023).
+#'
+#' @srrstats {G1.1} *Statistical Software should document whether the algorithm(s) it implements are:* - *The first implementation of a novel algorithm*; or - *The first implementation within **R** of an algorithm which has previously been implemented in other languages or contexts*; or - *An improvement on other implementations of similar algorithms in **R***. 
 #'
 #' @details The main diagnostic function provided by \pkg{priorsense}
 #'   is \code{\link{powerscale_sensitivity}}. Given a fitted model
@@ -19,6 +22,7 @@
 #'   the posterior, without needing to refit the model (using Pareto
 #'   smoothed importance sampling and importance weighted moment
 #'   matching; Vehtari et al. 2022, Paananen et al. 2021).
+#' @srrstats {G1.0} *Statistical Software should list at least one primary reference from published academic literature.* 
 #'
 #' In addition, visual diagnostics are available by first using
 #' \code{\link{powerscale_sequence}} to create a sequence of perturbed

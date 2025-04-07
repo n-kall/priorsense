@@ -6,6 +6,7 @@
 ##'   return. Currently "univariate_normal" and "eight_schools" are
 ##'   implemented.
 ##' @return List containing model code and corresponding data.
+##' @srrstats {G5.1} This function exposes two example data sets.
 ##' @examples
 ##' ex_normal <- example_powerscale_model(model = "univariate_normal")
 ##'
