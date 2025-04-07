@@ -60,8 +60,8 @@ aq <- na.omit(airquality)
 # Linear model
 
 We first fit a linear model, with some priors specified. For each of
-the priors we add a `tag` as these will be used for selectively
-power-scaling the priors.
+the specified priors we add a `tag`, which will be used later to
+select which priors are power-scaled.
 
 ```{r}
 #| message: false
@@ -78,7 +78,6 @@ fit_lin <- brm(
   ),
   seed = 123,
   refresh = 0,
-  open_progress = FALSE,
   silent = 2
 )
 ```
@@ -167,7 +166,7 @@ specifying the `tag` we defined when creating the priors.
 ```{r}
 powerscale_sensitivity(
   post_draws_lin,
-  prior_selection = "sigma"
+  prior_selection = c("sigma", "intercept")
 )
 ```
 
