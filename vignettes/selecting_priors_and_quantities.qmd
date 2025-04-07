@@ -9,24 +9,28 @@ vignette: >
 ```{r}
 #| include: false
 ggplot2::theme_set(bayesplot::theme_default(base_family = "sans"))
+options(brms.backend = "rstan")
 ```
 
 # Introduction
 
-This vignette presents a more in-depth example of using priorsense. It
-demonstrates two different but related concepts: (1) selecting
-different priors to power-scale, and (2) specifying which posterior
-quantities to check the sensitivity of.
+Priorsense is a package for prior and likelihood sensitivity
+checks. It can be used to detect prior-data conflict and weak
+likelihood.
+
+This vignette demonstrates two different but related concepts:
+(1) selecting different priors to power-scale, and (2) specifying
+which posterior quantities to check the sensitivity of.
 
 We will fit two different models on the same data set. The first is a
 linear model, which has easily interpretable parameters.
 
-The second includes splines and the parameters are not as easy to
-interpret. The specific model is not important, as the general
-principles apply for any model that has many parameters, correlated
-parameters or uninterpretable parameters. This includes other models
-with smooths, non-linear models, Gaussian processes and other more
-complex models.
+The second model includes splines and the spline coefficient
+parameters are not as easy to interpret. The specific model is not
+important, as the general principles apply for any model that has many
+parameters, correlated parameters or uninterpretable parameters. This
+includes other models with smooths, non-linear models, Gaussian
+processes and other more complex models.
 
 The features used here require `brms` version 2.22.11 or greater.
 
@@ -46,7 +50,6 @@ library(priorsense)
 library(posterior)
 
 options(priorsense.plot_help_text = FALSE)
-options(brms.backend = "rstan")
 ```
 
 We use the `airquality` data set, and fit a model predicting the
@@ -82,7 +85,12 @@ fit_lin <- brm(
 )
 ```
 
-We will work with the posterior draws, rather than the entire `brmsfit` object. This requires binding the `log_lik` to the draws object.
+Rather than working with the `brmsfit` object directly, we will first
+extract the posterior draws. We will work with `draws` object using
+the `posterior` package so derived quantities can be added more
+easily. The `brmsfit` does not include the `log_lik` evaluations,
+so we will add those to the draws object using `posterior::bind_draws`
+
 ```{r}
 post_draws_lin <- as_draws_df(fit_lin) |>
   bind_draws(log_lik_draws(fit_lin))
@@ -107,8 +115,8 @@ sensitivity of predictions and predictive performance measures.
 For predictions, we will focus on the predictions at the minimum,
 median and maximum temperatures from the data.
 
-For predictive performance measures, we will use Bayesian R2 and
-log-score.
+For predictive performance measures, we will use the in-sample
+Bayesian R2 and log-score.
 
 We first define a log-score function.
 
@@ -119,9 +127,9 @@ logscore <- function(x) {
 ```
 
 And then bind the draws of the predictions and measures to the
-posterior draws. For this we will use the `predictions_as_draws`
-helper function provided by `priorsense` which transforms predictions
-from `brms` to draws objects.
+posterior draws using `posterior::bind_draws()`. For this we will use
+the `predictions_as_draws` helper function provided by `priorsense`
+which transforms predictions from `brms` to draws objects.
 
 ```{r}
 post_draws_lin <- post_draws_lin |>
@@ -130,7 +138,8 @@ post_draws_lin <- post_draws_lin |>
       x = fit_lin,
       predict_fn = bayes_R2,
       prediction_names = "R2",
-      summary = FALSE)
+      summary = FALSE
+    )
   ) |>
   bind_draws(
     predictions_as_draws(
@@ -300,6 +309,9 @@ powerscale_plot_quantities(
 ```
 
 Although not extremely sensitive, there is a tendency for the
-predictive performance measures to decrease as the prior is
-strengthened, which indicates that we need to rethink the choice of
-prior for the `sds` parameter.
+in-sample predictive performance measures to decrease as the prior is
+strengthened. This is natural when strengthening the prior leads to
+less flexibility in the model. In this case larger `sds` implies more
+flexibility in the spline component of the model. If this is not what
+we are intending with the choice of prior on `sds`, we may want to
+rethink and change it.
