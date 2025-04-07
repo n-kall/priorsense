@@ -100,7 +100,7 @@
 </div>
 </section><section class="section level2"><h2 id="linear-model">Linear model<a class="anchor" aria-label="anchor" href="#linear-model"></a>
 </h2>
-<p>We first fit a linear model, with some priors specified. For each of the priors we add a <code>tag</code> as these will be used for selectively power-scaling the priors.</p>
+<p>We first fit a linear model, with some priors specified. For each of the specified priors we add a <code>tag</code>, which will be used later to select which priors are power-scaled.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_lin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://paulbuerkner.com/brms/reference/brm.html" class="external-link">brm</a></span><span class="op">(</span></span>
@@ -114,7 +114,6 @@
 <span>  <span class="op">)</span>,</span>
 <span>  seed <span class="op">=</span> <span class="fl">123</span>,</span>
 <span>  refresh <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>  open_progress <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  silent <span class="op">=</span> <span class="fl">2</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -135,11 +134,11 @@
 Prior selection: all priors
 Likelihood selection: all data
 
-    variable  prior likelihood                     diagnosis
- b_Intercept 0.0065      0.091                             -
-      b_Temp 0.0065      0.093                             -
-       sigma 0.0622      0.083 potential prior-data conflict
-   Intercept 0.0054      0.077                             -</code></pre>
+    variable prior likelihood                     diagnosis
+ b_Intercept 0.006      0.091                             -
+      b_Temp 0.006      0.093                             -
+       sigma 0.062      0.083 potential prior-data conflict
+   Intercept 0.005      0.077                             -</code></pre>
 </div>
 </div>
 <p>This indicates that when we power-scale all the priors, the posterior of sigma is changing.</p>
@@ -188,16 +187,16 @@ Likelihood selection: all data
 Prior selection: all priors
 Likelihood selection: all data
 
-        variable  prior likelihood                     diagnosis
-     b_Intercept 0.0065      0.091                             -
-          b_Temp 0.0065      0.093                             -
-           sigma 0.0622      0.083 potential prior-data conflict
-       Intercept 0.0054      0.077                             -
-              R2 0.0050      0.120                             -
-        logscore 0.0093      0.430                             -
-    pred_minTemp 0.0064      0.088                             -
- pred_medianTemp 0.0057      0.076                             -
-    pred_maxTemp 0.0067      0.090                             -</code></pre>
+        variable prior likelihood                     diagnosis
+     b_Intercept 0.006      0.091                             -
+          b_Temp 0.006      0.093                             -
+           sigma 0.062      0.083 potential prior-data conflict
+       Intercept 0.005      0.077                             -
+              R2 0.005      0.120                             -
+        logscore 0.009      0.430                             -
+    pred_minTemp 0.006      0.088                             -
+ pred_medianTemp 0.006      0.076                             -
+    pred_maxTemp 0.007      0.090                             -</code></pre>
 </div>
 </div>
 <p>In this case, these predictive metrics do not appear to be sensitive to power-scaling the prior. If we are focused on prediction, we might not be concerned about the potential prior-data conflict for the sigma parameter. However, as the model is simple and sigma is interpretable we can continue investigation.</p>
@@ -206,23 +205,23 @@ Likelihood selection: all data
 <div class="sourceCode cell-code" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/powerscale-sensitivity.html">powerscale_sensitivity</a></span><span class="op">(</span></span>
 <span>  <span class="va">post_draws_lin</span>,</span>
-<span>  prior_selection <span class="op">=</span> <span class="st">"sigma"</span></span>
+<span>  prior_selection <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sigma"</span>, <span class="st">"intercept"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Sensitivity based on cjs_dist
-Prior selection: sigma
+Prior selection: sigma, intercept
 Likelihood selection: all data
 
-        variable  prior likelihood                     diagnosis
-     b_Intercept 0.0042      0.091                             -
-          b_Temp 0.0043      0.093                             -
-           sigma 0.0622      0.083 potential prior-data conflict
-       Intercept 0.0046      0.077                             -
-              R2 0.0056      0.120                             -
-        logscore 0.0092      0.430                             -
-    pred_minTemp 0.0046      0.088                             -
- pred_medianTemp 0.0047      0.076                             -
-    pred_maxTemp 0.0043      0.090                             -</code></pre>
+        variable prior likelihood                     diagnosis
+     b_Intercept 0.004      0.091                             -
+          b_Temp 0.004      0.093                             -
+           sigma 0.062      0.083 potential prior-data conflict
+       Intercept 0.005      0.077                             -
+              R2 0.006      0.120                             -
+        logscore 0.009      0.430                             -
+    pred_minTemp 0.004      0.088                             -
+ pred_medianTemp 0.006      0.076                             -
+    pred_maxTemp 0.004      0.090                             -</code></pre>
 </div>
 </div>
 <p>And we can visualise the conflict.</p>
@@ -258,7 +257,6 @@ Likelihood selection: all data
 <span>  <span class="op">)</span>,</span>
 <span>  seed <span class="op">=</span> <span class="fl">123</span>,</span>
 <span>  refresh <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>  open_progress <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  silent <span class="op">=</span> <span class="fl">2</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -339,14 +337,14 @@ Likelihood selection: all data
 <span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Sensitivity based on cjs_dist
-Prior selection: intercept
+Prior selection: intercept, sigma, b
 Likelihood selection: all data
 
-     variable  prior likelihood diagnosis
-           R2 0.0066      0.242         -
-     logscore 0.0078      0.422         -
- pred_minTemp 0.0026      0.062         -
- pred_maxTemp 0.0026      0.130         -</code></pre>
+     variable prior likelihood diagnosis
+           R2 0.007      0.242         -
+     logscore 0.008      0.422         -
+ pred_minTemp 0.003      0.062         -
+ pred_maxTemp 0.003      0.130         -</code></pre>
 </div>
 </div>
 <p>We can visualise the effect of power-scaling the <code>sds</code> prior on the posterior <code>R2</code>, <code>logscore</code> and the predictions. Here we visualise the change in posterior mean and standard deviation.</p>
