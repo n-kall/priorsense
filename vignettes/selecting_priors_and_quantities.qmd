@@ -216,7 +216,6 @@ fit_spline <- brm(
   ),
   seed = 123,
   refresh = 0,
-  open_progress = FALSE,
   silent = 2
 )
 ```
