@@ -1,4 +1,4 @@
-## Contributing
+# Contributing
 
 Contributions are welcome! If you find an bug or have an idea for a feature, open an issue. If you are able to fix an issue, fork the repository and make a pull request to the `development` branch.
 
