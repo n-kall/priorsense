@@ -904,7 +904,7 @@ powerscale_summary_plot <- function(x,
   )
   }
 
-  if (!is.null(base_mcse)) {
+  if (!is.null(sub_mcse)) {
 
     p <- p +
       ggplot2::scale_linetype_manual(values = "dashed", name = NULL) +
@@ -913,7 +913,7 @@ powerscale_summary_plot <- function(x,
           yintercept = .data$mcse_min,
           linetype = "+/-2MCSE"
         ),
-        data = base_mcse,
+        data = sub_mcse,
         color = "black"
       ) +
       ggplot2::geom_hline(
@@ -921,7 +921,7 @@ powerscale_summary_plot <- function(x,
           yintercept = .data$mcse_max,
           linetype = "+/-2MCSE"
         ),
-        data = base_mcse,
+        data = sub_mcse,
         color = "black"
       )
   }
