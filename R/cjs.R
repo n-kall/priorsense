@@ -30,7 +30,7 @@
 ##'   and Knowledge Discovery in Databases.  ECML PKDD 2015. Lecture
 ##'   Notes in Computer Science, vol 9285.  Springer, Cham.
 ##'   \code{doi:10.1007/978-3-319-23525-7_11}
-##' #' @srrstats {G2.0a} Documentation specifies weights vector must be same length as draws
+##' @srrstats {G2.0a} Documentation specifies weights vector must be same length as draws
 ##' @srrstats {G2.13} missing values not allowed and result in error
 ##' @srrstats {G2.16} Inf, -Inf and NaN result in error
 ##' @srrstats {G2.2} Input is checked that it is numeric vector and

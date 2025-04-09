@@ -67,5 +67,4 @@ Costa V., Gama J., Jorge A., Soares C. (eds) Machine Learning
 and Knowledge Discovery in Databases.  ECML PKDD 2015. Lecture
 Notes in Computer Science, vol 9285.  Springer, Cham.
 \code{doi:10.1007/978-3-319-23525-7_11}
-#' @srrstatsTODO {G2.0a} Documentation specifies weights vector must be same length as draws
 }

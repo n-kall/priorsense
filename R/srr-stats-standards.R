@@ -34,8 +34,11 @@ NULL
 #' @srrstatsNA {G2.9} posterior package is used for type conversion of
 #'   draws objects, and has warnings for loss of information.
 #' @srrstatsNA {G2.11} The `posterior` package is used to handle tabular data.
+#' @srrstatsNA {G2.14b, G2.14c} Missing values result in error, or are handled by `posterior` package.
 #' @srrstatsNA {G4.0} No files are written by priorsense.
+#' @srrstatsNA {G5.4} priorsense is the first implementation.
 #' @srrstatsNA {G5.4b} priorsense is the first implementation.
+#' @srrstatsNA {G5.4c} priorsense is the first implementation.
 #' @srrstatsNA {G5.10, G5.12} There are no extended tests in priorsense.
 #' @srrstatsNA {G5.11} No downloads are required for tests.
 #' @srrstatsNA {G5.11a} No downloads are required for tests.

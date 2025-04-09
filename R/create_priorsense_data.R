@@ -14,6 +14,7 @@
 ##' @param ... arguments passed to methods
 ##' @return A `priorsense_data` object, which contains the data and
 ##'   functions to run sensitivity analyses.
+##' @srrstats {G2.1, G2.1a} Assertions on inputs and types document
 ##' @srrstats {G2.4} Input coercion
 ##' @srrstats {G2.4b} Input coercion with `as.numeric()`
 ##' @srrstats {G2.4c} Input coercion with `as.character()`
@@ -89,9 +90,6 @@ create_priorsense_data.default <- function(x,
   checkmate::assert_false(checkmate::anyMissing(log_prior))
   checkmate::assert_false(checkmate::anyMissing(log_lik))
 
-#  checkmate::assert_false(is_constant(log_prior))
-#  checkmate::assert_false(is_constant(log_lik))
-  
   psd <- list(
     draws = remove_unwanted_vars(x),
     fit = fit,
