@@ -67,14 +67,13 @@ powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
   checkmate::assertNumber(lower_alpha)
   checkmate::assertNumber(upper_alpha)
   checkmate::assertNumber(length)
-  checkmate::assertLogical(moment_match, len = 1)
-  checkmate::assertLogical(symmetric, len = 1)
+  checkmate::assertFlag(moment_match)
+  checkmate::assertFlag(symmetric)
   checkmate::assertNumber(k_threshold, null.ok = TRUE)
-  checkmate::assertLogical(resample, len = 1)
+  checkmate::assertFlag(resample)
   checkmate::assertChoice(transform, c("whiten", "scale", "identity"), null.ok = TRUE)
   checkmate::assertFunction(prediction, null.ok = TRUE)
   checkmate::assertCharacter(variable, null.ok = TRUE)
-
 
   # adapt alpha range to ensure pareto-k < theshold
   if (auto_alpha_range) {

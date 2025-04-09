@@ -11,11 +11,20 @@
 ##' @return Named vector of calculated quantity.
 ##' @name weighted_quantities
 ##' @keywords internal
+##' @srrstats {G2.14, G2.14a, G2.15} weighted quantities specified to error on missing data, as this should not occur
+##' @srrstats {G2.6} Inputs to these internal functions are 1-d draws objects
+##' @noRd
 NULL
 
-##' @rdname weighted_quantities
 median_weighted <- function(x, weights, ...) {
 
+  checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE)
+  
+  checkmate::assert_numeric(weights, len = length(x), null.ok = TRUE, any.missing = FALSE)
+
+  x <- as.numeric(x)
+  weights <- as.numeric(weights)
+  
   weighted_median <- matrixStats::weightedMedian(
     x = x,
     w = weights
@@ -24,9 +33,15 @@ median_weighted <- function(x, weights, ...) {
   return(c(median = weighted_median))
 }
 
-##' @rdname weighted_quantities
 mad_weighted <- function(x, weights, ...) {
 
+  checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE)
+  
+  checkmate::assert_numeric(weights, len = length(x), null.ok = TRUE, any.missing = FALSE)
+
+  x <- as.numeric(x)
+  weights <- as.numeric(weights)
+  
   weighted_mad <- matrixStats::weightedMad(
     x = x,
     w = weights
@@ -35,9 +50,15 @@ mad_weighted <- function(x, weights, ...) {
   return(c(mad = weighted_mad))
 }
 
-##' @rdname weighted_quantities
 var_weighted <- function(x, weights, ...) {
 
+  checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE)
+  
+  checkmate::assert_numeric(weights, len = length(x), null.ok = TRUE, any.missing = FALSE)
+
+  x <- as.numeric(x)
+  weights <- as.numeric(weights)
+  
   if (is.null(weights)) {
     var <- var(x)
   } else {
@@ -46,9 +67,15 @@ var_weighted <- function(x, weights, ...) {
   return(c(var = var))
 }
 
-##' @rdname weighted_quantities
 sd_weighted <- function(x, weights, ...) {
 
+  checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE)
+  
+  checkmate::assert_numeric(weights, len = length(x), null.ok = TRUE, any.missing = FALSE)
+
+  x <- as.numeric(x)
+  weights <- as.numeric(weights)
+  
   if (is.null(weights)) {
     sd <- sd(x)
   } else {
@@ -57,9 +84,15 @@ sd_weighted <- function(x, weights, ...) {
   return(c(sd = sd))
 }
 
-##' @rdname weighted_quantities
 mean_weighted  <- function(x, weights, ...) {
 
+  checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE)
+  
+  checkmate::assert_numeric(weights, len = length(x), null.ok = TRUE, any.missing = FALSE)
+
+  x <- as.numeric(x)
+  weights <- as.numeric(weights)
+  
   weighted_mean <- matrixStats::weightedMean(
     x = x,
     w = weights
@@ -76,6 +109,7 @@ mean_weighted  <- function(x, weights, ...) {
 ##' @param x draws object to extract weights from
 ##' @return Vector of formulas for use with `posterior::summarise_draws()`
 ##' @keywords internal
+##' @noRd
 weighted_summary_measures <- function(x) {
   funcs <- c(
     stats::as.formula(paste0("~mean_weighted(.x, weights(", x, "))")),
@@ -87,18 +121,16 @@ weighted_summary_measures <- function(x) {
   return(funcs)
 }
 
-##' quantile weighted
-##'
-##' @param x numeric vector of draws
-##' @param weights numeric vector of weights
-##' @param probs numeric vector specifying probabilities
-##' @param type type of quantile calculation
-##' @param ... unused
-##' @return numeric vector of quantiles
-##' @keywords internal
-##' @noRd
 quantile_weighted <- function(x, weights, probs = c(0.05, 0.95),
                               type = "7", ...) {
+
+  checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE)
+  checkmate::assert_numeric(weights, len = length(x), null.ok = TRUE, any.missing = FALSE)
+
+  checkmate::assert_numeric(probs, null.ok = FALSE, any.missing = FALSE)
+  
+  checkmate::assert_choice(type, c("7", "hd"), null.ok = FALSE)
+  
   ## Following is adapted from Andrey Akinshin (2023) "Weighted
   ## quantile estimators" arXiv:2304.07265 [stat.ME]
   if (type == "7") {
@@ -135,6 +167,7 @@ quantile_weighted <- function(x, weights, probs = c(0.05, 0.95),
 ##' @param type type of quantile calculation
 ##' @param ... unused
 ##' @return vector of quantiles
+##' @noRd
 .quantile_weighted <- function(x, probs, cdf_fun, weights) {
   # Weighted generic quantile estimator
   n <- length(x)
@@ -151,12 +184,12 @@ quantile_weighted <- function(x, weights, probs = c(0.05, 0.95),
 
   vapply(probs,
          function(p) {
-          cdf <- cdf_fun(nw, p)
-          q <- cdf(cdf_probs)
-          w <- utils::tail(q, -1) - utils::head(q, -1)
-          sum(w * x)
-  },
-  FUN.VALUE = c(1))
+           cdf <- cdf_fun(nw, p)
+           q <- cdf(cdf_probs)
+           w <- utils::tail(q, -1) - utils::head(q, -1)
+           sum(w * x)
+         },
+         FUN.VALUE = c(1))
 }
 
 quantile2_weighted <- quantile_weighted

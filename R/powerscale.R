@@ -72,8 +72,15 @@ powerscale.default <- function(x, component, alpha,
 
 
 ##' @rdname powerscale-overview
-##' @srrstats {G2.3b} tolower() used for component
+##' @srrstats {G2.3}
 ##' @srrstats {G2.3a} checkmate functions used to allow only specific argument values
+##' @srrstats {G2.3b} tolower() used for component
+##' @srrstats {G2.4} Input coercion
+##' @srrstats {G2.4b} Input coercion with `as.numeric()`
+##' @srrstats {G2.4c} Input coercion with `as.character()`
+##' @srrstats {G2.4e} Input coercion
+##' @srrstats {BS2.6} alpha is checked to be greater than 0
+##' @srrstats {BS5.3, BS5.5} The pareto-k value is a diagnostic indicating the reliability of the estimate, and is returned
 ##' @export
 powerscale.priorsense_data <- function(x,
                                        component,
@@ -89,15 +96,35 @@ powerscale.priorsense_data <- function(x,
                                        log_lik_name = "log_lik",
                                        ...) {
 
-  component <- tolower(component)
+  # input coercion
+  component <- as.character(tolower(component))
+  alpha <- as.numeric(alpha)
+  moment_match <- as.logical(moment_match)
+  if (!is.null(k_threshold)) {
+    k_threshold <- as.numeric(k_threshold)
+  }
+  resample <- as.logical(resample)
+  if (!is.null(transform)) {
+    transform <- as.character(transform)
+  }
+  if (!is.null(prediction)) {
+    prediction <- as.function(prediction)
+  }
+  if (!is.null(variable)) {
+    variable <- as.character(variable)
+  }
   
+  log_prior_name <- as.character(log_prior_name)
+  log_lik_name <- as.character(log_lik_name)
+
+
   # input checks
   checkmate::assertNumber(alpha, lower = 0)
   checkmate::assertChoice(component, c("prior", "likelihood"))
-  checkmate::assertLogical(moment_match, len = 1)
+  checkmate::assertFlag(moment_match)
   checkmate::assertNumber(k_threshold, null.ok = TRUE)
   checkmate::assertChoice(transform, c("whiten", "scale", "identity"), null.ok = TRUE)
-  checkmate::assertLogical(resample, len = 1)
+  checkmate::assertFlag(resample)
   checkmate::assertCharacter(transform, null.ok = TRUE, len = 1)
   checkmate::assertFunction(prediction, null.ok = TRUE)
   checkmate::assertCharacter(variable, null.ok = TRUE)
@@ -199,7 +226,11 @@ powerscale.priorsense_data <- function(x,
     log_ratios <- scaled_log_ratio(
       component_draws = log_comp_draws,
       alpha = alpha,
-    )
+      )
+
+    if (is_constant(log_ratios)) {
+      stop2("Log prior/log likelihood is constant. Power-scaling does not work for flat (improper) distributions.")
+    }
 
     if (moment_match) {
 
@@ -247,14 +278,14 @@ powerscale.priorsense_data <- function(x,
     } else {
 
       # no moment matching
-      smoothed_log_ratios <- posterior::pareto_smooth(
+      smoothed_log_ratios <- suppressWarnings(posterior::pareto_smooth(
         log_ratios,
         r_eff = NULL,
         return_k = TRUE,
         extra_diags = TRUE,
         are_log_weights = TRUE,
         verbose = FALSE
-      )
+      ))
 
       smoothed_log_ratios$x <- as.numeric(smoothed_log_ratios$x)
     }

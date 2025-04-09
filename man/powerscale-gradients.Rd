@@ -41,9 +41,9 @@ powerscale_gradients(x, ...)
 
 \item{...}{Further arguments passed to functions.}
 
-\item{log_prior_name}{Character indicating name of the variable storing the log prior evaluations}
+\item{log_prior_name}{Character (case sensitivte) specifying name of the variable storing the log prior evaluations}
 
-\item{log_lik_name}{Character indicating name of the variable storing the log likelihood evaluations}
+\item{log_lik_name}{Character (case sensitive) specifying name of the variable storing the log likelihood evaluations}
 
 \item{variable}{Variables to compute sensitivity of. If NULL
 (default) sensitivity is computed for all variables.}
@@ -60,8 +60,9 @@ time.}
 \item{upper_alpha}{upper power to scale component by, should be >
 1 (default is 1.1).}
 
-\item{div_measure}{The divergence measure to use. The
-following methods are implemented:
+\item{div_measure}{Character (case sensitive) specifying the
+divergence measure to use. The following methods are
+implemented:
 \itemize{
 \item \code{"cjs_dist"}: Cumulative Jensen-Shannon distance. Default
 method. See function \code{cjs_dist} for more details.

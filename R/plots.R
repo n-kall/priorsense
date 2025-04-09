@@ -17,6 +17,9 @@
 ##'   \item{`powerscale_plot_quantities()`}{ Plot of posterior
 ##'   quantities with respect to power-scaling.} }
 ##'
+##' @srrstats {BS6.3} plots for posterior estimates
+##' @srrstats {BS6.1} different plots are available, so a default plot
+##'   method is not deemed appropriate
 ##' @importFrom rlang .data
 ##' @examples
 ##' ex <- example_powerscale_model()

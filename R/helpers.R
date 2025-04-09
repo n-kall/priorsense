@@ -77,3 +77,13 @@ require_package <- function(package, version = NULL, message = NULL) {
 get_powerscaling_details <- function(x) {
   attr(x, "powerscaling")
 }
+
+##' is constant
+##' @param x numeric vector to check for constant
+##' @param tol tolerance
+##' @keywords internal
+##' @noRd
+is_constant <- function(x, tol = .Machine$double.eps) {
+  x <- posterior::as_draws_array(x)
+  abs(max(x) - min(x)) < tol
+}

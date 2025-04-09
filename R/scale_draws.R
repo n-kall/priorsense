@@ -4,6 +4,7 @@
 ##' @param scale boolean flag indicating whether or not to scale draws by standard deviation
 ##' @param ... unused
 ##' @return draws object with variables centered and/or scaled
+##' @noRd
 scale_draws <- function(draws, center = TRUE, scale = TRUE, ...) {
 
   draws <- posterior::as_draws_matrix(draws)

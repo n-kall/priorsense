@@ -10,23 +10,31 @@ test_that("priorsense_data is created", {
 }
 )
 
-test_that("powerscale returns powerscaled_draws", {
-  expect_s3_class(
-    powerscale(
+#' @srrstats {G5.3} Missing values tested
+test_that("powerscale returns powerscaled_draws with no missing values", {
+  psp <- powerscale(
       x = univariate_normal_draws,
       component = "prior",
       alpha = 0.8
-    ),
+    )
+  expect_s3_class(
+    psp,
     "powerscaled_draws"
   )
-  expect_s3_class(
-    powerscale(
+  expect_false(checkmate::anyMissing(psp))
+
+  psl <- powerscale(
       x = univariate_normal_draws,
       component = "likelihood",
       alpha = 0.8
-    ),
+  )
+  
+  expect_s3_class(
+    psl,
     "powerscaled_draws"
   )
+  expect_false(checkmate::anyMissing(psp))
+
 }
 )
 
@@ -161,5 +169,46 @@ test_that("powerscale_sequence gives symmetric range", {
     abs(log(pss$alphas[length(pss$alphas)]))
   )
   
+}
+)
+
+#' @srrstats {G5.9a} Adding trivial noise to data does not meaningfully change results*
+test_that("small variation in draws does not affect result", {
+
+  adjusted_draws <- univariate_normal_draws + .Machine$double.eps
+
+  orig_ps <- powerscale_sensitivity(univariate_normal_draws)
+  adjusted_ps <- powerscale_sensitivity(adjusted_draws)
+
+  expect_equal(orig_ps, adjusted_ps)
+}
+)
+
+#' @srrstats {G5.8, G5.8d} test edge case out of scope
+test_that("powerscaling with alpha < 0 is an error", {
+  expect_error(powerscale(univariate_normal_draws,
+             component = "prior",
+             alpha = -1))
+}
+)
+
+#' @srrstats {G5.8, G5.8a} test edge case zero-length data
+test_that("powerscaling zero draws is an error", {
+  zero_draws <- data.frame(mu = numeric(), log_lik = numeric(), lprior = numeric())
+  expect_error(powerscale(zero_draws, component = "prior", alpha = 0.1))
+}
+)
+
+#' @srrstats {G5.8b} constant weights unsupported
+test_that("powerscaling with constant loglik is an error", {
+  const_draws <- data.frame(mu = 1:100, log_lik = rep(1, times = 100), lprior = 1:100)
+  expect_error(powerscale(const_draws, component = "likelihood", alpha = 0.1))
+}
+)
+
+#' @srrstats {G5.8, G5.8c} test edge case with NAs
+test_that("powerscaling with NA weights is an error", {
+  na_draws <- data.frame(mu = 1:100, log_lik = rep(NA, times = 100), lprior = 1:100)
+  expect_error(powerscale(na_draws, component = "likelihood", alpha = 0.1))
 }
 )

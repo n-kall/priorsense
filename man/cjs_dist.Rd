@@ -15,19 +15,22 @@ cjs_dist(
 )
 }
 \arguments{
-\item{x}{numeric vector of samples from first distribution}
+\item{x}{numeric vector of draws from first distribution}
 
-\item{y}{numeric vector of samples from second distribution}
+\item{y}{numeric vector of draws from second distribution}
 
-\item{x_weights}{numeric vector of weights of first distribution}
+\item{x_weights}{numeric vector (same length as x) of weights for
+the draws of the first distribution}
 
-\item{y_weights}{numeric vector of weights of second distribution}
+\item{y_weights}{numeric vector (same length as y) of weights for
+the draws of the second distribution}
 
-\item{metric}{Logical; if TRUE, return square-root of CJS}
+\item{metric}{Logical; if TRUE, return square-root of CJS. Default
+is TRUE}
 
 \item{unsigned}{Logical; if TRUE then return max of CJS(P(x) ||
 Q(x)) and CJS(P(-x) || Q(-x)). This ensures invariance to
-transformations such as PCA.}
+transformations such as PCA. Default is TRUE}
 
 \item{...}{unused}
 }
@@ -64,4 +67,5 @@ Costa V., Gama J., Jorge A., Soares C. (eds) Machine Learning
 and Knowledge Discovery in Databases.  ECML PKDD 2015. Lecture
 Notes in Computer Science, vol 9285.  Springer, Cham.
 \code{doi:10.1007/978-3-319-23525-7_11}
+#' @srrstatsTODO {G2.0a} Documentation specifies weights vector must be same length as draws
 }

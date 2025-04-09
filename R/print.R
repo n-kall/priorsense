@@ -1,3 +1,4 @@
+##' @srrstats {BS6.0} print method implemented
 ##' @export
 print.powerscaling_details <- function(x, ...) {
 
