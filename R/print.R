@@ -1,3 +1,4 @@
+##' @srrstats {BS6.0} print method implemented
 ##' @export
 print.powerscaling_details <- function(x, ...) {
 
@@ -14,7 +15,7 @@ print.powerscaling_details <- function(x, ...) {
       "moment-matched\n",
       pareto_k_print,
       paste("pareto-kf",
-            round(pareto_kf, digits = 3),
+            round(pareto_kf, digits = 2),
             "\n")
     )
   }

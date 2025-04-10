@@ -68,8 +68,9 @@ powerscale_sensitivity(x, ...)
 
 \item{upper_alpha}{Upper alpha value for gradient calculation.}
 
-\item{div_measure}{The divergence measure to use. The
-following methods are implemented:
+\item{div_measure}{Character (case sensitive) specifying the
+divergence measure to use. The following methods are
+implemented:
 \itemize{
 \item \code{"cjs_dist"}: Cumulative Jensen-Shannon distance. Default
 method. See function \code{cjs_dist} for more details.
@@ -120,9 +121,9 @@ partitions. If this is a character, then it is appended to the
 variable name (specified by \code{log_lik_name}) with an \verb{_}
 between them. If numeric, then it is appended inside \verb{[]}.}
 
-\item{log_prior_name}{Character indicating name of the variable storing the log prior evaluations}
+\item{log_prior_name}{Character (case sensitivte) specifying name of the variable storing the log prior evaluations}
 
-\item{log_lik_name}{Character indicating name of the variable storing the log likelihood evaluations}
+\item{log_lik_name}{Character (case sensitive) specifying name of the variable storing the log likelihood evaluations}
 
 \item{num_args}{(named list) Optional arguments passed to
 \link[tibble:num]{num()} for pretty printing of summaries. Can be
