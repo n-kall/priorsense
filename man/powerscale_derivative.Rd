@@ -7,9 +7,9 @@
 powerscale_derivative(x, log_component, quantity = "mean", ...)
 }
 \arguments{
-\item{x}{Posterior draws.}
+\item{x}{draws object of posterior draws}
 
-\item{log_component}{Log likelihood or log prior values.}
+\item{log_component}{numeric vector of log likelihood or log prior values}
 
 \item{quantity}{Character specifying quantity of interest (default
 is "mean"). Options are "mean", "sd", "var".}

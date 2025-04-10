@@ -3,8 +3,8 @@
 ##' Calculate the analytical derivative of a quantity with respect to
 ##' power-scaling prior or likelihood.
 ##'
-##' @param x Posterior draws.
-##' @param log_component Log likelihood or log prior values.
+##' @param x draws object of posterior draws
+##' @param log_component numeric vector of log likelihood or log prior values
 ##' @param quantity Character specifying quantity of interest (default
 ##'   is "mean"). Options are "mean", "sd", "var".
 ##' @param ... unused

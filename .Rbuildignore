@@ -26,3 +26,6 @@
 ^vignettes/selecting_priors_and_quantities.qmd$
 ^vignettes/quantity_of_interest.qmd$
 ^vignettes/sensitivity_diagnostic.qmd$
+^vignettes/selecting_priors_and_quantities_files$
+^vignettes/quantity_of_interest_files$
+^vignettes/sensitivity_diagnostic_files$

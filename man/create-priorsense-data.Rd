@@ -34,25 +34,25 @@ create_priorsense_data(x, ...)
 \method{create_priorsense_data}{rjags}(x, ...)
 }
 \arguments{
-\item{x}{an object for which the method is defined}
+\item{x}{an object for which the method is defined or an object coercible to a \code{posterior::draws} object}
 
 \item{...}{arguments passed to methods}
 
 \item{fit}{a model fit object (only used if x is not a fit object)}
 
-\item{log_prior_fn}{function to derive log prior from object}
+\item{log_prior_fn}{function to derive log prior from x or fit (if not NULL)}
 
-\item{log_lik_fn}{function to derive log likelihood from object}
+\item{log_lik_fn}{function to derive log likelihood from x or fit (if not NULL)}
 
-\item{log_prior}{draws from log prior}
+\item{log_prior}{draws object from log prior, must be numeric and not include NA, NaN, Inf, -Inf or be constant}
 
-\item{log_lik}{draws from log likelihood}
+\item{log_lik}{draws from log likelihood, must be numeric and not include NA, NaN, Inf, -Inf or be constant}
 
 \item{log_ratio_fn}{function for moment matching}
 
-\item{log_prior_name}{Character indicating name of the variable storing the log prior evaluations}
+\item{log_prior_name}{Character (case sensitivte) specifying name of the variable storing the log prior evaluations}
 
-\item{log_lik_name}{Character indicating name of the variable storing the log likelihood evaluations}
+\item{log_lik_name}{Character (case sensitive) specifying name of the variable storing the log likelihood evaluations}
 }
 \value{
 A \code{priorsense_data} object, which contains the data and

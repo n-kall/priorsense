@@ -28,3 +28,14 @@ test_that("cjs returns zero for same x and y", {
     c(cjs = 0)
   )
 })
+
+#' @srrstats {G5.8, G5.8b} complex input should give error
+test_that("cjs errors with complex and character input", {
+  expect_error(
+    cjs_dist(complex(1, 1, 1), complex(1, 1, 1))
+  )
+  expect_error(
+    cjs_dist(c("a", "a", "a"), c("b", "b", "b"))
+  )
+}
+)

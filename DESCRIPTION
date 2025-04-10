@@ -11,7 +11,7 @@ Description: Provides functions for prior and likelihood sensitivity analysis in
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
-Roxygen: list(markdown = TRUE)
+Roxygen: list(markdown = TRUE, roclets = c ("namespace", "rd", "srr::srr_stats_roclet"))
 RoxygenNote: 7.3.2
 Imports:
     checkmate (>= 2.3.1),

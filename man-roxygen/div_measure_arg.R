@@ -1,5 +1,7 @@
-##' @param div_measure The divergence measure to use. The
-##'   following methods are implemented:
+##' @srrstats {G2.3b} case sensitive is indicated
+##' @param div_measure Character (case sensitive) specifying the
+##'   divergence measure to use. The following methods are
+##'   implemented:
 ##'
 ##' * `"cjs_dist"`: Cumulative Jensen-Shannon distance. Default
 ##'   method. See function `cjs_dist` for more details.

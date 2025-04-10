@@ -33,6 +33,8 @@ test_that("powerscale_derivative gives 0 for uniform log_component", {
   )
 })
 
+
+#' @srrstats {G5.2a, G5.2b} warning messages checked here
 test_that("powerscale_derivative gives warning if not using mean, sd or var", {
   expect_warning(
     priorsense::powerscale_derivative(

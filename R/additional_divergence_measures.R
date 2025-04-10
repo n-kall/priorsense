@@ -1,10 +1,14 @@
 ##' Multivariate Kullback-Leibler divergence
 ##'
 ##' @param weights importance weights (unnormalized)
-##' @param ... unuse
+##' @param ... unused
 ##' @noRd
+##' @srrstats {G2.13} checks for missing data as part of initial pre-processing prior to passing data to analytic algorithms
+##' @srrstats {G2.2} Input is checked that it is numeric vector and excludes matrix
 mv_kl_div <- function(weights, ...) {
 
+  checkmate::assert_numeric(weights, any.missing = FALSE)
+  
   return(-mean(log(weights, base = 2)))
 }
 
@@ -16,6 +20,7 @@ mv_kl_div <- function(weights, ...) {
 ##' @param weights2 weights for second distribution
 ##' @param subsample_size size of subsamples
 ##' @param ... unused
+##' @srrstats {G2.2} Input is checked that it is numeric vector and excludes matrix
 ##' @noRd
 mv_wasserstein_dist <- function(draws1,
                                 draws2,
@@ -25,9 +30,15 @@ mv_wasserstein_dist <- function(draws1,
                                 ...
                                 ) {
 
+  checkmate::assert_class(draws1, "draws")
+  checkmate::assert_class(draws2, "draws")
+  checkmate::assert_numeric(weights1, len = posterior::ndraws(draws1), null.ok = TRUE, any.missing = FALSE)
+  checkmate::assert_numeric(weights2, len = posterior::ndraws(draws2), null.ok = TRUE, any.missing = FALSE)
+  checkmate::assert_vector(weights1, null.ok = TRUE)
+  checkmate::assert_vector(weights2, null.ok = TRUE)
+  checkmate::assert_number(subsample_size, lower = 0)
 
   require_package("transport")
-
   
   if (is.null(weights1)) {
     weights1 <- rep(
@@ -67,16 +78,23 @@ mv_wasserstein_dist <- function(draws1,
 
 ##' Jensen-Shannon divergence
 ##'
-##' @param x Samples from first distribution
-##' @param y Samples from second distribution
-##' @param x_weights Weights of first distribution
-##' @param y_weights Weights of second distribution
+##' @template draws_and_weights_arg
 ##' @param ... unused
 ##' @return numeric
+##' @srrstats {G2.2} Input is checked that it is numeric vector and excludes matrix
 ##' @noRd
-js_div <- function(x, y, x_weights, y_weights, ...) {
-
+js_div <- function(x, y, x_weights = NULL, y_weights = NULL, ...) {
+  
   require_package("philentropy")
+
+  checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE, finite = TRUE)
+  checkmate::assert_vector(x, strict = TRUE)
+  
+  checkmate::assert_numeric(y, min.len = 1, any.missing = FALSE, finite = TRUE)
+  checkmate::assert_vector(y, strict = TRUE)
+
+  checkmate::assert_numeric(x_weights, len = length(x), null.ok = TRUE, any.missing = FALSE, finite = TRUE)
+  checkmate::assert_numeric(y_weights, len = length(y), null.ok = TRUE, any.missing = FALSE, finite = TRUE)
   
   y_density <- stats::density(
     x = y,
@@ -107,10 +125,7 @@ js_div <- function(x, y, x_weights, y_weights, ...) {
 
 ##' Jensen-Shannon distance
 ##'
-##' @param x Samples from first distribution
-##' @param y Samples from second distribution
-##' @param x_weights Weights of first distribution
-##' @param y_weights Weights of second distribution
+##' @template draws_and_weights_arg
 ##' @param ... unused
 ##' @return numeric
 ##' @noRd
@@ -129,16 +144,24 @@ js_dist <- function(x, y, x_weights, y_weights, ...) {
 
 ##' Hellinger distance
 ##'
-##' @param x Samples from first distribution
-##' @param y Samples from second distribution
-##' @param x_weights Weights of first distribution
-##' @param y_weights Weights of second distribution
+##' @template draws_and_weights_arg
 ##' @param ... unused
 ##' @return numeric
+##' @srrstats {G2.2} Input is checked that it is numeric vector and excludes matrix
 ##' @noRd
-hellinger_dist <- function(x, y, x_weights, y_weights, ...) {
-
+hellinger_dist <- function(x, y, x_weights = NULL, y_weights = NULL, ...) {
+  
   require_package("philentropy")
+
+  checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE, finite = TRUE)
+  checkmate::assert_vector(x, strict = TRUE)
+  
+  checkmate::assert_numeric(y, min.len = 1, any.missing = FALSE, finite = TRUE)
+  checkmate::assert_vector(y, strict = TRUE)
+
+  checkmate::assert_numeric(x_weights, len = length(x), null.ok = TRUE, any.missing = FALSE, finite = TRUE)
+  checkmate::assert_numeric(y_weights, len = length(y), null.ok = TRUE, any.missing = FALSE, finite = TRUE)
+
   
   y_density <- stats::density(
     x = y,
@@ -166,18 +189,24 @@ hellinger_dist <- function(x, y, x_weights, y_weights, ...) {
 
 ##' Kullback-Leibler divergence
 ##'
-##' @param x Samples from first distribution
-##' @param y Samples from second distribution
-##' @param x_weights Weights of first distribution
-##' @param y_weights Weights of second distribution
+##' @template draws_and_weights_arg
 ##' @param ... unused
 ##' @return numeric value of approximate KL(p_x||p_y) based on
 ##'   estimated densitites
+##' @srrstats {G2.2} Input is checked that it is numeric vector and excludes matrix
 ##' @noRd
-kl_div <- function(x, y, x_weights, y_weights, ...) {
-
+kl_div <- function(x, y, x_weights = NULL, y_weights = NULL, ...) {
 
   require_package("philentropy")
+  
+  checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE, finite = TRUE)
+  checkmate::assert_vector(x, strict = TRUE)
+  
+  checkmate::assert_numeric(y, min.len = 1, any.missing = FALSE, finite = TRUE)
+  checkmate::assert_vector(y, strict = TRUE)
+
+  checkmate::assert_numeric(x_weights, len = length(x), null.ok = TRUE, any.missing = FALSE, finite = TRUE)
+  checkmate::assert_numeric(y_weights, len = length(y), null.ok = TRUE, any.missing = FALSE, finite = TRUE)
   
   y_density <- stats::density(
     x = y,
@@ -208,16 +237,13 @@ kl_div <- function(x, y, x_weights, y_weights, ...) {
 
 ##' Kullback-Leibler distance
 ##'
-##' @param x Samples from first distribution
-##' @param y Samples from second distribution
-##' @param x_weights Weights of first distribution
-##' @param y_weights Weights of second distribution
+##' @template draws_and_weights_arg
 ##' @param ... unused
 ##' @return numeric value of approximate KL(p_x||p_y) based on
 ##'   estimated densitites
 ##' @noRd
-kl_dist <- function(x, y, x_weights, y_weights, ...) {
-
+kl_dist <- function(x, y, x_weights = NULL, y_weights = NULL, ...) {
+  
   dist <- sqrt(
     kl_div(
       x = x,
@@ -231,15 +257,22 @@ kl_dist <- function(x, y, x_weights, y_weights, ...) {
 }
 
 ##' Kolmogorov-Smirnov distance
-##' @param x vector
-##' @param y vector
-##' @param x_weights vector of weights
-##' @param y_weights vector of weights
+##' @template draws_and_weights_arg
 ##' @param ... ununsed
 ##' @return numeric value of Kolmogorov Smirnov distance
+##' @srrstats {G2.2} Input is checked that it is numeric vector and excludes matrix
 ##' @noRd
-ks_dist <- function(x, y, x_weights, y_weights, ...) {
+ks_dist <- function(x, y, x_weights = NULL, y_weights = NULL, ...) {
 
+  checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE, finite = TRUE)
+  checkmate::assert_vector(x, strict = TRUE)
+  
+  checkmate::assert_numeric(y, min.len = 1, any.missing = FALSE, finite = TRUE)
+  checkmate::assert_vector(y, strict = TRUE)
+
+  checkmate::assert_numeric(x_weights, len = length(x), null.ok = TRUE, any.missing = FALSE, finite = TRUE)
+  checkmate::assert_numeric(y_weights, len = length(y), null.ok = TRUE, any.missing = FALSE, finite = TRUE)
+  
   if (is.null(x_weights)) {
     x_weights <- rep(1, length(x))
   }
@@ -256,17 +289,26 @@ ks_dist <- function(x, y, x_weights, y_weights, ...) {
 }
 ##' Wasserstein distance
 ##'
-##' @param x vector
-##' @param y vector
-##' @param x_weights vector of weights
-##' @param y_weights vector of weights
+##' @template draws_and_weights_arg
 ##' @param p degree
 ##' @param ... unused
 ##' @return numeric value of Wassterstein distance
+##' @srrstats {G2.2} Input is checked that it is numeric vector and excludes matrix
 ##' @noRd
-ws_dist <- function(x, y, x_weights, y_weights, p = 1, ...) {
+ws_dist <- function(x, y, x_weights = NULL, y_weights = NULL, p = 1, ...) {
 
   require_package("transport")
+  
+  checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE, finite = TRUE)
+  checkmate::assert_vector(x, strict = TRUE)
+  
+  checkmate::assert_numeric(y, min.len = 1, any.missing = FALSE, finite = TRUE)
+  checkmate::assert_vector(y, strict = TRUE)
+
+  checkmate::assert_numeric(x_weights, len = length(x), null.ok = TRUE, any.missing = FALSE, finite = TRUE)
+  checkmate::assert_numeric(y_weights, len = length(y), null.ok = TRUE, any.missing = FALSE, finite = TRUE)
+
+  checkmate::assert_number(p, lower = 0)
   
   wa <- transport::wasserstein1d(
     a = x,

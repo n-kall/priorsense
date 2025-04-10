@@ -16,14 +16,12 @@
 ##'
 ##' This has an upper bound of \eqn{\sqrt{ \sum (P(x) + Q(x))}}
 ##'
-##' @param x numeric vector of samples from first distribution
-##' @param y numeric vector of samples from second distribution
-##' @param x_weights numeric vector of weights of first distribution
-##' @param y_weights numeric vector of weights of second distribution
-##' @param metric Logical; if TRUE, return square-root of CJS
+##' @template draws_and_weights_arg
+##' @param metric Logical; if TRUE, return square-root of CJS. Default
+##'   is TRUE
 ##' @param unsigned Logical; if TRUE then return max of CJS(P(x) ||
 ##'   Q(x)) and CJS(P(-x) || Q(-x)). This ensures invariance to
-##'   transformations such as PCA.
+##'   transformations such as PCA. Default is TRUE
 ##' @param ... unused
 ##' @return distance value based on CJS computation.
 ##' @references Nguyen H-V., Vreeken J. (2015).  Non-parametric
@@ -32,6 +30,12 @@
 ##'   and Knowledge Discovery in Databases.  ECML PKDD 2015. Lecture
 ##'   Notes in Computer Science, vol 9285.  Springer, Cham.
 ##'   \code{doi:10.1007/978-3-319-23525-7_11}
+##' @srrstats {G2.0a} Documentation specifies weights vector must be same length as draws
+##' @srrstats {G2.13} missing values not allowed and result in error
+##' @srrstats {G2.16} Inf, -Inf and NaN result in error
+##' @srrstats {G2.2} Input is checked that it is numeric vector and
+##'   excludes matrix
+##' @srrstats {G2.6} x and y can be atomic vectors, but not matrix
 ##' @examples
 ##' x <- rnorm(100)
 ##' y <- rnorm(100, 2, 2)
@@ -45,12 +49,22 @@ cjs_dist <- function(x,
                      unsigned = TRUE,
                      ...) {
 
-  checkmate::assert_numeric(x, min.len = 1)
-  checkmate::assert_numeric(y, min.len = 1)
-  checkmate::assert_numeric(x_weights, len = length(x), null.ok = TRUE)
-  checkmate::assert_numeric(y_weights, len = length(y), null.ok = TRUE)
-  checkmate::assert_logical(metric, len = 1)
-  checkmate::assert_logical(unsigned, len = 1)
+  checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE, finite = TRUE)
+  checkmate::assert_atomic_vector(x)
+  x <- as.numeric(x)
+  
+  checkmate::assert_numeric(y, min.len = 1, any.missing = FALSE, finite = TRUE)
+  checkmate::assert_atomic_vector(y)
+  y <- as.numeric(y)
+
+  checkmate::assert_numeric(x_weights, len = length(x), null.ok = TRUE, any.missing = FALSE, finite = TRUE)
+  checkmate::assert_numeric(y_weights, len = length(y), null.ok = TRUE, any.missing = FALSE, finite = TRUE)
+
+  checkmate::assert_vector(x_weights, strict = TRUE, null.ok = TRUE)
+  checkmate::assert_vector(y_weights, strict = TRUE, null.ok = TRUE)
+  
+  checkmate::assert_flag(metric)
+  checkmate::assert_flag(unsigned)
 
   if (
     all(is.na(x)) ||
@@ -61,16 +75,16 @@ cjs_dist <- function(x,
   } else if (identical(x, y) && identical(x_weights, y_weights)) {
     cjs <- 0
   } else {
-    cjs <- .cjs_dist(x, y, x_weights, y_weights, metric, ...)
+    cjs <- .cjs_dist(x, y, x_weights, y_weights, metric)
     if (unsigned) {
-      cjsm <- .cjs_dist(-x, -y, x_weights, y_weights, metric, ...)
+      cjsm <- .cjs_dist(-x, -y, x_weights, y_weights, metric)
       cjs <- max(cjs, cjsm)
     }
   }
   return(c(cjs = cjs))
 }
 
-.cjs_dist <- function(x, y, x_weights, y_weights, metric = TRUE, ...) {
+.cjs_dist <- function(x, y, x_weights, y_weights, metric, ...) {
   # sort draws and weights
   x_idx <- order(x)
   x <- x[x_idx]
