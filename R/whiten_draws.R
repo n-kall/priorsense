@@ -1,9 +1,11 @@
 ##' Transform draws to be spherical
 ##' @param draws draws to be transformed
+##' @param covariance_fn function used to compute covariance
 ##' @param ... unused
 ##' @return transformed draws
+##' @srrstats {G3.1, G3.1a} Function for computing covariance can be specified
 ##' @noRd
-whiten_draws <- function(draws, ...) {
+whiten_draws <- function(draws, covariance_fn = stats::cov, ...) {
 
   base_draws <- posterior::as_draws_matrix(
     posterior::merge_chains(draws)
@@ -21,7 +23,7 @@ whiten_draws <- function(draws, ...) {
 
   # code from whitening package (c) Korbinian Strimmer and Takoua
   # Jendoubi and Agnan Kessy and Alex Lewin
-  Sigma <- stats::cov(base_draws)
+  Sigma <- covariance_fn(base_draws)
   v <- diag(Sigma)
   R <- stats::cov2cor(Sigma)
   eR <- eigen(R, symmetric = TRUE)

@@ -11,7 +11,8 @@ The \pkg{priorsense} package provides functions for
 prior and likelihood sensitivity analysis of Bayesian
 models. Currently it implements methods to determine the
 sensitivity of the posterior to power-scaling perturbations of
-the prior and likelihood.
+the prior and likelihood and is the first implementation of the
+method described in Kallioinen et al. (2023).
 }
 \details{
 The main diagnostic function provided by \pkg{priorsense}
@@ -22,19 +23,6 @@ perturbing the prior and likelihood and computing the effect on
 the posterior, without needing to refit the model (using Pareto
 smoothed importance sampling and importance weighted moment
 matching; Vehtari et al. 2022, Paananen et al. 2021).
-
-In addition, visual diagnostics are available by first using
-\code{\link{powerscale_sequence}} to create a sequence of perturbed
-posteriors, and then a plot function such as
-\code{\link{powerscale_plot_ecdf}} to visualise the change.
-
-The following global options are available:
-\itemize{
-\item \code{priorsense.plot_help_text}: If \code{TRUE} (the default), priorsense plots will include a title and explanatory text. If \code{FALSE} they will not.
-\item \code{priorsense.plot_variables_per_page}: Number specifying the maximum number of variables to be plotted on one page of a plot.
-\item \code{priorsense.plot_ask}: If \code{TRUE} (the default), when multiple pages are plotted input is required before each subsequent page is rendered.
-If \code{FALSE} no input is required.
-}
 }
 \references{
 Kallioinen, N., Paananen, T., Bürkner, P-C., Vehtari, A. (2023).

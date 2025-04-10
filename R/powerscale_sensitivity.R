@@ -26,6 +26,7 @@
 ##'   [option][base::options].
 ##' @return Table of sensitivity values for each specified variable.
 ##' @template powerscale_references
+##' @srrstats {BS5.2} output includes `powerscaling_details` object
 ##' @examples
 ##' ex <- example_powerscale_model()
 ##' powerscale_sensitivity(ex$draws)
@@ -111,6 +112,8 @@ powerscale_sensitivity.priorsense_data <- function(x,
                                                    likelihood_selection = NULL,
                                                    num_args = NULL,
                                                    ...) {
+  component <- tolower(component)
+  
   # input checks
   checkmate::assertCharacter(variable, null.ok = TRUE)
   checkmate::assertNumber(lower_alpha, lower = 0, upper = 1)

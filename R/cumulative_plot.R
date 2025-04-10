@@ -1,30 +1,30 @@
-# Code adapted from
+##' stat ewcdf
+##'
+##' @param mapping aesthetic mapping
+##' @param data data for plotting
+##' @param ... unused
+##' @return LayerInstance object
+##' @keywords internal
+##' @noRd
+stat_ewcdf <- function(mapping = NULL, data = NULL,
+                       ...) {
+  # Code adapted from
 # https://github.com/finnlindgren/StatCompLab/blob/main/R/ggplot.R and
 # https://rdrr.io/github/tidyverse/ggplot2/src/R/stat-ecdf.r
 
-# TODO: when PR https://github.com/tidyverse/ggplot2/pull/5119 is
-# merged, change to ggplot2 version
-stat_ewcdf <- function(mapping = NULL, data = NULL,
-                       geom = "step", position = "identity",
-                       ...,
-                       n = NULL,
-                       pad = TRUE,
-                       na.rm = FALSE,
-                       show.legend = NA,
-                       inherit.aes = TRUE) {
+# TODO: when ggplot2 version 3.5.2 is release, switch to ggplot2 version
   ggplot2::layer(
     data = data,
     mapping = mapping,
     stat = StatEwcdf,
-    geom = geom,
-    position = position,
-    show.legend = show.legend,
-    inherit.aes = inherit.aes,
+    geom = "step",
+    position = "identity",
+    show.legend = NA,
+    inherit.aes = TRUE,
     params = list(
-      n = n,
-    pad = pad,
-    na.rm = na.rm,
-    ...
+      n = NULL,
+      pad = TRUE,
+      na.rm = FALSE
     )
   )
 }
