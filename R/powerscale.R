@@ -229,7 +229,7 @@ powerscale.priorsense_data <- function(x,
       )
 
     if (is_constant(log_ratios)) {
-      stop2("Log prior/log likelihood is constant. Power-scaling does not work for flat (improper) distributions.")
+      stop2(paste0("Log ", component, " is constant. Power-scaling will not work in this case."))
     }
 
     if (moment_match) {

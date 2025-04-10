@@ -184,6 +184,8 @@ test_that("small variation in draws does not affect result", {
 }
 )
 
+
+#' @srrstats {G5.2} error behaviour tested here
 #' @srrstats {G5.8, G5.8d} test edge case out of scope
 test_that("powerscaling with alpha < 0 is an error", {
   expect_error(powerscale(univariate_normal_draws,
@@ -199,10 +201,18 @@ test_that("powerscaling zero draws is an error", {
 }
 )
 
-#' @srrstats {G5.8b} constant weights unsupported
+#' @srrstats {G5.2a, G5.2b, G5.8b} constant weights unsupported and give explicit error message
 test_that("powerscaling with constant loglik is an error", {
   const_draws <- data.frame(mu = 1:100, log_lik = rep(1, times = 100), lprior = 1:100)
-  expect_error(powerscale(const_draws, component = "likelihood", alpha = 0.1))
+  expect_error(powerscale(const_draws, component = "likelihood", alpha = 0.1),
+               "Log likelihood is constant. Power-scaling will not work in this case")
+}
+)
+
+test_that("powerscaling with constant lprior is an error", {
+  const_draws <- data.frame(mu = 1:100, lprior = rep(1, times = 100), log_lik = 1:100)
+  expect_error(powerscale(const_draws, component = "prior", alpha = 0.1),
+               "Log prior is constant. Power-scaling will not work in this case")
 }
 )
 
