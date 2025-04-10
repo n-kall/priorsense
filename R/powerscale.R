@@ -97,7 +97,7 @@ powerscale.priorsense_data <- function(x,
                                        ...) {
 
   # input coercion
-  component <- as.character(tolower(component))
+  component <- tolower(as.character(component))
   alpha <- as.numeric(alpha)
   moment_match <- as.logical(moment_match)
   if (!is.null(k_threshold)) {
@@ -113,7 +113,7 @@ powerscale.priorsense_data <- function(x,
   if (!is.null(variable)) {
     variable <- as.character(variable)
   }
-  
+
   log_prior_name <- as.character(log_prior_name)
   log_lik_name <- as.character(log_lik_name)
 
@@ -135,7 +135,7 @@ powerscale.priorsense_data <- function(x,
 
   # handle selection as either numeric or character
   orig_selection <- selection
-  
+
   if (is.numeric(selection)) {
       selection <- paste0(log_component_name, "[", selection, "]")
   } else if (is.character(selection)) {
@@ -143,7 +143,7 @@ powerscale.priorsense_data <- function(x,
   } else if (is.null(selection)) {
     selection <- log_component_name
   }
-  
+
   draws <- x$draws
 
   if (is.null(k_threshold)) {

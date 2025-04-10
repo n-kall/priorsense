@@ -61,6 +61,25 @@ powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
                                                 ...
                                                 ) {
 
+  component <- tolower(as.character(component))
+  lower_alpha <- as.numeric(lower_alpha)
+  upper_alpha <- as.numeric(upper_alpha)
+  moment_match <- as.logical(moment_match)
+  if (!is.null(k_threshold)) {
+    k_threshold <- as.numeric(k_threshold)
+  }
+  resample <- as.logical(resample)
+  if (!is.null(transform)) {
+    transform <- as.character(transform)
+  }
+  if (!is.null(prediction)) {
+    prediction <- as.function(prediction)
+  }
+  if (!is.null(variable)) {
+    variable <- as.character(variable)
+  }
+
+
   # input checks
   checkmate::assertFunction(prediction, null.ok = TRUE)
   checkmate::assertSubset(component, c("prior", "likelihood"))

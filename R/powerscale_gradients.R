@@ -70,6 +70,26 @@ powerscale_gradients.priorsense_data <- function(x,
                                          likelihood_selection = NULL,
                                          ...) {
 
+  # input coerction
+  component <- tolower(as.character(component))
+  lower_alpha <- as.numeric(lower_alpha)
+  upper_alpha <- as.numeric(upper_alpha)
+  moment_match <- as.logical(moment_match)
+  if (!is.null(k_threshold)) {
+    k_threshold <- as.numeric(k_threshold)
+  }
+  resample <- as.logical(resample)
+  if (!is.null(transform)) {
+    transform <- as.character(transform)
+  }
+  if (!is.null(prediction)) {
+    prediction <- as.function(prediction)
+  }
+  if (!is.null(variable)) {
+    variable <- as.character(variable)
+  }
+
+
   # input checks
   checkmate::assertSubset(type, c("quantities", "divergence"))
   checkmate::assertCharacter(variable, null.ok = TRUE)
@@ -80,10 +100,10 @@ powerscale_gradients.priorsense_data <- function(x,
   checkmate::assertSubset(component, c("prior", "likelihood"))
   checkmate::assertCharacter(transform, null.ok = TRUE)
   checkmate::assertNumber(k_threshold)
-  checkmate::assertLogical(resample, len = 1)
+  checkmate::assertFlag(resample)
   checkmate::assertFunction(prediction, null.ok = TRUE)
-  checkmate::assertLogical(scale, len = 1)
-  checkmate::assertLogical(moment_match, len = 1)
+  checkmate::assertFlag(scale)
+  checkmate::assertFlag(moment_match)
 
   # extract the draws
   base_draws <- x$draws
