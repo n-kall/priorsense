@@ -121,7 +121,7 @@ partitions. If this is a character, then it is appended to the
 variable name (specified by \code{log_lik_name}) with an \verb{_}
 between them. If numeric, then it is appended inside \verb{[]}.}
 
-\item{log_prior_name}{Character (case sensitivte) specifying name of the variable storing the log prior evaluations}
+\item{log_prior_name}{Character (case sensitive) specifying name of the variable storing the log prior evaluations}
 
 \item{log_lik_name}{Character (case sensitive) specifying name of the variable storing the log likelihood evaluations}
 

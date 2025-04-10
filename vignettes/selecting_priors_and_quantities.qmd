@@ -40,7 +40,7 @@ The main takeaways for this vignette are:
   selective power-scaling easier
   
 - in more complex models, it is often better to check the sensitivity
-  of predictions or preditive measures rather than the parameters
+  of predictions or predictive measures rather than the parameters
 
 ```{r}
 #| message: false

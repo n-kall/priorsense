@@ -41,7 +41,7 @@ powerscale_gradients(x, ...)
 
 \item{...}{Further arguments passed to functions.}
 
-\item{log_prior_name}{Character (case sensitivte) specifying name of the variable storing the log prior evaluations}
+\item{log_prior_name}{Character (case sensitive) specifying name of the variable storing the log prior evaluations}
 
 \item{log_lik_name}{Character (case sensitive) specifying name of the variable storing the log likelihood evaluations}
 
