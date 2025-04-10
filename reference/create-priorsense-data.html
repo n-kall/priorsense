@@ -83,7 +83,7 @@ functions for priorsense</p>
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>an object for which the method is defined</p></dd>
+<dd><p>an object for which the method is defined or an object coercible to a <code><a href="https://mc-stan.org/posterior/reference/draws.html" class="external-link">posterior::draws</a></code> object</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -95,19 +95,19 @@ functions for priorsense</p>
 
 
 <dt id="arg-log-prior-fn">log_prior_fn<a class="anchor" aria-label="anchor" href="#arg-log-prior-fn"></a></dt>
-<dd><p>function to derive log prior from object</p></dd>
+<dd><p>function to derive log prior from x or fit (if not NULL)</p></dd>
 
 
 <dt id="arg-log-lik-fn">log_lik_fn<a class="anchor" aria-label="anchor" href="#arg-log-lik-fn"></a></dt>
-<dd><p>function to derive log likelihood from object</p></dd>
+<dd><p>function to derive log likelihood from x or fit (if not NULL)</p></dd>
 
 
 <dt id="arg-log-prior">log_prior<a class="anchor" aria-label="anchor" href="#arg-log-prior"></a></dt>
-<dd><p>draws from log prior</p></dd>
+<dd><p>draws object from log prior, must be numeric and not include NA, NaN, Inf, -Inf or be constant</p></dd>
 
 
 <dt id="arg-log-lik">log_lik<a class="anchor" aria-label="anchor" href="#arg-log-lik"></a></dt>
-<dd><p>draws from log likelihood</p></dd>
+<dd><p>draws from log likelihood, must be numeric and not include NA, NaN, Inf, -Inf or be constant</p></dd>
 
 
 <dt id="arg-log-ratio-fn">log_ratio_fn<a class="anchor" aria-label="anchor" href="#arg-log-ratio-fn"></a></dt>
@@ -115,11 +115,11 @@ functions for priorsense</p>
 
 
 <dt id="arg-log-prior-name">log_prior_name<a class="anchor" aria-label="anchor" href="#arg-log-prior-name"></a></dt>
-<dd><p>Character indicating name of the variable storing the log prior evaluations</p></dd>
+<dd><p>Character (case sensitivte) specifying name of the variable storing the log prior evaluations</p></dd>
 
 
 <dt id="arg-log-lik-name">log_lik_name<a class="anchor" aria-label="anchor" href="#arg-log-lik-name"></a></dt>
-<dd><p>Character indicating name of the variable storing the log likelihood evaluations</p></dd>
+<dd><p>Character (case sensitive) specifying name of the variable storing the log likelihood evaluations</p></dd>
 
 </dl></div>
     <div class="section level2">

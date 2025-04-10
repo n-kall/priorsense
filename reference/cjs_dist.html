@@ -65,29 +65,32 @@ samples.</p>
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>numeric vector of samples from first distribution</p></dd>
+<dd><p>numeric vector of draws from first distribution</p></dd>
 
 
 <dt id="arg-y">y<a class="anchor" aria-label="anchor" href="#arg-y"></a></dt>
-<dd><p>numeric vector of samples from second distribution</p></dd>
+<dd><p>numeric vector of draws from second distribution</p></dd>
 
 
 <dt id="arg-x-weights">x_weights<a class="anchor" aria-label="anchor" href="#arg-x-weights"></a></dt>
-<dd><p>numeric vector of weights of first distribution</p></dd>
+<dd><p>numeric vector (same length as x) of weights for
+the draws of the first distribution</p></dd>
 
 
 <dt id="arg-y-weights">y_weights<a class="anchor" aria-label="anchor" href="#arg-y-weights"></a></dt>
-<dd><p>numeric vector of weights of second distribution</p></dd>
+<dd><p>numeric vector (same length as y) of weights for
+the draws of the second distribution</p></dd>
 
 
 <dt id="arg-metric">metric<a class="anchor" aria-label="anchor" href="#arg-metric"></a></dt>
-<dd><p>Logical; if TRUE, return square-root of CJS</p></dd>
+<dd><p>Logical; if TRUE, return square-root of CJS. Default
+is TRUE</p></dd>
 
 
 <dt id="arg-unsigned">unsigned<a class="anchor" aria-label="anchor" href="#arg-unsigned"></a></dt>
 <dd><p>Logical; if TRUE then return max of CJS(P(x) ||
 Q(x)) and CJS(P(-x) || Q(-x)). This ensures invariance to
-transformations such as PCA.</p></dd>
+transformations such as PCA. Default is TRUE</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>

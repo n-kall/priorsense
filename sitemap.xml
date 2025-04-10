@@ -17,7 +17,6 @@
 <url><loc>https://n-kall.github.io/priorsense/reference/index.html</loc></url>
 <url><loc>https://n-kall.github.io/priorsense/reference/log_lik_draws.html</loc></url>
 <url><loc>https://n-kall.github.io/priorsense/reference/log_prior_draws.html</loc></url>
-<url><loc>https://n-kall.github.io/priorsense/reference/measure_divergence.html</loc></url>
 <url><loc>https://n-kall.github.io/priorsense/reference/powerscale-gradients.html</loc></url>
 <url><loc>https://n-kall.github.io/priorsense/reference/powerscale-overview.html</loc></url>
 <url><loc>https://n-kall.github.io/priorsense/reference/powerscale-sensitivity.html</loc></url>
@@ -25,8 +24,5 @@
 <url><loc>https://n-kall.github.io/priorsense/reference/powerscale_plots.html</loc></url>
 <url><loc>https://n-kall.github.io/priorsense/reference/predictions_as_draws.html</loc></url>
 <url><loc>https://n-kall.github.io/priorsense/reference/priorsense-package.html</loc></url>
-<url><loc>https://n-kall.github.io/priorsense/reference/scaled_log_ratio.html</loc></url>
-<url><loc>https://n-kall.github.io/priorsense/reference/weighted_quantities.html</loc></url>
-<url><loc>https://n-kall.github.io/priorsense/reference/weighted_summary_measures.html</loc></url>
 </urlset>
 

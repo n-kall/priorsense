@@ -100,11 +100,11 @@ sampling (and optionally moment matching).</p>
 
 
 <dt id="arg-log-prior-name">log_prior_name<a class="anchor" aria-label="anchor" href="#arg-log-prior-name"></a></dt>
-<dd><p>Character indicating name of the variable storing the log prior evaluations</p></dd>
+<dd><p>Character (case sensitivte) specifying name of the variable storing the log prior evaluations</p></dd>
 
 
 <dt id="arg-log-lik-name">log_lik_name<a class="anchor" aria-label="anchor" href="#arg-log-lik-name"></a></dt>
-<dd><p>Character indicating name of the variable storing the log likelihood evaluations</p></dd>
+<dd><p>Character (case sensitive) specifying name of the variable storing the log likelihood evaluations</p></dd>
 
 
 <dt id="arg-variable">variable<a class="anchor" aria-label="anchor" href="#arg-variable"></a></dt>
@@ -133,8 +133,9 @@ time.</p></dd>
 
 
 <dt id="arg-div-measure">div_measure<a class="anchor" aria-label="anchor" href="#arg-div-measure"></a></dt>
-<dd><p>The divergence measure to use. The
-following methods are implemented:</p><ul><li><p><code>"cjs_dist"</code>: Cumulative Jensen-Shannon distance. Default
+<dd><p>Character (case sensitive) specifying the
+divergence measure to use. The following methods are
+implemented:</p><ul><li><p><code>"cjs_dist"</code>: Cumulative Jensen-Shannon distance. Default
 method. See function <code>cjs_dist</code> for more details.</p></li>
 <li><p><code>"js_dist"</code>: Jensen-Shannon distance.</p></li>
 <li><p><code>"js_div"</code>: Jensen-Shannon divergence.</p></li>

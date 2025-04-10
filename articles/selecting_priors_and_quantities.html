@@ -74,9 +74,10 @@
 
     <section class="section level2"><h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>This vignette presents a more in-depth example of using priorsense. It demonstrates two different but related concepts: (1) selecting different priors to power-scale, and (2) specifying which posterior quantities to check the sensitivity of.</p>
+<p>Priorsense is a package for prior and likelihood sensitivity checks. It can be used to detect prior-data conflict and weak likelihood.</p>
+<p>This vignette demonstrates two different but related concepts: (1) selecting different priors to power-scale, and (2) specifying which posterior quantities to check the sensitivity of.</p>
 <p>We will fit two different models on the same data set. The first is a linear model, which has easily interpretable parameters.</p>
-<p>The second includes splines and the parameters are not as easy to interpret. The specific model is not important, as the general principles apply for any model that has many parameters, correlated parameters or uninterpretable parameters. This includes other models with smooths, non-linear models, Gaussian processes and other more complex models.</p>
+<p>The second model includes splines and the spline coefficient parameters are not as easy to interpret. The specific model is not important, as the general principles apply for any model that has many parameters, correlated parameters or uninterpretable parameters. This includes other models with smooths, non-linear models, Gaussian processes and other more complex models.</p>
 <p>The features used here require <code>brms</code> version 2.22.11 or greater.</p>
 <p>The main takeaways for this vignette are:</p>
 <ul>
@@ -89,8 +90,7 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/n-kall/priorsense" class="external-link">priorsense</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mc-stan.org/posterior/" class="external-link">posterior</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>priorsense.plot_help_text <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>brms.backend <span class="op">=</span> <span class="st">"rstan"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>priorsense.plot_help_text <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <p>We use the <code>airquality</code> data set, and fit a model predicting the amount of ozone based on the temperature.</p>
 <div class="cell">
@@ -117,7 +117,7 @@
 <span>  silent <span class="op">=</span> <span class="fl">2</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
-<p>We will work with the posterior draws, rather than the entire <code>brmsfit</code> object. This requires binding the <code>log_lik</code> to the draws object.</p>
+<p>Rather than working with the <code>brmsfit</code> object directly, we will first extract the posterior draws. We will work with <code>draws</code> object using the <code>posterior</code> package so derived quantities can be added more easily. The <code>brmsfit</code> does not include the <code>log_lik</code> evaluations, so we will add those to the draws object using <code><a href="https://mc-stan.org/posterior/reference/bind_draws.html" class="external-link">posterior::bind_draws</a></code></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">post_draws_lin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/posterior/reference/draws_df.html" class="external-link">as_draws_df</a></span><span class="op">(</span><span class="va">fit_lin</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -144,7 +144,7 @@ Likelihood selection: all data
 <p>This indicates that when we power-scale all the priors, the posterior of sigma is changing.</p>
 <p>Instead of looking at the parameter posteriors, we can check the sensitivity of predictions and predictive performance measures.</p>
 <p>For predictions, we will focus on the predictions at the minimum, median and maximum temperatures from the data.</p>
-<p>For predictive performance measures, we will use Bayesian R2 and log-score.</p>
+<p>For predictive performance measures, we will use the in-sample Bayesian R2 and log-score.</p>
 <p>We first define a log-score function.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="downlit sourceCode r">
@@ -152,7 +152,7 @@ Likelihood selection: all data
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowSums</a></span><span class="op">(</span><span class="fu"><a href="https://mc-stan.org/rstantools/reference/log_lik.html" class="external-link">log_lik</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 </div>
-<p>And then bind the draws of the predictions and measures to the posterior draws. For this we will use the <code>predictions_as_draws</code> helper function provided by <code>priorsense</code> which transforms predictions from <code>brms</code> to draws objects.</p>
+<p>And then bind the draws of the predictions and measures to the posterior draws using <code><a href="https://mc-stan.org/posterior/reference/bind_draws.html" class="external-link">posterior::bind_draws()</a></code>. For this we will use the <code>predictions_as_draws</code> helper function provided by <code>priorsense</code> which transforms predictions from <code>brms</code> to draws objects.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">post_draws_lin</span> <span class="op">&lt;-</span> <span class="va">post_draws_lin</span> <span class="op">|&gt;</span></span>
@@ -161,7 +161,8 @@ Likelihood selection: all data
 <span>      x <span class="op">=</span> <span class="va">fit_lin</span>,</span>
 <span>      predict_fn <span class="op">=</span> <span class="va">bayes_R2</span>,</span>
 <span>      prediction_names <span class="op">=</span> <span class="st">"R2"</span>,</span>
-<span>      summary <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>      summary <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://mc-stan.org/posterior/reference/bind_draws.html" class="external-link">bind_draws</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="../reference/predictions_as_draws.html">predictions_as_draws</a></span><span class="op">(</span></span>
@@ -363,7 +364,7 @@ Likelihood selection: all data
 </div>
 </div>
 </div>
-<p>Although not extremely sensitive, there is a tendency for the predictive performance measures to decrease as the prior is strengthened, which indicates that we need to rethink the choice of prior for the <code>sds</code> parameter.</p>
+<p>Although not extremely sensitive, there is a tendency for the in-sample predictive performance measures to decrease as the prior is strengthened. This is natural when strengthening the prior leads to less flexibility in the model. In this case larger <code>sds</code> implies more flexibility in the spline component of the model. If this is not what we are intending with the choice of prior on <code>sds</code>, we may want to rethink and change it.</p>
 </section><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
