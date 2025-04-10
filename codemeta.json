@@ -4,10 +4,11 @@
   "identifier": "priorsense",
   "description": "Provides functions for prior and likelihood sensitivity analysis in Bayesian models. Currently it implements methods to determine the sensitivity of the posterior to power-scaling perturbations of the prior and likelihood.",
   "name": "priorsense: Prior Diagnostics and Sensitivity Analysis",
+  "relatedLink": ["https://n-kall.github.io/priorsense/", "https://CRAN.R-project.org/package=priorsense"],
   "codeRepository": "https://github.com/n-kall/priorsense",
   "issueTracker": "https://github.com/n-kall/priorsense/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "1.1",
+  "version": "1.1.0",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -69,6 +70,19 @@
   "softwareSuggestions": [
     {
       "@type": "SoftwareApplication",
+      "identifier": "R2jags",
+      "name": "R2jags",
+      "version": ">= 0.8",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=R2jags"
+    },
+    {
+      "@type": "SoftwareApplication",
       "identifier": "bayesplot",
       "name": "bayesplot",
       "version": ">= 1.11.1",
@@ -107,16 +121,15 @@
     },
     {
       "@type": "SoftwareApplication",
-      "identifier": "knitr",
-      "name": "knitr",
-      "version": ">= 1.47",
+      "identifier": "quarto",
+      "name": "quarto",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
         "name": "Comprehensive R Archive Network (CRAN)",
         "url": "https://cran.r-project.org"
       },
-      "sameAs": "https://CRAN.R-project.org/package=knitr"
+      "sameAs": "https://CRAN.R-project.org/package=quarto"
     },
     {
       "@type": "SoftwareApplication",
@@ -169,19 +182,6 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=transport"
-    },
-    {
-      "@type": "SoftwareApplication",
-      "identifier": "rmarkdown",
-      "name": "rmarkdown",
-      "version": ">= 2.27",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=rmarkdown"
     }
   ],
   "softwareRequirements": {
@@ -313,7 +313,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "1449.887KB",
+  "fileSize": "2273.618KB",
   "citation": [
     {
       "@type": "ScholarlyArticle",
@@ -436,7 +436,6 @@
       }
     }
   ],
-  "relatedLink": ["https://n-kall.github.io/priorsense/", "https://CRAN.R-project.org/package=priorsense"],
   "releaseNotes": "https://github.com/n-kall/priorsense/blob/master/NEWS.md",
   "readme": "https://github.com/n-kall/priorsense/blob/main/README.md",
   "contIntegration": "https://github.com/n-kall/priorsense/actions",
