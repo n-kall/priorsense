@@ -20,7 +20,7 @@ scaled_log_ratio <- function(component_draws, alpha,
 ##' @param fit fit object that will be passed to `iwmm::constrain_draws`
 ##' @param alpha power-scaling alpha value
 ##' @param component_fn function to extract log component from constrained draws
-##' @param ... 
+##' @param ... unused
 ##' @return vector of density ratio
 ##' @keywords internal
 ##' @noRd

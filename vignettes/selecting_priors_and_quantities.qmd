@@ -38,7 +38,7 @@ The main takeaways for this vignette are:
 
 - prior tagging makes it possible to partition priors to make
   selective power-scaling easier
-  
+
 - in more complex models, it is often better to check the sensitivity
   of predictions or predictive measures rather than the parameters
 
@@ -152,8 +152,12 @@ post_draws_lin <- post_draws_lin |>
     predictions_as_draws(
       x = fit_lin,
       predict_fn = posterior_epred,
-      prediction_names = c("pred_minTemp", "pred_medianTemp", "pred_maxTemp"),
-      newdata = data.frame(Temp = c(min(aq$Temp), median(aq$Temp), max(aq$Temp)))
+      prediction_names = c("pred_minTemp", "pred_medianTemp",
+                           "pred_maxTemp"),
+      newdata = data.frame(
+        Temp = c(min(aq$Temp),
+                 median(aq$Temp),
+                 max(aq$Temp)))
     )
   )
 
@@ -249,7 +253,11 @@ post_draws_spline <- as_draws_df(fit_spline) |>
         x = fit_spline,
         predict_fn = posterior_epred,
         prediction_names = c("pred_minTemp", "pred_medianTemp", "pred_maxTemp"),
-      newdata = data.frame(Temp = c(min(aq$Temp), median(aq$Temp), max(aq$Temp)))
+        newdata = data.frame(
+          Temp = c(min(aq$Temp),
+                   median(aq$Temp),
+                   max(aq$Temp))
+        )
       )
     )
 ```
@@ -260,7 +268,8 @@ on `R2` and `logscore` and the predictions.
 ```{r}
 powerscale_sensitivity(
   post_draws_spline,
-  variable = c("R2", "logscore", "pred_minTemp", "pred_medianTemp", "pred_maxTemp")
+  variable = c("R2", "logscore", "pred_minTemp",
+               "pred_medianTemp", "pred_maxTemp")
 )
 ```
 
@@ -274,7 +283,8 @@ there.
 ```{r}
 powerscale_sensitivity(
   post_draws_spline,
-  variable = c("R2", "logscore", "pred_minTemp", "pred_medianTemp", "pred_maxTemp"),
+  variable = c("R2", "logscore", "pred_minTemp",
+               "pred_medianTemp", "pred_maxTemp"),
   prior_selection = "sds"
 )
 ```
@@ -286,7 +296,8 @@ argument.
 ```{r}
 powerscale_sensitivity(
   post_draws_spline,
-  variable = c("R2", "logscore", "pred_minTemp", "pred_minTemp", "pred_maxTemp"),
+  variable = c("R2", "logscore", "pred_minTemp",
+               "pred_medianTemp", "pred_maxTemp"),
   prior_selection = c("intercept", "sigma", "b")
 )
 ```
@@ -303,7 +314,8 @@ change in posterior mean and standard deviation.
 powerscale_plot_quantities(
   post_draws_spline,
   div_measure = NULL,
-  variable = c("R2", "logscore", "pred_minTemp", "pred_medianTemp", "pred_maxTemp"),
+  variable = c("R2", "logscore", "pred_minTemp",
+               "pred_medianTemp", "pred_maxTemp"),
   prior_selection = "sds"
 )
 ```

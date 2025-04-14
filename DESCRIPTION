@@ -35,7 +35,8 @@ Suggests:
     philentropy (>= 0.8.0),
     rstan (>= 2.32.6),
     testthat (>= 3.0.0),
-    transport (>= 0.15)
+    transport (>= 0.15),
+    vdiffr (>= 1.0.8)
 Config/testthat/edition: 3
 Depends:
     R (>= 3.6.0)

@@ -55,7 +55,13 @@ powerscale.default <- function(x, component, alpha,
                                log_prior_name = "lprior",
                                log_lik_name = "log_lik",
                                ...) {
-  psd <- create_priorsense_data(x, log_prior_name = log_prior_name, log_lik_name = log_lik_name, ...)
+
+  psd <- create_priorsense_data(
+    x,
+    log_prior_name = log_prior_name,
+    log_lik_name = log_lik_name,
+    ...
+  )
   powerscale(
     psd,
     component = component,
@@ -73,14 +79,17 @@ powerscale.default <- function(x, component, alpha,
 
 ##' @rdname powerscale-overview
 ##' @srrstats {G2.3}
-##' @srrstats {G2.3a} checkmate functions used to allow only specific argument values
+##' @srrstats {G2.3a} checkmate functions used to allow only specific
+##'   argument values
 ##' @srrstats {G2.3b} tolower() used for component
 ##' @srrstats {G2.4} Input coercion
 ##' @srrstats {G2.4b} Input coercion with `as.numeric()`
 ##' @srrstats {G2.4c} Input coercion with `as.character()`
 ##' @srrstats {G2.4e} Input coercion
 ##' @srrstats {BS2.6} alpha is checked to be greater than 0
-##' @srrstats {BS5.3, BS5.5} The pareto-k value is a diagnostic indicating the reliability of the estimate, and is returned
+##' @srrstats {BS5.3, BS5.5} The pareto-k value is a diagnostic
+##'   indicating the reliability of the estimate, and is returned
+##' @srrstats {EA2.6} vector inputs are coerced to numeric
 ##' @export
 powerscale.priorsense_data <- function(x,
                                        component,
@@ -123,14 +132,21 @@ powerscale.priorsense_data <- function(x,
   checkmate::assertChoice(component, c("prior", "likelihood"))
   checkmate::assertFlag(moment_match)
   checkmate::assertNumber(k_threshold, null.ok = TRUE)
-  checkmate::assertChoice(transform, c("whiten", "scale", "identity"), null.ok = TRUE)
+  checkmate::assertChoice(
+    transform,
+    c("whiten", "scale", "identity"),
+    null.ok = TRUE)
   checkmate::assertFlag(resample)
   checkmate::assertCharacter(transform, null.ok = TRUE, len = 1)
   checkmate::assertFunction(prediction, null.ok = TRUE)
   checkmate::assertCharacter(variable, null.ok = TRUE)
 
 
-  log_component_name <- ifelse(component == "prior", log_prior_name, log_lik_name)
+  log_component_name <- ifelse(
+    component == "prior",
+    log_prior_name,
+    log_lik_name
+  )
 
 
   # handle selection as either numeric or character
@@ -229,16 +245,22 @@ powerscale.priorsense_data <- function(x,
       )
 
     if (is_constant(log_ratios)) {
-      stop2(paste0("Log ", component, " is constant. Power-scaling will not work in this case."))
+      stop2(
+        paste0("Log ", component,
+               " is constant. Power-scaling will not work in this case.")
+      )
     }
 
     if (moment_match) {
 
       require_package(
         "iwmm",
-        message = " to use moment matching, available from https://github.com/topipa/iwmm"
+        message = paste0(
+          " to use moment matching,",
+          "available from https://github.com/topipa/iwmm"
+        )
       )
-
+        
       # perform moment matching if specified
       # calculate the importance weights
       if (component == "prior") {

@@ -1,7 +1,13 @@
-#' @srrstats {G5.0} eight schools is a well-established example for Bayesian models
+#' @srrstats {G5.0} eight schools is a well-established example for
+#'   Bayesian models
 set.seed(123)
 eight_schools_example <- example_powerscale_model("eight_schools")
-sfit <- rstan::stan(model_code = eight_schools_example$model_code, data = eight_schools_example$data, refresh = FALSE, seed = 123)
+sfit <- rstan::stan(
+  model_code = eight_schools_example$model_code,
+  data = eight_schools_example$data,
+  refresh = FALSE,
+  seed = 123
+)
 
 test_that("priorsense_data is created", {
   expect_s3_class(

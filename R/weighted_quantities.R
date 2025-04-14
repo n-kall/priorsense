@@ -11,20 +11,23 @@
 ##' @return Named vector of calculated quantity.
 ##' @name weighted_quantities
 ##' @keywords internal
-##' @srrstats {G2.14, G2.14a, G2.15} weighted quantities specified to error on missing data, as this should not occur
-##' @srrstats {G2.6} Inputs to these internal functions are 1-d draws objects
+##' @srrstats {G2.14, G2.14a, G2.15} weighted quantities specified to
+##'   error on missing data, as this should not occur
+##' @srrstats {G2.6} Inputs to these internal functions are 1-d draws
+##'   objects
 ##' @noRd
 NULL
 
 median_weighted <- function(x, weights, ...) {
 
   checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE)
-  
-  checkmate::assert_numeric(weights, len = length(x), null.ok = TRUE, any.missing = FALSE)
+
+  checkmate::assert_numeric(weights, len = length(x),
+                            null.ok = TRUE, any.missing = FALSE)
 
   x <- as.numeric(x)
   weights <- as.numeric(weights)
-  
+
   weighted_median <- matrixStats::weightedMedian(
     x = x,
     w = weights
@@ -36,12 +39,13 @@ median_weighted <- function(x, weights, ...) {
 mad_weighted <- function(x, weights, ...) {
 
   checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE)
-  
-  checkmate::assert_numeric(weights, len = length(x), null.ok = TRUE, any.missing = FALSE)
+
+  checkmate::assert_numeric(weights, len = length(x),
+                            null.ok = TRUE, any.missing = FALSE)
 
   x <- as.numeric(x)
   weights <- as.numeric(weights)
-  
+
   weighted_mad <- matrixStats::weightedMad(
     x = x,
     w = weights
@@ -53,12 +57,13 @@ mad_weighted <- function(x, weights, ...) {
 var_weighted <- function(x, weights, ...) {
 
   checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE)
-  
-  checkmate::assert_numeric(weights, len = length(x), null.ok = TRUE, any.missing = FALSE)
+
+  checkmate::assert_numeric(weights, len = length(x), null.ok = TRUE,
+                            any.missing = FALSE)
 
   x <- as.numeric(x)
   weights <- as.numeric(weights)
-  
+
   if (is.null(weights)) {
     var <- var(x)
   } else {
@@ -70,12 +75,13 @@ var_weighted <- function(x, weights, ...) {
 sd_weighted <- function(x, weights, ...) {
 
   checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE)
-  
-  checkmate::assert_numeric(weights, len = length(x), null.ok = TRUE, any.missing = FALSE)
+
+  checkmate::assert_numeric(weights, len = length(x), null.ok = TRUE,
+                            any.missing = FALSE)
 
   x <- as.numeric(x)
   weights <- as.numeric(weights)
-  
+
   if (is.null(weights)) {
     sd <- sd(x)
   } else {
@@ -87,12 +93,13 @@ sd_weighted <- function(x, weights, ...) {
 mean_weighted  <- function(x, weights, ...) {
 
   checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE)
-  
-  checkmate::assert_numeric(weights, len = length(x), null.ok = TRUE, any.missing = FALSE)
+
+  checkmate::assert_numeric(weights, len = length(x), null.ok = TRUE,
+                            any.missing = FALSE)
 
   x <- as.numeric(x)
   weights <- as.numeric(weights)
-  
+
   weighted_mean <- matrixStats::weightedMean(
     x = x,
     w = weights
@@ -107,7 +114,8 @@ mean_weighted  <- function(x, weights, ...) {
 ##' `posterior::default_summary_measures()` to be used with
 ##' `posterior::summarise_draws()`.
 ##' @param x draws object to extract weights from
-##' @return Vector of formulas for use with `posterior::summarise_draws()`
+##' @return Vector of formulas for use with
+##'   `posterior::summarise_draws()`
 ##' @keywords internal
 ##' @noRd
 weighted_summary_measures <- function(x) {
@@ -125,12 +133,13 @@ quantile_weighted <- function(x, weights, probs = c(0.05, 0.95),
                               type = "7", ...) {
 
   checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE)
-  checkmate::assert_numeric(weights, len = length(x), null.ok = TRUE, any.missing = FALSE)
+  checkmate::assert_numeric(weights, len = length(x), null.ok = TRUE,
+                            any.missing = FALSE)
 
   checkmate::assert_numeric(probs, null.ok = FALSE, any.missing = FALSE)
-  
+
   checkmate::assert_choice(type, c("7", "hd"), null.ok = FALSE)
-  
+
   ## Following is adapted from Andrey Akinshin (2023) "Weighted
   ## quantile estimators" arXiv:2304.07265 [stat.ME]
   if (type == "7") {

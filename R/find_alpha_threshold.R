@@ -2,8 +2,10 @@
 ##' @param x object
 ##' @param ... additional arguments passed to methods
 ##' @return numeric value of alpha for which threshold is not reached
+##' @srrstats {EA4.1} epsilon controls numeric precision
 ##' @noRd
-##' @srrstats {G3.0} Numeric equality comparisons use appropriate tolerances for approximate equality.* 
+##' @srrstats {G3.0} Numeric equality comparisons use appropriate
+##'   tolerances for approximate equality.*
 find_alpha_threshold <- function(x, ...) {
   UseMethod("find_alpha_threshold")
 
@@ -66,7 +68,8 @@ find_alpha_threshold.priorsense_data <- function(x,
     new_pareto_k <- new_pareto_k_diags$khat
     new_khat_threshold <- new_pareto_k_diags$khat_threshold
 
-    compare <- comparison(new_pareto_k, pareto_k, new_khat_threshold, epsilon)
+    compare <- comparison(new_pareto_k, pareto_k,
+                          new_khat_threshold, epsilon)
 
     # check criterion
     if (compare == "left") {
@@ -94,7 +97,10 @@ find_alpha_threshold.priorsense_data <- function(x,
 ##' @param epsilon numeric tolerance
 ##' @return character specifying direction of next value
 ##' @noRd
-above_one_comparison <- function(new_pareto_k, pareto_k, k_threshold, epsilon) {
+above_one_comparison <- function(new_pareto_k,
+                                 pareto_k,
+                                 k_threshold,
+                                 epsilon) {
   if (abs(new_pareto_k - pareto_k) < epsilon) {
     return("stop")
   } else if (new_pareto_k >= k_threshold) {
@@ -111,7 +117,10 @@ above_one_comparison <- function(new_pareto_k, pareto_k, k_threshold, epsilon) {
 ##' @param epsilon numeric tolerance
 ##' @return character specifying direction of next value
 ##' @noRd
-below_one_comparison <- function(new_pareto_k, pareto_k, k_threshold, epsilon) {
+below_one_comparison <- function(new_pareto_k,
+                                 pareto_k,
+                                 k_threshold,
+                                 epsilon) {
   if (abs(new_pareto_k - pareto_k) < epsilon) {
     return("stop")
   } else if (new_pareto_k < k_threshold) {

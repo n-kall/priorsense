@@ -38,7 +38,7 @@ pareto_k_mean <- function(x, log_ratios, ...) {
   pareto_k_mean <- posterior::pareto_khat(
     x = c(log(log_ratios) + log(abs(x))),
     are_log_weights = TRUE
-    )
+  )
   return(c(pareto_k_mean = pareto_k_mean))
 }
 
@@ -52,6 +52,6 @@ pareto_k_var <- function(x, log_ratios, ...) {
   pareto_k_var <- posterior::pareto_khat(
     x = c(log(log_ratios) + log(abs(x^2))),
     are_log_weights = TRUE
-    )
+  )
   return(c(pareto_k_var = pareto_k_var))
 }

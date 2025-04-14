@@ -1,6 +1,7 @@
 ##' Diagnostic plots for power-scaling sensitivity
 ##'
-##' Various diagnostic plots for power-scaling sensitivity. See **Plot Descriptions** below for details.
+##' Various diagnostic plots for power-scaling sensitivity. See **Plot
+##' Descriptions** below for details.
 ##'
 ##' @name powerscale_plots
 ##'
@@ -20,6 +21,12 @@
 ##' @srrstats {BS6.3} plots for posterior estimates
 ##' @srrstats {BS6.1} different plots are available, so a default plot
 ##'   method is not deemed appropriate
+##' @srrstats {EA5.0} 
+##' @srrstats {EA5.0a} default typefaces in ggplot2 are accessible
+##' @srrstats {EA5.0b} default color scheme chosen to be accessible
+##' @srrstats {EA5.4} values are rounded before plotting
+
+
 ##' @importFrom rlang .data
 ##' @examples
 ##' ex <- example_powerscale_model()
@@ -69,7 +76,8 @@ prepare_plot_data <- function(x, variable, resample, ...) {
       prior_draws[[i]][[".powerscale_alpha"]] <- prior_ps_details$alpha
       prior_draws[[i]]$component <- "prior"
       prior_draws[[i]]$pareto_k <- prior_ps_details$diagnostics$khat
-      prior_draws[[i]]$pareto_k_threshold <- prior_ps_details$diagnostics$khat_threshold
+      prior_draws[[i]]$pareto_k_threshold <-
+        prior_ps_details$diagnostics$khat_threshold
 
     }
 
@@ -95,12 +103,19 @@ prepare_plot_data <- function(x, variable, resample, ...) {
         )
       }
 
-      likelihood_ps_details <- get_powerscaling_details(likelihood_scaled[[i]])
+      likelihood_ps_details <- get_powerscaling_details(
+        likelihood_scaled[[i]]
+      )
 
-      likelihood_draws[[i]][[".powerscale_alpha"]] <- likelihood_ps_details$alpha
+      likelihood_draws[[i]][[".powerscale_alpha"]] <-
+        likelihood_ps_details$alpha
+      
       likelihood_draws[[i]]$component <- "likelihood"
+      
       likelihood_draws[[i]]$pareto_k <- likelihood_ps_details$diagnostics$khat
-      likelihood_draws[[i]]$pareto_k_threshold <- likelihood_ps_details$diagnostics$khat_threshold
+      
+      likelihood_draws[[i]]$pareto_k_threshold <-
+        likelihood_ps_details$diagnostics$khat_threshold
 
 
     }
@@ -185,8 +200,10 @@ prepare_plot <- function(d, resample, variable, colors, ...) {
       name = "Power-scaling alpha",
       colours = colors[1:3],
       trans = "log",
-      limits = c(min(d[[".powerscale_alpha"]]) - 0.01, max(d[[".powerscale_alpha"]]) + 0.01),
-      breaks = c(min(d[[".powerscale_alpha"]]), 1, max(d[[".powerscale_alpha"]])),
+      limits = c(min(d[[".powerscale_alpha"]]) - 0.01,
+                 max(d[[".powerscale_alpha"]]) + 0.01),
+      breaks = c(min(d[[".powerscale_alpha"]]), 1,
+                 max(d[[".powerscale_alpha"]])),
       labels = c(
         round(min(d[[".powerscale_alpha"]]), digits = 3),
         "1",
@@ -196,8 +213,10 @@ prepare_plot <- function(d, resample, variable, colors, ...) {
     ggplot2::scale_fill_gradientn(
       colours = c(colors[1:3]),
       trans = "log",
-      limits = c(min(d[[".powerscale_alpha"]]) - 0.01, max(d[[".powerscale_alpha"]]) + 0.01),
-      breaks = c(min(d[[".powerscale_alpha"]]), 1, max(d[[".powerscale_alpha"]])),
+      limits = c(min(d[[".powerscale_alpha"]]) - 0.01,
+                 max(d[[".powerscale_alpha"]]) + 0.01),
+      breaks = c(min(d[[".powerscale_alpha"]]), 1,
+                 max(d[[".powerscale_alpha"]])),
       labels = c(
         round(min(d[[".powerscale_alpha"]]), digits = 3),
         "1",
@@ -232,227 +251,251 @@ powerscale_plot_dens <- function(x, ...) {
 }
 
 ##' @export
-powerscale_plot_dens.default <- function(x,
-                                         variable = NULL,
-                                         length = 3,
-                                         resample = FALSE,
-                                         intervals = c(0.5, 0.8, 0.95),
-                                         trim = NULL,
-                                         facet_rows = "component",
-                                         help_text = getOption("priorsense.plot_help_text", TRUE),
-                                         colors = NULL,
-                                         variables_per_page = 6,
-                                         ...
-                                         ) {
-  ps <- powerscale_sequence(x, length = length, ...)
-  powerscale_plot_dens(
-    ps,
-    variable = variable,
-    length = length,
-    resample = resample,
-    intervals = intervals,
-    trim = trim,
-    facet_rows = facet_rows,
-    help_text = help_text,
-    colors = colors,
-    variables_per_page = variables_per_page
-  )
-}
+powerscale_plot_dens.default <-
+  function(x,
+           variable = NULL,
+           length = 3,
+           resample = FALSE,
+           intervals = c(0.5, 0.8, 0.95),
+           trim = NULL,
+           facet_rows = "component",
+           help_text = getOption("priorsense.plot_help_text", TRUE),
+           colors = NULL,
+           variables_per_page = 6,
+           ...
+           ) {
+    ps <- powerscale_sequence(x, length = length, ...)
+    powerscale_plot_dens(
+      ps,
+      variable = variable,
+      length = length,
+      resample = resample,
+      intervals = intervals,
+      trim = trim,
+      facet_rows = facet_rows,
+      help_text = help_text,
+      colors = colors,
+      variables_per_page = variables_per_page
+    )
+  }
 
 
 ##' @export
-powerscale_plot_dens.powerscaled_sequence <- function(x,
-                                                      variable = NULL,
-                                                      resample = FALSE,
-                                                      intervals = c(0.5, 0.8, 0.95),
-                                                      trim = NULL,
-                                                      facet_rows = "component",
-                                                      help_text = getOption("priorsense.plot_help_text", TRUE),
-                                                      colors = NULL,
-                                                      variables_per_page = getOption("priorsense.plot_variables_per_page", 6),
-                                                      ...
-                                                      ) {
+powerscale_plot_dens.powerscaled_sequence <-
+  function(x,
+           variable = NULL,
+           resample = FALSE,
+           intervals = c(0.5, 0.8, 0.95),
+           trim = NULL,
+           facet_rows = "component",
+           help_text = getOption("priorsense.plot_help_text", TRUE),
+           colors = NULL,
+           variables_per_page = getOption(
+             "priorsense.plot_variables_per_page", 6
+           ),
+           ...
+           ) {
 
-  # input checks
-  checkmate::assert_character(variable, null.ok = TRUE)
-  checkmate::assert_logical(resample, len = 1)
-  checkmate::assert_logical(help_text, len = 1)
-  checkmate::assert_character(colors, len = 3, null.ok = TRUE)
-  checkmate::assert_numeric(intervals, null.ok = TRUE)
-  checkmate::assert_choice(facet_rows, c("component", "variable"))
-  checkmate::assert_number(variables_per_page, lower = 1, null.ok = TRUE)
+    # input checks
+    checkmate::assert_character(variable, null.ok = TRUE)
+    checkmate::assert_logical(resample, len = 1)
+    checkmate::assert_logical(help_text, len = 1)
+    checkmate::assert_character(colors, len = 3, null.ok = TRUE)
+    checkmate::assert_numeric(intervals, null.ok = TRUE)
+    checkmate::assert_choice(facet_rows, c("component", "variable"))
+    checkmate::assert_number(variables_per_page, lower = 1, null.ok = TRUE)
 
-  if (is.null(colors)) {
-    colors <- default_priorsense_colors()[1:3]
-  }
-
-  if (is.null(variable)) {
-    variable <- posterior::variables(x$base_draws)
-  } else {
-    variable <- posterior::variables(
-      posterior::subset_draws(x$base_draws, variable = variable)
-    )
-  }
-
-  nvars <- length(variable)
-
-  if (is.null(variables_per_page) || is.infinite(variables_per_page)) {
-    variables_per_page <- nvars
-  }
-
-  variables_per_page <- floor(variables_per_page)
-
-  n_plots <- ceiling(nvars / variables_per_page)
-  plots <- vector(mode = "list", length = n_plots)
-
-  d <- prepare_plot_data(x, variable = variable, resample = resample, ...)
-
-  interval_positions <- data.frame(
-    ".powerscale_alpha" = unique(d[[".powerscale_alpha"]]),
-    interval_y = as.numeric(as.factor(unique(d[[".powerscale_alpha"]])))
-  )
-
-  interval_positions$interval_y <- (0.5 - (interval_positions$interval_y)) / (6 * nrow(interval_positions))
-
-  d <- merge(d, interval_positions)
-
-  n_components <- length(unique(d$component))
-
-  for (i in seq_len(n_plots)) {
-
-    sub <- ((i - 1) * variables_per_page + 1):min(i * variables_per_page, nvars)
-    sub_variable <- variable[sub]
-
-    if (resample || x$resample) {
-      resample <- TRUE
+    if (is.null(colors)) {
+      colors <- default_priorsense_colors()[1:3]
     }
 
-    dsub <- d[d$variable %in% sub_variable, ]
+    if (is.null(variable)) {
+      variable <- posterior::variables(x$base_draws)
+    } else {
+      variable <- posterior::variables(
+        posterior::subset_draws(x$base_draws, variable = variable)
+      )
+    }
 
-    plot <- prepare_plot(dsub, resample = resample, colors = colors, ...) +
-      ggplot2::ylab("Density")
+    nvars <- length(variable)
 
-    # here we have to draw 2 stat slabs (one with alpha 0 and black fill,
-    # one with fill as NA) to get the legend correct see
-    # https://github.com/mjskay/ggdist/issues/134
-    plot <- plot +
-      ggdist::stat_slab(
-        fill = "black",
-        alpha = 0,
-        linewidth = 0.5,
-        trim = FALSE,
-        normalize = "xy",
-        key_glyph = "smooth"
-      ) +
-      ggdist::stat_slab(
-        fill = NA,
-        alpha = 1,
-        linewidth = 0.5,
-        trim = FALSE,
-        normalize = "xy",
-        key_glyph = "smooth"
-      ) +
-      ggplot2::xlab(NULL) +
-      ggplot2::ylab(NULL)
+    if (is.null(variables_per_page) || is.infinite(variables_per_page)) {
+      variables_per_page <- nvars
+    }
 
-    if (!is.null(intervals)) {
+    variables_per_page <- floor(variables_per_page)
 
-  plot <- plot +
-    ggdist::stat_pointinterval(
-      ggplot2::aes(y = .data$interval_y),
-      .width = intervals,
-      fill = NA,
-      alpha = 1,
-      trim = FALSE,
-      normalize = "xy",
-      key_glyph = "smooth"
+    n_plots <- ceiling(nvars / variables_per_page)
+    plots <- vector(mode = "list", length = n_plots)
+
+    d <- prepare_plot_data(x, variable = variable, resample = resample, ...)
+
+    interval_positions <- data.frame(
+      ".powerscale_alpha" = unique(d[[".powerscale_alpha"]]),
+      interval_y = as.numeric(as.factor(unique(d[[".powerscale_alpha"]])))
     )
-  }
 
+    interval_positions$interval_y <- (0.5 - (interval_positions$interval_y)) /
+      (6 * nrow(interval_positions))
 
-  if (facet_rows == "component") {
-    plot <- plot +
-      ggh4x::facet_grid2(
-        rows = ggplot2::vars(.data$component),
-        cols = ggplot2::vars(.data$variable),
-        labeller = ggplot2::labeller(
-          component = c(
-            likelihood = "Likelihood\npower-scaling",
-            prior = "Prior\npower-scaling"
+    d <- merge(d, interval_positions)
+
+    n_components <- length(unique(d$component))
+
+    for (i in seq_len(n_plots)) {
+
+      sub <- ((i - 1) *
+                variables_per_page + 1):min(i * variables_per_page, nvars)
+      sub_variable <- variable[sub]
+
+      if (resample || x$resample) {
+        resample <- TRUE
+      }
+
+      dsub <- d[d$variable %in% sub_variable, ]
+
+      plot <- prepare_plot(dsub, resample = resample, colors = colors, ...) +
+        ggplot2::ylab("Density")
+
+      # here we have to draw 2 stat slabs (one with alpha 0 and black fill,
+      # one with fill as NA) to get the legend correct see
+      # https://github.com/mjskay/ggdist/issues/134
+      plot <- plot +
+        ggdist::stat_slab(
+          fill = "black",
+          alpha = 0,
+          linewidth = 0.5,
+          trim = FALSE,
+          normalize = "xy",
+          key_glyph = "smooth"
+        ) +
+        ggdist::stat_slab(
+          fill = NA,
+          alpha = 1,
+          linewidth = 0.5,
+          trim = FALSE,
+          normalize = "xy",
+          key_glyph = "smooth"
+        ) +
+        ggplot2::xlab(NULL) +
+        ggplot2::ylab(NULL)
+
+      if (!is.null(intervals)) {
+
+        plot <- plot +
+          ggdist::stat_pointinterval(
+            ggplot2::aes(y = .data$interval_y),
+            .width = intervals,
+            fill = NA,
+            alpha = 1,
+            trim = FALSE,
+            normalize = "xy",
+            key_glyph = "smooth"
           )
-        ),
-        independent = "all",
-        scales = "free",
-        switch = "y"
-      )
-  } else {
-  plot <- plot +
-    ggh4x::facet_grid2(
-      rows = ggplot2::vars(.data$variable),
-      cols = ggplot2::vars(.data$component),
-      labeller = ggplot2::labeller(
-        component = c(
-          likelihood = "Likelihood\npower-scaling",
-          prior = "Prior\npower-scaling"
-        )
-      ),
-      independent = "all",
-      scales = "free",
-      switch = "y"
-    )
+      }
 
-  }
-
-  if (help_text) {
-    plot <- plot +
-      ggplot2::ggtitle(
-        label = "Power-scaling sensitivity",
-        subtitle = "Posterior density estimates depending on amount of power-scaling (alpha).\nOverlapping lines indicate low sensitivity.\nWider gaps between lines indicate greater sensitivity.\nEstimates with high Pareto k (dashed lines) may be inaccurate."
-      )
-  }
-
-  # additional theming
-  plot <- plot +
-    ggplot2::theme(
-      axis.line.y = ggplot2::element_blank(),
-      axis.text.y = ggplot2::element_blank(),
-      axis.ticks.y = ggplot2::element_blank()
-    )
-
-  if (facet_rows == "component") {
-    plot <- plot +
-      ggplot2::theme(legend.position = "bottom")
-  }
-
-
-    if (!is.null(trim)) {
-      position_scales <- lapply(
-        variable, FUN =
-                    function(.x, prob) {
-                      limits <- posterior::quantile2(x$base_draws[[.x]], probs = c((1 - prob)/2, prob + (1 - prob)/2))
-                      return(ggplot2::scale_x_continuous(limits = limits))
-                    }, prob = trim
-      )
 
       if (facet_rows == "component") {
-        plot <- plot + ggh4x::facetted_pos_scales(x = rep(position_scales, times = 2))
+        plot <- plot +
+          ggh4x::facet_grid2(
+            rows = ggplot2::vars(.data$component),
+            cols = ggplot2::vars(.data$variable),
+            labeller = ggplot2::labeller(
+              component = c(
+                likelihood = "Likelihood\npower-scaling",
+                prior = "Prior\npower-scaling"
+              )
+            ),
+            independent = "all",
+            scales = "free",
+            switch = "y"
+          )
       } else {
-        out <- out + ggh4x::facetted_pos_scales(x = rep(position_scales, each = 2))
+        plot <- plot +
+          ggh4x::facet_grid2(
+            rows = ggplot2::vars(.data$variable),
+            cols = ggplot2::vars(.data$component),
+            labeller = ggplot2::labeller(
+              component = c(
+                likelihood = "Likelihood\npower-scaling",
+                prior = "Prior\npower-scaling"
+              )
+            ),
+            independent = "all",
+            scales = "free",
+            switch = "y"
+          )
+
       }
+
+      if (help_text) {
+        plot <- plot +
+          ggplot2::ggtitle(
+            label = "Power-scaling sensitivity",
+            subtitle = paste0(
+              "Posterior density estimates depending on ",
+              "amount of power-scaling (alpha).\n",
+              "Overlapping lines indicate low sensitivity.\n",
+              "Wider gaps between lines indicate greater sensitivity.\n",
+              "Estimates with high Pareto k (dashed lines) may be inaccurate."
+            )
+          )
+      }
+
+      # additional theming
+      plot <- plot +
+        ggplot2::theme(
+          axis.line.y = ggplot2::element_blank(),
+          axis.text.y = ggplot2::element_blank(),
+          axis.ticks.y = ggplot2::element_blank()
+        )
+
+      if (facet_rows == "component") {
+        plot <- plot +
+          ggplot2::theme(legend.position = "bottom")
+      }
+
+
+      if (!is.null(trim)) {
+        position_scales <- lapply(
+          variable,
+          FUN =
+            function(.x, prob) {
+              limits <- posterior::quantile2(x$base_draws[[.x]],
+                                             probs = c((1 - prob) / 2,
+                                                       prob + (1 - prob)/2))
+              return(ggplot2::scale_x_continuous(limits = limits))
+            }, prob = trim
+        )
+
+        if (facet_rows == "component") {
+          plot <- plot + ggh4x::facetted_pos_scales(
+            x = rep(
+              position_scales,
+              times = 2)
+          )
+        } else {
+          out <- out + ggh4x::facetted_pos_scales(
+            x = rep(
+              position_scales,
+              each = 2
+            )
+          )
+        }
+      }
+
+      plots[[i]] <- plot
+
     }
 
-    plots[[i]] <- plot
+    class(plots) <- c("priorsense_plot", class(plots))
 
+    if (length(plots) == 1) {
+      plots <- plots[[1]]
+    }
+
+    return(plots)
   }
-
-  class(plots) <- c("priorsense_plot", class(plots))
-
-  if (length(plots) == 1) {
-    plots <- plots[[1]]
-  }
-
-  return(plots)
-}
 
 ##' @rdname powerscale_plots
 ##' @export
@@ -462,108 +505,130 @@ powerscale_plot_ecdf <- function(x, ...) {
 
 
 ##' @export
-powerscale_plot_ecdf.default <- function(x,
-                                         variable = NULL,
-                                         length = 3,
-                                         resample = FALSE,
-                                         facet_rows = "component",
-                                         help_text = getOption("priorsense.plot_help_text", TRUE),
-                                         colors = NULL,
-                                         variables_per_page = getOption("priorsense.plot_variables_per_page", 6),
-                                         ...) {
-  ps <- powerscale_sequence(x, length = length, ...)
-  powerscale_plot_ecdf(
-    ps,
-    variable = variable,
-    resample = resample,
-    facet_rows = facet_rows,
-    help_text = help_text,
-    colors = colors,
-    variables_per_page = variables_per_page
-  )
-}
-
-##' @rdname powerscale_plots
-##' @export
-powerscale_plot_ecdf.powerscaled_sequence <- function(x,
-                                                      variable = NULL,
-                                                      resample = FALSE,
-                                                      length = 3,
-                                                      facet_rows = "component",
-                                                      help_text = getOption("priorsense.plot_help_text", TRUE),
-                                                      colors = NULL,
-                                                      variables_per_page = getOption("priorsense.plot_variables_per_page", 6),
-                                                      ...) {
-
-  # input checks
-  checkmate::assert_character(variable, null.ok = TRUE)
-  checkmate::assert_logical(resample, len = 1)
-  checkmate::assert_logical(help_text, len = 1)
-  checkmate::assertCharacter(colors, len = 3, null.ok = TRUE)
-  checkmate::assert_choice(facet_rows, c("component", "variable"))
-  checkmate::assert_number(variables_per_page, lower = 1, null.ok = TRUE)
-
-  if (is.null(colors)) {
-    colors <- default_priorsense_colors()[1:3]
-  }
-
-  if (is.null(variable)) {
-    variable <- posterior::variables(x$base_draws)
-  } else {
-    variable <- posterior::variables(
-      posterior::subset_draws(x$base_draws, variable = variable)
+powerscale_plot_ecdf.default <-
+  function(x,
+           variable = NULL,
+           length = 3,
+           resample = FALSE,
+           facet_rows = "component",
+           help_text = getOption("priorsense.plot_help_text", TRUE),
+           colors = NULL,
+           variables_per_page = getOption(
+             "priorsense.plot_variables_per_page",
+             6
+           ),
+           ...) {
+    ps <- powerscale_sequence(x, length = length, ...)
+    powerscale_plot_ecdf(
+      ps,
+      variable = variable,
+      resample = resample,
+      facet_rows = facet_rows,
+      help_text = help_text,
+      colors = colors,
+      variables_per_page = variables_per_page
     )
   }
 
-  d <- prepare_plot_data(x, variable = variable, resample = resample, ...)
+##' @rdname powerscale_plots
+##' @export
+powerscale_plot_ecdf.powerscaled_sequence <-
+  function(x,
+           variable = NULL,
+           resample = FALSE,
+           length = 3,
+           facet_rows = "component",
+           help_text = getOption("priorsense.plot_help_text", TRUE),
+           colors = NULL,
+           variables_per_page = getOption(
+             "priorsense.plot_variables_per_page",
+             6
+           ),
+           ...) {
 
-  n_components <- length(unique(d$component))
+    # input checks
+    checkmate::assert_character(variable, null.ok = TRUE)
+    checkmate::assert_logical(resample, len = 1)
+    checkmate::assert_logical(help_text, len = 1)
+    checkmate::assertCharacter(colors, len = 3, null.ok = TRUE)
+    checkmate::assert_choice(facet_rows, c("component", "variable"))
+    checkmate::assert_number(variables_per_page, lower = 1, null.ok = TRUE)
+
+    if (is.null(colors)) {
+      colors <- default_priorsense_colors()[1:3]
+    }
+
+    if (is.null(variable)) {
+      variable <- posterior::variables(x$base_draws)
+    } else {
+      variable <- posterior::variables(
+        posterior::subset_draws(x$base_draws, variable = variable)
+      )
+    }
+
+    d <- prepare_plot_data(x, variable = variable, resample = resample, ...)
+
+    n_components <- length(unique(d$component))
 
     if (resample || x$resample) {
       resample <- TRUE
     }
 
-  nvars <- length(variable)
+    nvars <- length(variable)
 
-  if (is.null(variables_per_page) || is.infinite(variables_per_page)) {
-    variables_per_page <- nvars
-  }
-
-  variables_per_page <- floor(variables_per_page)
-
-  n_plots <- ceiling(nvars / variables_per_page)
-  plots <- vector(mode = "list", length = n_plots)
-
-  for (i in seq_len(n_plots)) {
-
-    sub <- ((i - 1) * variables_per_page + 1):min(i * variables_per_page, nvars)
-    sub_variable <- variable[sub]
-
-    dsub <- d[d$variable %in% sub_variable, ]
-
-    p <- prepare_plot(dsub, resample = resample, colors = colors, ...) +
-      ggplot2::guides(
-        linetype = ggplot2::guide_legend(
-          title = "Pareto k"
-        )
-      ) +
-      ggplot2::ylab("ECDF") +
-      ggplot2::xlab(NULL)
-
-    if (resample || x$resampled) {
-      p <- p +
-        ggplot2::stat_ecdf(ggplot2::aes(color = .data[[".powerscale_alpha"]]))
-    } else {
-      p <- p +
-        stat_ewcdf(ggplot2::aes(color = .data[[".powerscale_alpha"]]))
+    if (is.null(variables_per_page) || is.infinite(variables_per_page)) {
+      variables_per_page <- nvars
     }
 
+    variables_per_page <- floor(variables_per_page)
 
-    if (facet_rows == "component") {
-      p <- p +
-        ggh4x::facet_grid2(
-          rows = ggplot2::vars(.data$component),
-          cols = ggplot2::vars(.data$variable),
+    n_plots <- ceiling(nvars / variables_per_page)
+    plots <- vector(mode = "list", length = n_plots)
+
+    for (i in seq_len(n_plots)) {
+
+      sub <- ((i - 1) * variables_per_page + 1):min(i * variables_per_page, nvars)
+      sub_variable <- variable[sub]
+
+      dsub <- d[d$variable %in% sub_variable, ]
+
+      p <- prepare_plot(dsub, resample = resample, colors = colors, ...) +
+        ggplot2::guides(
+          linetype = ggplot2::guide_legend(
+            title = "Pareto k"
+          )
+        ) +
+        ggplot2::ylab("ECDF") +
+        ggplot2::xlab(NULL)
+
+      if (resample || x$resampled) {
+        p <- p +
+          ggplot2::stat_ecdf(ggplot2::aes(color = .data[[".powerscale_alpha"]]))
+      } else {
+        p <- p +
+          stat_ewcdf(ggplot2::aes(color = .data[[".powerscale_alpha"]]))
+      }
+
+
+      if (facet_rows == "component") {
+        p <- p +
+          ggh4x::facet_grid2(
+            rows = ggplot2::vars(.data$component),
+            cols = ggplot2::vars(.data$variable),
+            labeller = ggplot2::labeller(
+              component = c(
+                likelihood = "Likelihood\npower-scaling",
+                prior = "Prior\npower-scaling"
+              )
+            ),
+            scales = "free",
+            independent = "all",
+            switch = "y"
+          )
+      } else {
+        p <- p + ggh4x::facet_grid2(
+          rows = ggplot2::vars(.data$variable),
+          cols = ggplot2::vars(.data$component),
           labeller = ggplot2::labeller(
             component = c(
               likelihood = "Likelihood\npower-scaling",
@@ -573,55 +638,46 @@ powerscale_plot_ecdf.powerscaled_sequence <- function(x,
           scales = "free",
           independent = "all",
           switch = "y"
-    )
-    } else {
-      p <- p + ggh4x::facet_grid2(
-        rows = ggplot2::vars(.data$variable),
-        cols = ggplot2::vars(.data$component),
-        labeller = ggplot2::labeller(
-          component = c(
-            likelihood = "Likelihood\npower-scaling",
-            prior = "Prior\npower-scaling"
-          )
-        ),
-        scales = "free",
-        independent = "all",
-        switch = "y"
-      )
-
-    }
-
-    if (!(any(d$pareto_k_value == "High"))) {
-
-      p <- p +
-        ggplot2::guides(linetype = "none")
-
-    }
-
-    if (help_text) {
-      p <- p +
-        ggplot2::ggtitle(
-          label = "Power-scaling sensitivity",
-          subtitle = "Posterior ECDF depending on amount of power-scaling (alpha).\nOverlapping lines indicate low sensitivity.\nWider gaps between lines indicate greater sensitivity.\nEstimates with high Pareto k (dashed lines) may be inaccurate."
         )
+
+      }
+
+      if (!(any(d$pareto_k_value == "High"))) {
+
+        p <- p +
+          ggplot2::guides(linetype = "none")
+
+      }
+
+      if (help_text) {
+        p <- p +
+          ggplot2::ggtitle(
+            label = "Power-scaling sensitivity",
+            subtitle = paste0(
+              "Posterior ECDF depending on amount of power-scaling (alpha).\n",
+              "Overlapping lines indicate low sensitivity.\n",
+              "Wider gaps between lines indicate greater sensitivity.\n",
+              "Estimates with high Pareto k (dashed lines) may be inaccurate."
+            )
+          )
+      }
+      if (facet_rows == "component") {
+        p <- p +
+          ggplot2::theme(legend.position = "bottom")
+      }
+
+      plots[[i]] <- p
+
     }
-    if (facet_rows == "component") {
-      p <- p +
-        ggplot2::theme(legend.position = "bottom")
+
+    class(plots) <- c("priorsense_plot", class(plots))
+
+    if (length(plots) == 1) {
+      plots <- plots[[1]]
     }
 
-    plots[[i]] <- p
-
+    return(plots)
   }
-
-  class(plots) <- c("priorsense_plot", class(plots))
-
-  if (length(plots) == 1) {
-    plots <- plots[[1]]
-  }
-
-  return(plots)
-}
 
 
 ##' @rdname powerscale_plots
@@ -631,140 +687,150 @@ powerscale_plot_quantities <- function(x, ...) {
 }
 
 ##' @export
-powerscale_plot_quantities.default <- function(x, variable = NULL,
-                                       quantity = c("mean", "sd"),
-                                       div_measure = "cjs_dist",
-                                       length = 11,
-                                       resample = FALSE,
-                                       measure_args = NULL,
-                                       mcse = TRUE,
-                                       quantity_args = NULL,
-                                       help_text = getOption("priorsense.plot_help_text", TRUE),
-                                       colors = NULL,
-                                       variables_per_page = getOption("priorsense.plot_variables_per_page", 6),
-                                       ...) {
-  ps <- powerscale_sequence(x, length = length, ...)
+powerscale_plot_quantities.default <-
+  function(x, variable = NULL,
+           quantity = c("mean", "sd"),
+           div_measure = "cjs_dist",
+           length = 11,
+           resample = FALSE,
+           measure_args = NULL,
+           mcse = TRUE,
+           quantity_args = NULL,
+           help_text = getOption("priorsense.plot_help_text", TRUE),
+           colors = NULL,
+           variables_per_page = getOption(
+             "priorsense.plot_variables_per_page",
+             6
+           )
+          ,
+           ...) {
 
-  powerscale_plot_quantities(
-    ps,
-    variable = variable,
-    quantity = quantity,
-    div_measure = div_measure,
-    resample = resample,
-    measure_args = measure_args,
-    mcse = mcse,
-    quantity_args = quantity_args,
-    help_text = help_text,
-    colors = colors,
-    variables_per_page = variables_per_page
-  )
-}
+    ps <- powerscale_sequence(x, length = length, ...)
+    
+    powerscale_plot_quantities(
+      ps,
+      variable = variable,
+      quantity = quantity,
+      div_measure = div_measure,
+      resample = resample,
+      measure_args = measure_args,
+      mcse = mcse,
+      quantity_args = quantity_args,
+      help_text = help_text,
+      colors = colors,
+      variables_per_page = variables_per_page
+    )
+  }
 
 ##' @rdname powerscale_plots
 ##' @export
-powerscale_plot_quantities.powerscaled_sequence <- function(x, variable = NULL,
-                                       quantity = c("mean", "sd"),
-                                       div_measure = "cjs_dist",
-                                       resample = FALSE,
-                                       measure_args = NULL,
-                                       mcse = TRUE,
-                                       quantity_args = NULL,
-                                       help_text = getOption("priorsense.plot_help_text", TRUE),
-                                       colors = NULL,
-                                       variables_per_page = getOption("priorsense.plot_variables_per_page", 6),
-                                       ...) {
+powerscale_plot_quantities.powerscaled_sequence <-
+  function(x, variable = NULL,
+           quantity = c("mean", "sd"),
+           div_measure = "cjs_dist",
+           resample = FALSE,
+           measure_args = NULL,
+           mcse = TRUE,
+           quantity_args = NULL,
+           help_text = getOption("priorsense.plot_help_text", TRUE),
+           colors = NULL,
+           variables_per_page = getOption(
+             "priorsense.plot_variables_per_page",
+             6
+           ),
+           ...) {
 
-  checkmate::assertCharacter(variable, null.ok = TRUE)
-  checkmate::assertCharacter(quantity)
-  checkmate::assertCharacter(div_measure, null.ok = TRUE)
-  checkmate::assertLogical(resample, len = 1)
-  checkmate::assertList(measure_args, null.ok = TRUE)
-  checkmate::assertLogical(mcse, len = 1)
-  checkmate::assertList(quantity_args, null.ok = TRUE)
-  checkmate::assertLogical(help_text, len = 1)
-  checkmate::assertCharacter(colors, len = 2, null.ok = TRUE)
-  checkmate::assert_number(variables_per_page, lower = 1, null.ok = TRUE)
+    checkmate::assertCharacter(variable, null.ok = TRUE)
+    checkmate::assertCharacter(quantity)
+    checkmate::assertCharacter(div_measure, null.ok = TRUE)
+    checkmate::assertLogical(resample, len = 1)
+    checkmate::assertList(measure_args, null.ok = TRUE)
+    checkmate::assertLogical(mcse, len = 1)
+    checkmate::assertList(quantity_args, null.ok = TRUE)
+    checkmate::assertLogical(help_text, len = 1)
+    checkmate::assertCharacter(colors, len = 2, null.ok = TRUE)
+    checkmate::assert_number(variables_per_page, lower = 1, null.ok = TRUE)
 
-  if (is.null(colors)) {
-    colors <- default_priorsense_colors()[4:5]
-  }
+    if (is.null(colors)) {
+      colors <- default_priorsense_colors()[4:5]
+    }
 
-  names(quantity) <- quantity
+    names(quantity) <- quantity
 
-  summ <- summarise_draws(
-    x,
-    quantity,
-    .args = quantity_args,
-    resample = resample,
-    div_measures = div_measure,
-    measure_args = measure_args
-  )
-
-  if (is.null(variable)) {
-    variable <- posterior::variables(x$base_draws)
-  } else {
-    # TODO: better way to handle e.g. "a" -> "a[1]", "a[2]"
-    variable <- posterior::variables(
-      posterior::subset_draws(x$base_draws, variable = variable)
-    )
-  }
-
-  if (mcse) {
-    quants <- setdiff(
-      colnames(summ[[1]]),
-      c("variable", ".powerscale_alpha", "component",
-        "pareto_k", "pareto_kf", "pareto_k_threshold", "n_eff", div_measure)
+    summ <- summarise_draws(
+      x,
+      quantity,
+      .args = quantity_args,
+      resample = resample,
+      div_measures = div_measure,
+      measure_args = measure_args
     )
 
-    mcse_functions <- paste0("mcse_", quantity)
+    if (is.null(variable)) {
+      variable <- posterior::variables(x$base_draws)
+    } else {
+      # TODO: better way to handle e.g. "a" -> "a[1]", "a[2]"
+      variable <- posterior::variables(
+        posterior::subset_draws(x$base_draws, variable = variable)
+      )
+    }
 
-    base_quantities <- summ[[1]][which(summ[[1]][[".powerscale_alpha"]] == 1), ]
+    if (mcse) {
+      quants <- setdiff(
+        colnames(summ[[1]]),
+        c("variable", ".powerscale_alpha", "component",
+          "pareto_k", "pareto_kf", "pareto_k_threshold", "n_eff", div_measure)
+      )
 
-    base_quantities <- unique(base_quantities[c("variable", quants)])
+      mcse_functions <- paste0("mcse_", quantity)
 
-    base_q <- as.data.frame(base_quantities)
+      base_quantities <- summ[[1]][which(summ[[1]][[".powerscale_alpha"]] == 1), ]
 
-    base_q <- as.data.frame(base_quantities)
+      base_quantities <- unique(base_quantities[c("variable", quants)])
 
-    base_q <- stats::reshape(
-      data = base_q,
-      varying = quants,
-      direction = "long",
-      times = quants,
-      v.names = "value",
-      timevar = "quantity",
-      idvar = "variable"
-    )
+      base_q <- as.data.frame(base_quantities)
 
-    base_mcse <- posterior::summarise_draws(
-      x$base_draws,
-      mcse_functions,
-      .args = quantity_args
-    )
-    base_mcse <- base_mcse[which(base_mcse$variable %in% variable), ]
-    base_mcse <- as.data.frame(base_mcse)
+      base_q <- as.data.frame(base_quantities)
 
-    mcse_names <- colnames(base_mcse)[-1]
+      base_q <- stats::reshape(
+        data = base_q,
+        varying = quants,
+        direction = "long",
+        times = quants,
+        v.names = "value",
+        timevar = "quantity",
+        idvar = "variable"
+      )
 
-    base_mcse <- stats::reshape(
-      data = base_mcse,
-      varying = mcse_names,
-      direction = "long",
-      times = quants,
-      v.names = "mcse",
-      timevar = "quantity",
-      idvar = "variable"
-    )
+      base_mcse <- posterior::summarise_draws(
+        x$base_draws,
+        mcse_functions,
+        .args = quantity_args
+      )
+      base_mcse <- base_mcse[which(base_mcse$variable %in% variable), ]
+      base_mcse <- as.data.frame(base_mcse)
 
-    base_mcse <- merge(base_q, base_mcse)
-    base_mcse$mcse_min <- base_mcse$value - 2 * base_mcse$mcse
-    base_mcse$mcse_max <- base_mcse$value + 2 * base_mcse$mcse
+      mcse_names <- colnames(base_mcse)[-1]
 
-  } else {
-    base_mcse <- NULL
-  }
+      base_mcse <- stats::reshape(
+        data = base_mcse,
+        varying = mcse_names,
+        direction = "long",
+        times = quants,
+        v.names = "mcse",
+        timevar = "quantity",
+        idvar = "variable"
+      )
 
-  powerscale_summary_plot(
+      base_mcse <- merge(base_q, base_mcse)
+      base_mcse$mcse_min <- base_mcse$value - 2 * base_mcse$mcse
+      base_mcse$mcse_max <- base_mcse$value + 2 * base_mcse$mcse
+
+    } else {
+      base_mcse <- NULL
+    }
+
+    powerscale_summary_plot(
       summ,
       variable = variable,
       base_mcse = base_mcse,
@@ -774,16 +840,18 @@ powerscale_plot_quantities.powerscaled_sequence <- function(x, variable = NULL,
       ...
     )
 
-}
+  }
 ##' power-scale summary plot
 ##'
 ##' internal function for powerscale_plot_quantities
 ##' @param x data frame of plotting data
 ##' @param variable character vector specifying variables to plot
 ##' @param base_mcse base Monte Carlo standard error estimates
-##' @param help_text boolean flag indicating whether or not to show helper text
+##' @param help_text boolean flag indicating whether or not to show
+##'   helper text
 ##' @param colors character vector specifying colors
-##' @param variables_per_page number specifying how many variables to plot on each page
+##' @param variables_per_page number specifying how many variables to
+##'   plot on each page
 ##' @param ... unused
 ##' @return ggplot object
 ##' @keywords internal
@@ -834,100 +902,118 @@ powerscale_summary_plot <- function(x,
       times = quantities,
       v.names = "value",
       timevar = "quantity"
-  )
-
-  summaries$pareto_k_value <- ifelse(
-    summaries$pareto_k > summaries$pareto_k_threshold,
-    "High",
-    "OK"
-  )
-
-  summaries$pareto_k_value <- factor(
-    summaries$pareto_k_value,
-    levels = c("OK", "High")
-  )
-
-  # subset for plotting points at ends of lines
-  points <- summaries[summaries[[".powerscale_alpha"]] == min(summaries[[".powerscale_alpha"]]) |
-                        summaries[[".powerscale_alpha"]] == max(summaries[[".powerscale_alpha"]]), ]
-
-  p <- ggplot2::ggplot(
-    data = summaries,
-    mapping = ggplot2::aes(x = .data[[".powerscale_alpha"]], y = .data$value)
-  ) +
-    ggplot2::geom_line(ggplot2::aes(
-      color = .data$pareto_k_value, group = .data$component)) +
-    ggh4x::facet_grid2(
-      rows = ggplot2::vars(factor(.data$variable, levels = unique(.data$variable))),
-      cols = ggplot2::vars(factor(.data$quantity, levels = unique(.data$quantity))),
-      scales = "free",
-      switch = "y",
-    independent = "all"
-  ) +
-  ggplot2::geom_point(
-    ggplot2::aes(
-      x = .data[[".powerscale_alpha"]],
-      y = .data$value,
-      shape = .data$component
-    ),
-    fill = "white",
-    size = 3,
-    data = points
-  ) +
-    ggplot2::scale_shape_manual(
-      values = c("likelihood" = 22, "prior" = 15)) +
-  ggplot2::scale_color_manual(values = pareto_k_colours) +
-  ggplot2::guides(
-    color = ggplot2::guide_legend(
-      title = "Pareto k",
-      override.aes = list(shape = 15)
     )
-  ) +
-  ggplot2::ylab(NULL) +
-  ggplot2::scale_x_continuous(
-    trans = "log2",
-    limits = c(0.95 * min(summaries[[".powerscale_alpha"]]), 1.05 * max(summaries[[".powerscale_alpha"]])),
-    breaks = c(min(summaries[[".powerscale_alpha"]]), 1, max(summaries[[".powerscale_alpha"]])),
-    labels = round(c(min(summaries[[".powerscale_alpha"]]), 1, max(summaries[[".powerscale_alpha"]])), digits = 3),
-    name = "Power-scaling alpha"
-  )
 
-  if (!(any(summaries$pareto_k_value == "High"))) {
-    p <- p +
-      ggplot2::guides(
-        colour = "none"
-      )
-  }
+    summaries$pareto_k_value <- ifelse(
+      summaries$pareto_k > summaries$pareto_k_threshold,
+      "High",
+      "OK"
+    )
 
-  if (help_text) {
-    p <- p +
-  ggplot2::ggtitle(
-    label = "Power-scaling sensitivity",
-    subtitle = "Posterior quantities depending on amount of power-scaling (alpha).\nHorizontal lines indicate low sensitivity.\nSteeper lines indicate greater sensitivity.\nEstimates with high Pareto k (highlighted) may be inaccurate."
-  )
-  }
+    summaries$pareto_k_value <- factor(
+      summaries$pareto_k_value,
+      levels = c("OK", "High")
+    )
 
-  if (!is.null(sub_mcse)) {
+    # subset for plotting points at ends of lines
+    points <- summaries[
+      summaries[[".powerscale_alpha"]] == min(summaries[[".powerscale_alpha"]]) |
+        summaries[[".powerscale_alpha"]] == max(summaries[[".powerscale_alpha"]]),
+      ]
 
-    p <- p +
-      ggplot2::scale_linetype_manual(values = "dashed", name = NULL) +
-      ggplot2::geom_hline(
-        ggplot2::aes(
-          yintercept = .data$mcse_min,
-          linetype = "+/-2MCSE"
-        ),
-        data = sub_mcse,
-        color = "black"
+    p <- ggplot2::ggplot(
+      data = summaries,
+      mapping = ggplot2::aes(x = .data[[".powerscale_alpha"]], y = .data$value)
+    ) +
+      ggplot2::geom_line(ggplot2::aes(
+        color = .data$pareto_k_value, group = .data$component)) +
+      ggh4x::facet_grid2(
+        rows = ggplot2::vars(factor(.data$variable, levels = unique(.data$variable))),
+        cols = ggplot2::vars(factor(.data$quantity, levels = unique(.data$quantity))),
+        scales = "free",
+        switch = "y",
+        independent = "all"
       ) +
-      ggplot2::geom_hline(
+      ggplot2::geom_point(
         ggplot2::aes(
-          yintercept = .data$mcse_max,
-          linetype = "+/-2MCSE"
+          x = .data[[".powerscale_alpha"]],
+          y = .data$value,
+          shape = .data$component
         ),
-        data = sub_mcse,
-        color = "black"
+        fill = "white",
+        size = 3,
+        data = points
+      ) +
+      ggplot2::scale_shape_manual(
+        values = c("likelihood" = 22, "prior" = 15)) +
+      ggplot2::scale_color_manual(values = pareto_k_colours) +
+      ggplot2::guides(
+        color = ggplot2::guide_legend(
+          title = "Pareto k",
+          override.aes = list(shape = 15)
+        )
+      ) +
+      ggplot2::ylab(NULL) +
+      ggplot2::scale_x_continuous(
+        trans = "log2",
+        limits = c(
+          0.95 * min(summaries[[".powerscale_alpha"]]),
+          1.05 * max(summaries[[".powerscale_alpha"]])
+        ),
+        breaks = c(
+          min(summaries[[".powerscale_alpha"]]),
+          1,
+          max(summaries[[".powerscale_alpha"]])
+        ),
+        labels = round(c(
+          min(summaries[[".powerscale_alpha"]]),
+          1,
+          max(summaries[[".powerscale_alpha"]])
+        ), digits = 3),
+        name = "Power-scaling alpha"
       )
-  }
+
+    if (!(any(summaries$pareto_k_value == "High"))) {
+      p <- p +
+        ggplot2::guides(
+          colour = "none"
+        )
+    }
+
+    if (help_text) {
+      p <- p +
+        ggplot2::ggtitle(
+          label = "Power-scaling sensitivity",
+          subtitle = paste0(
+            "Posterior quantities depending on amount of power-scaling (alpha).\n",
+            "Horizontal lines indicate low sensitivity.\n",
+            "Steeper lines indicate greater sensitivity.\n",
+            "Estimates with high Pareto k (highlighted) may be inaccurate.")
+          
+        )
+    }
+
+    if (!is.null(sub_mcse)) {
+
+      p <- p +
+        ggplot2::scale_linetype_manual(values = "dashed", name = NULL) +
+        ggplot2::geom_hline(
+          ggplot2::aes(
+            yintercept = .data$mcse_min,
+            linetype = "+/-2MCSE"
+          ),
+          data = sub_mcse,
+          color = "black"
+        ) +
+        ggplot2::geom_hline(
+          ggplot2::aes(
+            yintercept = .data$mcse_max,
+            linetype = "+/-2MCSE"
+          ),
+          data = sub_mcse,
+          color = "black"
+        )
+    }
 
     plots[[i]] <- p
   }
@@ -942,7 +1028,9 @@ powerscale_summary_plot <- function(x,
 }
 
 ##' @exportS3Method
-plot.priorsense_plot <- function(x, ask = getOption("priorsense.plot_ask", TRUE), ...) {
+plot.priorsense_plot <- function(x,
+                                 ask = getOption("priorsense.plot_ask", TRUE),
+                                 ...) {
 
   grDevices::devAskNewPage(ask = FALSE)
   on.exit(grDevices::devAskNewPage(ask = FALSE))

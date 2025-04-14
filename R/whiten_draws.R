@@ -54,6 +54,6 @@ whiten_draws <- function(draws, covariance_fn = stats::cov, ...) {
   attr(draws_tr, "loadings") <- t(loadings)
 
   class(draws_tr) <- c("whitened_draws", class(draws_tr))
-  
-  return(draws_tr)  
+
+  return(draws_tr)
 }

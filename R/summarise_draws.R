@@ -32,7 +32,7 @@ summarise_draws.powerscaled_draws <- function(.x,
   }
 
   ps_details <- get_powerscaling_details(.x)
-  
+
   .args <- as.list(.args)
 
   if (resample && !ps_details$resampled) {
@@ -58,7 +58,7 @@ summarise_draws.powerscaled_draws <- function(.x,
   }
 
   class(target_draws) <- class(target_draws)[-1]
-  
+
   summ <- posterior::summarise_draws(
     .x = target_draws,
     ... = funs,
@@ -66,7 +66,7 @@ summarise_draws.powerscaled_draws <- function(.x,
     .num_args = .num_args
   )
 
-  
+
   if (!is.null(base_draws)) {
     # calculate the divergences between the base and target draws
     divergences <- measure_divergence(
@@ -80,11 +80,11 @@ summarise_draws.powerscaled_draws <- function(.x,
   }
 
   out <- summ
-  
+
   if (resample) {
     ps_details$resampled <- TRUE
   }
-  
+
   attr(out, "powerscaling") <- ps_details
 
 
@@ -146,13 +146,13 @@ summarise_draws.powerscaled_sequence <- function(.x,
     measure = div_measures,
     measure_args = measure_args
   )
-  
+
   base_summary <- merge(
     x = base_quantities,
     y = base_distance,
     by = "variable"
   )
-  
+
   base_summary_prior <- c()
   base_summary_likelihood <- c()
 
@@ -175,12 +175,12 @@ summarise_draws.powerscaled_sequence <- function(.x,
       )
 
       ps_details <- get_powerscaling_details(quantities)
-      
+
       quantities[[".powerscale_alpha"]] <- ps_details$alpha
       quantities$component <- ps_details$component
       quantities$pareto_k <- ps_details$diagnostics$khat
       quantities$pareto_k_threshold <- ps_details$diagnostics$khat_threshold
-      
+
       summaries <- rbind(summaries, quantities)
     }
   }
@@ -204,7 +204,7 @@ summarise_draws.powerscaled_sequence <- function(.x,
       )
 
       ps_details <- get_powerscaling_details(quantities)
-      
+
       quantities[[".powerscale_alpha"]] <- ps_details$alpha
       quantities$component <- ps_details$component
       quantities$pareto_k <- ps_details$diagnostics$khat
@@ -214,8 +214,13 @@ summarise_draws.powerscaled_sequence <- function(.x,
     }
   }
 
-  # join base and perturbed summaries  
-  summaries <- list(rbind(base_summary_prior, base_summary_likelihood, summaries))
+  # join base and perturbed summaries
+  summaries <- list(
+    rbind(
+      base_summary_prior,
+      base_summary_likelihood,
+      summaries)
+  )
 
   # correctly specify types of variables
   summaries[[1]][["component"]] <- factor(
@@ -236,4 +241,3 @@ summarise_draws.whitened_draws <- function(.x, ...) {
   class(summary) <- c("whitened_draws_summary", class(summary))
   return(summary)
 }
-                                           
