@@ -105,7 +105,7 @@ summarise_draws.powerscaled_draws <- function(.x,
 ##' @param measure_args arguments for divergence measures
 ##' @param resample resample
 ##' @return powerscaled_sequence_summary
-##' @srrstats {BS6.4} equivalent to summary method
+##' @srrstats{EA4.2} summary method implemented
 ##' @noRd
 ##' @exportS3Method posterior::summarise_draws
 summarise_draws.powerscaled_sequence <- function(.x,

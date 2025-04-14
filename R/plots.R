@@ -18,9 +18,6 @@
 ##'   \item{`powerscale_plot_quantities()`}{ Plot of posterior
 ##'   quantities with respect to power-scaling.} }
 ##'
-##' @srrstats {BS6.3} plots for posterior estimates
-##' @srrstats {BS6.1} different plots are available, so a default plot
-##'   method is not deemed appropriate
 ##' @srrstats {EA5.0} 
 ##' @srrstats {EA5.0a} default typefaces in ggplot2 are accessible
 ##' @srrstats {EA5.0b} default color scheme chosen to be accessible

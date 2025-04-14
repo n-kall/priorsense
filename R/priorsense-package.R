@@ -45,12 +45,6 @@
 #' @srrstats {G2.10} Tabular inputs are converted to
 #'   `posterior::draws` objects and subsetting is handled through
 #'   `posterior` functions.
-#' @srrstats {BS2.12, BS2.13} `priorsense.plot_help_text` controls the
-#'   inclusion of explanatory text in plots
-#' @srrstats {BS2.14} warnings are provided through built in R
-#'   function `warning()`
-#' @srrstats {BS2.15} errors are provided through checkmate or built
-#'   in R functions
 #' @srrstats {EA1.0, EA1.1, EA1.2} target audience, data type and
 #'   target questions specified in README and vignette
 #' @srrstats {EA1.3} input types of each function are specified in

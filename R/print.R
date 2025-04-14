@@ -1,5 +1,4 @@
 ##' @srrstats{EA4.2} print method implemented
-##' @srrstats {BS6.0} print method implemented
 ##' @srrstats {EA5.2} rounding used for digit display
 ##' @export
 print.powerscaling_details <- function(x, ...) {

@@ -29,7 +29,6 @@
 ##' @srrstats {G2.8} the `priorsense_data` class is constructed to
 ##'   contain all the required data for the primary functions in the
 ##'   package
-##' @srrstats {BS3.0} log_prior and log_lik restrictions specified
 
 ##' @examples
 ##' x <- example_powerscale_model()

@@ -86,9 +86,6 @@ powerscale.default <- function(x, component, alpha,
 ##' @srrstats {G2.4b} Input coercion with `as.numeric()`
 ##' @srrstats {G2.4c} Input coercion with `as.character()`
 ##' @srrstats {G2.4e} Input coercion
-##' @srrstats {BS2.6} alpha is checked to be greater than 0
-##' @srrstats {BS5.3, BS5.5} The pareto-k value is a diagnostic
-##'   indicating the reliability of the estimate, and is returned
 ##' @srrstats {EA2.6} vector inputs are coerced to numeric
 ##' @export
 powerscale.priorsense_data <- function(x,
