@@ -41,7 +41,7 @@
 #' @srrstats {G1.4} All functions are documented with roxygen2
 #' @srrstats {G1.2} Lifecycle statement is in the file CONTRIBUTING.md
 #' @srrstats {G1.4a} All internal (non-exported) functions are
-#'   documneted with roxyget2 along with a final `@noRd` tag
+#'   documneted with roxygen2 along with a final `@noRd` tag
 #' @srrstats {G2.10} Tabular inputs are converted to
 #'   `posterior::draws` objects and subsetting is handled through
 #'   `posterior` functions.
@@ -56,7 +56,6 @@
 #'   automatically calculated rather than based on unstandardized ad
 #'   hoc sensitivity analysis
 #' @srrstats {EA5.3} column summaries are handled by posterior package
-#'   which relies on tibble
 
 
 

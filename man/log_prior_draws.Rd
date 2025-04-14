@@ -20,8 +20,8 @@ log_prior_draws(x, ...)
 
 \item{...}{Arguments passed to individual methods.}
 
-\item{joint}{Logical indicating whether to return the joint log prior
-or array. Default is FALSE.}
+\item{joint}{Logical indicating whether to return the joint log
+prior or array. Default is FALSE.}
 
 \item{log_prior_name}{Name of parameter in Stan model
 corresponding to log prior, default is "lprior".}
@@ -30,7 +30,8 @@ corresponding to log prior, default is "lprior".}
 A draws_array object containing log_prior values.
 }
 \description{
-Extract log likelihood from fitted model and return as a draws object.
+Extract log likelihood from fitted model and return as a draws
+object.
 }
 \examples{
 ex <- example_powerscale_model()
