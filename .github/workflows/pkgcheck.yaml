@@ -20,6 +20,12 @@ jobs:
     permissions:
       issues: write
     steps:
-      - run: |
+      - name: set cmdstan path
+        run: |
           echo "CMDSTAN_PATH=${HOME}/.cmdstan" >> $GITHUB_ENV
+      - name: Install cmdstan
+        run: |
+          cmdstanr::check_cmdstan_toolchain(fix = TRUE)
+          cmdstanr::install_cmdstan(cores = 2)
+        shell: Rscript {0}
       - uses: ropensci-review-tools/pkgcheck-action@main
