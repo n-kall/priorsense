@@ -3,12 +3,17 @@
 ##' Create a data structure that contains all required data and
 ##' functions for priorsense
 ##' @name create-priorsense-data
-##' @param x an object for which the method is defined or an object coercible to a `posterior::draws` object
+##' @param x an object for which the method is defined or an object
+##'   coercible to a `posterior::draws` object
 ##' @param fit a model fit object (only used if x is not a fit object)
-##' @param log_prior_fn function to derive log prior from x or fit (if not NULL)
-##' @param log_lik_fn function to derive log likelihood from x or fit (if not NULL)
-##' @param log_prior draws object from log prior, must be numeric and not include NA, NaN, Inf, -Inf or be constant
-##' @param log_lik draws from log likelihood, must be numeric and not include NA, NaN, Inf, -Inf or be constant
+##' @param log_prior_fn function to derive log prior from x or fit (if
+##'   not NULL)
+##' @param log_lik_fn function to derive log likelihood from x or fit
+##'   (if not NULL)
+##' @param log_prior draws object from log prior, must be numeric and
+##'   not include NA, NaN, Inf, -Inf or be constant
+##' @param log_lik draws from log likelihood, must be numeric and not
+##'   include NA, NaN, Inf, -Inf or be constant
 ##' @param log_ratio_fn function for moment matching
 ##' @template log_comp_name
 ##' @param ... arguments passed to methods
@@ -19,10 +24,11 @@
 ##' @srrstats {G2.4b} Input coercion with `as.numeric()`
 ##' @srrstats {G2.4c} Input coercion with `as.character()`
 ##' @srrstats {G2.4e} Input coercion
-##' @srrstats {G2.7} x can be an object coercible to `posterior::draws` object which includes many tabular formats
+##' @srrstats {G2.7} x can be an object coercible to
+##'   `posterior::draws` object which includes many tabular formats
 ##' @srrstats {G2.8} the `priorsense_data` class is constructed to
-##'   contain all the required data for the primary functions in the package
-##' @srrstats {BS3.0} log_prior and log_lik restrictions specified
+##'   contain all the required data for the primary functions in the
+##'   package
 
 ##' @examples
 ##' x <- example_powerscale_model()

@@ -1,6 +1,7 @@
 ##' Extract log likelihood draws
 ##'
-##' Extract log likelihood from fitted model and return as a draws object.
+##' Extract log likelihood from fitted model and return as a draws
+##' object.
 ##'
 ##' @name log_lik_draws
 ##'
@@ -24,7 +25,8 @@ log_lik_draws <- function(x, ...) {
 
 ##' @rdname log_lik_draws
 ##' @export
-log_lik_draws.stanfit <- function(x, joint = FALSE, log_lik_name = "log_lik", ...) {
+log_lik_draws.stanfit <- function(x, joint = FALSE,
+                                  log_lik_name = "log_lik", ...) {
   log_lik <- as.array(x, pars = log_lik_name)
 
   log_lik <- posterior::as_draws_array(log_lik)
@@ -39,7 +41,8 @@ log_lik_draws.stanfit <- function(x, joint = FALSE, log_lik_name = "log_lik", ..
 
 ##' @rdname log_lik_draws
 ##' @export
-log_lik_draws.CmdStanFit <- function(x, joint = FALSE, log_lik_name = "log_lik", ...) {
+log_lik_draws.CmdStanFit <- function(x, joint = FALSE,
+                                     log_lik_name = "log_lik", ...) {
 
   log_lik <- x$draws(variables = log_lik_name)
 
@@ -53,7 +56,8 @@ log_lik_draws.CmdStanFit <- function(x, joint = FALSE, log_lik_name = "log_lik",
 
 ##' @rdname log_lik_draws
 ##' @export
-log_lik_draws.draws <- function(x, joint = FALSE, log_lik_name = "log_lik", ...) {
+log_lik_draws.draws <- function(x, joint = FALSE,
+                                log_lik_name = "log_lik", ...) {
 
   log_lik <- posterior::subset_draws(x, variable = log_lik_name)
 

@@ -26,7 +26,7 @@
 ##'   [option][base::options].
 ##' @return Table of sensitivity values for each specified variable.
 ##' @template powerscale_references
-##' @srrstats {BS5.2} output includes `powerscaling_details` object
+##' @srrstats {EA3.0} summary output of algorithm is provided
 ##' @examples
 ##' ex <- example_powerscale_model()
 ##' powerscale_sensitivity(ex$draws)
