@@ -35,7 +35,7 @@
 #'       If `FALSE` no input is required.
 #'
 #' @srrstats {G1.0} primary references are cited
-#' @srrstats {G1.1} specified that it is the first implementation
+#' @srrstats {G1.1} specified above that it is the first implementation
 #' @srrstats {G1.3} vignettes, documentation and linked papers explain
 #'   statistical terminology
 #' @srrstats {G1.4} All functions are documented with roxygen2
@@ -44,18 +44,17 @@
 #'   documneted with roxygen2 along with a final `@noRd` tag
 #' @srrstats {G2.10} Tabular inputs are converted to
 #'   `posterior::draws` objects and subsetting is handled through
-#'   `posterior` functions.
+#'   `posterior` functions
 #' @srrstats {EA1.0, EA1.1, EA1.2} target audience, data type and
 #'   target questions specified in README and vignette
 #' @srrstats {EA1.3} input types of each function are specified in
 #'   documentation
 #' @srrstats {EA2.0, EA2.1, EA2.2, EA2.2a, EA2.2b, EA2.3, EA2.4,
-#'   EA2.5} priorsense relies on the `posterior` package and base R
-#'   for data frames
+#'   EA2.5} priorsense relies on the `posterior` package for tabular data
 #' @srrstats {EA3.1} priorsense provides diagnostic value which is
 #'   automatically calculated rather than based on unstandardized ad
 #'   hoc sensitivity analysis
-#' @srrstats {EA5.3} column summaries are handled by posterior package
+#' @srrstats {EA5.3} column summaries are handled by `posterior` package
 
 
 
