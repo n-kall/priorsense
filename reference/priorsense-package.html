@@ -17,7 +17,7 @@ method described in Kallioinen et al. (2023)."><meta property="og:image" content
 
     <a class="navbar-brand me-2" href="../index.html">priorsense</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,14 +63,22 @@ method described in Kallioinen et al. (2023).</p>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The main diagnostic function provided by <span class="pkg">priorsense</span>
-is <code><a href="powerscale-sensitivity.html">powerscale_sensitivity</a></code>. Given a fitted model
-or draws object, it computes the powerscaling sensitivity
-diagnostic described in Kallioinen et al. (2023). It does so by
-perturbing the prior and likelihood and computing the effect on
-the posterior, without needing to refit the model (using Pareto
+is <code><a href="powerscale-sensitivity.html">powerscale_sensitivity</a></code>. Given a fitted model or
+draws object, it computes the powerscaling sensitivity diagnostic
+described in Kallioinen et al. (2023). It does so by perturbing
+the prior and likelihood and computing the effect on the
+posterior, without needing to refit the model (using Pareto
 smoothed importance sampling and importance weighted moment
 matching; Vehtari et al. 2022, Paananen et al. 2021).</p>
-    </div>
+<p>In addition, visual diagnostics are available by first using
+<code><a href="powerscale-overview.html">powerscale_sequence</a></code> to create a sequence of perturbed
+posteriors, and then a plot function such as
+<code><a href="powerscale_plots.html">powerscale_plot_ecdf</a></code> to visualise the change.</p>
+<p>The following global options are available:</p><ul><li><p><code>priorsense.plot_help_text</code>: If <code>TRUE</code> (the default), priorsense plots will include a title and explanatory text. If <code>FALSE</code> they will not.</p></li>
+<li><p><code>priorsense.plot_variables_per_page</code>: Number specifying the maximum number of variables to be plotted on one page of a plot.</p></li>
+<li><p><code>priorsense.plot_ask</code>: If <code>TRUE</code> (the default), when multiple pages are plotted input is required before each subsequent page is rendered.
+If <code>FALSE</code> no input is required.</p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p>Kallioinen, N., Paananen, T., Bürkner, P-C., Vehtari, A. (2023).

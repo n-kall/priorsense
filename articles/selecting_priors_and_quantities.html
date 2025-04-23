@@ -23,7 +23,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">priorsense</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -175,8 +175,12 @@ Likelihood selection: all data
 <span>    <span class="fu"><a href="../reference/predictions_as_draws.html">predictions_as_draws</a></span><span class="op">(</span></span>
 <span>      x <span class="op">=</span> <span class="va">fit_lin</span>,</span>
 <span>      predict_fn <span class="op">=</span> <span class="va">posterior_epred</span>,</span>
-<span>      prediction_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pred_minTemp"</span>, <span class="st">"pred_medianTemp"</span>, <span class="st">"pred_maxTemp"</span><span class="op">)</span>,</span>
-<span>      newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>Temp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">aq</span><span class="op">$</span><span class="va">Temp</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">aq</span><span class="op">$</span><span class="va">Temp</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">aq</span><span class="op">$</span><span class="va">Temp</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>      prediction_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pred_minTemp"</span>, <span class="st">"pred_medianTemp"</span>,</span>
+<span>                           <span class="st">"pred_maxTemp"</span><span class="op">)</span>,</span>
+<span>      newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>        Temp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">aq</span><span class="op">$</span><span class="va">Temp</span><span class="op">)</span>,</span>
+<span>                 <span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">aq</span><span class="op">$</span><span class="va">Temp</span><span class="op">)</span>,</span>
+<span>                 <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">aq</span><span class="op">$</span><span class="va">Temp</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
@@ -282,7 +286,11 @@ Likelihood selection: all data
 <span>        x <span class="op">=</span> <span class="va">fit_spline</span>,</span>
 <span>        predict_fn <span class="op">=</span> <span class="va">posterior_epred</span>,</span>
 <span>        prediction_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pred_minTemp"</span>, <span class="st">"pred_medianTemp"</span>, <span class="st">"pred_maxTemp"</span><span class="op">)</span>,</span>
-<span>      newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>Temp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">aq</span><span class="op">$</span><span class="va">Temp</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">aq</span><span class="op">$</span><span class="va">Temp</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">aq</span><span class="op">$</span><span class="va">Temp</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>        newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>          Temp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">aq</span><span class="op">$</span><span class="va">Temp</span><span class="op">)</span>,</span>
+<span>                   <span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">aq</span><span class="op">$</span><span class="va">Temp</span><span class="op">)</span>,</span>
+<span>                   <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">aq</span><span class="op">$</span><span class="va">Temp</span><span class="op">)</span><span class="op">)</span></span>
+<span>        <span class="op">)</span></span>
 <span>      <span class="op">)</span></span>
 <span>    <span class="op">)</span></span></code></pre></div>
 </div>
@@ -291,7 +299,8 @@ Likelihood selection: all data
 <div class="sourceCode cell-code" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/powerscale-sensitivity.html">powerscale_sensitivity</a></span><span class="op">(</span></span>
 <span>  <span class="va">post_draws_spline</span>,</span>
-<span>  variable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"R2"</span>, <span class="st">"logscore"</span>, <span class="st">"pred_minTemp"</span>, <span class="st">"pred_medianTemp"</span>, <span class="st">"pred_maxTemp"</span><span class="op">)</span></span>
+<span>  variable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"R2"</span>, <span class="st">"logscore"</span>, <span class="st">"pred_minTemp"</span>,</span>
+<span>               <span class="st">"pred_medianTemp"</span>, <span class="st">"pred_maxTemp"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Sensitivity based on cjs_dist
@@ -312,7 +321,8 @@ Likelihood selection: all data
 <div class="sourceCode cell-code" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/powerscale-sensitivity.html">powerscale_sensitivity</a></span><span class="op">(</span></span>
 <span>  <span class="va">post_draws_spline</span>,</span>
-<span>  variable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"R2"</span>, <span class="st">"logscore"</span>, <span class="st">"pred_minTemp"</span>, <span class="st">"pred_medianTemp"</span>, <span class="st">"pred_maxTemp"</span><span class="op">)</span>,</span>
+<span>  variable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"R2"</span>, <span class="st">"logscore"</span>, <span class="st">"pred_minTemp"</span>,</span>
+<span>               <span class="st">"pred_medianTemp"</span>, <span class="st">"pred_maxTemp"</span><span class="op">)</span>,</span>
 <span>  prior_selection <span class="op">=</span> <span class="st">"sds"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -333,7 +343,8 @@ Likelihood selection: all data
 <div class="sourceCode cell-code" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/powerscale-sensitivity.html">powerscale_sensitivity</a></span><span class="op">(</span></span>
 <span>  <span class="va">post_draws_spline</span>,</span>
-<span>  variable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"R2"</span>, <span class="st">"logscore"</span>, <span class="st">"pred_minTemp"</span>, <span class="st">"pred_minTemp"</span>, <span class="st">"pred_maxTemp"</span><span class="op">)</span>,</span>
+<span>  variable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"R2"</span>, <span class="st">"logscore"</span>, <span class="st">"pred_minTemp"</span>,</span>
+<span>               <span class="st">"pred_medianTemp"</span>, <span class="st">"pred_maxTemp"</span><span class="op">)</span>,</span>
 <span>  prior_selection <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"intercept"</span>, <span class="st">"sigma"</span>, <span class="st">"b"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -341,11 +352,12 @@ Likelihood selection: all data
 Prior selection: intercept, sigma, b
 Likelihood selection: all data
 
-     variable prior likelihood diagnosis
-           R2 0.007      0.242         -
-     logscore 0.008      0.422         -
- pred_minTemp 0.003      0.062         -
- pred_maxTemp 0.003      0.130         -</code></pre>
+        variable prior likelihood diagnosis
+              R2 0.007      0.242         -
+        logscore 0.008      0.422         -
+    pred_minTemp 0.003      0.062         -
+ pred_medianTemp 0.003      0.124         -
+    pred_maxTemp 0.003      0.130         -</code></pre>
 </div>
 </div>
 <p>We can visualise the effect of power-scaling the <code>sds</code> prior on the posterior <code>R2</code>, <code>logscore</code> and the predictions. Here we visualise the change in posterior mean and standard deviation.</p>
@@ -354,7 +366,8 @@ Likelihood selection: all data
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/powerscale_plots.html">powerscale_plot_quantities</a></span><span class="op">(</span></span>
 <span>  <span class="va">post_draws_spline</span>,</span>
 <span>  div_measure <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  variable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"R2"</span>, <span class="st">"logscore"</span>, <span class="st">"pred_minTemp"</span>, <span class="st">"pred_medianTemp"</span>, <span class="st">"pred_maxTemp"</span><span class="op">)</span>,</span>
+<span>  variable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"R2"</span>, <span class="st">"logscore"</span>, <span class="st">"pred_minTemp"</span>,</span>
+<span>               <span class="st">"pred_medianTemp"</span>, <span class="st">"pred_maxTemp"</span><span class="op">)</span>,</span>
 <span>  prior_selection <span class="op">=</span> <span class="st">"sds"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output-display">
