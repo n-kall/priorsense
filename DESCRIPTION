@@ -1,6 +1,6 @@
 Package: priorsense
 Title: Prior Diagnostics and Sensitivity Analysis
-Version: 1.1.0
+Version: 1.1.1.9000
 Authors@R: c(person("Noa", "Kallioinen", email = "noa.kallioinen@aalto.fi", role = c("aut", "cre", "cph")),
 	     person("Topi", "Paananen", role = c("aut")),
 	     person("Paul-Christian", "Bürkner", role = c("aut")),
@@ -26,16 +26,17 @@ Imports:
     tibble (>= 3.2.1),
     utils
 Suggests:
-    R2jags (>= 0.8),
     bayesplot (>= 1.11.1),
     brms (>= 2.22.0),
     cmdstanr (>= 0.8.1),
     iwmm (>= 0.0.1),
-    quarto,
     philentropy (>= 0.8.0),
+    quarto (>= 1.4.4),
+    R2jags (>= 0.8),
     rstan (>= 2.32.6),
     testthat (>= 3.0.0),
-    transport (>= 0.15)
+    transport (>= 0.15),
+    vdiffr (>= 1.0.8)
 Config/testthat/edition: 3
 Depends:
     R (>= 3.6.0)

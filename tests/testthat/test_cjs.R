@@ -10,6 +10,7 @@ test_that("cjs works with one weighted", {
   )
 })
 
+#' @srrstats {EA6.0e} numeric value tested
 test_that("cjs works with different x and y", {
   expect_equal(
     cjs_dist(x, y, NULL, NULL),

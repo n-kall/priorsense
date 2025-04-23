@@ -1,12 +1,13 @@
 ##' Extract log prior draws
 ##'
-##' Extract log likelihood from fitted model and return as a draws object.
+##' Extract log likelihood from fitted model and return as a draws
+##' object.
 ##'
 ##' @name log_prior_draws
 ##'
 ##' @param x Model fit or draws object.
-##' @param joint Logical indicating whether to return the joint log prior
-##'   or array. Default is FALSE.
+##' @param joint Logical indicating whether to return the joint log
+##'   prior or array. Default is FALSE.
 ##' @param log_prior_name Name of parameter in Stan model
 ##'   corresponding to log prior, default is "lprior".
 ##' @param ... Arguments passed to individual methods.
@@ -25,7 +26,8 @@ log_prior_draws <- function(x, ...) {
 
 ##' @rdname log_prior_draws
 ##' @export
-log_prior_draws.stanfit <- function(x, joint = FALSE, log_prior_name = "lprior", ...) {
+log_prior_draws.stanfit <- function(x, joint = FALSE,
+                                    log_prior_name = "lprior", ...) {
 
   if (!inherits(x, "stanfit"))
     stop("Not a stanfit object.", call. = FALSE)
@@ -53,7 +55,8 @@ log_prior_draws.stanfit <- function(x, joint = FALSE, log_prior_name = "lprior",
 
 ##' @rdname log_prior_draws
 ##' @export
-log_prior_draws.CmdStanFit <- function(x, joint = FALSE, log_prior_name = "lprior", ...) {
+log_prior_draws.CmdStanFit <- function(x, joint = FALSE,
+                                       log_prior_name = "lprior", ...) {
 
   checkmate::assert_logical(joint, len = 1)
   checkmate::assert_character(log_prior_name, len = 1)
@@ -77,12 +80,15 @@ log_prior_draws.CmdStanFit <- function(x, joint = FALSE, log_prior_name = "lprio
 
 ##' @rdname log_prior_draws
 ##' @export
-log_prior_draws.draws <- function(x, joint = FALSE, log_prior_name = "lprior", ...) {
+log_prior_draws.draws <- function(x, joint = FALSE,
+                                  log_prior_name = "lprior", ...) {
 
   checkmate::assert_logical(joint, len = 1)
   checkmate::assert_character(log_prior_name, len = 1)
   
-  log_prior <- posterior::subset_draws(x, variable = paste0("^", log_prior_name), regex = TRUE)
+  log_prior <- posterior::subset_draws(x,
+                                       variable = paste0("^", log_prior_name),
+                                       regex = TRUE)
 
   if (joint) {
     log_prior <- rowsums_draws(log_prior)

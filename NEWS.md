@@ -1,3 +1,7 @@
+priorsense 1.1.1.9000
+---
+
+
 priorsense 1.1.0
 ---
 + Add pagination of plots when there are many variables

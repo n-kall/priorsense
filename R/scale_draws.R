@@ -1,7 +1,9 @@
 ##' scale draws
 ##' @param draws draws object
-##' @param center boolean flag indicating whether or not to center draws
-##' @param scale boolean flag indicating whether or not to scale draws by standard deviation
+##' @param center boolean flag indicating whether or not to center
+##'   draws
+##' @param scale boolean flag indicating whether or not to scale draws
+##'   by standard deviation
 ##' @param ... unused
 ##' @return draws object with variables centered and/or scaled
 ##' @noRd

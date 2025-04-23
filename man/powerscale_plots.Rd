@@ -112,7 +112,8 @@ list of ggplot objects if there is more than one page) that can
 be further customized using the \strong{ggplot2} package.
 }
 \description{
-Various diagnostic plots for power-scaling sensitivity. See \strong{Plot Descriptions} below for details.
+Various diagnostic plots for power-scaling sensitivity. See \strong{Plot
+Descriptions} below for details.
 }
 \section{Plot Descriptions}{
  \describe{

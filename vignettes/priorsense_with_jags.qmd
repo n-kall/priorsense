@@ -69,7 +69,7 @@ Then the `priorsense` functions will work as usual.
 
 ```{r}
 powerscale_sensitivity(jags_fit)
-
+```
 
 ```{r}
 #| message: false
