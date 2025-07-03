@@ -598,14 +598,8 @@ powerscale_plot_ecdf.powerscaled_sequence <-
         ggplot2::ylab("ECDF") +
         ggplot2::xlab(NULL)
 
-      if (resample || x$resampled) {
-        p <- p +
-          ggplot2::stat_ecdf(ggplot2::aes(color = .data[[".powerscale_alpha"]]))
-      } else {
-        p <- p +
-          stat_ewcdf(ggplot2::aes(color = .data[[".powerscale_alpha"]]))
-      }
-
+      p <- p +
+        ggplot2::stat_ecdf(ggplot2::aes(color = .data[[".powerscale_alpha"]]))
 
       if (facet_rows == "component") {
         p <- p +

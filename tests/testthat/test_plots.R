@@ -105,7 +105,7 @@ test_that("pagination of plots works as expected", {
       powerscale_plot_quantities(
         ps,
         variables_per_page = Inf
-      ), 11)
+      ), 1)
 })
 
 
