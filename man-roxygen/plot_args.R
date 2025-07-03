@@ -27,4 +27,4 @@
 ##'   variables to show on each page of the plot. Default is 6. If
 ##'   `NULL` or `Inf`, all variables will be plotted on the same page.
 ##' @param ... Arguments passed to `powerscale_sequence` if `x` is not
-##'   of class `powerscaled_sequence`.
+##'   of class `powerscaled_sequence`, or passed to underlying plot methods.

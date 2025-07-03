@@ -6,6 +6,7 @@
 ##' @name powerscale_plots
 ##'
 ##' @template plot_args
+##' @param type Character specifying type of plot. Either "dens", "ecdf", or "quantities".
 ##' @template div_measure_arg
 ##' @template resample_arg
 ##' @template ggplot_return
@@ -1038,3 +1039,10 @@ plot.priorsense_plot <- function(x,
 
 ##' @exportS3Method
 print.priorsense_plot <- plot.priorsense_plot
+
+##' @exportS3Method
+##' @rdname powerscale_plots
+plot.powerscale_sequence <- function(x, type = c("dens", "ecdf", "quantities"), ...) {
+  type <- match.arg(type)
+  do.call(paste0("powerscale_plot_", type), args = list(x = x, ...))
+}

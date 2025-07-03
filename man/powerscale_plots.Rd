@@ -7,6 +7,7 @@
 \alias{powerscale_plot_ecdf.powerscaled_sequence}
 \alias{powerscale_plot_quantities}
 \alias{powerscale_plot_quantities.powerscaled_sequence}
+\alias{plot.powerscale_sequence}
 \title{Diagnostic plots for power-scaling sensitivity}
 \usage{
 powerscale_plot_dens(x, ...)
@@ -41,13 +42,15 @@ powerscale_plot_quantities(x, ...)
   variables_per_page = getOption("priorsense.plot_variables_per_page", 6),
   ...
 )
+
+\method{plot}{powerscale_sequence}(x, type = c("dens", "ecdf", "quantities"), ...)
 }
 \arguments{
 \item{x}{An object of class \code{powerscaled_sequence} or an object
 for which \code{powerscale_sequence} will first be run on.}
 
 \item{...}{Arguments passed to \code{powerscale_sequence} if \code{x} is not
-of class \code{powerscaled_sequence}.}
+of class \code{powerscaled_sequence}, or passed to underlying plot methods.}
 
 \item{variable}{A character vector of variable names. If \code{NULL}
 (the default) all variables will be plotted.}
@@ -105,6 +108,8 @@ standard error of the base quantity on the quantities plot.}
 \item{quantity_args}{Named list of further arguments passed to
 quantity functions. Passed as \code{.args} to
 \verb{[posterior::summarise_draws]}.}
+
+\item{type}{Character specifying type of plot. Either "dens", "ecdf", or "quantities".}
 }
 \value{
 A ggplot object (or a \code{priorsense_plot} object which is a
