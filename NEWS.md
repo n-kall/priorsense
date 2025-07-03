@@ -1,5 +1,6 @@
-priorsense 1.1.1.9000
+priorsense 1.1.1
 ---
++ Use new ggplot2 version
 
 
 priorsense 1.1.0
