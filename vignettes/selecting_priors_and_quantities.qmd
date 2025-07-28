@@ -110,18 +110,17 @@ This indicates that when we power-scale all the priors, the posterior
 of sigma is changing.
 
 Instead of looking at the parameter posteriors, we can check the
-sensitivity of predictions and predictive performance measures.
+sensitivity of predictions and measures of model fit.
 
 For predictions, we will focus on the predictions at the minimum,
 median and maximum temperatures from the data.
 
-For predictive performance measures, we will use the in-sample
-Bayesian R2 and log-score.
+For measures of model fit, we will use the in-sample
+Bayesian R2 and the joint log-likelihood.
 
-We first define a log-score function.
-
+We first define a joint log-likelihood function.
 ```{r}
-logscore <- function(x) {
+jointloglik <- function(x) {
   as.matrix(rowSums(log_lik(x)))
 }
 ```
@@ -144,8 +143,8 @@ post_draws_lin <- post_draws_lin |>
   bind_draws(
     predictions_as_draws(
       x = fit_lin,
-      predict_fn = logscore,
-      prediction_names = "logscore"
+      predict_fn = jointloglik,
+      prediction_names = "jointloglik"
     )
   ) |>
   bind_draws(
@@ -166,7 +165,7 @@ powerscale_sensitivity(
 )
 ```
 
-In this case, these predictive metrics do not appear to be sensitive
+In this case, these measures do not appear to be sensitive
 to power-scaling the prior. If we are focused on prediction, we might
 not be concerned about the potential prior-data conflict for the sigma
 parameter. However, as the model is simple and sigma is interpretable
@@ -245,8 +244,8 @@ post_draws_spline <- as_draws_df(fit_spline) |>
     bind_draws(
       predictions_as_draws(
         x = fit_spline,
-        predict_fn = logscore,
-        prediction_names = "logscore")
+        predict_fn = jointloglik,
+        prediction_names = "jointloglik")
     ) |>
     bind_draws(
       predictions_as_draws(
@@ -263,12 +262,12 @@ post_draws_spline <- as_draws_df(fit_spline) |>
 ```
 
 We start with power-scaling all priors, but only looking at the effect
-on `R2` and `logscore` and the predictions.
+on `R2` and `jointloglik` and the predictions.
 
 ```{r}
 powerscale_sensitivity(
   post_draws_spline,
-  variable = c("R2", "logscore", "pred_minTemp",
+  variable = c("R2", "jointloglik", "pred_minTemp",
                "pred_medianTemp", "pred_maxTemp")
 )
 ```
@@ -283,7 +282,7 @@ there.
 ```{r}
 powerscale_sensitivity(
   post_draws_spline,
-  variable = c("R2", "logscore", "pred_minTemp",
+  variable = c("R2", "jointloglik", "pred_minTemp",
                "pred_medianTemp", "pred_maxTemp"),
   prior_selection = "sds"
 )
@@ -296,14 +295,14 @@ argument.
 ```{r}
 powerscale_sensitivity(
   post_draws_spline,
-  variable = c("R2", "logscore", "pred_minTemp",
+  variable = c("R2", "jointloglik", "pred_minTemp",
                "pred_medianTemp", "pred_maxTemp"),
   prior_selection = c("intercept", "sigma", "b")
 )
 ```
 
 We can visualise the effect of power-scaling the `sds` prior on the
-posterior `R2`, `logscore` and the predictions. Here we visualise the
+posterior `R2`, `jointloglik` and the predictions. Here we visualise the
 change in posterior mean and standard deviation.
 
 ```{r}
@@ -314,14 +313,14 @@ change in posterior mean and standard deviation.
 powerscale_plot_quantities(
   post_draws_spline,
   div_measure = NULL,
-  variable = c("R2", "logscore", "pred_minTemp",
+  variable = c("R2", "jointloglik", "pred_minTemp",
                "pred_medianTemp", "pred_maxTemp"),
   prior_selection = "sds"
 )
 ```
 
 Although not extremely sensitive, there is a tendency for the
-in-sample predictive performance measures to decrease as the prior is
+model fit measures to decrease as the prior is
 strengthened. This is natural when strengthening the prior leads to
 less flexibility in the model. In this case larger `sds` implies more
 flexibility in the spline component of the model. If this is not what
