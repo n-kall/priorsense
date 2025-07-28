@@ -1,5 +1,5 @@
 pandoc: 3.1.11
-pkgdown: 2.1.2
+pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   powerscaling: powerscaling.html
@@ -7,7 +7,7 @@ articles:
   quantity_of_interest: quantity_of_interest.html
   selecting_priors_and_quantities: selecting_priors_and_quantities.html
   sensitivity_diagnostic: sensitivity_diagnostic.html
-last_built: 2025-05-23T10:28Z
+last_built: 2025-07-28T10:58Z
 urls:
   reference: https://n-kall.github.io/priorsense/reference
   article: https://n-kall.github.io/priorsense/articles

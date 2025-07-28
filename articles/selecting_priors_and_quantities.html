@@ -142,13 +142,13 @@ Likelihood selection: all data
 </div>
 </div>
 <p>This indicates that when we power-scale all the priors, the posterior of sigma is changing.</p>
-<p>Instead of looking at the parameter posteriors, we can check the sensitivity of predictions and predictive performance measures.</p>
+<p>Instead of looking at the parameter posteriors, we can check the sensitivity of predictions and measures of model fit.</p>
 <p>For predictions, we will focus on the predictions at the minimum, median and maximum temperatures from the data.</p>
-<p>For predictive performance measures, we will use the in-sample Bayesian R2 and log-score.</p>
-<p>We first define a log-score function.</p>
+<p>For measures of model fit, we will use the in-sample Bayesian R2 and the joint log-likelihood.</p>
+<p>We first define a joint log-likelihood function.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">logscore</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<code class="sourceCode R"><span><span class="va">jointloglik</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowSums</a></span><span class="op">(</span><span class="fu"><a href="https://mc-stan.org/rstantools/reference/log_lik.html" class="external-link">log_lik</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 </div>
@@ -167,8 +167,8 @@ Likelihood selection: all data
 <span>  <span class="fu"><a href="https://mc-stan.org/posterior/reference/bind_draws.html" class="external-link">bind_draws</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="../reference/predictions_as_draws.html">predictions_as_draws</a></span><span class="op">(</span></span>
 <span>      x <span class="op">=</span> <span class="va">fit_lin</span>,</span>
-<span>      predict_fn <span class="op">=</span> <span class="va">logscore</span>,</span>
-<span>      prediction_names <span class="op">=</span> <span class="st">"logscore"</span></span>
+<span>      predict_fn <span class="op">=</span> <span class="va">jointloglik</span>,</span>
+<span>      prediction_names <span class="op">=</span> <span class="st">"jointloglik"</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://mc-stan.org/posterior/reference/bind_draws.html" class="external-link">bind_draws</a></span><span class="op">(</span></span>
@@ -198,13 +198,13 @@ Likelihood selection: all data
            sigma 0.062      0.083 potential prior-data conflict
        Intercept 0.005      0.077                             -
               R2 0.005      0.120                             -
-        logscore 0.009      0.430                             -
+     jointloglik 0.009      0.430                             -
     pred_minTemp 0.006      0.088                             -
  pred_medianTemp 0.006      0.076                             -
     pred_maxTemp 0.007      0.090                             -</code></pre>
 </div>
 </div>
-<p>In this case, these predictive metrics do not appear to be sensitive to power-scaling the prior. If we are focused on prediction, we might not be concerned about the potential prior-data conflict for the sigma parameter. However, as the model is simple and sigma is interpretable we can continue investigation.</p>
+<p>In this case, these measures do not appear to be sensitive to power-scaling the prior. If we are focused on prediction, we might not be concerned about the potential prior-data conflict for the sigma parameter. However, as the model is simple and sigma is interpretable we can continue investigation.</p>
 <p>We can confirm that it is the sigma prior that is causing the possible prior-data conflict, by using the <code>prior_selection</code> argument and specifying the <code>tag</code> we defined when creating the priors.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="downlit sourceCode r">
@@ -223,7 +223,7 @@ Likelihood selection: all data
            sigma 0.062      0.083 potential prior-data conflict
        Intercept 0.005      0.077                             -
               R2 0.006      0.120                             -
-        logscore 0.009      0.430                             -
+     jointloglik 0.009      0.430                             -
     pred_minTemp 0.004      0.088                             -
  pred_medianTemp 0.006      0.076                             -
     pred_maxTemp 0.004      0.090                             -</code></pre>
@@ -278,8 +278,8 @@ Likelihood selection: all data
 <span>    <span class="fu"><a href="https://mc-stan.org/posterior/reference/bind_draws.html" class="external-link">bind_draws</a></span><span class="op">(</span></span>
 <span>      <span class="fu"><a href="../reference/predictions_as_draws.html">predictions_as_draws</a></span><span class="op">(</span></span>
 <span>        x <span class="op">=</span> <span class="va">fit_spline</span>,</span>
-<span>        predict_fn <span class="op">=</span> <span class="va">logscore</span>,</span>
-<span>        prediction_names <span class="op">=</span> <span class="st">"logscore"</span><span class="op">)</span></span>
+<span>        predict_fn <span class="op">=</span> <span class="va">jointloglik</span>,</span>
+<span>        prediction_names <span class="op">=</span> <span class="st">"jointloglik"</span><span class="op">)</span></span>
 <span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://mc-stan.org/posterior/reference/bind_draws.html" class="external-link">bind_draws</a></span><span class="op">(</span></span>
 <span>      <span class="fu"><a href="../reference/predictions_as_draws.html">predictions_as_draws</a></span><span class="op">(</span></span>
@@ -294,12 +294,12 @@ Likelihood selection: all data
 <span>      <span class="op">)</span></span>
 <span>    <span class="op">)</span></span></code></pre></div>
 </div>
-<p>We start with power-scaling all priors, but only looking at the effect on <code>R2</code> and <code>logscore</code> and the predictions.</p>
+<p>We start with power-scaling all priors, but only looking at the effect on <code>R2</code> and <code>jointloglik</code> and the predictions.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/powerscale-sensitivity.html">powerscale_sensitivity</a></span><span class="op">(</span></span>
 <span>  <span class="va">post_draws_spline</span>,</span>
-<span>  variable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"R2"</span>, <span class="st">"logscore"</span>, <span class="st">"pred_minTemp"</span>,</span>
+<span>  variable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"R2"</span>, <span class="st">"jointloglik"</span>, <span class="st">"pred_minTemp"</span>,</span>
 <span>               <span class="st">"pred_medianTemp"</span>, <span class="st">"pred_maxTemp"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -309,7 +309,7 @@ Likelihood selection: all data
 
         variable prior likelihood                     diagnosis
               R2 0.061      0.242 potential prior-data conflict
-        logscore 0.043      0.422                             -
+     jointloglik 0.043      0.422                             -
     pred_minTemp 0.030      0.062                             -
  pred_medianTemp 0.044      0.124                             -
     pred_maxTemp 0.037      0.130                             -</code></pre>
@@ -321,7 +321,7 @@ Likelihood selection: all data
 <div class="sourceCode cell-code" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/powerscale-sensitivity.html">powerscale_sensitivity</a></span><span class="op">(</span></span>
 <span>  <span class="va">post_draws_spline</span>,</span>
-<span>  variable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"R2"</span>, <span class="st">"logscore"</span>, <span class="st">"pred_minTemp"</span>,</span>
+<span>  variable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"R2"</span>, <span class="st">"jointloglik"</span>, <span class="st">"pred_minTemp"</span>,</span>
 <span>               <span class="st">"pred_medianTemp"</span>, <span class="st">"pred_maxTemp"</span><span class="op">)</span>,</span>
 <span>  prior_selection <span class="op">=</span> <span class="st">"sds"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -332,7 +332,7 @@ Likelihood selection: all data
 
         variable prior likelihood                     diagnosis
               R2 0.066      0.242 potential prior-data conflict
-        logscore 0.048      0.422                             -
+     jointloglik 0.048      0.422                             -
     pred_minTemp 0.029      0.062                             -
  pred_medianTemp 0.044      0.124                             -
     pred_maxTemp 0.037      0.130                             -</code></pre>
@@ -343,7 +343,7 @@ Likelihood selection: all data
 <div class="sourceCode cell-code" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/powerscale-sensitivity.html">powerscale_sensitivity</a></span><span class="op">(</span></span>
 <span>  <span class="va">post_draws_spline</span>,</span>
-<span>  variable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"R2"</span>, <span class="st">"logscore"</span>, <span class="st">"pred_minTemp"</span>,</span>
+<span>  variable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"R2"</span>, <span class="st">"jointloglik"</span>, <span class="st">"pred_minTemp"</span>,</span>
 <span>               <span class="st">"pred_medianTemp"</span>, <span class="st">"pred_maxTemp"</span><span class="op">)</span>,</span>
 <span>  prior_selection <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"intercept"</span>, <span class="st">"sigma"</span>, <span class="st">"b"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -354,19 +354,19 @@ Likelihood selection: all data
 
         variable prior likelihood diagnosis
               R2 0.007      0.242         -
-        logscore 0.008      0.422         -
+     jointloglik 0.008      0.422         -
     pred_minTemp 0.003      0.062         -
  pred_medianTemp 0.003      0.124         -
     pred_maxTemp 0.003      0.130         -</code></pre>
 </div>
 </div>
-<p>We can visualise the effect of power-scaling the <code>sds</code> prior on the posterior <code>R2</code>, <code>logscore</code> and the predictions. Here we visualise the change in posterior mean and standard deviation.</p>
+<p>We can visualise the effect of power-scaling the <code>sds</code> prior on the posterior <code>R2</code>, <code>jointloglik</code> and the predictions. Here we visualise the change in posterior mean and standard deviation.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/powerscale_plots.html">powerscale_plot_quantities</a></span><span class="op">(</span></span>
 <span>  <span class="va">post_draws_spline</span>,</span>
 <span>  div_measure <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  variable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"R2"</span>, <span class="st">"logscore"</span>, <span class="st">"pred_minTemp"</span>,</span>
+<span>  variable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"R2"</span>, <span class="st">"jointloglik"</span>, <span class="st">"pred_minTemp"</span>,</span>
 <span>               <span class="st">"pred_medianTemp"</span>, <span class="st">"pred_maxTemp"</span><span class="op">)</span>,</span>
 <span>  prior_selection <span class="op">=</span> <span class="st">"sds"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -377,7 +377,7 @@ Likelihood selection: all data
 </div>
 </div>
 </div>
-<p>Although not extremely sensitive, there is a tendency for the in-sample predictive performance measures to decrease as the prior is strengthened. This is natural when strengthening the prior leads to less flexibility in the model. In this case larger <code>sds</code> implies more flexibility in the spline component of the model. If this is not what we are intending with the choice of prior on <code>sds</code>, we may want to rethink and change it.</p>
+<p>Although not extremely sensitive, there is a tendency for the model fit measures to decrease as the prior is strengthened. This is natural when strengthening the prior leads to less flexibility in the model. In this case larger <code>sds</code> implies more flexibility in the spline component of the model. If this is not what we are intending with the choice of prior on <code>sds</code>, we may want to rethink and change it.</p>
 </section><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
@@ -470,7 +470,7 @@ Likelihood selection: all data
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer>
