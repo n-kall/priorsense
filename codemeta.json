@@ -8,13 +8,13 @@
   "codeRepository": "https://github.com/n-kall/priorsense",
   "issueTracker": "https://github.com/n-kall/priorsense/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.4.3 (2025-02-28)",
+  "runtimePlatform": "R version 4.5.1 (2025-06-13)",
   "provider": {
     "@id": "https://cran.r-project.org",
     "@type": "Organization",
@@ -70,19 +70,6 @@
   "softwareSuggestions": [
     {
       "@type": "SoftwareApplication",
-      "identifier": "R2jags",
-      "name": "R2jags",
-      "version": ">= 0.8",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=R2jags"
-    },
-    {
-      "@type": "SoftwareApplication",
       "identifier": "bayesplot",
       "name": "bayesplot",
       "version": ">= 1.11.1",
@@ -121,18 +108,6 @@
     },
     {
       "@type": "SoftwareApplication",
-      "identifier": "quarto",
-      "name": "quarto",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=quarto"
-    },
-    {
-      "@type": "SoftwareApplication",
       "identifier": "philentropy",
       "name": "philentropy",
       "version": ">= 0.8.0",
@@ -143,6 +118,32 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=philentropy"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "quarto",
+      "name": "quarto",
+      "version": ">= 1.4.4",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=quarto"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "R2jags",
+      "name": "R2jags",
+      "version": ">= 0.8",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=R2jags"
     },
     {
       "@type": "SoftwareApplication",
@@ -182,6 +183,19 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=transport"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "vdiffr",
+      "name": "vdiffr",
+      "version": ">= 1.0.8",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=vdiffr"
     }
   ],
   "softwareRequirements": {
@@ -215,7 +229,7 @@
       "@type": "SoftwareApplication",
       "identifier": "ggh4x",
       "name": "ggh4x",
-      "version": ">= 0.2.5",
+      "version": ">= 0.3.1",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -228,7 +242,7 @@
       "@type": "SoftwareApplication",
       "identifier": "ggplot2",
       "name": "ggplot2",
-      "version": ">= 3.5.1",
+      "version": ">= 4.0.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -313,7 +327,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "2273.618KB",
+  "fileSize": "3094.713KB",
   "citation": [
     {
       "@type": "ScholarlyArticle",
@@ -436,7 +450,7 @@
       }
     }
   ],
-  "releaseNotes": "https://github.com/n-kall/priorsense/blob/master/NEWS.md",
+  "releaseNotes": "https://github.com/n-kall/priorsense/blob/main/NEWS.md",
   "readme": "https://github.com/n-kall/priorsense/blob/main/README.md",
   "contIntegration": "https://github.com/n-kall/priorsense/actions",
   "developmentStatus": "https://lifecycle.r-lib.org/articles/stages.html#stable",
