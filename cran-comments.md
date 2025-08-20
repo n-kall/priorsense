@@ -1,10 +1,4 @@
-## Test environments
-
-* GitHub Actions (ubuntu-16.04): 3.3, 3.4, 3.5, oldrel, release, devel
-* GitHub Actions (windows): release
-* Github Actions (macOS): release, devel
-* win-builder: devel
-
-## R CMD check results
-
-0 errors | 0 warnings | 1 note
+This update fixes failures caused by an upstream breaking change and
+now requires ggplot2 (>= 4.0.0).  That version is currently in CRAN
+incoming; please process ggplot2 first. priorsense depends on it and
+is expected to fail checks until ggplot2 >= 4.0.0 is published.
