@@ -26,7 +26,7 @@ sensitivity analysis relies on Pareto smoothed importance sampling
 et al., 2021).
 
 Power-scaling sensitivity analysis and priorsense are described in
-Kallioinen et al. (2023).
+[Kallioinen et al. (2023)](https://doi.org/10.1007/s11222-023-10366-5).
 
 ## Installation
 
