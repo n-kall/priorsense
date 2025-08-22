@@ -1,6 +1,6 @@
-priorsense 1.1.1.9000
+priorsense 1.1.1
 ---
-
++ Maintain compatibility with ggplot2
 
 priorsense 1.1.0
 ---
