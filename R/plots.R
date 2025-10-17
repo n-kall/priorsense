@@ -935,7 +935,8 @@ powerscale_summary_plot <- function(x,
         ggplot2::aes(
           x = .data[[".powerscale_alpha"]],
           y = .data$value,
-          shape = .data$component
+          shape = .data$component,
+          colour = .data$pareto_k_value
         ),
         fill = "white",
         size = 3,
