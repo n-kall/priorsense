@@ -22,6 +22,7 @@ powerscale(x, ...)
   transform = NULL,
   prediction = NULL,
   variable = NULL,
+  variables = NULL,
   selection = NULL,
   log_prior_name = "lprior",
   log_lik_name = "log_lik",
@@ -38,6 +39,7 @@ powerscale(x, ...)
   transform = NULL,
   prediction = NULL,
   variable = NULL,
+  variables = NULL,
   selection = NULL,
   log_prior_name = "lprior",
   log_lik_name = "log_lik",
@@ -52,6 +54,7 @@ powerscale_sequence(x, ...)
   upper_alpha = 1/lower_alpha,
   length = 3,
   variable = NULL,
+  variables = NULL,
   component = c("prior", "likelihood"),
   moment_match = FALSE,
   k_threshold = 0.5,
@@ -71,6 +74,7 @@ powerscale_sequence(x, ...)
   upper_alpha = 1/lower_alpha,
   length = 3,
   variable = NULL,
+  variables = NULL,
   component = c("prior", "likelihood"),
   moment_match = FALSE,
   k_threshold = NULL,
@@ -114,6 +118,8 @@ draws_df of predictions to be appended to the posterior draws}
 
 \item{variable}{Vector of variable names to return estimated
 posterior draws for. If \code{NULL} all variables will be included.}
+
+\item{variables}{Alias of \code{variable}.}
 
 \item{selection}{Vector specifying partitions of component to be
 included in power-scaling. Default is NULL, which takes all

@@ -7,6 +7,7 @@
 \alias{powerscale_plot_ecdf.powerscaled_sequence}
 \alias{powerscale_plot_quantities}
 \alias{powerscale_plot_quantities.powerscaled_sequence}
+\alias{plot.powerscaled_sequence}
 \title{Diagnostic plots for power-scaling sensitivity}
 \usage{
 powerscale_plot_dens(x, ...)
@@ -16,6 +17,7 @@ powerscale_plot_ecdf(x, ...)
 \method{powerscale_plot_ecdf}{powerscaled_sequence}(
   x,
   variable = NULL,
+  variables = NULL,
   resample = FALSE,
   length = 3,
   facet_rows = "component",
@@ -30,6 +32,7 @@ powerscale_plot_quantities(x, ...)
 \method{powerscale_plot_quantities}{powerscaled_sequence}(
   x,
   variable = NULL,
+  variables = NULL,
   quantity = c("mean", "sd"),
   div_measure = "cjs_dist",
   resample = FALSE,
@@ -41,6 +44,8 @@ powerscale_plot_quantities(x, ...)
   variables_per_page = getOption("priorsense.plot_variables_per_page", 6),
   ...
 )
+
+\method{plot}{powerscaled_sequence}(x, type = c("dens", "ecdf", "quantities"), ...)
 }
 \arguments{
 \item{x}{An object of class \code{powerscaled_sequence} or an object
@@ -51,6 +56,8 @@ of class \code{powerscaled_sequence}.}
 
 \item{variable}{A character vector of variable names. If \code{NULL}
 (the default) all variables will be plotted.}
+
+\item{variables}{Alias of \code{variable}.}
 
 \item{resample}{Logical; Indicate whether or not draws should be
 resampled based on calculated importance weights.}
@@ -105,6 +112,9 @@ standard error of the base quantity on the quantities plot.}
 \item{quantity_args}{Named list of further arguments passed to
 quantity functions. Passed as \code{.args} to
 \verb{[posterior::summarise_draws]}.}
+
+\item{type}{Character specifying type of plot, one of "dens",
+"ecdf",or "quantities".}
 }
 \value{
 A ggplot object (or a \code{priorsense_plot} object which is a

@@ -17,7 +17,7 @@ Imports:
     checkmate (>= 2.3.1),
     ggdist (>= 3.3.2),
     ggh4x (>= 0.2.5),
-    ggplot2 (>= 3.5.1),
+    ggplot2 (>= 4.0.0),
     grDevices (>= 3.6.2),
     matrixStats (>= 1.3.0),
     posterior (>= 1.6.0),
@@ -39,7 +39,7 @@ Suggests:
     vdiffr (>= 1.0.8)
 Config/testthat/edition: 3
 Depends:
-    R (>= 3.6.0)
+    R (>= 4.1.0)
 VignetteBuilder: quarto
 Additional_repositories:
     https://topipa.r-universe.dev,
