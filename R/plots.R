@@ -8,6 +8,8 @@
 ##' @template plot_args
 ##' @template div_measure_arg
 ##' @template resample_arg
+##' @param type Character specifying type of plot, one of "dens",
+##'   "ecdf",or "quantities".
 ##' @template ggplot_return
 ##' @section Plot Descriptions: \describe{
 ##'   \item{`powerscale_plot_dens()`}{ Kernel density plot of
@@ -18,7 +20,7 @@
 ##'   \item{`powerscale_plot_quantities()`}{ Plot of posterior
 ##'   quantities with respect to power-scaling.} }
 ##'
-##' @srrstats {EA5.0} 
+##' @srrstats {EA5.0}
 ##' @srrstats {EA5.0a} default typefaces in ggplot2 are accessible
 ##' @srrstats {EA5.0b} default color scheme chosen to be accessible
 ##' @srrstats {EA5.4} values are rounded before plotting
@@ -34,6 +36,7 @@ NULL
 ##' prepare plot data
 ##' @param x priorsense_data object
 ##' @param variable character vector specifying variables to plot
+##' @param variables alias of `variable`.
 ##' @param resample boolean flag specifying whether to resample
 ##' @param ... unused
 ##' @return data frame with data for plotting
@@ -106,11 +109,11 @@ prepare_plot_data <- function(x, variable, resample, ...) {
 
       likelihood_draws[[i]][[".powerscale_alpha"]] <-
         likelihood_ps_details$alpha
-      
+
       likelihood_draws[[i]]$component <- "likelihood"
-      
+
       likelihood_draws[[i]]$pareto_k <- likelihood_ps_details$diagnostics$khat
-      
+
       likelihood_draws[[i]]$pareto_k_threshold <-
         likelihood_ps_details$diagnostics$khat_threshold
 
@@ -251,6 +254,7 @@ powerscale_plot_dens <- function(x, ...) {
 powerscale_plot_dens.default <-
   function(x,
            variable = NULL,
+           variables = NULL,
            length = 3,
            resample = FALSE,
            intervals = c(0.5, 0.8, 0.95),
@@ -265,6 +269,7 @@ powerscale_plot_dens.default <-
     powerscale_plot_dens(
       ps,
       variable = variable,
+      variables = variables,
       length = length,
       resample = resample,
       intervals = intervals,
@@ -281,6 +286,7 @@ powerscale_plot_dens.default <-
 powerscale_plot_dens.powerscaled_sequence <-
   function(x,
            variable = NULL,
+           variables = NULL,
            resample = FALSE,
            intervals = c(0.5, 0.8, 0.95),
            trim = NULL,
@@ -294,6 +300,16 @@ powerscale_plot_dens.powerscaled_sequence <-
            ) {
 
     # input checks
+      if (!is.null(variable) && !is.null(variables)) {
+   checkmate::assert(
+      if (identical(variable, variables)) TRUE else "must be identical if both provided",
+      .var.name = "`variable` and `variables`"
+      )
+  }
+  if (is.null(variable)) {
+    variable <- variables
+  }
+
     checkmate::assert_character(variable, null.ok = TRUE)
     checkmate::assert_logical(resample, len = 1)
     checkmate::assert_logical(help_text, len = 1)
@@ -505,6 +521,7 @@ powerscale_plot_ecdf <- function(x, ...) {
 powerscale_plot_ecdf.default <-
   function(x,
            variable = NULL,
+           variables = NULL,
            length = 3,
            resample = FALSE,
            facet_rows = "component",
@@ -519,6 +536,7 @@ powerscale_plot_ecdf.default <-
     powerscale_plot_ecdf(
       ps,
       variable = variable,
+      variables = variables,
       resample = resample,
       facet_rows = facet_rows,
       help_text = help_text,
@@ -532,6 +550,7 @@ powerscale_plot_ecdf.default <-
 powerscale_plot_ecdf.powerscaled_sequence <-
   function(x,
            variable = NULL,
+           variables = NULL,
            resample = FALSE,
            length = 3,
            facet_rows = "component",
@@ -544,6 +563,16 @@ powerscale_plot_ecdf.powerscaled_sequence <-
            ...) {
 
     # input checks
+      if (!is.null(variable) && !is.null(variables)) {
+   checkmate::assert(
+      if (identical(variable, variables)) TRUE else "must be identical if both provided",
+      .var.name = "`variable` and `variables`"
+      )
+  }
+  if (is.null(variable)) {
+    variable <- variables
+  }
+
     checkmate::assert_character(variable, null.ok = TRUE)
     checkmate::assert_logical(resample, len = 1)
     checkmate::assert_logical(help_text, len = 1)
@@ -598,13 +627,7 @@ powerscale_plot_ecdf.powerscaled_sequence <-
         ggplot2::ylab("ECDF") +
         ggplot2::xlab(NULL)
 
-      if (resample || x$resampled) {
-        p <- p +
-          ggplot2::stat_ecdf(ggplot2::aes(color = .data[[".powerscale_alpha"]]))
-      } else {
-        p <- p +
-          stat_ewcdf(ggplot2::aes(color = .data[[".powerscale_alpha"]]))
-      }
+        p <- p + ggplot2::stat_ecdf(ggplot2::aes(color = .data[[".powerscale_alpha"]]))
 
 
       if (facet_rows == "component") {
@@ -686,6 +709,7 @@ powerscale_plot_quantities <- function(x, ...) {
 ##' @export
 powerscale_plot_quantities.default <-
   function(x, variable = NULL,
+           variables = NULL,
            quantity = c("mean", "sd"),
            div_measure = "cjs_dist",
            length = 11,
@@ -703,10 +727,11 @@ powerscale_plot_quantities.default <-
            ...) {
 
     ps <- powerscale_sequence(x, length = length, ...)
-    
+
     powerscale_plot_quantities(
       ps,
       variable = variable,
+      variables = variables,
       quantity = quantity,
       div_measure = div_measure,
       resample = resample,
@@ -723,6 +748,7 @@ powerscale_plot_quantities.default <-
 ##' @export
 powerscale_plot_quantities.powerscaled_sequence <-
   function(x, variable = NULL,
+           variables = NULL,
            quantity = c("mean", "sd"),
            div_measure = "cjs_dist",
            resample = FALSE,
@@ -736,6 +762,16 @@ powerscale_plot_quantities.powerscaled_sequence <-
              6
            ),
            ...) {
+
+      if (!is.null(variable) && !is.null(variables)) {
+   checkmate::assert(
+      if (identical(variable, variables)) TRUE else "must be identical if both provided",
+      .var.name = "`variable` and `variables`"
+      )
+  }
+  if (is.null(variable)) {
+    variable <- variables
+  }
 
     checkmate::assertCharacter(variable, null.ok = TRUE)
     checkmate::assertCharacter(quantity)
@@ -935,7 +971,8 @@ powerscale_summary_plot <- function(x,
         ggplot2::aes(
           x = .data[[".powerscale_alpha"]],
           y = .data$value,
-          shape = .data$component
+          shape = .data$component,
+          colour = .data$pareto_k_value
         ),
         fill = "white",
         size = 3,
@@ -986,7 +1023,7 @@ powerscale_summary_plot <- function(x,
             "Horizontal lines indicate low sensitivity.\n",
             "Steeper lines indicate greater sensitivity.\n",
             "Estimates with high Pareto k (highlighted) may be inaccurate.")
-          
+
         )
     }
 
@@ -1044,3 +1081,11 @@ plot.priorsense_plot <- function(x,
 
 ##' @exportS3Method
 print.priorsense_plot <- plot.priorsense_plot
+
+
+##' @exportS3Method
+##' @rdname powerscale_plots
+plot.powerscaled_sequence <- function(x, type = c("dens", "ecdf", "quantities"), ...) {
+  type <- match.arg(type)
+  do.call(paste0("powerscale_plot_", type), args = list(x = x, ...))
+}

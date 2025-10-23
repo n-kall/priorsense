@@ -10,6 +10,7 @@
 ##' @template alpha_args
 ##' @param variable Vector of variable names to return estimated
 ##'   posterior draws for. If `NULL` all variables will be included.
+##' @param variables Alias of `variable`.
 ##' @param component Component to be power-scaled (either "prior" or
 ##'   "likelihood"). For powerscale_sequence, this can be both "prior"
 ##'   and "likelihood".
@@ -51,6 +52,7 @@ powerscale.default <- function(x, component, alpha,
                                transform = NULL,
                                prediction = NULL,
                                variable = NULL,
+                               variables = NULL,
                                selection = NULL,
                                log_prior_name = "lprior",
                                log_lik_name = "log_lik",
@@ -72,6 +74,7 @@ powerscale.default <- function(x, component, alpha,
     transform = transform,
     prediction = prediction,
     variable = variable,
+    variables = variables,
     selection = selection
   )
 }
@@ -97,6 +100,7 @@ powerscale.priorsense_data <- function(x,
                                        transform = NULL,
                                        prediction = NULL,
                                        variable = NULL,
+                                       variables = NULL,
                                        selection = NULL,
                                        log_prior_name = "lprior",
                                        log_lik_name = "log_lik",
@@ -119,12 +123,25 @@ powerscale.priorsense_data <- function(x,
   if (!is.null(variable)) {
     variable <- as.character(variable)
   }
+  if (!is.null(variables)) {
+    variables <- as.character(variables)
+  }
 
   log_prior_name <- as.character(log_prior_name)
   log_lik_name <- as.character(log_lik_name)
 
 
   # input checks
+  if (!is.null(variable) && !is.null(variables)) {
+   checkmate::assert(
+      if (identical(variable, variables)) TRUE else "must be identical if both provided",
+      .var.name = "`variable` and `variables`"
+      )
+  }
+  if (is.null(variable)) {
+    variable <- variables
+  }
+
   checkmate::assertNumber(alpha, lower = 0)
   checkmate::assertChoice(component, c("prior", "likelihood"))
   checkmate::assertFlag(moment_match)
@@ -257,7 +274,7 @@ powerscale.priorsense_data <- function(x,
           "available from https://github.com/topipa/iwmm"
         )
       )
-        
+
       # perform moment matching if specified
       # calculate the importance weights
       if (component == "prior") {

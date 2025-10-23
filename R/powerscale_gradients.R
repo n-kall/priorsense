@@ -61,7 +61,7 @@ powerscale_gradients.priorsense_data <- function(x,
                                          div_measure = "cjs_dist",
                                          measure_args = list(),
                                          moment_match = FALSE,
-                                         k_threshold = 0.5,
+                                         k_threshold = NULL,
                                          resample = FALSE,
                                          transform = NULL,
                                          prediction = NULL,
@@ -70,7 +70,7 @@ powerscale_gradients.priorsense_data <- function(x,
                                          likelihood_selection = NULL,
                                          ...) {
 
-  # input coerction
+  # input coercion
   component <- tolower(as.character(component))
   lower_alpha <- as.numeric(lower_alpha)
   upper_alpha <- as.numeric(upper_alpha)
@@ -99,7 +99,7 @@ powerscale_gradients.priorsense_data <- function(x,
   checkmate::assertList(measure_args)
   checkmate::assertSubset(component, c("prior", "likelihood"))
   checkmate::assertCharacter(transform, null.ok = TRUE)
-  checkmate::assertNumber(k_threshold)
+  checkmate::assertNumber(k_threshold, null.ok = TRUE)
   checkmate::assertFlag(resample)
   checkmate::assertFunction(prediction, null.ok = TRUE)
   checkmate::assertFlag(scale)

@@ -11,6 +11,7 @@ powerscale_sequence.default <- function(x,
                                         lower_alpha = 0.8,
                                         upper_alpha = 1 / lower_alpha,
                                         length = 3, variable = NULL,
+                                        variables = NULL,
                                         component = c("prior", "likelihood"),
                                         moment_match = FALSE,
                                         k_threshold = 0.5,
@@ -29,6 +30,7 @@ powerscale_sequence.default <- function(x,
     upper_alpha = upper_alpha,
     length = length,
     variable = variable,
+    variables = variables,
     component = component,
     moment_match = moment_match,
     k_threshold = k_threshold,
@@ -48,6 +50,7 @@ powerscale_sequence.default <- function(x,
 powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
                                                 upper_alpha = 1 / lower_alpha,
                                                 length = 3, variable = NULL,
+                                                variables = NULL,
                                                 component = c("prior", "likelihood"),
                                                 moment_match = FALSE,
                                                 k_threshold = NULL,
@@ -81,6 +84,16 @@ powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
 
 
   # input checks
+    if (!is.null(variable) && !is.null(variables)) {
+   checkmate::assert(
+      if (identical(variable, variables)) TRUE else "must be identical if both provided",
+      .var.name = "`variable` and `variables`"
+      )
+  }
+  if (is.null(variable)) {
+    variable <- variables
+  }
+
   checkmate::assertFunction(prediction, null.ok = TRUE)
   checkmate::assertSubset(component, c("prior", "likelihood"))
   checkmate::assertNumber(lower_alpha)

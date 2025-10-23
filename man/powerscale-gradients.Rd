@@ -26,7 +26,7 @@ powerscale_gradients(x, ...)
   div_measure = "cjs_dist",
   measure_args = list(),
   moment_match = FALSE,
-  k_threshold = 0.5,
+  k_threshold = NULL,
   resample = FALSE,
   transform = NULL,
   prediction = NULL,

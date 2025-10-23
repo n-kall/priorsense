@@ -101,19 +101,11 @@ test_that("pagination of plots works as expected", {
         variables_per_page = 2 
       ), 9)
 
-    if (packageVersion("ggplot2") >= "4.0.0") {
     expect_length(
       powerscale_plot_quantities(
         ps,
         variables_per_page = Inf
       ), 1)
-    } else {
-      expect_length(
-        powerscale_plot_quantities(
-          ps,
-          variables_per_page = Inf
-        ), 11)
-    }
 })
 
 

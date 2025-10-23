@@ -1,3 +1,9 @@
+priorsense 1.1.1.9000
+---
++ Allow either `variable` or `variables` to be accepted to subset
++ Fix issue with plotting of high Pareto-k values in quantities plot
++ Use new weighted ecdf from ggplot2, which fixes issue with previous implementation
+
 priorsense 1.1.1
 ---
 + Maintain compatibility with ggplot2
