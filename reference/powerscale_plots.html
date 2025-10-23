@@ -9,7 +9,7 @@ Descriptions below for details."><meta property="og:image" content="https://n-ka
 
     <a class="navbar-brand me-2" href="../index.html">priorsense</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,6 +57,7 @@ Descriptions</strong> below for details.</p>
 <span><span class="fu">powerscale_plot_ecdf</span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
 <span>  variable <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  variables <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  resample <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  length <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  facet_rows <span class="op">=</span> <span class="st">"component"</span>,</span>
@@ -72,6 +73,7 @@ Descriptions</strong> below for details.</p>
 <span><span class="fu">powerscale_plot_quantities</span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
 <span>  variable <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  variables <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  quantity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"sd"</span><span class="op">)</span>,</span>
 <span>  div_measure <span class="op">=</span> <span class="st">"cjs_dist"</span>,</span>
 <span>  resample <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -82,7 +84,10 @@ Descriptions</strong> below for details.</p>
 <span>  colors <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  variables_per_page <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"priorsense.plot_variables_per_page"</span>, <span class="fl">6</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'powerscaled_sequence'</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"dens"</span>, <span class="st">"ecdf"</span>, <span class="st">"quantities"</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -102,6 +107,10 @@ of class <code>powerscaled_sequence</code>.</p></dd>
 <dt id="arg-variable">variable<a class="anchor" aria-label="anchor" href="#arg-variable"></a></dt>
 <dd><p>A character vector of variable names. If <code>NULL</code>
 (the default) all variables will be plotted.</p></dd>
+
+
+<dt id="arg-variables">variables<a class="anchor" aria-label="anchor" href="#arg-variables"></a></dt>
+<dd><p>Alias of <code>variable</code>.</p></dd>
 
 
 <dt id="arg-resample">resample<a class="anchor" aria-label="anchor" href="#arg-resample"></a></dt>
@@ -176,6 +185,11 @@ standard error of the base quantity on the quantities plot.</p></dd>
 <dd><p>Named list of further arguments passed to
 quantity functions. Passed as <code>.args</code> to
 <code>[posterior::summarise_draws]</code>.</p></dd>
+
+
+<dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
+<dd><p>Character specifying type of plot, one of "dens",
+"ecdf",or "quantities".</p></dd>
 
 </dl></div>
     <div class="section level2">

@@ -11,7 +11,7 @@ moment matching)."><meta property="og:image" content="https://n-kall.github.io/p
 
     <a class="navbar-brand me-2" href="../index.html">priorsense</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,6 +65,7 @@ moment matching).</p>
 <span>  transform <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  prediction <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  variable <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  variables <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  selection <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  log_prior_name <span class="op">=</span> <span class="st">"lprior"</span>,</span>
 <span>  log_lik_name <span class="op">=</span> <span class="st">"log_lik"</span>,</span>
@@ -82,6 +83,7 @@ moment matching).</p>
 <span>  transform <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  prediction <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  variable <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  variables <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  selection <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  log_prior_name <span class="op">=</span> <span class="st">"lprior"</span>,</span>
 <span>  log_lik_name <span class="op">=</span> <span class="st">"log_lik"</span>,</span>
@@ -97,6 +99,7 @@ moment matching).</p>
 <span>  upper_alpha <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="va">lower_alpha</span>,</span>
 <span>  length <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  variable <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  variables <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  component <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"prior"</span>, <span class="st">"likelihood"</span><span class="op">)</span>,</span>
 <span>  moment_match <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  k_threshold <span class="op">=</span> <span class="fl">0.5</span>,</span>
@@ -117,6 +120,7 @@ moment matching).</p>
 <span>  upper_alpha <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="va">lower_alpha</span>,</span>
 <span>  length <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  variable <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  variables <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  component <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"prior"</span>, <span class="st">"likelihood"</span><span class="op">)</span>,</span>
 <span>  moment_match <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  k_threshold <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -183,6 +187,10 @@ draws_df of predictions to be appended to the posterior draws</p></dd>
 <dt id="arg-variable">variable<a class="anchor" aria-label="anchor" href="#arg-variable"></a></dt>
 <dd><p>Vector of variable names to return estimated
 posterior draws for. If <code>NULL</code> all variables will be included.</p></dd>
+
+
+<dt id="arg-variables">variables<a class="anchor" aria-label="anchor" href="#arg-variables"></a></dt>
+<dd><p>Alias of <code>variable</code>.</p></dd>
 
 
 <dt id="arg-selection">selection<a class="anchor" aria-label="anchor" href="#arg-selection"></a></dt>
