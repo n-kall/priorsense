@@ -78,6 +78,10 @@ get_powerscaling_details <- function(x) {
   attr(x, "powerscaling")
 }
 
+get_exptilting_details <- function(x) {
+  attr(x, "exptilting")
+}
+
 ##' is constant
 ##' @param x numeric vector to check for constant
 ##' @param tol tolerance
