@@ -27,7 +27,7 @@ Imports:
     utils
 Suggests:
     bayesplot (>= 1.11.1),
-    brms (>= 2.22.0),
+    brms (>= 2.23.0),
     cmdstanr (>= 0.8.1),
     iwmm (>= 0.0.1),
     philentropy (>= 0.8.0),
