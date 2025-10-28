@@ -1,4 +1,4 @@
-priorsense 1.1.1.9000
+priorsense 1.2.0
 ---
 + Allow either `variable` or `variables` to be accepted to subset
 + Fix issue with plotting of high Pareto-k values in quantities plot

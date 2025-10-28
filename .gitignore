@@ -13,3 +13,4 @@ docs
 /..Rcheck/
 README.html
 **/.quarto/
+revdep/
