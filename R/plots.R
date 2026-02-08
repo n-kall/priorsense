@@ -281,6 +281,13 @@ powerscale_plot_dens.default <-
     )
   }
 
+draw_key_path2 <- function(data, params, size) {
+  grid::segmentsGrob(
+    x0 = 0.1, x1 = 0.9,
+    y0 = 0.5, y1 = 0.5,
+    gp = grid::gpar(col = data$colour)
+  )
+}
 
 ##' @export
 powerscale_plot_dens.powerscaled_sequence <-
@@ -374,21 +381,12 @@ powerscale_plot_dens.powerscaled_sequence <-
       # one with fill as NA) to get the legend correct see
       # https://github.com/mjskay/ggdist/issues/134
       plot <- plot +
-        ggdist::stat_slab(
-          fill = "black",
-          alpha = 0,
-          linewidth = 0.5,
-          trim = FALSE,
-          normalize = "xy",
-          key_glyph = "smooth"
-        ) +
-        ggdist::stat_slab(
+          ggdist::stat_slab(
           fill = NA,
-          alpha = 1,
           linewidth = 0.5,
           trim = FALSE,
           normalize = "xy",
-          key_glyph = "smooth"
+          key_glyph = draw_key_path2
         ) +
         ggplot2::xlab(NULL) +
         ggplot2::ylab(NULL)
@@ -400,10 +398,9 @@ powerscale_plot_dens.powerscaled_sequence <-
             ggplot2::aes(y = .data$interval_y),
             .width = intervals,
             fill = NA,
-            alpha = 1,
             trim = FALSE,
             normalize = "xy",
-            key_glyph = "smooth"
+            show.legend = FALSE
           )
       }
 
