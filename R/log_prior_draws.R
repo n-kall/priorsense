@@ -65,7 +65,7 @@ log_prior_draws.CmdStanFit <- function(x, joint = FALSE,
   
   log_prior <- posterior::subset_draws(
     all_draws,
-    variables = paste0("^", log_prior_name),
+    variable = paste0("^", log_prior_name),
     regex = TRUE
   )
 
