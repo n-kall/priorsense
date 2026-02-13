@@ -1,0 +1,147 @@
+# Power-scaling sensitivity analysis
+
+## Introduction
+
+priorsense is a package for prior diagnostics in Bayesian models. It
+currently implements power-scaling sensitivity analysis but may be
+extended in the future to include other diagnostics.
+
+## Power-scaling sensitivity analysis
+
+Power-scaling sensitivity analysis tries to determine how small changes
+to the prior or likelihood affect the posterior. This is done by
+power-scaling the prior or likelihood by raising it to some
+$\alpha > 0$.
+
+- For prior power-scaling:
+  $p(\theta \mid y) \propto p(\theta)^{\alpha}p(y \mid \theta)$
+- For likelihood power-scaling:
+  $p(\theta \mid y) \propto p(\theta)p(y \mid \theta)^{\alpha}$
+
+In priorsense, this is done in a computationally efficient manner using
+Pareto-smoothed importance sampling (and optionally importance weighted
+moment matching) to estimate properties of these perturbed posteriors.
+Sensitivity can then be quantified by considering how much the perturbed
+posteriors differ from the base posterior.
+
+### Example power-scaling sensitivity analysis
+
+``` r
+library(priorsense)
+library(rstan)
+```
+
+Consider the following model (available via
+`example_powerscale_model("univariate_normal")`:
+
+$$y \sim \text{normal}(\mu,\sigma)$$$$\mu \sim \text{normal}(0,1)$$$$\sigma \sim \text{normal}^{+}(0,2.5)$$
+
+We have 100 data points for $y$ We first fit the model using Stan:
+
+``` stan
+data {
+  int<lower=1> N;
+  array[N] real y;
+}
+parameters {
+  real mu;
+  real<lower=0> sigma;
+}
+model {
+  // priors
+  target += normal_lpdf(mu | 0, 1);
+  target += normal_lpdf(sigma | 0, 2.5);
+  // likelihood
+  target += normal_lpdf(y | mu, sigma);
+}
+generated quantities {
+  vector[N] log_lik;
+  real lprior;
+  // log likelihood
+  for (n in 1:N) log_lik[n] =  normal_lpdf(y[n] | mu, sigma);
+  // joint log prior
+  lprior = normal_lpdf(mu | 0, 1) + normal_lpdf(sigma | 0, 2.5);
+}
+```
+
+``` r
+normal_model <- example_powerscale_model("univariate_normal")
+
+fit <- stan(
+  model_code = normal_model$model_code,
+  data = normal_model$data,
+  refresh = FALSE,
+  seed = 123
+)
+```
+
+Next, we check the sensitivity of the prior and likelihood to
+power-scaling. The sensitivity values shown below are an indication of
+how much the posterior changes with respect to power-scaling. Larger
+values indicate more sensitivity. By default these values are derived
+from the gradient of the Cumulative Jensen-Shannon distance between the
+base posterior and posteriors resulting from power-scaling.
+
+``` r
+powerscale_sensitivity(fit, variable = c("mu", "sigma"))
+```
+
+    Sensitivity based on cjs_dist
+    Prior selection: all priors
+    Likelihood selection: all data
+
+     variable prior likelihood                     diagnosis
+           mu 0.433      0.641 potential prior-data conflict
+        sigma 0.360      0.674 potential prior-data conflict
+
+Here, we see that the pattern of sensitivity indicates that there is
+prior-data conflict for $\mu$. We follow up with visualisation.
+
+We first create a `powerscaled_sequence` object, which contains
+estimates of posteriors for a range of power-scaling amounts.
+
+There are three plots currently available:
+
+- Kernel density estimates:
+
+``` r
+powerscale_plot_dens(fit, variable = "mu", facet_rows = "variable")
+```
+
+![](powerscaling_files/figure-html/unnamed-chunk-6-1.png)
+
+- Empirical cumulative distribution functions:
+
+``` r
+powerscale_plot_ecdf(fit, variable = "mu", facet_rows = "variable")
+```
+
+![](powerscaling_files/figure-html/unnamed-chunk-7-1.png)
+
+- Quantities:
+
+``` r
+powerscale_plot_quantities(fit, variable = "mu")
+```
+
+![](powerscaling_files/figure-html/unnamed-chunk-8-1.png)
+
+As can be seen in the plots, power-scaling the prior and likelihood have
+opposite direction effects on the posterior. This is further evidence of
+prior-data conflict.
+
+Indeed, if we inspect the raw data, we see that the prior on $\mu$,
+$\text{normal}(0,1)$ does not match well with the mean of the data,
+whereas the prior on $\sigma$, $\text{normal}^{+}(0,2.5)$ is reasonable:
+
+``` r
+mean(normal_model$data$y)
+```
+
+    [1] 9.844
+
+``` r
+sd(normal_model$data$y)
+```
+
+    [1] 0.7697835
