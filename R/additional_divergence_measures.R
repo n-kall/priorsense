@@ -300,7 +300,7 @@ ks_dist <- function(x, y, x_weights = NULL, y_weights = NULL, ...) {
     x_weights <- rep(1, length(x))
   }
   if (is.null(y_weights)) {
-    y_weights <- rep(1, length(x))
+    y_weights <- rep(1, length(y))
   }
 
   ks <- stats::ks.test(
