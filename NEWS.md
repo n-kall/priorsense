@@ -1,5 +1,8 @@
 priorsense 1.2.0
 ---
++ Fix crash in `scale_draws()` when draws have weights
++ Fix incorrect fallback weights length in `ks_dist()` when x and y have different sample sizes
++ Fix error in density plot when using `trim` with `facet_rows = "variable"`
 + Allow either `variable` or `variables` to be accepted to subset
 + Fix issue with plotting of high Pareto-k values in quantities plot
 + Use new weighted ecdf from ggplot2, which fixes issue with previous implementation
