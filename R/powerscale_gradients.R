@@ -44,9 +44,19 @@ powerscale_gradients <- function(x, ...) {
 ##' @export
 powerscale_gradients.default <- function(x, log_prior_name = "lprior", log_lik_name = "log_lik", ...) {
 
-  psd <- create_priorsense_data(x)
+  psd <- create_priorsense_data(
+    x,
+    log_prior_name = log_prior_name,
+    log_lik_name = log_lik_name,
+    ...
+  )
 
-  powerscale_gradients(psd, ...)
+  powerscale_gradients(
+    psd,
+    log_prior_name = log_prior_name,
+    log_lik_name = log_lik_name,
+    ...
+  )
 
   }
 
@@ -68,6 +78,8 @@ powerscale_gradients.priorsense_data <- function(x,
                                          scale = FALSE,
                                          prior_selection = NULL,
                                          likelihood_selection = NULL,
+                                         log_prior_name = "lprior",
+                                         log_lik_name = "log_lik",
                                          ...) {
 
   # input coercion
@@ -88,6 +100,8 @@ powerscale_gradients.priorsense_data <- function(x,
   if (!is.null(variable)) {
     variable <- as.character(variable)
   }
+  log_prior_name <- as.character(log_prior_name)
+  log_lik_name <- as.character(log_lik_name)
 
 
   # input checks
@@ -104,6 +118,8 @@ powerscale_gradients.priorsense_data <- function(x,
   checkmate::assertFunction(prediction, null.ok = TRUE)
   checkmate::assertFlag(scale)
   checkmate::assertFlag(moment_match)
+  checkmate::assertCharacter(log_prior_name, len = 1)
+  checkmate::assertCharacter(log_lik_name, len = 1)
 
   # extract the draws
   base_draws <- x$draws
@@ -176,6 +192,8 @@ powerscale_gradients.priorsense_data <- function(x,
       transform = transform,
       prediction = prediction,
       selection = selection[[comp]],
+      log_prior_name = log_prior_name,
+      log_lik_name = log_lik_name,
       ...
     )
 
@@ -191,6 +209,8 @@ powerscale_gradients.priorsense_data <- function(x,
       transform = transform,
       prediction = prediction,
       selection = selection[[comp]],
+      log_prior_name = log_prior_name,
+      log_lik_name = log_lik_name,
       ...
     )
 
