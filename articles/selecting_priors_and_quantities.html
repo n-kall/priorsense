@@ -308,11 +308,11 @@ Prior selection: all priors
 Likelihood selection: all data
 
         variable prior likelihood                     diagnosis
-              R2 0.061      0.242 potential prior-data conflict
-     jointloglik 0.043      0.422                             -
-    pred_minTemp 0.030      0.062                             -
- pred_medianTemp 0.044      0.124                             -
-    pred_maxTemp 0.037      0.130                             -</code></pre>
+              R2 0.066      0.268 potential prior-data conflict
+     jointloglik 0.056      0.439 potential prior-data conflict
+    pred_minTemp 0.023      0.069                             -
+ pred_medianTemp 0.047      0.147                             -
+    pred_maxTemp 0.047      0.140                             -</code></pre>
 </div>
 </div>
 <p>We see sensitivity in both measures. Next, we selectively power-scale different priors by specifying the corresponding <code>tag</code> in <code>prior_selection</code>.</p>
@@ -331,11 +331,11 @@ Prior selection: sds
 Likelihood selection: all data
 
         variable prior likelihood                     diagnosis
-              R2 0.066      0.242 potential prior-data conflict
-     jointloglik 0.048      0.422                             -
-    pred_minTemp 0.029      0.062                             -
- pred_medianTemp 0.044      0.124                             -
-    pred_maxTemp 0.037      0.130                             -</code></pre>
+              R2 0.069      0.268 potential prior-data conflict
+     jointloglik 0.058      0.439 potential prior-data conflict
+    pred_minTemp 0.026      0.069                             -
+ pred_medianTemp 0.047      0.147                             -
+    pred_maxTemp 0.041      0.140                             -</code></pre>
 </div>
 </div>
 <p>There is clear sensitivity to this prior. We can check all the other priors at once by providing a vector as the <code>prior_selection</code> argument.</p>
@@ -353,11 +353,11 @@ Prior selection: intercept, sigma, b
 Likelihood selection: all data
 
         variable prior likelihood diagnosis
-              R2 0.007      0.242         -
-     jointloglik 0.008      0.422         -
-    pred_minTemp 0.003      0.062         -
- pred_medianTemp 0.003      0.124         -
-    pred_maxTemp 0.003      0.130         -</code></pre>
+              R2 0.006      0.268         -
+     jointloglik 0.007      0.439         -
+    pred_minTemp 0.004      0.069         -
+ pred_medianTemp 0.003      0.147         -
+    pred_maxTemp 0.007      0.140         -</code></pre>
 </div>
 </div>
 <p>We can visualise the effect of power-scaling the <code>sds</code> prior on the posterior <code>R2</code>, <code>jointloglik</code> and the predictions. Here we visualise the change in posterior mean and standard deviation.</p>

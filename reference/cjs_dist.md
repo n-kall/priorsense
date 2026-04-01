@@ -84,5 +84,5 @@ x <- rnorm(100)
 y <- rnorm(100, 2, 2)
 cjs_dist(x, y, x_weights = NULL, y_weights = NULL)
 #>       cjs 
-#> 0.4260629 
+#> 0.4265529 
 ```
