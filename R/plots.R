@@ -488,7 +488,7 @@ powerscale_plot_dens.powerscaled_sequence <-
               times = 2)
           )
         } else {
-          out <- out + ggh4x::facetted_pos_scales(
+          plot <- plot + ggh4x::facetted_pos_scales(
             x = rep(
               position_scales,
               each = 2
