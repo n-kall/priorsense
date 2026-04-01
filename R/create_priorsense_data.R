@@ -87,9 +87,9 @@ create_priorsense_data.default <- function(x,
 
   if (is.null(log_lik)) {
     if (is.null(fit)) {
-      log_lik <- log_lik_fn(x, ...)
+      log_lik <- log_lik_fn(x, log_lik_name = log_lik_name, ...)
     } else {
-      log_lik <- log_lik_fn(fit, ...)
+      log_lik <- log_lik_fn(fit, log_lik_name = log_lik_name, ...)
     }
   }
 
