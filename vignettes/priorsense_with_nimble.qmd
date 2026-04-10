@@ -1,0 +1,111 @@
+---
+title: "Using priorsense with JAGS"
+vignette: >
+  %\VignetteIndexEntry{Using priorsense with JAGS}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+```{r}
+#| include: false
+ggplot2::theme_set(bayesplot::theme_default(base_family = "sans"))
+
+options(priorsense.plot_help_text = FALSE)
+```
+
+
+```{r}
+#| message: false
+#| warning: false
+library(nimble)
+library(posterior)
+library(priorsense)
+```
+
+To use `priorsense` with a NIMBLE model, the log prior and log likelihood
+evaluations should be added to the model code.
+
+```{r}
+code <- nimbleCode({
+  for (n in 1:N) {
+    y[n] ~ dnorm(mu, sd = sigma)
+    log_lik[n] <- dnorm(y[n], mu, sd = sigma, log = TRUE)
+  }
+
+  mu ~ dnorm(0, sd = 1)
+  sigma ~ dnorm(0, sd = 2.5)
+
+  lprior_mu <- dnorm(mu, 0, sd = 1, log = TRUE)
+  lprior_sigma <- dnorm(sigma, 0, sd = 2.5, log = TRUE)
+
+  lprior <- lprior_mu + lprior_sigma
+
+})
+```
+Instantiate and compile the model as usual.
+```{r}
+#| message: false
+#| warning: false
+
+inits <- list(
+  mu = 0,
+  sigma = 1
+)
+
+model <- nimbleModel(
+  code,
+  data      = d,
+  inits     = inits,
+  constants = list(N = d$N)
+)
+
+
+cmodel <- compileNimble(model)
+
+mcmc <- buildMCMC(
+  model,
+  monitors = c(
+    "mu",
+    "sigma",
+    "lprior",
+    "lprior_mu",
+    "lprior_sigma",
+    "log_lik"
+  )
+)
+
+cmcmc <- compileNimble(mcmc, project = model)
+```
+
+For priorsense compatibility, it is easiest to save the draws as a `coda::mcmc.list` object, by specifying `samplesAsCodaMCMC = TRUE`. Otherwise, the resulting object can be transformed to a `posterior::draws_df` object, with `posterior::as_draws_df`.
+
+```
+#| message: false
+#| warning: false
+
+nimble_fit <- runMCMC(
+  cmcmc,
+  niter = 20000,
+  nburnin = 5000,
+  nchains = 4,
+  thin = 5,
+  setSeed = c(123, 456, 789, 101112),
+  samplesAsCodaMCMC = TRUE # alternatively, coerce the output using `posterior::as_draws_df`
+)
+
+```
+
+Then the `priorsense` functions will work as usual.
+
+```{r}
+powerscale_sensitivity(nimble_fit)
+```
+
+```{r}
+#| message: false
+#| warning: false
+#| fig-width: 6
+#| fig-height: 4
+powerscale_plot_dens(nimble_fit)
+```

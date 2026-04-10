@@ -30,6 +30,7 @@ Suggests:
     brms (>= 2.23.0),
     cmdstanr (>= 0.8.1),
     iwmm (>= 0.0.1),
+    nimble (>= 1.4.2)
     philentropy (>= 0.8.0),
     quarto (>= 1.4.4),
     R2jags (>= 0.8),
