@@ -3,6 +3,7 @@ priorsense 1.2.0
 + Allow either `variable` or `variables` to be accepted to subset
 + Fix issue with plotting of high Pareto-k values in quantities plot
 + Use new weighted ecdf from ggplot2, which fixes issue with previous implementation
++ Fix `powerscale_gradients()` handling of custom `log_prior_name` and `log_lik_name` when starting from raw draws
 
 priorsense 1.1.1
 ---
