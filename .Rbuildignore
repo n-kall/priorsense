@@ -30,3 +30,4 @@
 ^vignettes/quantity_of_interest_files$
 ^vignettes/sensitivity_diagnostic_files$
 ^revdep$
+^data-raw$

@@ -1,7 +1,6 @@
 ##' stop without call
 ##' @keywords internal
 ##' @noRd
-##' @param ... 
 stop2 <- function(...) {
   stop(..., call. = FALSE)
 }

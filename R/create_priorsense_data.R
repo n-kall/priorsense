@@ -165,6 +165,17 @@ create_priorsense_data.rjags <- function(x, ...) {
   )
 }
 
+##' @rdname create-priorsense-data
+##' @export
+create_priorsense_data.jagsUI <- function(x, ...) {
+
+  create_priorsense_data(
+    x = posterior::as_draws(x$samples),
+    ...
+  )
+}
+
+
 
 ##' @rdname create-priorsense-data
 ##' @export

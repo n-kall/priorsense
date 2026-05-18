@@ -65,6 +65,7 @@ Computing}. 31(16).  \code{doi:10.1007/s11222-020-09982-2}
 
 Authors:
 \itemize{
+  \item Noa Kallioinen \email{noa.kallioinen@aalto.fi} [copyright holder]
   \item Topi Paananen
   \item Paul-Christian Bürkner
   \item Aki Vehtari

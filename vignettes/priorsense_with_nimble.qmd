@@ -1,7 +1,7 @@
 ---
-title: "Using priorsense with JAGS"
+title: "Using priorsense with NIMBLE"
 vignette: >
-  %\VignetteIndexEntry{Using priorsense with JAGS}
+  %\VignetteIndexEntry{Using priorsense with NIMBLE}
   %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
@@ -19,34 +19,35 @@ options(priorsense.plot_help_text = FALSE)
 #| message: false
 #| warning: false
 library(nimble)
-library(posterior)
 library(priorsense)
 ```
 
-To use `priorsense` with a NIMBLE model, the log prior and log likelihood
-evaluations should be added to the model code.
+
+`priorsense` is compatible with models fit with `nimble`
+
+Consider the univariate normal model with unknown mu and sigma available
+via`example_powerscale_model("univariate_normal")`. In NIMBLE, `lprior` and
+`log_lik` variables can be defined as below. By also defining separate
+`lprior_mu` and `lprior_sigma` variables, it will be possible to check the
+sensitivity for each prior separately.
 
 ```{r}
-code <- nimbleCode({
-  for (n in 1:N) {
-    y[n] ~ dnorm(mu, sd = sigma)
-    log_lik[n] <- dnorm(y[n], mu, sd = sigma, log = TRUE)
-  }
-
-  mu ~ dnorm(0, sd = 1)
-  sigma ~ dnorm(0, sd = 2.5)
-
-  lprior_mu <- dnorm(mu, 0, sd = 1, log = TRUE)
-  lprior_sigma <- dnorm(sigma, 0, sd = 2.5, log = TRUE)
-
-  lprior <- lprior_mu + lprior_sigma
-
-})
+model <- example_powerscale_model(language = "nimble")
 ```
+
+```{r}
+#| echo: false
+#| results: asis
+cat("```\n")
+model$model_code
+cat("```")
+```
+
 Instantiate and compile the model as usual.
 ```{r}
 #| message: false
 #| warning: false
+#| results: false
 
 inits <- list(
   mu = 0,
@@ -54,10 +55,10 @@ inits <- list(
 )
 
 model <- nimbleModel(
-  code,
-  data      = d,
-  inits     = inits,
-  constants = list(N = d$N)
+  model$model_code,
+  data = model$data,
+  inits = inits,
+  constants = list(N = model$data$N)
 )
 
 
@@ -78,13 +79,17 @@ mcmc <- buildMCMC(
 cmcmc <- compileNimble(mcmc, project = model)
 ```
 
-For priorsense compatibility, it is easiest to save the draws as a `coda::mcmc.list` object, by specifying `samplesAsCodaMCMC = TRUE`. Otherwise, the resulting object can be transformed to a `posterior::draws_df` object, with `posterior::as_draws_df`.
+For `priorsense` compatibility, it is easiest to save the draws as a
+`coda::mcmc.list` object, by specifying `samplesAsCodaMCMC = TRUE`. Otherwise,
+the resulting object can be transformed to a `posterior::draws_df` object, with
+`posterior::as_draws_df`.
 
-```
+```{r}
 #| message: false
 #| warning: false
+#| results: false
 
-nimble_fit <- runMCMC(
+fit <- runMCMC(
   cmcmc,
   niter = 20000,
   nburnin = 5000,
@@ -93,19 +98,27 @@ nimble_fit <- runMCMC(
   setSeed = c(123, 456, 789, 101112),
   samplesAsCodaMCMC = TRUE # alternatively, coerce the output using `posterior::as_draws_df`
 )
-
 ```
 
 Then the `priorsense` functions will work as usual.
 
 ```{r}
-powerscale_sensitivity(nimble_fit)
+powerscale_sensitivity(fit)
 ```
+
+```{r}
+powerscale_sensitivity(fit, prior_selection = "sigma")
+```
+
+```{r}
+powerscale_sensitivity(fit, prior_selection = "mu")
+```
+
 
 ```{r}
 #| message: false
 #| warning: false
 #| fig-width: 6
 #| fig-height: 4
-powerscale_plot_dens(nimble_fit)
+powerscale_plot_dens(fit)
 ```

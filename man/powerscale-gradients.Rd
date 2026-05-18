@@ -33,6 +33,8 @@ powerscale_gradients(x, ...)
   scale = FALSE,
   prior_selection = NULL,
   likelihood_selection = NULL,
+  log_prior_name = "lprior",
+  log_lik_name = "log_lik",
   ...
 )
 }

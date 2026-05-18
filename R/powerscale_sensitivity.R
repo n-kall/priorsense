@@ -170,7 +170,7 @@ powerscale_sensitivity.priorsense_data <- function(x,
   # likelihood
 
   sense$diagnosis <- ifelse(
-    sense$prior >= sensitivity_threshold & sense$likelihood >= sensitivity_threshold, "potential prior-data conflict",
+    sense$prior >= sensitivity_threshold & sense$likelihood >= sensitivity_threshold, "potential prior-likelihood conflict",
     ifelse(sense$prior > sensitivity_threshold & sense$likelihood < sensitivity_threshold,
            "potential strong prior / weak likelihood",
            "-"
