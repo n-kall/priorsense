@@ -1,5 +1,5 @@
 #' @srrstats {EA6.0} return values are tested in tests
-
+ 
 univariate_normal_draws <- example_powerscale_model()$draws
 
 #' @srrstats {EA4.0} output type tested
@@ -105,7 +105,7 @@ test_that("powerscale_sequence uses input alphas correctly", {
 
   expect_equal(
     get_powerscaling_details(
-      pss$prior_scaled$draws_sequence[[length(pss$alphas)]]
+      pss$prior_scaled$draws_sequence[[length(pss$alphas)-1]]
     )$alpha,
     2.5
   )
@@ -227,13 +227,13 @@ test_that("powerscale_sequence gives symmetric range", {
   
   expect_equal(
     get_powerscaling_details(pss$prior_scaled$draws_sequence[[
-      length(pss$alphas)]])$alpha,
+      length(pss$alphas)-1]])$alpha,
     1 / lower_alpha
   )
   
   expect_equal(
     length(pss$alphas),
-    8
+    9
   )
   
   expect_equal(

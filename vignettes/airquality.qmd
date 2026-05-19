@@ -1,7 +1,7 @@
 ---
-title: "Selecting priors to power-scale and posterior quantities to check"
+title: "Workflow example: air quality"
 vignette: >
-  %\VignetteIndexEntry{Selecting priors to power-scale and posterior quantities to check}
+  %\VignetteIndexEntry{Workflow example: air quality}
   %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
@@ -13,10 +13,6 @@ options(brms.backend = "rstan")
 ```
 
 # Introduction
-
-Priorsense is a package for prior and likelihood sensitivity
-checks. It can be used to detect prior-data conflict and weak
-likelihood.
 
 This vignette demonstrates two different but related concepts:
 (1) selecting different priors to power-scale, and (2) specifying

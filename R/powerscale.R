@@ -28,7 +28,6 @@
 ##'   which contains the estimated posterior draws resulting from the
 ##'   power-scaling perturbations and details of the perturbation and
 ##'   estimation methods.
-##' @template powerscale_references
 ##' @srrstats {G2.0} Assertions are made on the lengths of inputs via the checkmate package
 ##' @srrstats {G2.1} Assertions on types of inputs are made via the checkmate package
 ##' @examples
@@ -37,6 +36,18 @@
 ##' powerscale(ex$draws, component = "prior", alpha = 0.5)
 ##'
 ##' powerscale_sequence(ex$draws)
+##' @details Power-scaling of the prior or likelihood is defined as
+##'   exponentiating the prior or likelihood to some value alpha. The effect on
+##'   the posterior is then estimated through Pareto-smoothed importance
+##'   sampling and optionally importance weighted moment matching. In order to
+##'   perform the calculations, the log-prior and log-likelihood evaluations
+##'   must be present in the object. For a general introduction to the package
+##'   see see `vignette("priorsense")`, and for details on the method see
+##'   Kallioinen et al. (2023). For details on Pareto-smoothed importance
+##'   sampling and importance weighted moment matching, see Vehtari et
+##'   al. (2024) and Paananen et al. (2021), respectively.
+##' @template powerscale_references
+##' @seealso [powerscale-plots]
 ##' @export
 powerscale <- function(x, ...) {
   UseMethod("powerscale")
@@ -56,6 +67,7 @@ powerscale.default <- function(x, component, alpha,
                                selection = NULL,
                                log_prior_name = "lprior",
                                log_lik_name = "log_lik",
+                               separator = "_",
                                ...) {
 
   psd <- create_priorsense_data(
@@ -75,7 +87,8 @@ powerscale.default <- function(x, component, alpha,
     prediction = prediction,
     variable = variable,
     variables = variables,
-    selection = selection
+    selection = selection,
+    separator = separator
   )
 }
 
@@ -104,6 +117,7 @@ powerscale.priorsense_data <- function(x,
                                        selection = NULL,
                                        log_prior_name = "lprior",
                                        log_lik_name = "log_lik",
+                                       separator = "_",
                                        ...) {
 
   # input coercion
@@ -154,7 +168,7 @@ powerscale.priorsense_data <- function(x,
   checkmate::assertCharacter(transform, null.ok = TRUE, len = 1)
   checkmate::assertFunction(prediction, null.ok = TRUE)
   checkmate::assertCharacter(variable, null.ok = TRUE)
-
+  checkmate::assertCharacter(separator)
 
   log_component_name <- ifelse(
     component == "prior",
@@ -169,7 +183,7 @@ powerscale.priorsense_data <- function(x,
   if (is.numeric(selection)) {
       selection <- paste0(log_component_name, "[", selection, "]")
   } else if (is.character(selection)) {
-    selection <- paste0(log_component_name, "_", selection)
+    selection <- paste(log_component_name, selection, sep = separator)
   } else if (is.null(selection)) {
     selection <- log_component_name
   }
@@ -301,7 +315,10 @@ powerscale.priorsense_data <- function(x,
         ),
         x = mm$log_weights
       )
-      draws <- remove_unwanted_vars(posterior::as_draws_df(mm$draws))
+      draws <- remove_unwanted_vars(
+        posterior::as_draws_df(mm$draws),
+        excluded_variables = c(log_prior_name, log_lik_name)
+      )
 
       # get moment-matched predictions
       if (!(is.null(prediction))) {

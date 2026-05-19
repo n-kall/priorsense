@@ -29,6 +29,8 @@ In addition, visual diagnostics are available by first using
 posteriors, and then a plot function such as
 \code{\link{powerscale_plot_ecdf}} to visualise the change.
 
+For an introduction, see \code{vignette("priorsense")}.
+
 The following global options are available:
 \itemize{
 \item \code{priorsense.plot_help_text}: If \code{TRUE} (the default), priorsense plots will include a title and explanatory text. If \code{FALSE} they will not.
@@ -53,12 +55,8 @@ Implicitly adaptive importance sampling.  \emph{Statistics and
 Computing}. 31(16).  \code{doi:10.1007/s11222-020-09982-2}
 }
 \seealso{
-\code{\link{powerscale_sensitivity}}
-\code{\link{powerscale_sequence}}
-\code{\link{powerscale}}
-\code{\link{powerscale_plot_ecdf}}
-\code{\link{powerscale_plot_dens}}
-\code{\link{powerscale_plot_quantities}}
+\link{powerscale-overview},
+\link{powerscale-plots}
 }
 \author{
 \strong{Maintainer}: Noa Kallioinen \email{noa.kallioinen@aalto.fi} [copyright holder]

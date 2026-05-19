@@ -12,4 +12,4 @@ fit <- stan_model$sample(
 
 draws_eight_schools <- fit$draws()
 
-usethis::use_data(draws_eight_schools, overwrite = TRUE, internal = TRUE)
+usethis::use_data(draws_eight_schools, overwrite = TRUE, internal = FALSE)

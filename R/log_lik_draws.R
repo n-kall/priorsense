@@ -47,8 +47,7 @@ log_lik_draws.stanfit <- function(x, joint = FALSE,
 log_lik_draws.CmdStanFit <- function(x, joint = FALSE,
                                      log_lik_name = "log_lik", ...) {
 
-  stan_vars <- x$variables()
-  stan_vars <- c(stan_vars$parameters, stan_vars$generated_quantities)
+  stan_vars <- x$metadata()$variables
   log_lik_name <- stan_vars[grepl(pattern = paste0("^", log_lik_name), stan_vars)]
   log_lik <- x$draws(variables = log_lik_name)
 

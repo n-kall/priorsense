@@ -28,6 +28,8 @@
 #' posteriors, and then a plot function such as
 #' \code{\link{powerscale_plot_ecdf}} to visualise the change.
 #'
+#' For an introduction, see `vignette("priorsense")`.
+#'
 #' The following global options are available:
 #'    * `priorsense.plot_help_text`: If `TRUE` (the default), priorsense plots will include a title and explanatory text. If `FALSE` they will not.
 #'    * `priorsense.plot_variables_per_page`: Number specifying the maximum number of variables to be plotted on one page of a plot.
@@ -60,12 +62,8 @@
 
 
 #' @seealso
-#' \code{\link{powerscale_sensitivity}}
-#' \code{\link{powerscale_sequence}}
-#' \code{\link{powerscale}}
-#' \code{\link{powerscale_plot_ecdf}}
-#' \code{\link{powerscale_plot_dens}}
-#' \code{\link{powerscale_plot_quantities}}
+#' [powerscale-overview],
+#' [powerscale-plots]
 #' @template powerscale_references
 "_PACKAGE"
 

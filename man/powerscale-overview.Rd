@@ -26,6 +26,7 @@ powerscale(x, ...)
   selection = NULL,
   log_prior_name = "lprior",
   log_lik_name = "log_lik",
+  separator = "_",
   ...
 )
 
@@ -43,6 +44,7 @@ powerscale(x, ...)
   selection = NULL,
   log_prior_name = "lprior",
   log_lik_name = "log_lik",
+  separator = "_",
   ...
 )
 
@@ -131,29 +133,33 @@ between them.}
 
 \item{log_lik_name}{Character (case sensitive) specifying name of the variable storing the log likelihood evaluations}
 
+\item{separator}{Character specifying the separator between the component
+name and the partition. The default is \code{"_"}.}
+
 \item{lower_alpha}{Lower power-scaling alpha value in sequence.}
 
 \item{upper_alpha}{Upper power-scaling alpha value in sequence.}
 
-\item{length}{Length of alpha sequence.}
+\item{length}{Total length of alpha sequence, including 1.0.}
 
-\item{auto_alpha_range}{Boolean. Restrict range to ensure Pareto-k
-values below threshold?}
+\item{auto_alpha_range}{Boolean. Restrict range to ensure Pareto-k values
+below threshold?}
 
-\item{symmetric}{Boolean. Should the alpha range be symmetrical
-around alpha = 1, on log-space?}
+\item{symmetric}{Boolean. Should the alpha range be symmetrical around alpha
+= 1 on log-scale? If \code{TRUE}, the length of the range will be always be
+odd, and will be equal to \code{length - 1} if specified \code{length} is even.}
 
 \item{prior_selection}{Vector specifying partitions of component to be
-included in power-scaling. Default is NULL, which takes all
-partitions. If this is a character, then it is appended to the
-variable name (specified by \code{log_prior_name}) with an \verb{_}
-between them. If numeric, then it is appended inside \verb{[]}.}
+included in power-scaling. Default is NULL, which takes all partitions. If
+this is a character, then it is appended to the variable name (specified
+by \code{log_prior_name}) with a separator between them. If numeric, then it is
+appended inside \verb{[]}.}
 
 \item{likelihood_selection}{Vector specifying partitions of component to be
-included in power-scaling. Default is NULL, which takes all
-partitions. If this is a character, then it is appended to the
-variable name (specified by \code{log_lik_name}) with an \verb{_}
-between them. If numeric, then it is appended inside \verb{[]}.}
+included in power-scaling. Default is NULL, which takes all partitions. If
+this is a character, then it is appended to the variable name (specified
+by \code{log_lik_name}) with a separator between them. If numeric, then it is
+appended inside \verb{[]}.}
 }
 \value{
 A \code{powerscaled_draws} or \code{powerscaled_sequence} object,
@@ -165,6 +171,18 @@ estimation methods.
 Estimate posterior draws based on power-scaling perturbations of
 prior or likelihood using importance sampling (and optionally
 moment matching).
+}
+\details{
+Power-scaling of the prior or likelihood is defined as
+exponentiating the prior or likelihood to some value alpha. The effect on
+the posterior is then estimated through Pareto-smoothed importance
+sampling and optionally importance weighted moment matching. In order to
+perform the calculations, the log-prior and log-likelihood evaluations
+must be present in the object. For a general introduction to the package
+see see \code{vignette("priorsense")}, and for details on the method see
+Kallioinen et al. (2023). For details on Pareto-smoothed importance
+sampling and importance weighted moment matching, see Vehtari et
+al. (2024) and Paananen et al. (2021), respectively.
 }
 \examples{
 ex <- example_powerscale_model()
@@ -187,4 +205,7 @@ Machine Learning Research}. 25(72).
 Paananen, T., Piironen, J., Bürkner, P-C., Vehtari, A. (2021).
 Implicitly adaptive importance sampling.  \emph{Statistics and
 Computing}. 31(16).  \code{doi:10.1007/s11222-020-09982-2}
+}
+\seealso{
+\link{powerscale-plots}
 }
