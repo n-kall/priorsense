@@ -35,8 +35,8 @@ Power-scaling sensitivity analysis and priorsense are described in
 
 ### Resources
 
-- Check the [getting started vignette] for a simple example
-- For a more complex example see [selecting priors to power-scale and posterior quantities to check](https://n-kall.github.io/priorsense/articles/selecting_prior_and_quantities.html)
+- Check the [getting started vignette](https://n-kall.github.io/priorsense/getting_started.html) for a simple example
+- For a more detailed modelling example see [here](https://n-kall.github.io/priorsense/articles/airquality.html)
 
 ### Installation
 
