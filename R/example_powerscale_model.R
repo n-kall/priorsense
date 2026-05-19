@@ -15,7 +15,7 @@
 ##' @export
 example_powerscale_model <- function(model = "univariate_normal", language = "stan") {
 
-  checkmate::asertChoice(model, c("univariate_normal", "eight_schools"))
+  checkmate::assertChoice(model, c("univariate_normal", "eight_schools"))
   checkmate::assertChoice(language, c("stan", "jags", "nimble"))
   
 
