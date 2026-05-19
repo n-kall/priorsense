@@ -29,6 +29,7 @@ powerscale_sensitivity(x, ...)
   likelihood_selection = NULL,
   log_prior_name = "lprior",
   log_lik_name = "log_lik",
+  separator = "_",
   num_args = NULL,
   ...
 )
@@ -49,6 +50,7 @@ powerscale_sensitivity(x, ...)
   prediction = NULL,
   prior_selection = NULL,
   likelihood_selection = NULL,
+  separator = "_",
   num_args = NULL,
   ...
 )
@@ -136,13 +138,13 @@ appended inside \verb{[]}.}
 
 \item{log_lik_name}{Character (case sensitive) specifying name of the variable storing the log likelihood evaluations}
 
+\item{separator}{Character specifying the separator between the component
+name and the partition. The default is \code{"_"}.}
+
 \item{num_args}{(named list) Optional arguments passed to
 \link[tibble:num]{num()} for pretty printing of summaries. Can be
 controlled globally via the \code{posterior.num_args}
 \link[base:options]{option}.}
-
-\item{separator}{Character specifying the separator between the component
-name and the partition. The default is \code{"_"}.}
 }
 \value{
 Table of sensitivity values for each specified variable.
