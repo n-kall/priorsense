@@ -1,7 +1,7 @@
 ---
 title: "Using priorsense with brms"
 vignette: >
-  %\VignetteIndexEntry{Using priorsense with Stan}
+  %\VignetteIndexEntry{Using priorsense with brms}
   %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---

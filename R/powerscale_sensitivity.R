@@ -57,6 +57,7 @@ powerscale_sensitivity.default <- function(x,
                                            likelihood_selection = NULL,
                                            log_prior_name = "lprior",
                                            log_lik_name = "log_lik",
+                                           separator = "_",
                                            num_args = NULL,
                                            ...
                                            ) {
@@ -84,6 +85,7 @@ powerscale_sensitivity.default <- function(x,
     prediction = prediction,
     prior_selection = prior_selection,
     likelihood_selection = likelihood_selection,
+    separator = separator,
     num_args = num_args,
     ...
   )
@@ -110,6 +112,7 @@ powerscale_sensitivity.priorsense_data <- function(x,
                                                    prediction = NULL,
                                                    prior_selection = NULL,
                                                    likelihood_selection = NULL,
+                                                   separator = "_",
                                                    num_args = NULL,
                                                    ...) {
   component <- tolower(component)
@@ -127,6 +130,7 @@ powerscale_sensitivity.priorsense_data <- function(x,
   checkmate::assertLogical(resample, len = 1)
   checkmate::assertCharacter(transform, null.ok = TRUE, len = 1)
   checkmate::assertFunction(prediction, null.ok = TRUE)
+  checkmate::assertCharacter(separator)
 
   gradients <- powerscale_gradients(
     x = x,
@@ -143,6 +147,7 @@ powerscale_sensitivity.priorsense_data <- function(x,
     prediction = prediction,
     prior_selection = prior_selection,
     likelihood_selection = likelihood_selection,
+    separator = separator,
     ...
   )
 

@@ -2,9 +2,10 @@
 ##'
 ##' Provides example models (with data) that are ready for use with
 ##' power-scaling.
-##' @param model Character specifying which model code to
-##'   return. Currently "univariate_normal" and "eight_schools" are
-##'   implemented.
+##' @param model Character specifying which model code to return. Currently
+##'   "univariate_normal" and "eight_schools" are implemented.
+##' @param language Character specifying which modelling language to return. One
+##'   of "stan", "jags", "nimble". Default is "stan".
 ##' @return List containing model code and corresponding data.
 ##' @srrstats {G5.1} This function exposes two example data sets.
 ##' @examples
@@ -14,6 +15,9 @@
 ##' @export
 example_powerscale_model <- function(model = "univariate_normal", language = "stan") {
 
+  checkmate::asertChoice(model, c("univariate_normal", "eight_schools"))
+  checkmate::assertChoice(language, c("stan", "jags", "nimble"))
+  
 
   univariate_normal_model <- list(
     data = list(
