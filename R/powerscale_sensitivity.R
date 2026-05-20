@@ -116,7 +116,7 @@ powerscale_sensitivity.priorsense_data <- function(x,
                                                    num_args = NULL,
                                                    ...) {
   component <- tolower(component)
-  
+
   # input checks
   checkmate::assertCharacter(variable, null.ok = TRUE)
   checkmate::assertNumber(lower_alpha, lower = 0, upper = 1)

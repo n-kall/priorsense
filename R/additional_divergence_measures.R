@@ -10,7 +10,7 @@
 mv_kl_div <- function(weights, ...) {
 
   checkmate::assert_numeric(weights, any.missing = FALSE)
-  
+
   return(-mean(log(weights, base = 2)))
 }
 
@@ -48,7 +48,7 @@ mv_wasserstein_dist <- function(draws1,
   checkmate::assert_number(subsample_size, lower = 0)
 
   require_package("transport")
-  
+
   if (is.null(weights1)) {
     weights1 <- rep(
       1 / posterior::ndraws(draws1),
@@ -94,12 +94,12 @@ mv_wasserstein_dist <- function(draws1,
 ##'   excludes matrix
 ##' @noRd
 js_div <- function(x, y, x_weights = NULL, y_weights = NULL, ...) {
-  
+
   require_package("philentropy")
 
   checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE, finite = TRUE)
   checkmate::assert_vector(x, strict = TRUE)
-  
+
   checkmate::assert_numeric(y, min.len = 1, any.missing = FALSE, finite = TRUE)
   checkmate::assert_vector(y, strict = TRUE)
 
@@ -107,7 +107,7 @@ js_div <- function(x, y, x_weights = NULL, y_weights = NULL, ...) {
                             null.ok = TRUE, any.missing = FALSE, finite = TRUE)
   checkmate::assert_numeric(y_weights, len = length(y),
                             null.ok = TRUE, any.missing = FALSE, finite = TRUE)
-  
+
   y_density <- stats::density(
     x = y,
     from = min(c(x, y)),
@@ -163,12 +163,12 @@ js_dist <- function(x, y, x_weights, y_weights, ...) {
 ##'   excludes matrix
 ##' @noRd
 hellinger_dist <- function(x, y, x_weights = NULL, y_weights = NULL, ...) {
-  
+
   require_package("philentropy")
 
   checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE, finite = TRUE)
   checkmate::assert_vector(x, strict = TRUE)
-  
+
   checkmate::assert_numeric(y, min.len = 1, any.missing = FALSE, finite = TRUE)
   checkmate::assert_vector(y, strict = TRUE)
 
@@ -177,7 +177,7 @@ hellinger_dist <- function(x, y, x_weights = NULL, y_weights = NULL, ...) {
   checkmate::assert_numeric(y_weights, len = length(y), null.ok = TRUE,
                             any.missing = FALSE, finite = TRUE)
 
-  
+
   y_density <- stats::density(
     x = y,
     from = min(c(x, y)),
@@ -214,11 +214,11 @@ hellinger_dist <- function(x, y, x_weights = NULL, y_weights = NULL, ...) {
 kl_div <- function(x, y, x_weights = NULL, y_weights = NULL, ...) {
 
   require_package("philentropy")
-  
+
   checkmate::assert_numeric(x, min.len = 1,
                             any.missing = FALSE, finite = TRUE)
   checkmate::assert_vector(x, strict = TRUE)
-  
+
   checkmate::assert_numeric(y, min.len = 1,
                             any.missing = FALSE, finite = TRUE)
   checkmate::assert_vector(y, strict = TRUE)
@@ -227,7 +227,7 @@ kl_div <- function(x, y, x_weights = NULL, y_weights = NULL, ...) {
                             null.ok = TRUE, any.missing = FALSE, finite = TRUE)
   checkmate::assert_numeric(y_weights, len = length(y),
                             null.ok = TRUE, any.missing = FALSE, finite = TRUE)
-  
+
   y_density <- stats::density(
     x = y,
     from = min(c(x, y)),
@@ -263,7 +263,7 @@ kl_div <- function(x, y, x_weights = NULL, y_weights = NULL, ...) {
 ##'   estimated densitites
 ##' @noRd
 kl_dist <- function(x, y, x_weights = NULL, y_weights = NULL, ...) {
-  
+
   dist <- sqrt(
     kl_div(
       x = x,
@@ -287,7 +287,7 @@ ks_dist <- function(x, y, x_weights = NULL, y_weights = NULL, ...) {
 
   checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE, finite = TRUE)
   checkmate::assert_vector(x, strict = TRUE)
-  
+
   checkmate::assert_numeric(y, min.len = 1, any.missing = FALSE, finite = TRUE)
   checkmate::assert_vector(y, strict = TRUE)
 
@@ -295,7 +295,7 @@ ks_dist <- function(x, y, x_weights = NULL, y_weights = NULL, ...) {
                             null.ok = TRUE, any.missing = FALSE, finite = TRUE)
   checkmate::assert_numeric(y_weights, len = length(y),
                             null.ok = TRUE, any.missing = FALSE, finite = TRUE)
-  
+
   if (is.null(x_weights)) {
     x_weights <- rep(1, length(x))
   }
@@ -322,10 +322,10 @@ ks_dist <- function(x, y, x_weights = NULL, y_weights = NULL, ...) {
 ws_dist <- function(x, y, x_weights = NULL, y_weights = NULL, p = 1, ...) {
 
   require_package("transport")
-  
+
   checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE, finite = TRUE)
   checkmate::assert_vector(x, strict = TRUE)
-  
+
   checkmate::assert_numeric(y, min.len = 1, any.missing = FALSE, finite = TRUE)
   checkmate::assert_vector(y, strict = TRUE)
 
@@ -335,7 +335,7 @@ ws_dist <- function(x, y, x_weights = NULL, y_weights = NULL, p = 1, ...) {
                             null.ok = TRUE, any.missing = FALSE, finite = TRUE)
 
   checkmate::assert_number(p, lower = 0)
-  
+
   wa <- transport::wasserstein1d(
     a = x,
     b = y,

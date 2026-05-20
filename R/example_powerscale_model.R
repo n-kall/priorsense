@@ -17,7 +17,7 @@ example_powerscale_model <- function(model = "univariate_normal", language = "st
 
   checkmate::assertChoice(model, c("univariate_normal", "eight_schools"))
   checkmate::assertChoice(language, c("stan", "jags", "nimble"))
-  
+
 
   univariate_normal_model <- list(
     data = list(
@@ -169,7 +169,7 @@ nimble = quote({
     data <- eight_schools_model[["data"]]
     draws <- get("draws_eight_schools", asNamespace("priorsense"))
   }
-  
+
   return(
     list(
       model_code = model_code,

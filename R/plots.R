@@ -840,25 +840,25 @@ powerscale_plot_quantities.powerscaled_sequence <-
     } else {
       # Efficient variable expansion avoiding heavy subset_draws operations
       base_vars <- posterior::variables(x$base_draws)
-      
+
       expanded_vars <- lapply(variable, function(v) {
         # Keep variable if it matches exactly
         if (v %in% base_vars) {
           return(v)
         }
-        
+
         # Check for indexed variables (e.g., "a" -> "a[1]", "a[2]")
         prefix <- paste0(v, "[")
         indexed_matches <- base_vars[startsWith(base_vars, prefix)]
-        
+
         if (length(indexed_matches) > 0) {
           return(indexed_matches)
         }
-        
+
         # Return original string if no match (downstream handles errors)
         return(v)
       })
-      
+
       variable <- unique(unlist(expanded_vars))
     }
 

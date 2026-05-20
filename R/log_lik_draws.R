@@ -27,7 +27,7 @@ log_lik_draws <- function(x, ...) {
 ##' @export
 log_lik_draws.stanfit <- function(x, joint = FALSE,
                                   log_lik_name = "log_lik", ...) {
-  
+
   stan_vars <- names(x)
   log_lik_name <- stan_vars[grepl(pattern = paste0("^", log_lik_name), stan_vars)]
   log_lik <- as.array(x, pars = log_lik_name)
@@ -38,7 +38,7 @@ log_lik_draws.stanfit <- function(x, joint = FALSE,
     log_lik <- rowsums_draws(log_lik)
     posterior::variables(log_lik) <- log_lik_name
   }
-  
+
   return(log_lik)
 }
 
@@ -55,7 +55,7 @@ log_lik_draws.CmdStanFit <- function(x, joint = FALSE,
     log_lik <- rowsums_draws(log_lik)
     posterior::variables(log_lik) <- log_lik_name
   }
-  
+
   return(log_lik)
 }
 
@@ -70,6 +70,6 @@ log_lik_draws.draws <- function(x, joint = FALSE,
     log_lik <- rowsums_draws(log_lik)
     posterior::variables(log_lik) <- log_lik_name
   }
-  
+
   return(log_lik)
 }

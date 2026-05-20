@@ -12,7 +12,7 @@
 #'   the prior and likelihood and is the first implementation of the
 #'   method described in Kallioinen et al. (2023).
 #'
-#' 
+#'
 #'
 #' @details The main diagnostic function provided by \pkg{priorsense}
 #'   is \code{\link{powerscale_sensitivity}}. Given a fitted model or
@@ -22,7 +22,7 @@
 #'   posterior, without needing to refit the model (using Pareto
 #'   smoothed importance sampling and importance weighted moment
 #'   matching; Vehtari et al. 2022, Paananen et al. 2021).
-#' 
+#'
 #' In addition, visual diagnostics are available by first using
 #' \code{\link{powerscale_sequence}} to create a sequence of perturbed
 #' posteriors, and then a plot function such as
@@ -69,6 +69,6 @@
 
 
 ## usethis namespace: start
-##' @importFrom lifecycle deprecated
-##' ## usethis namespace: end
+#' @importFrom lifecycle deprecated
+#' ## usethis namespace: end
 #' NULL

@@ -46,7 +46,7 @@ remove_unwanted_vars <- function(x,
   return(draws)
 }
 ##' require package
-##' 
+##'
 ##' @param package character specifying which package is required
 ##' @param version character specifying which version is required,
 ##'   default is NULL, implying any version is acceptable
