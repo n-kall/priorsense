@@ -21,6 +21,7 @@
 ^CONTRIBUTING\.md$
 ^CITATION\.cff$
 ^vignettes/articles/\.quarto$
+^vignettes/\.quarto$
 ^vignettes/articles/*_files$
 ^vignettes/articles$
 ^vignettes/quantity_of_interest.qmd$
