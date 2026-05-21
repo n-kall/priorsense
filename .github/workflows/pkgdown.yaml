@@ -63,13 +63,22 @@ jobs:
             any::textshaping
           needs: website
 
+
       - name: Build site
-        run: pkgdown::build_site_github_pages(new_process = FALSE, install = TRUE, quiet = FALSE)
+        run: |
+          withr::with_envvar(
+            c("NOT_CRAN" = "true"), # this should already be set by setup-r@v2? keeping because vignettes don't build otherwise
+            pkgdown::build_site_github_pages(
+              lazy = FALSE, # change to TRUE if runner times out.
+              run_dont_run = TRUE,
+              new_process = TRUE
+            )
+          )
         shell: Rscript {0}
 
       - name: Deploy to GitHub pages 🚀
         if: github.event_name != 'pull_request'
-        uses: JamesIves/github-pages-deploy-action@v4.6.8
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
           clean: false
           branch: gh-pages
