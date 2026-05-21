@@ -16,11 +16,9 @@ options(priorsense.plot_help_text = FALSE)
 ```{r}
 #| message: false
 #| warning: false
-library(cmdstanr)
 library(posterior)
 library(priorsense)
 library(brms)
-options(brms.backend = "cmdstanr")
 ```
 
 `brms` has built-in support for `priorsense`, such that it can be used directly
