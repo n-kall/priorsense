@@ -12,6 +12,10 @@
 
 - **Frank Weber**. Contributor.
 
+- **Simon Taylor**. Reviewer.
+
+- **Dylan Dijk**. Reviewer.
+
 ## Citation
 
 Source:

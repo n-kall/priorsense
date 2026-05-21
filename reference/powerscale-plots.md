@@ -154,7 +154,7 @@ plot(x, type = c("dens", "ecdf", "quantities"), ...)
   - `"ws_dist"`: Wassterstein distance (pass
     `measure_args = list(p = N)`) for a different order, where N is the
     order. Requires the `transport` package. See
-    [transport::wasserstein1d](https://rdrr.io/pkg/transport/man/wasserstein1d.html).
+    [`transport::wasserstein1d()`](https://rdrr.io/pkg/transport/man/wasserstein1d.html).
 
 - measure_args:
 

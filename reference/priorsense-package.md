@@ -60,12 +60,12 @@ Implicitly adaptive importance sampling. *Statistics and Computing*.
 
 ## Author
 
-**Maintainer**: Noa Kallioinen <noa.kallioinen@aalto.fi> \[copyright
+**Maintainer**: Noa Kallioinen <noa.kallioinen@helsinki.fi> \[copyright
 holder\]
 
 Authors:
 
-- Noa Kallioinen <noa.kallioinen@aalto.fi> \[copyright holder\]
+- Noa Kallioinen <noa.kallioinen@helsinki.fi> \[copyright holder\]
 
 - Topi Paananen
 

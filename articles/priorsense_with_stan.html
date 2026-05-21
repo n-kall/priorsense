@@ -121,9 +121,6 @@
 <span>  refresh <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  seed <span class="op">=</span> <span class="fl">123</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Trying to compile a simple C file</code></pre>
-</div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Running /opt/R/4.6.0/lib/R/bin/R CMD SHLIB foo.c
 using C compiler: ‘gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0’
@@ -141,7 +138,7 @@ make: *** [/opt/R/4.6.0/lib/R/etc/Makeconf:190: foo.o] Error 1</code></pre>
 </div>
 <p>Then the <code>priorsense</code> functions will work as usual.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/powerscale-sensitivity.html">powerscale_sensitivity</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Sensitivity based on cjs_dist
@@ -154,7 +151,7 @@ Likelihood selection: all data
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/powerscale-sensitivity.html">powerscale_sensitivity</a></span><span class="op">(</span><span class="va">fit</span>, prior_selection <span class="op">=</span> <span class="st">"sigma"</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Sensitivity based on cjs_dist
@@ -167,7 +164,7 @@ Likelihood selection: all data
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/powerscale-sensitivity.html">powerscale_sensitivity</a></span><span class="op">(</span><span class="va">fit</span>, prior_selection <span class="op">=</span> <span class="st">"mu"</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Sensitivity based on cjs_dist
@@ -180,7 +177,7 @@ Likelihood selection: all data
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/powerscale-plots.html">powerscale_plot_dens</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output-display">
 <div>
