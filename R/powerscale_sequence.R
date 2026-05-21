@@ -144,12 +144,13 @@ powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
     alpha_seq <- seq(
       lower_alpha,
       upper_alpha,
-      length.out = length
+      length.out = length - 1
     )
+    alpha_seq <- sort(c(alpha_seq))
   } else {
     if (abs(log(lower_alpha, 2)) < abs(log(upper_alpha, 2))) {
       alpha_seq_l <- seq(lower_alpha, 1, length.out = length / 2)
-      alpha_seq_l <- alpha_seq_l[-length(alpha_seq_l)]
+      alpha_seq_l <- setdiff(alpha_seq_l, 1)
       alpha_seq_u <- rev(1 / alpha_seq_l)
     } else {
       alpha_seq_u <- seq(1, upper_alpha, length.out = length / 2)
@@ -211,11 +212,6 @@ powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
 
     for (i in seq_along(alpha_seq)) {
 
-      # skip alpha = 1
-      if (alpha_seq[i] == 1) {
-        next
-      }
-
       # calculate the scaled draws
       scaled_draws_list[[i]] <- powerscale(
         x = x,
@@ -240,14 +236,7 @@ powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
   if ("likelihood" %in% component) {
 
     scaled_component <- "likelihood"
-
     for (i in seq_along(alpha_seq)) {
-
-      # skip alpha = 1
-      if (alpha_seq[i] == 1) {
-        next
-      }
-
       # calculate the scaled draws
       scaled_draws_list[[i]] <- powerscale(
         x = x,
@@ -276,7 +265,7 @@ powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
     base_draws = base_draws,
     prior_scaled = prior_scaled,
     likelihood_scaled = likelihood_scaled,
-    alphas = alpha_seq,
+    alphas = sort(c(alpha_seq, 1)),
     moment_match = moment_match,
     resampled = resample,
     transform = transform_details

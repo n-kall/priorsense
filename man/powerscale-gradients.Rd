@@ -33,6 +33,8 @@ powerscale_gradients(x, ...)
   scale = FALSE,
   prior_selection = NULL,
   likelihood_selection = NULL,
+  log_prior_name = "lprior",
+  log_lik_name = "log_lik",
   ...
 )
 }
@@ -65,19 +67,30 @@ divergence measure to use. The following methods are
 implemented:
 \itemize{
 \item \code{"cjs_dist"}: Cumulative Jensen-Shannon distance. Default
-method. See function \code{cjs_dist} for more details.
-\item \code{"js_dist"}: Jensen-Shannon distance.
-\item \code{"js_div"}: Jensen-Shannon divergence.
-\item \code{"hellinger_dist"}: Hellinger distance.
-\item \code{"kl_dist"}: Kullback-Leibler distance.
-\item \code{"kl_div"}: Kullback-Leibler divergence.
-\item \code{"ks_dist"}: Kolmogorov-Smirnov distance.
-\item \code{"hellinger_dist"}: Hellinger distance.
-\item \code{"ws_dist"}: Wassterstein distance (pass \code{measure_args = list(p = N)})
-for a different order, where N is the order.
+method. See function \code{\link[=cjs_dist]{cjs_dist()}} for more details.
+\item \code{"js_dist"}: Jensen-Shannon distance. First estimates density using
+\code{\link[stats:density]{stats::density()}}. Requires the \code{philentropy} package. See
+\code{\link[philentropy:jensen_shannon]{philentropy::jensen_shannon()}}.
+\item \code{"js_div"}: Jensen-Shannon divergence. First estimates density using
+\code{\link[stats:density]{stats::density()}}. Requires the \code{philentropy} package. See
+\code{\link[philentropy:jensen_shannon]{philentropy::jensen_shannon()}}.
+\item \code{"hellinger_dist"}: Hellinger distance. First estimates density using
+\code{\link[stats:density]{stats::density()}}. Requires the \code{philentropy} package. See
+\code{\link[philentropy:hellinger]{philentropy::hellinger()}}.
+\item \code{"kl_dist"}: Kullback-Leibler distance. First esimates density using
+\code{\link[stats:density]{stats::density()}}. Requires the \code{philentropy} package. See
+\code{\link[philentropy:kullback_leibler_distance]{philentropy::kullback_leibler_distance()}}.
+\item \code{"kl_div"}: Kullback-Leibler divergence. First estimates density using
+\code{\link[stats:density]{stats::density()}}. Requires the \code{philentropy} package. See
+\code{\link[philentropy:kullback_leibler_distance]{philentropy::kullback_leibler_distance()}}.
+\item \code{"ks_dist"}: Kolmogorov-Smirnov distance. See \code{\link[stats:ks.test]{stats::ks.test()}}.
+\item \code{"ws_dist"}: Wassterstein distance (pass \code{measure_args = list(p = N)}) for
+a different order, where N is the order. Requires the \code{transport}
+package. See \link[transport:wasserstein1d]{transport::wasserstein1d}.
 }}
 
-\item{measure_args}{Named list of further arguments passed to divergence measure functions.}
+\item{measure_args}{Named list of further arguments passed to divergence
+measure functions.}
 
 \item{moment_match}{Logical; Indicate whether or not moment
 matching should be performed. Can only be TRUE if \code{is_method} is

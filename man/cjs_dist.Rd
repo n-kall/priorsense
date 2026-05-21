@@ -46,7 +46,7 @@ The Cumulative Jensen-Shannon distance is a symmetric metric based
 on the cumulative Jensen-Shannon divergence. The divergence CJS(P || Q)
 between two cumulative distribution functions P and Q is defined as:
 
-\deqn{CJS(P || Q) = \sum P(x) \log \frac{P(x)}{0.5 (P(x) + Q(x))} +
+\deqn{CJS(P || Q) = \sum P(x) \log_2 \frac{P(x)}{0.5 (P(x) + Q(x))} +
 \frac{1}{2 \ln 2} \sum (Q(x) - P(x))}
 
 The symmetric metric is defined as:

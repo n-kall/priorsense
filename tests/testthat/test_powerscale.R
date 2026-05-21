@@ -1,5 +1,5 @@
 #' @srrstats {EA6.0} return values are tested in tests
-
+ 
 univariate_normal_draws <- example_powerscale_model()$draws
 
 #' @srrstats {EA4.0} output type tested
@@ -105,7 +105,7 @@ test_that("powerscale_sequence uses input alphas correctly", {
 
   expect_equal(
     get_powerscaling_details(
-      pss$prior_scaled$draws_sequence[[length(pss$alphas)]]
+      pss$prior_scaled$draws_sequence[[length(pss$alphas)-1]]
     )$alpha,
     2.5
   )
@@ -155,6 +155,50 @@ test_that("powerscale_sequence adapts alphas and keeps pareto-k low", {
 }
 )
 
+test_that("powerscale_gradients respects custom log component names", {
+  set.seed(10)
+  raw_draws <- posterior::as_draws_df(data.frame(
+    mu = rnorm(400),
+    lprior = rnorm(400),
+    log_lik = rnorm(400)
+  ))
+
+  renamed_draws <- raw_draws
+  posterior::variables(renamed_draws) <- c("mu", "custom_lprior", "custom_log_lik")
+
+  ref_prior <- powerscale_gradients(
+    raw_draws,
+    type = "quantities",
+    variable = "mu",
+    component = "prior"
+  )
+  got_prior <- powerscale_gradients(
+    renamed_draws,
+    type = "quantities",
+    variable = "mu",
+    component = "prior",
+    log_prior_name = "custom_lprior",
+    log_lik_name = "custom_log_lik"
+  )
+  ref_lik <- powerscale_gradients(
+    raw_draws,
+    type = "quantities",
+    variable = "mu",
+    component = "likelihood"
+  )
+  got_lik <- powerscale_gradients(
+    renamed_draws,
+    type = "quantities",
+    variable = "mu",
+    component = "likelihood",
+    log_prior_name = "custom_lprior",
+    log_lik_name = "custom_log_lik"
+  )
+
+  expect_equal(got_prior$quantities, ref_prior$quantities)
+  expect_equal(got_lik$quantities, ref_lik$quantities)
+})
+
 test_that("powerscale_sequence gives symmetric range", {
 
   lower_alpha <- 0.3
@@ -183,13 +227,13 @@ test_that("powerscale_sequence gives symmetric range", {
   
   expect_equal(
     get_powerscaling_details(pss$prior_scaled$draws_sequence[[
-      length(pss$alphas)]])$alpha,
+      length(pss$alphas)-1]])$alpha,
     1 / lower_alpha
   )
   
   expect_equal(
     length(pss$alphas),
-    8
+    9
   )
   
   expect_equal(

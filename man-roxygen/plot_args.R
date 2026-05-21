@@ -22,6 +22,7 @@
 ##'   `powerscale_plot_dens` with order lowest, base, highest; or
 ##'   length 2 for `powerscale_plot_quantities` with order low Pareto
 ##'   k, high Pareto k. If `NULL` the defaults will be used.
+##' @param colours Alias of `colors`.
 ##' @param facet_rows Character defining the rows of the plot facets,
 ##'   either "variable" or "component". Default is "variable".
 ##' @param variables_per_page Number specifying the maximum number of

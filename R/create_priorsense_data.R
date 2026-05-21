@@ -87,9 +87,9 @@ create_priorsense_data.default <- function(x,
 
   if (is.null(log_lik)) {
     if (is.null(fit)) {
-      log_lik <- log_lik_fn(x, ...)
+      log_lik <- log_lik_fn(x, log_lik_name = log_lik_name, ...)
     } else {
-      log_lik <- log_lik_fn(fit, ...)
+      log_lik <- log_lik_fn(fit, log_lik_name = log_lik_name, ...)
     }
   }
 
@@ -164,3 +164,26 @@ create_priorsense_data.rjags <- function(x, ...) {
     ...
   )
 }
+
+##' @rdname create-priorsense-data
+##' @export
+create_priorsense_data.jagsUI <- function(x, ...) {
+
+  create_priorsense_data(
+    x = posterior::as_draws(x$samples),
+    ...
+  )
+}
+
+
+
+##' @rdname create-priorsense-data
+##' @export
+create_priorsense_data.mcmc.list <- function(x, ...) {
+
+  create_priorsense_data(
+    x = posterior::as_draws_df(x),
+    ...
+  )
+
+ }

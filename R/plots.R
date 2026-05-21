@@ -3,7 +3,7 @@
 ##' Various diagnostic plots for power-scaling sensitivity. See **Plot
 ##' Descriptions** below for details.
 ##'
-##' @name powerscale_plots
+##' @name powerscale-plots
 ##'
 ##' @template plot_args
 ##' @template div_measure_arg
@@ -244,7 +244,7 @@ prepare_plot <- function(d, resample, variable, colors, ...) {
 
 }
 
-##' @rdname powerscale_plots
+##' @rdname powerscale-plots
 ##' @export
 powerscale_plot_dens <- function(x, ...) {
   UseMethod("powerscale_plot_dens")
@@ -262,6 +262,7 @@ powerscale_plot_dens.default <-
            facet_rows = "component",
            help_text = getOption("priorsense.plot_help_text", TRUE),
            colors = NULL,
+           colours = NULL,
            variables_per_page = 6,
            ...
            ) {
@@ -277,10 +278,18 @@ powerscale_plot_dens.default <-
       facet_rows = facet_rows,
       help_text = help_text,
       colors = colors,
+      colours = colours,
       variables_per_page = variables_per_page
     )
   }
 
+draw_key_path2 <- function(data, params, size) {
+  grid::segmentsGrob(
+    x0 = 0.1, x1 = 0.9,
+    y0 = 0.5, y1 = 0.5,
+    gp = grid::gpar(col = data$colour)
+  )
+}
 
 ##' @export
 powerscale_plot_dens.powerscaled_sequence <-
@@ -293,6 +302,7 @@ powerscale_plot_dens.powerscaled_sequence <-
            facet_rows = "component",
            help_text = getOption("priorsense.plot_help_text", TRUE),
            colors = NULL,
+           colours = NULL,
            variables_per_page = getOption(
              "priorsense.plot_variables_per_page", 6
            ),
@@ -300,15 +310,25 @@ powerscale_plot_dens.powerscaled_sequence <-
            ) {
 
     # input checks
-      if (!is.null(variable) && !is.null(variables)) {
-   checkmate::assert(
-      if (identical(variable, variables)) TRUE else "must be identical if both provided",
-      .var.name = "`variable` and `variables`"
+    if (!is.null(variable) && !is.null(variables)) {
+      checkmate::assert(
+        if (identical(variable, variables)) TRUE else "must be identical if both provided",
+        .var.name = "`variable` and `variables`"
       )
-  }
-  if (is.null(variable)) {
-    variable <- variables
-  }
+    }
+    if (is.null(variable)) {
+      variable <- variables
+    }
+
+    if (!is.null(colors) && !is.null(colours)) {
+      checkmate::assert(
+        if (identical(colors, colours)) TRUE else "must be identical if both provided",
+        .var.name = "`colors` and `colours`"
+      )
+    }
+    if (is.null(colors)) {
+      colors <- colours
+    }
 
     checkmate::assert_character(variable, null.ok = TRUE)
     checkmate::assert_logical(resample, len = 1)
@@ -375,20 +395,11 @@ powerscale_plot_dens.powerscaled_sequence <-
       # https://github.com/mjskay/ggdist/issues/134
       plot <- plot +
         ggdist::stat_slab(
-          fill = "black",
-          alpha = 0,
-          linewidth = 0.5,
-          trim = FALSE,
-          normalize = "xy",
-          key_glyph = "smooth"
-        ) +
-        ggdist::stat_slab(
           fill = NA,
-          alpha = 1,
           linewidth = 0.5,
           trim = FALSE,
           normalize = "xy",
-          key_glyph = "smooth"
+          key_glyph = draw_key_path2
         ) +
         ggplot2::xlab(NULL) +
         ggplot2::ylab(NULL)
@@ -400,10 +411,9 @@ powerscale_plot_dens.powerscaled_sequence <-
             ggplot2::aes(y = .data$interval_y),
             .width = intervals,
             fill = NA,
-            alpha = 1,
             trim = FALSE,
             normalize = "xy",
-            key_glyph = "smooth"
+            show.legend = FALSE
           )
       }
 
@@ -510,7 +520,7 @@ powerscale_plot_dens.powerscaled_sequence <-
     return(plots)
   }
 
-##' @rdname powerscale_plots
+##' @rdname powerscale-plots
 ##' @export
 powerscale_plot_ecdf <- function(x, ...) {
   UseMethod("powerscale_plot_ecdf")
@@ -527,6 +537,7 @@ powerscale_plot_ecdf.default <-
            facet_rows = "component",
            help_text = getOption("priorsense.plot_help_text", TRUE),
            colors = NULL,
+           colours = NULL,
            variables_per_page = getOption(
              "priorsense.plot_variables_per_page",
              6
@@ -541,11 +552,12 @@ powerscale_plot_ecdf.default <-
       facet_rows = facet_rows,
       help_text = help_text,
       colors = colors,
+      colours = colours,
       variables_per_page = variables_per_page
     )
   }
 
-##' @rdname powerscale_plots
+##' @rdname powerscale-plots
 ##' @export
 powerscale_plot_ecdf.powerscaled_sequence <-
   function(x,
@@ -556,6 +568,7 @@ powerscale_plot_ecdf.powerscaled_sequence <-
            facet_rows = "component",
            help_text = getOption("priorsense.plot_help_text", TRUE),
            colors = NULL,
+           colours = NULL,
            variables_per_page = getOption(
              "priorsense.plot_variables_per_page",
              6
@@ -563,15 +576,25 @@ powerscale_plot_ecdf.powerscaled_sequence <-
            ...) {
 
     # input checks
-      if (!is.null(variable) && !is.null(variables)) {
-   checkmate::assert(
-      if (identical(variable, variables)) TRUE else "must be identical if both provided",
-      .var.name = "`variable` and `variables`"
+    if (!is.null(variable) && !is.null(variables)) {
+      checkmate::assert(
+        if (identical(variable, variables)) TRUE else "must be identical if both provided",
+        .var.name = "`variable` and `variables`"
       )
-  }
-  if (is.null(variable)) {
-    variable <- variables
-  }
+    }
+    if (is.null(variable)) {
+      variable <- variables
+    }
+
+    if (!is.null(colors) && !is.null(colours)) {
+      checkmate::assert(
+        if (identical(colors, colours)) TRUE else "must be identical if both provided",
+        .var.name = "`colors` and `colours`"
+      )
+    }
+    if (is.null(colors)) {
+      colors <- colours
+    }
 
     checkmate::assert_character(variable, null.ok = TRUE)
     checkmate::assert_logical(resample, len = 1)
@@ -627,7 +650,7 @@ powerscale_plot_ecdf.powerscaled_sequence <-
         ggplot2::ylab("ECDF") +
         ggplot2::xlab(NULL)
 
-        p <- p + ggplot2::stat_ecdf(ggplot2::aes(color = .data[[".powerscale_alpha"]]))
+      p <- p + ggplot2::stat_ecdf(ggplot2::aes(color = .data[[".powerscale_alpha"]]))
 
 
       if (facet_rows == "component") {
@@ -700,7 +723,7 @@ powerscale_plot_ecdf.powerscaled_sequence <-
   }
 
 
-##' @rdname powerscale_plots
+##' @rdname powerscale-plots
 ##' @export
 powerscale_plot_quantities <- function(x, ...) {
   UseMethod("powerscale_plot_quantities")
@@ -719,6 +742,7 @@ powerscale_plot_quantities.default <-
            quantity_args = NULL,
            help_text = getOption("priorsense.plot_help_text", TRUE),
            colors = NULL,
+           colours = NULL,
            variables_per_page = getOption(
              "priorsense.plot_variables_per_page",
              6
@@ -740,11 +764,12 @@ powerscale_plot_quantities.default <-
       quantity_args = quantity_args,
       help_text = help_text,
       colors = colors,
+      colours = colours,
       variables_per_page = variables_per_page
     )
   }
 
-##' @rdname powerscale_plots
+##' @rdname powerscale-plots
 ##' @export
 powerscale_plot_quantities.powerscaled_sequence <-
   function(x, variable = NULL,
@@ -757,21 +782,32 @@ powerscale_plot_quantities.powerscaled_sequence <-
            quantity_args = NULL,
            help_text = getOption("priorsense.plot_help_text", TRUE),
            colors = NULL,
+           colours = NULL,
            variables_per_page = getOption(
              "priorsense.plot_variables_per_page",
              6
            ),
            ...) {
 
-      if (!is.null(variable) && !is.null(variables)) {
-   checkmate::assert(
-      if (identical(variable, variables)) TRUE else "must be identical if both provided",
-      .var.name = "`variable` and `variables`"
+    if (!is.null(variable) && !is.null(variables)) {
+      checkmate::assert(
+        if (identical(variable, variables)) TRUE else "must be identical if both provided",
+        .var.name = "`variable` and `variables`"
       )
-  }
-  if (is.null(variable)) {
-    variable <- variables
-  }
+    }
+    if (is.null(variable)) {
+      variable <- variables
+    }
+
+    if (!is.null(colors) && !is.null(colours)) {
+      checkmate::assert(
+        if (identical(colors, colours)) TRUE else "must be identical if both provided",
+        .var.name = "`colors` and `colours`"
+      )
+    }
+    if (is.null(colors)) {
+      colors <- colours
+    }
 
     checkmate::assertCharacter(variable, null.ok = TRUE)
     checkmate::assertCharacter(quantity)
@@ -804,25 +840,25 @@ powerscale_plot_quantities.powerscaled_sequence <-
     } else {
       # Efficient variable expansion avoiding heavy subset_draws operations
       base_vars <- posterior::variables(x$base_draws)
-      
+
       expanded_vars <- lapply(variable, function(v) {
         # Keep variable if it matches exactly
         if (v %in% base_vars) {
           return(v)
         }
-        
+
         # Check for indexed variables (e.g., "a" -> "a[1]", "a[2]")
         prefix <- paste0(v, "[")
         indexed_matches <- base_vars[startsWith(base_vars, prefix)]
-        
+
         if (length(indexed_matches) > 0) {
           return(indexed_matches)
         }
-        
+
         # Return original string if no match (downstream handles errors)
         return(v)
       })
-      
+
       variable <- unique(unlist(expanded_vars))
     }
 
@@ -1102,7 +1138,7 @@ print.priorsense_plot <- plot.priorsense_plot
 
 
 ##' @exportS3Method
-##' @rdname powerscale_plots
+##' @rdname powerscale-plots
 plot.powerscaled_sequence <- function(x, type = c("dens", "ecdf", "quantities"), ...) {
   type <- match.arg(type)
   do.call(paste0("powerscale_plot_", type), args = list(x = x, ...))

@@ -1,7 +1,7 @@
 Package: priorsense
 Title: Prior Diagnostics and Sensitivity Analysis
-Version: 1.2.0
-Authors@R: c(person("Noa", "Kallioinen", email = "noa.kallioinen@aalto.fi", role = c("aut", "cre", "cph")),
+Version: 1.2.0.9000
+Authors@R: c(person("Noa", "Kallioinen", email = "noa.kallioinen@helsinki.fi", role = c("aut", "cre", "cph")),
 	     person("Topi", "Paananen", role = c("aut")),
 	     person("Paul-Christian", "Bürkner", role = c("aut")),
 	     person("Aki", "Vehtari", role = c("aut")),
@@ -12,13 +12,14 @@ License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c ("namespace", "rd", "srr::srr_stats_roclet"))
-RoxygenNote: 7.3.3
+RoxygenNote: 8.0.0
 Imports:
     checkmate (>= 2.3.1),
     ggdist (>= 3.3.2),
     ggh4x (>= 0.2.5),
     ggplot2 (>= 4.0.0),
     grDevices (>= 3.6.2),
+    grid,
     matrixStats (>= 1.3.0),
     posterior (>= 1.6.0),
     rlang (>= 1.1.4),
@@ -30,6 +31,7 @@ Suggests:
     brms (>= 2.23.0),
     cmdstanr (>= 0.8.1),
     iwmm (>= 0.0.1),
+    nimble (>= 1.4.2),
     philentropy (>= 0.8.0),
     quarto (>= 1.4.4),
     R2jags (>= 0.8),
