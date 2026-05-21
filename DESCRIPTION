@@ -5,7 +5,9 @@ Authors@R: c(person("Noa", "Kallioinen", email = "noa.kallioinen@helsinki.fi", r
 	     person("Topi", "Paananen", role = c("aut")),
 	     person("Paul-Christian", "Bürkner", role = c("aut")),
 	     person("Aki", "Vehtari", role = c("aut")),
-	     person("Frank", "Weber", role = c("ctb"))
+	     person("Frank", "Weber", role = c("ctb")),
+         person("Simon", "Taylor", role = c("rev")),
+         person("Dylan", "Dijk", role = c("rev"))
 	     )
 Description: Provides functions for prior and likelihood sensitivity analysis in Bayesian models. Currently it implements methods to determine the sensitivity of the posterior to power-scaling perturbations of the prior and likelihood.
 License: GPL (>= 3)

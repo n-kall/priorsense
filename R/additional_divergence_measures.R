@@ -112,7 +112,8 @@ js_div <- function(x, y, x_weights = NULL, y_weights = NULL, ...) {
     x = y,
     from = min(c(x, y)),
     to = max(c(x, y)),
-    weights = y_weights
+    weights = y_weights,
+    warnWbw = FALSE
   )$y
   y_density <- y_density / sum(y_density)
 
@@ -120,7 +121,8 @@ js_div <- function(x, y, x_weights = NULL, y_weights = NULL, ...) {
     x = x,
     from = min(c(x, y)),
     to = max(c(x, y)),
-    weights = x_weights
+    weights = x_weights,
+    warnWbw = FALSE
   )$y
 
   x_density <- x_density / sum(x_density)
@@ -181,7 +183,8 @@ hellinger_dist <- function(x, y, x_weights = NULL, y_weights = NULL, ...) {
   y_density <- stats::density(
     x = y,
     from = min(c(x, y)),
-    to = max(c(x, y)), weights = y_weights
+    to = max(c(x, y)), weights = y_weights,
+    warnWbw = FALSE
   )$y
   y_density <- y_density / sum(y_density)
 
@@ -189,7 +192,8 @@ hellinger_dist <- function(x, y, x_weights = NULL, y_weights = NULL, ...) {
     x = x,
     from = min(c(x, y)),
     to = max(c(x, y)),
-    weights = x_weights
+    weights = x_weights,
+    warnWbw = FALSE
   )$y
   x_density <- x_density / sum(x_density)
 
@@ -232,7 +236,8 @@ kl_div <- function(x, y, x_weights = NULL, y_weights = NULL, ...) {
     x = y,
     from = min(c(x, y)),
     to = max(c(x, y)),
-    weights = y_weights
+    weights = y_weights,
+    warnWbw = FALSE
   )$y
   y_density <- y_density / sum(y_density)
 
@@ -240,7 +245,8 @@ kl_div <- function(x, y, x_weights = NULL, y_weights = NULL, ...) {
     x = x,
     from = min(c(x, y)),
     to = max(c(x, y)),
-    weights = x_weights
+    weights = x_weights,
+    warnWbw = FALSE
   )$y
   x_density <- x_density / sum(x_density)
 

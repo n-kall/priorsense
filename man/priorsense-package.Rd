@@ -59,11 +59,11 @@ Computing}. 31(16).  \code{doi:10.1007/s11222-020-09982-2}
 \link{powerscale-plots}
 }
 \author{
-\strong{Maintainer}: Noa Kallioinen \email{noa.kallioinen@aalto.fi} [copyright holder]
+\strong{Maintainer}: Noa Kallioinen \email{noa.kallioinen@helsinki.fi} [copyright holder]
 
 Authors:
 \itemize{
-  \item Noa Kallioinen \email{noa.kallioinen@aalto.fi} [copyright holder]
+  \item Noa Kallioinen \email{noa.kallioinen@helsinki.fi} [copyright holder]
   \item Topi Paananen
   \item Paul-Christian Bürkner
   \item Aki Vehtari

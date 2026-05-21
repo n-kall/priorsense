@@ -86,7 +86,7 @@ method. See function \code{\link[=cjs_dist]{cjs_dist()}} for more details.
 \item \code{"ks_dist"}: Kolmogorov-Smirnov distance. See \code{\link[stats:ks.test]{stats::ks.test()}}.
 \item \code{"ws_dist"}: Wassterstein distance (pass \code{measure_args = list(p = N)}) for
 a different order, where N is the order. Requires the \code{transport}
-package. See \link[transport:wasserstein1d]{transport::wasserstein1d}.
+package. See \code{\link[transport:wasserstein1d]{transport::wasserstein1d()}}.
 }}
 
 \item{measure_args}{Named list of further arguments passed to divergence
