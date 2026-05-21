@@ -21,8 +21,10 @@ In addition, visual diagnostics are available by first using
 [`powerscale_sequence`](https://n-kall.github.io/priorsense/reference/powerscale-overview.md)
 to create a sequence of perturbed posteriors, and then a plot function
 such as
-[`powerscale_plot_ecdf`](https://n-kall.github.io/priorsense/reference/powerscale_plots.md)
+[`powerscale_plot_ecdf`](https://n-kall.github.io/priorsense/reference/powerscale-plots.md)
 to visualise the change.
+
+For an introduction, see `vignette("priorsense")`.
 
 The following global options are available:
 
@@ -53,12 +55,8 @@ Implicitly adaptive importance sampling. *Statistics and Computing*.
 
 ## See also
 
-[`powerscale_sensitivity`](https://n-kall.github.io/priorsense/reference/powerscale-sensitivity.md)
-[`powerscale_sequence`](https://n-kall.github.io/priorsense/reference/powerscale-overview.md)
-[`powerscale`](https://n-kall.github.io/priorsense/reference/powerscale-overview.md)
-[`powerscale_plot_ecdf`](https://n-kall.github.io/priorsense/reference/powerscale_plots.md)
-[`powerscale_plot_dens`](https://n-kall.github.io/priorsense/reference/powerscale_plots.md)
-[`powerscale_plot_quantities`](https://n-kall.github.io/priorsense/reference/powerscale_plots.md)
+[powerscale-overview](https://n-kall.github.io/priorsense/reference/powerscale-overview.md),
+[powerscale-plots](https://n-kall.github.io/priorsense/reference/powerscale-plots.md)
 
 ## Author
 
@@ -66,6 +64,8 @@ Implicitly adaptive importance sampling. *Statistics and Computing*.
 holder\]
 
 Authors:
+
+- Noa Kallioinen <noa.kallioinen@aalto.fi> \[copyright holder\]
 
 - Topi Paananen
 

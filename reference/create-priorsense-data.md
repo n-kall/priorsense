@@ -33,6 +33,12 @@ create_priorsense_data(x, ...)
 
 # S3 method for class 'rjags'
 create_priorsense_data(x, ...)
+
+# S3 method for class 'jagsUI'
+create_priorsense_data(x, ...)
+
+# S3 method for class 'mcmc.list'
+create_priorsense_data(x, ...)
 ```
 
 ## Arguments

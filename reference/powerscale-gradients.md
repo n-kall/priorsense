@@ -36,6 +36,8 @@ powerscale_gradients(
   scale = FALSE,
   prior_selection = NULL,
   likelihood_selection = NULL,
+  log_prior_name = "lprior",
+  log_lik_name = "log_lik",
   ...
 )
 ```
@@ -88,25 +90,42 @@ powerscale_gradients(
   The following methods are implemented:
 
   - `"cjs_dist"`: Cumulative Jensen-Shannon distance. Default method.
-    See function `cjs_dist` for more details.
+    See function
+    [`cjs_dist()`](https://n-kall.github.io/priorsense/reference/cjs_dist.md)
+    for more details.
 
-  - `"js_dist"`: Jensen-Shannon distance.
+  - `"js_dist"`: Jensen-Shannon distance. First estimates density using
+    [`stats::density()`](https://rdrr.io/r/stats/density.html). Requires
+    the `philentropy` package. See
+    [`philentropy::jensen_shannon()`](https://drostlab.github.io/philentropy/reference/jensen_shannon.html).
 
-  - `"js_div"`: Jensen-Shannon divergence.
+  - `"js_div"`: Jensen-Shannon divergence. First estimates density using
+    [`stats::density()`](https://rdrr.io/r/stats/density.html). Requires
+    the `philentropy` package. See
+    [`philentropy::jensen_shannon()`](https://drostlab.github.io/philentropy/reference/jensen_shannon.html).
 
-  - `"hellinger_dist"`: Hellinger distance.
+  - `"hellinger_dist"`: Hellinger distance. First estimates density
+    using [`stats::density()`](https://rdrr.io/r/stats/density.html).
+    Requires the `philentropy` package. See
+    [`philentropy::hellinger()`](https://drostlab.github.io/philentropy/reference/hellinger.html).
 
-  - `"kl_dist"`: Kullback-Leibler distance.
+  - `"kl_dist"`: Kullback-Leibler distance. First esimates density using
+    [`stats::density()`](https://rdrr.io/r/stats/density.html). Requires
+    the `philentropy` package. See
+    [`philentropy::kullback_leibler_distance()`](https://drostlab.github.io/philentropy/reference/kullback_leibler_distance.html).
 
-  - `"kl_div"`: Kullback-Leibler divergence.
+  - `"kl_div"`: Kullback-Leibler divergence. First estimates density
+    using [`stats::density()`](https://rdrr.io/r/stats/density.html).
+    Requires the `philentropy` package. See
+    [`philentropy::kullback_leibler_distance()`](https://drostlab.github.io/philentropy/reference/kullback_leibler_distance.html).
 
-  - `"ks_dist"`: Kolmogorov-Smirnov distance.
-
-  - `"hellinger_dist"`: Hellinger distance.
+  - `"ks_dist"`: Kolmogorov-Smirnov distance. See
+    [`stats::ks.test()`](https://rdrr.io/r/stats/ks.test.html).
 
   - `"ws_dist"`: Wassterstein distance (pass
     `measure_args = list(p = N)`) for a different order, where N is the
-    order.
+    order. Requires the `transport` package. See
+    [transport::wasserstein1d](https://rdrr.io/pkg/transport/man/wasserstein1d.html).
 
 - measure_args:
 
@@ -174,31 +193,31 @@ powerscale_gradients(drw)
 #> # A tibble: 2 × 2
 #>   variable cjs_dist
 #>   <chr>       <dbl>
-#> 1 mu          0.433
-#> 2 sigma       0.360
+#> 1 mu          0.390
+#> 2 sigma       0.288
 #> 
 #> $divergence$likelihood
 #> # A tibble: 2 × 2
 #>   variable cjs_dist
 #>   <chr>       <dbl>
-#> 1 mu          0.641
-#> 2 sigma       0.674
+#> 1 mu          0.558
+#> 2 sigma       0.527
 #> 
 #> 
 #> $quantities
 #> $quantities$prior
 #> # A tibble: 2 × 7
-#>   variable   mean median    sd    mad      q5    q95
-#>   <chr>     <dbl>  <dbl> <dbl>  <dbl>   <dbl>  <dbl>
-#> 1 mu       -0.312 -0.228 0.167 0.0916 -0.390  -0.211
-#> 2 sigma     0.145  0.143 0.142 0.0480  0.0296  0.272
+#>   variable   mean  median     sd    mad      q5    q95
+#>   <chr>     <dbl>   <dbl>  <dbl>  <dbl>   <dbl>  <dbl>
+#> 1 mu       -0.298 -0.273  0.119  0.0813 -0.776  -0.157
+#> 2 sigma     0.125  0.0918 0.0880 0.0422  0.0224  0.448
 #> 
 #> $quantities$likelihood
 #> # A tibble: 2 × 7
-#>   variable   mean median     sd    mad       q5    q95
-#>   <chr>     <dbl>  <dbl>  <dbl>  <dbl>    <dbl>  <dbl>
-#> 1 mu        0.397  0.299 -0.318 -0.167  0.643    0.173
-#> 2 sigma    -0.246 -0.210 -0.292 -0.147 -0.00776 -0.451
+#>   variable   mean median     sd    mad      q5     q95
+#>   <chr>     <dbl>  <dbl>  <dbl>  <dbl>   <dbl>   <dbl>
+#> 1 mu        0.366  0.330 -0.236 -0.197  1.16    0.0836
+#> 2 sigma    -0.205 -0.138 -0.184 -0.113 -0.0118 -0.941 
 #> 
 #> 
 #> $loadings

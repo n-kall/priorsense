@@ -28,6 +28,7 @@ powerscale_sensitivity(
   likelihood_selection = NULL,
   log_prior_name = "lprior",
   log_lik_name = "log_lik",
+  separator = "_",
   num_args = NULL,
   ...
 )
@@ -49,6 +50,7 @@ powerscale_sensitivity(
   prediction = NULL,
   prior_selection = NULL,
   likelihood_selection = NULL,
+  separator = "_",
   num_args = NULL,
   ...
 )
@@ -88,25 +90,42 @@ powerscale_sensitivity(x, ...)
   The following methods are implemented:
 
   - `"cjs_dist"`: Cumulative Jensen-Shannon distance. Default method.
-    See function `cjs_dist` for more details.
+    See function
+    [`cjs_dist()`](https://n-kall.github.io/priorsense/reference/cjs_dist.md)
+    for more details.
 
-  - `"js_dist"`: Jensen-Shannon distance.
+  - `"js_dist"`: Jensen-Shannon distance. First estimates density using
+    [`stats::density()`](https://rdrr.io/r/stats/density.html). Requires
+    the `philentropy` package. See
+    [`philentropy::jensen_shannon()`](https://drostlab.github.io/philentropy/reference/jensen_shannon.html).
 
-  - `"js_div"`: Jensen-Shannon divergence.
+  - `"js_div"`: Jensen-Shannon divergence. First estimates density using
+    [`stats::density()`](https://rdrr.io/r/stats/density.html). Requires
+    the `philentropy` package. See
+    [`philentropy::jensen_shannon()`](https://drostlab.github.io/philentropy/reference/jensen_shannon.html).
 
-  - `"hellinger_dist"`: Hellinger distance.
+  - `"hellinger_dist"`: Hellinger distance. First estimates density
+    using [`stats::density()`](https://rdrr.io/r/stats/density.html).
+    Requires the `philentropy` package. See
+    [`philentropy::hellinger()`](https://drostlab.github.io/philentropy/reference/hellinger.html).
 
-  - `"kl_dist"`: Kullback-Leibler distance.
+  - `"kl_dist"`: Kullback-Leibler distance. First esimates density using
+    [`stats::density()`](https://rdrr.io/r/stats/density.html). Requires
+    the `philentropy` package. See
+    [`philentropy::kullback_leibler_distance()`](https://drostlab.github.io/philentropy/reference/kullback_leibler_distance.html).
 
-  - `"kl_div"`: Kullback-Leibler divergence.
+  - `"kl_div"`: Kullback-Leibler divergence. First estimates density
+    using [`stats::density()`](https://rdrr.io/r/stats/density.html).
+    Requires the `philentropy` package. See
+    [`philentropy::kullback_leibler_distance()`](https://drostlab.github.io/philentropy/reference/kullback_leibler_distance.html).
 
-  - `"ks_dist"`: Kolmogorov-Smirnov distance.
-
-  - `"hellinger_dist"`: Hellinger distance.
+  - `"ks_dist"`: Kolmogorov-Smirnov distance. See
+    [`stats::ks.test()`](https://rdrr.io/r/stats/ks.test.html).
 
   - `"ws_dist"`: Wassterstein distance (pass
     `measure_args = list(p = N)`) for a different order, where N is the
-    order.
+    order. Requires the `transport` package. See
+    [transport::wasserstein1d](https://rdrr.io/pkg/transport/man/wasserstein1d.html).
 
 - measure_args:
 
@@ -152,15 +171,15 @@ powerscale_sensitivity(x, ...)
   Vector specifying partitions of component to be included in
   power-scaling. Default is NULL, which takes all partitions. If this is
   a character, then it is appended to the variable name (specified by
-  `log_prior_name`) with an `_` between them. If numeric, then it is
-  appended inside `[]`.
+  `log_prior_name`) with a separator between them. If numeric, then it
+  is appended inside `[]`.
 
 - likelihood_selection:
 
   Vector specifying partitions of component to be included in
   power-scaling. Default is NULL, which takes all partitions. If this is
   a character, then it is appended to the variable name (specified by
-  `log_lik_name`) with an `_` between them. If numeric, then it is
+  `log_lik_name`) with a separator between them. If numeric, then it is
   appended inside `[]`.
 
 - log_prior_name:
@@ -172,6 +191,11 @@ powerscale_sensitivity(x, ...)
 
   Character (case sensitive) specifying name of the variable storing the
   log likelihood evaluations
+
+- separator:
+
+  Character specifying the separator between the component name and the
+  partition. The default is `"_"`.
 
 - num_args:
 
@@ -208,7 +232,7 @@ powerscale_sensitivity(ex$draws)
 #> Prior selection: all priors
 #> Likelihood selection: all data
 #> 
-#>  variable prior likelihood                     diagnosis
-#>        mu 0.433      0.641 potential prior-data conflict
-#>     sigma 0.360      0.674 potential prior-data conflict
+#>  variable prior likelihood                           diagnosis
+#>        mu 0.390      0.558 potential prior-likelihood conflict
+#>     sigma 0.288      0.527 potential prior-likelihood conflict
 ```

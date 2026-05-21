@@ -47,6 +47,6 @@ posterior::summarise_draws(
 #> # A tibble: 2 × 3
 #>   variable  mean psens_mean
 #>   <chr>    <dbl>      <dbl>
-#> 1 mu       9.53      -0.313
-#> 2 sigma    0.884      0.145
+#> 1 mu       9.54      -0.594
+#> 2 sigma    0.875      0.250
 ```

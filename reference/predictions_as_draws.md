@@ -45,8 +45,17 @@ draws array of predictions
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \dontrun{
 library(brms)
+#> Loading required package: Rcpp
+#> Loading 'brms' package (version 2.23.1). Useful instructions
+#> can be found by typing help('brms'). A more detailed introduction
+#> to the package is available through vignette('brms_overview').
+#> 
+#> Attaching package: ‘brms’
+#> The following object is masked from ‘package:stats’:
+#> 
+#>     ar
 
 if ("log_prior_draws.brmsfit" %in% methods(log_prior_draws) &&
     ("log_lik_draws.brmsfit" %in% methods(log_lik_draws))) {
@@ -65,5 +74,8 @@ if ("log_prior_draws.brmsfit" %in% methods(log_prior_draws) &&
                                )
   )
 }
-} # }
+#> Compiling Stan program...
+#> Start sampling
+#> Error in prediction(x$fit, ...): unused argument (separator = "_")
+# }
 ```

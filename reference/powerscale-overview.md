@@ -24,6 +24,7 @@ powerscale(
   selection = NULL,
   log_prior_name = "lprior",
   log_lik_name = "log_lik",
+  separator = "_",
   ...
 )
 
@@ -42,6 +43,7 @@ powerscale(
   selection = NULL,
   log_prior_name = "lprior",
   log_lik_name = "log_lik",
+  separator = "_",
   ...
 )
 
@@ -160,6 +162,11 @@ powerscale_sequence(
   Character (case sensitive) specifying name of the variable storing the
   log likelihood evaluations
 
+- separator:
+
+  Character specifying the separator between the component name and the
+  partition. The default is `"_"`.
+
 - lower_alpha:
 
   Lower power-scaling alpha value in sequence.
@@ -170,7 +177,7 @@ powerscale_sequence(
 
 - length:
 
-  Length of alpha sequence.
+  Total length of alpha sequence, including 1.0.
 
 - auto_alpha_range:
 
@@ -178,23 +185,24 @@ powerscale_sequence(
 
 - symmetric:
 
-  Boolean. Should the alpha range be symmetrical around alpha = 1, on
-  log-space?
+  Boolean. Should the alpha range be symmetrical around alpha = 1 on
+  log-scale? If `TRUE`, the length of the range will be always be odd,
+  and will be equal to `length - 1` if specified `length` is even.
 
 - prior_selection:
 
   Vector specifying partitions of component to be included in
   power-scaling. Default is NULL, which takes all partitions. If this is
   a character, then it is appended to the variable name (specified by
-  `log_prior_name`) with an `_` between them. If numeric, then it is
-  appended inside `[]`.
+  `log_prior_name`) with a separator between them. If numeric, then it
+  is appended inside `[]`.
 
 - likelihood_selection:
 
   Vector specifying partitions of component to be included in
   power-scaling. Default is NULL, which takes all partitions. If this is
   a character, then it is appended to the variable name (specified by
-  `log_lik_name`) with an `_` between them. If numeric, then it is
+  `log_lik_name`) with a separator between them. If numeric, then it is
   appended inside `[]`.
 
 ## Value
@@ -202,6 +210,19 @@ powerscale_sequence(
 A `powerscaled_draws` or `powerscaled_sequence` object, which contains
 the estimated posterior draws resulting from the power-scaling
 perturbations and details of the perturbation and estimation methods.
+
+## Details
+
+Power-scaling of the prior or likelihood is defined as exponentiating
+the prior or likelihood to some value alpha. The effect on the posterior
+is then estimated through Pareto-smoothed importance sampling and
+optionally importance weighted moment matching. In order to perform the
+calculations, the log-prior and log-likelihood evaluations must be
+present in the object. For a general introduction to the package see see
+`vignette("priorsense")`, and for details on the method see Kallioinen
+et al. (2023). For details on Pareto-smoothed importance sampling and
+importance weighted moment matching, see Vehtari et al. (2024) and
+Paananen et al. (2021), respectively.
 
 ## References
 
@@ -218,6 +239,10 @@ Paananen, T., Piironen, J., Bürkner, P-C., Vehtari, A. (2021).
 Implicitly adaptive importance sampling. *Statistics and Computing*.
 31(16). `doi:10.1007/s11222-020-09982-2`
 
+## See also
+
+[powerscale-plots](https://n-kall.github.io/priorsense/reference/powerscale-plots.md)
+
 ## Examples
 
 ``` r
@@ -226,16 +251,16 @@ ex <- example_powerscale_model()
 powerscale(ex$draws, component = "prior", alpha = 0.5)
 #> # A draws_df: 1000 iterations, 4 chains, and 2 variables
 #>     mu sigma
-#> 1  9.4  1.05
-#> 2  9.5  1.06
-#> 3  9.3  0.90
-#> 4  9.4  1.06
-#> 5  9.1  1.18
-#> 6  9.2  1.06
-#> 7  9.5  1.04
-#> 8  9.7  0.60
-#> 9  9.7  0.65
-#> 10 9.5  0.77
+#> 1  9.5  0.76
+#> 2  9.3  0.75
+#> 3  9.3  0.67
+#> 4  9.4  0.71
+#> 5  9.4  0.73
+#> 6  9.9  0.82
+#> 7  9.6  0.82
+#> 8  9.7  0.75
+#> 9  9.6  0.76
+#> 10 9.4  1.05
 #> # ... with 3990 more draws
 #> # ... hidden reserved variables {'.log_weight', '.chain', '.iteration', '.draw'}
 #> 
@@ -243,7 +268,7 @@ powerscale(ex$draws, component = "prior", alpha = 0.5)
 #>  alpha: 0.5 
 #>  scaled component: prior 
 #>  selection: 
-#>  pareto-k: 0.2 
+#>  pareto-k: 0.14 
 #>  pareto-k threshold: 0.72 
 #>  resampled: FALSE 
 #>  transform: identity 
@@ -252,22 +277,22 @@ powerscale_sequence(ex$draws)
 #> base draws:
 #> # A draws_df: 1000 iterations, 4 chains, and 2 variables
 #>     mu sigma
-#> 1  9.4  1.05
-#> 2  9.5  1.06
-#> 3  9.3  0.90
-#> 4  9.4  1.06
-#> 5  9.1  1.18
-#> 6  9.2  1.06
-#> 7  9.5  1.04
-#> 8  9.7  0.60
-#> 9  9.7  0.65
-#> 10 9.5  0.77
+#> 1  9.5  0.76
+#> 2  9.3  0.75
+#> 3  9.3  0.67
+#> 4  9.4  0.71
+#> 5  9.4  0.73
+#> 6  9.9  0.82
+#> 7  9.6  0.82
+#> 8  9.7  0.75
+#> 9  9.6  0.76
+#> 10 9.4  1.05
 #> # ... with 3990 more draws
 #> # ... hidden reserved variables {'.chain', '.iteration', '.draw'}
 #> 
 #> power-scaling
 #>  alpha range: [0.8, 1.25]
-#>  length of sequence: 2 
+#>  length of sequence: 3 
 #>  scaled component: likelihood 
 #>  scaled component: prior 
 #>  transform: identity 

@@ -4,7 +4,7 @@ Priorsense provides numerical diagnostics for sensitivity along with
 graphics. Here we describe the interpretation of the sensitivity
 diagnostics.
 
-## Diagnostic value
+## Sensitivity diagnostic
 
 The sensitivity diagnostic value given by
 [`powerscale_sensitivity()`](https://n-kall.github.io/priorsense/reference/powerscale-sensitivity.md)
@@ -24,13 +24,13 @@ sensitivity. These values should be considered and interpreted together.
 Based on the values, a diagnosis is also given. Currently, this is
 either “strong prior / weak likelihood” (if the prior sensitivity is
 higher than a threshold and the likelihood sensitivity is lower than a
-threshold) or “prior-data conflict” (if both types of sensitivity are
-higher than the threshold).
+threshold) or “prior-likelihood conflict” (if both types of sensitivity
+are higher than the threshold).
 
 **These diagnostic messages do not necessarily indicate problems with
 the model.** They are informative messages that describe the interplay
 between the chosen prior and likelihood. If your prior is meant to be
-informative, influence on the posterior is desired and prior-data
+informative, influence on the posterior is desired and prior-likelihood
 conflict may not be an issue. However, if you did not put much effort
 into choosing the priors, these messages can let you know if you should
 be more deliberate in your prior specification.
@@ -48,7 +48,7 @@ This can occur when:
   increasing the strength of the likelihood. The prior will always have
   an effect in this case.
 
-### Prior-data conflict
+### Prior-likelihood conflict
 
 This occurs when the posterior is sensitive to changes to both the prior
 and the likelihood. This indicates that the prior and likelihood are

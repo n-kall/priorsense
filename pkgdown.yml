@@ -1,13 +1,16 @@
-pandoc: 3.1.11
+pandoc: 3.8.3
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
-  powerscaling: powerscaling.html
+  airquality: airquality.html
+  getting_started: getting_started.html
+  priorsense_with_brms: priorsense_with_brms.html
   priorsense_with_jags: priorsense_with_jags.html
+  priorsense_with_nimble: priorsense_with_nimble.html
+  priorsense_with_stan: priorsense_with_stan.html
   quantity_of_interest: quantity_of_interest.html
-  selecting_priors_and_quantities: selecting_priors_and_quantities.html
   sensitivity_diagnostic: sensitivity_diagnostic.html
-last_built: 2026-04-01T11:41Z
+last_built: 2026-05-21T08:17Z
 urls:
   reference: https://n-kall.github.io/priorsense/reference
   article: https://n-kall.github.io/priorsense/articles
