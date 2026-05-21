@@ -16,3 +16,18 @@ test_that("divergence measures do not error", {
   }
 }
 )
+
+test_that("ks_dist handles unequal x/y lengths with y_weights = NULL", {
+
+  set.seed(42)
+  x <- rnorm(100)
+  y <- rnorm(50)
+
+  expect_no_error(priorsense:::ks_dist(x, y, y_weights = NULL))
+
+  result <- priorsense:::ks_dist(x, y, y_weights = NULL)
+  expect_named(result, "ks_dist.D")
+  expect_true(is.finite(result))
+
+}
+)

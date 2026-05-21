@@ -16,8 +16,8 @@ scale_draws <- function(draws, center = TRUE, scale = TRUE, ...) {
 
   # remove weights
   if (!(is.null(wei))) {
-    base_draws <- posterior::mutate_variables(
-      base_draws,
+    draws <- posterior::mutate_variables(
+      draws,
       .log_weight = NULL)
   }
 
