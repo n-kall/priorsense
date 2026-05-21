@@ -49,6 +49,8 @@ cat("```")
 We first fit the model using Stan:
 
 ```{r}
+#| message: false
+#| warning: false
 fit <- rstan::stan(
   model_code = model$model_code,
   data = model$data,
