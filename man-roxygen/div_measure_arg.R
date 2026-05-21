@@ -30,6 +30,6 @@
 ##'
 ##' * `"ws_dist"`: Wassterstein distance (pass `measure_args = list(p = N)`) for
 ##' a different order, where N is the order. Requires the `transport`
-##' package. See [transport::wasserstein1d].
+##' package. See [transport::wasserstein1d()].
 ##' @param measure_args Named list of further arguments passed to divergence
 ##'   measure functions.
