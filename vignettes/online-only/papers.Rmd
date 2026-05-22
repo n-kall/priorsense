@@ -1,0 +1,10 @@
+---
+title: "Publications using Priorsense"
+date: First version 2025-03-04. Last modified `r format(Sys.Date())`
+output:
+  html_document:
+    number_sections: TRUE
+---
+
+1. Noda, Ryoko, et al. "Predicting habitat suitability for Asian elephants in non-analog ecosystems with Bayesian models." Ecological Informatics 82 (2024): 102658.
+https://www.sciencedirect.com/science/article/pii/S1574954124002000
