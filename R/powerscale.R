@@ -115,8 +115,6 @@ powerscale.priorsense_data <- function(x,
                                        variable = NULL,
                                        variables = NULL,
                                        selection = NULL,
-                                       log_prior_name = "lprior",
-                                       log_lik_name = "log_lik",
                                        separator = "_",
                                        ...) {
 
@@ -141,8 +139,8 @@ powerscale.priorsense_data <- function(x,
     variables <- as.character(variables)
   }
 
-  log_prior_name <- as.character(log_prior_name)
-  log_lik_name <- as.character(log_lik_name)
+  log_prior_name <- x$log_prior_name
+  log_lik_name <- x$log_lik_name
 
 
   # input checks
@@ -256,6 +254,13 @@ powerscale.priorsense_data <- function(x,
       log_comp_draws <- x[["log_prior"]]
     } else if (component == "likelihood") {
       log_comp_draws <- x[["log_lik"]]
+    }
+
+    if (posterior::nvariables(log_comp_draws) == 0) {
+      stop2(
+        paste0("Log ", component, " variable (", log_component_name, ")",
+               " not found. Specify alternative variable name with `log_prior_name` or `log_lik_name`.")
+      )
     }
 
     # subset component draws if specified

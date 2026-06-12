@@ -66,7 +66,7 @@ create_priorsense_data.default <- function(x,
 
   # input checks
   checkmate::assert_true(posterior::ndraws(x) > 0)
-  
+
   checkmate::assertClass(log_prior, "draws", null.ok = TRUE)
   checkmate::assertClass(log_lik, "draws", null.ok = TRUE)
 
@@ -76,7 +76,7 @@ create_priorsense_data.default <- function(x,
   checkmate::assertFunction(log_prior_fn, null.ok = TRUE)
   checkmate::assertFunction(log_lik_fn, null.ok = TRUE)
   checkmate::assertFunction(log_ratio_fn, null.ok = TRUE)
-  
+
   if (is.null(log_prior)) {
     if (is.null(fit)) {
       log_prior <- log_prior_fn(x, log_prior_name = log_prior_name, ...)
@@ -97,15 +97,17 @@ create_priorsense_data.default <- function(x,
   checkmate::assert_false(checkmate::anyMissing(log_lik))
 
   psd <- list(
-    draws = remove_unwanted_vars(x),
+    draws = remove_unwanted_vars(x, excluded_variables = c(log_lik_name, log_prior_name, "lp__")),
     fit = fit,
+    log_prior_name = log_prior_name,
     log_prior_fn = log_prior_fn,
+    log_lik_name = log_lik_name,
     log_lik_fn = log_lik_fn,
     log_prior = log_prior,
     log_lik = log_lik,
     log_ratio_fn = log_ratio_fn
   )
-  
+
   class(psd) <- c("priorsense_data", class(psd))
 
   return(psd)
@@ -116,7 +118,7 @@ create_priorsense_data.default <- function(x,
 create_priorsense_data.stanfit <- function(x, ...) {
 
   create_priorsense_data.default(
-    x = get_draws_stanfit(x),
+    x = posterior::as_draws_df(as.array(x)),
     fit = x,
     log_prior_fn = log_prior_draws,
     log_lik_fn = log_lik_draws,
@@ -132,11 +134,11 @@ create_priorsense_data.stanfit <- function(x, ...) {
 create_priorsense_data.CmdStanFit <- function(x, ...) {
 
   create_priorsense_data.default(
-    x = get_draws_CmdStanFit(x, ...),
+    x = x$draws(format = "draws_df"),
     fit = x,
     log_prior_fn = log_prior_draws,
-    log_lik_fn = log_lik_draws,
     log_prior = log_prior_draws(x, ...),
+    log_lik_fn = log_lik_draws,
     log_lik = log_lik_draws(x, ...),
     log_ratio_fn = powerscale_log_ratio_fun,
     ...
@@ -186,4 +188,4 @@ create_priorsense_data.mcmc.list <- function(x, ...) {
     ...
   )
 
- }
+}
