@@ -42,8 +42,6 @@ powerscale(x, ...)
   variable = NULL,
   variables = NULL,
   selection = NULL,
-  log_prior_name = "lprior",
-  log_lik_name = "log_lik",
   separator = "_",
   ...
 )

@@ -72,6 +72,8 @@ Authors:
 Other contributors:
 \itemize{
   \item Frank Weber [contributor]
+  \item Simon Taylor [reviewer]
+  \item Dylan Dijk [reviewer]
 }
 
 }
