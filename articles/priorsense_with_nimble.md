@@ -41,17 +41,16 @@ inits <- list(
 )
 
 model <- nimbleModel(
-  model$model_code,
+  model$model_code, # the nimble model code
   data = model$data,
   inits = inits,
   constants = list(N = model$data$N)
 )
 
-
 cmodel <- compileNimble(model)
 
 mcmc <- buildMCMC(
-  model,
+  cmodel,
   monitors = c(
     "mu",
     "sigma",

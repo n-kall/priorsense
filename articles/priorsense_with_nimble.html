@@ -106,17 +106,16 @@
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/nimble/man/nimbleModel.html" class="external-link">nimbleModel</a></span><span class="op">(</span></span>
-<span>  <span class="va">model</span><span class="op">$</span><span class="va">model_code</span>,</span>
+<span>  <span class="va">model</span><span class="op">$</span><span class="va">model_code</span>, <span class="co"># the nimble model code</span></span>
 <span>  data <span class="op">=</span> <span class="va">model</span><span class="op">$</span><span class="va">data</span>,</span>
 <span>  inits <span class="op">=</span> <span class="va">inits</span>,</span>
 <span>  constants <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>N <span class="op">=</span> <span class="va">model</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">N</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span></span>
 <span><span class="va">cmodel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/nimble/man/compileNimble.html" class="external-link">compileNimble</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">mcmc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/nimble/man/buildMCMC.html" class="external-link">buildMCMC</a></span><span class="op">(</span></span>
-<span>  <span class="va">model</span>,</span>
+<span>  <span class="va">cmodel</span>,</span>
 <span>  monitors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>    <span class="st">"mu"</span>,</span>
 <span>    <span class="st">"sigma"</span>,</span>

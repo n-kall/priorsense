@@ -2,13 +2,14 @@
 
 ## priorsense 1.2.0.9000
 
-- add `separator` argument for specifying separator between
+- Add `separator` argument for specifying separator between
   `log_lik_name` or `log_prior_name` and tags
-- fix issues affecting prior and likelihood selection
-- fix issue with length of alpha sequence and improve relevant
+- Fix issues affecting prior and likelihood selection
+- Fix issue affecting use of `log_prior_name` and `log_lik_name`
+- Fix issue with length of alpha sequence and improve relevant
   documentation
-- add support for `nimble` and `jagsUI` and improved related vignettes
-- allow either `colors` or `colours` to be accepted in plot functions
+- Add support for `nimble` and `jagsUI` and improved related vignettes
+- Allow either `colors` or `colours` to be accepted in plot functions
 
 ## priorsense 1.2.0
 

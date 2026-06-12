@@ -76,3 +76,7 @@ Authors:
 Other contributors:
 
 - Frank Weber \[contributor\]
+
+- Simon Taylor \[reviewer\]
+
+- Dylan Dijk \[reviewer\]
