@@ -1,6 +1,6 @@
 ##' Extract log prior draws
 ##'
-##' Extract log likelihood from fitted model and return as a draws
+##' Extract log prior from fitted model and return as a draws
 ##' object.
 ##'
 ##' @name log_prior_draws
