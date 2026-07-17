@@ -30,7 +30,7 @@ corresponding to log prior, default is "lprior".}
 A draws_array object containing log_prior values.
 }
 \description{
-Extract log likelihood from fitted model and return as a draws
+Extract log prior from fitted model and return as a draws
 object.
 }
 \examples{

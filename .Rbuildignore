@@ -32,3 +32,4 @@
 ^vignettes/airquality_files$
 ^revdep$
 ^data-raw$
+^paper$
