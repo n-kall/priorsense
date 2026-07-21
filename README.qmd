@@ -12,15 +12,17 @@ ggplot2::theme_set(bayesplot::theme_default(base_family = "sans"))
 ```
 
 <!-- badges: start -->
-[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-green.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
-[![CRAN status](https://www.r-pkg.org/badges/version/priorsense)](https://CRAN.R-project.org/package=priorsense)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![R-CMD-check](https://github.com/n-kall/priorsense/workflows/R-CMD-check/badge.svg)](https://github.com/n-kall/priorsense/actions)
+[![Status at rOpenSci Software Peer Review](https://badges.ropensci.org/704_status.svg)](https://github.com/ropensci/software-review/issues/704)
+[![priorsense status badge](https://n-kall.r-universe.dev/badges/priorsense)](https://n-kall.r-universe.dev)
+[![priorsense CRAN badge](https://www.r-pkg.org/badges/version/priorsense)](https://cran.r-project.org/package=priorsense)
 <!-- badges: end -->
 
 ### Efficient prior and likelihood sensitivity checks
 
 __priorsense__ is an R package that provides tools for prior diagnostics and sensitivity
-analysis.
+analysis of Bayesian models.
 
 It currently includes functions for performing power-scaling
 sensitivity analysis on Stan models. This is a way to check how
