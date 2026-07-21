@@ -12,7 +12,6 @@ sfit <- suppressWarnings(rstan::stan(
 ))
 
 test_that("powerscale with resample actually resamples", {
-
   ps <- powerscale(
     x = sfit,
     component = "prior",
@@ -33,19 +32,17 @@ test_that("powerscale with resample actually resamples", {
 
 
 test_that("powerscale_sequence with resample actually resamples", {
-
   pss <- suppressWarnings(powerscale_sequence(
     x = sfit,
     variables = c("mu"),
     resample = TRUE,
-    ))
-    expect_equal(
-      pss$resampled,
-      TRUE
-    )
-    expect_equal(
-      stats::weights(pss$prior_scaled$draws_sequence[[1]])
-     ,
-      NULL
-    )
-  })
+  ))
+  expect_equal(
+    pss$resampled,
+    TRUE
+  )
+  expect_equal(
+    stats::weights(pss$prior_scaled$draws_sequence[[1]]),
+    NULL
+  )
+})

@@ -49,6 +49,4 @@ test_that("powerscale functions work for CmdStanFit", {
     ),
     "powerscaled_sensitivity_summary"
   )
-}
-)
-
+})

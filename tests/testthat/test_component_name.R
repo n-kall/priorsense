@@ -24,4 +24,3 @@ testthat::expect_equal(
   powerscale_sensitivity(ex),
   powerscale_sensitivity(ex_renamed, log_prior_name = "log_prior")
 )
-
