@@ -2,7 +2,6 @@
 ##' @srrstats {EA5.2} rounding used for digit display
 ##' @export
 print.powerscaling_details <- function(x, ...) {
-
   pareto_k <- x$diagnostics$khat
   pareto_k_threshold <- x$diagnostics$khat_threshold
   pareto_kf <- x$diagnostics$khatf
@@ -15,9 +14,7 @@ print.powerscaling_details <- function(x, ...) {
     pareto_k_print <- c(
       "moment-matched\n",
       pareto_k_print,
-      paste("pareto-kf",
-            round(pareto_kf, digits = 2),
-            "\n")
+      paste("pareto-kf", round(pareto_kf, digits = 2), "\n")
     )
   }
 
@@ -25,7 +22,9 @@ print.powerscaling_details <- function(x, ...) {
     "\npower-scaling\n",
     paste("alpha:", x$alpha, "\n"),
     paste("scaled component:", x$component, "\n"),
-    "selection:", x$selection, "\n",
+    "selection:",
+    x$selection,
+    "\n",
     pareto_k_print,
     paste("pareto-k threshold:", round(pareto_k_threshold, 2), "\n"),
     paste("resampled:", x$resampled, "\n"),
@@ -53,7 +52,6 @@ print.powerscaled_draws_summary <- function(x, ...) {
 
 ##' @export
 print.powerscaled_sequence <- function(x, ...) {
-
   component <- c()
   if (!is.null(x$prior_scaled)) {
     component <- c("prior", component)
@@ -80,10 +78,25 @@ print.powerscaled_sequence <- function(x, ...) {
 
 ##' @export
 print.powerscaled_sensitivity_summary <- function(x, digits = 3, ...) {
-
   cat(paste0("Sensitivity based on ", attr(x, "div_measure"), "\n"))
-  cat(paste0("Prior selection: ", ifelse(is.null(attr(x, "prior_selection")), "all priors", paste0(attr(x, "prior_selection"), collapse = ", ")), "\n"))
-  cat(paste0("Likelihood selection: ", ifelse(is.null(attr(x, "likelihood_selection")), "all data", paste0(attr(x, "likelihood_selection"), collapse = ", ")), "\n"))
+  cat(paste0(
+    "Prior selection: ",
+    ifelse(
+      is.null(attr(x, "prior_selection")),
+      "all priors",
+      paste0(attr(x, "prior_selection"), collapse = ", ")
+    ),
+    "\n"
+  ))
+  cat(paste0(
+    "Likelihood selection: ",
+    ifelse(
+      is.null(attr(x, "likelihood_selection")),
+      "all data",
+      paste0(attr(x, "likelihood_selection"), collapse = ", ")
+    ),
+    "\n"
+  ))
   cat("\n")
   print.data.frame(
     as.data.frame(
@@ -106,7 +119,6 @@ print.whitened_draws <- function(x, ...) {
   cat("Factor loadings:\n")
   print(attr(x, "loadings"), ...)
   invisible(x)
-
 }
 
 ##' @export
@@ -115,5 +127,4 @@ print.whitened_draws_summary <- function(x, ...) {
   cat("Factor loadings:\n")
   print(attr(x, "loadings"), ...)
   invisible(x)
-
 }

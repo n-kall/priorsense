@@ -37,31 +37,31 @@ powerscale_sensitivity <- function(x, ...) {
 
 ##' @rdname powerscale-sensitivity
 ##' @export
-powerscale_sensitivity.default <- function(x,
-                                           variable = NULL,
-                                           lower_alpha = 0.99,
-                                           upper_alpha = 1.01,
-                                           div_measure = "cjs_dist",
-                                           measure_args = list(),
-                                           component = c(
-                                             "prior",
-                                             "likelihood"
-                                           ),
-                                           sensitivity_threshold = 0.05,
-                                           moment_match = FALSE,
-                                           k_threshold = 0.5,
-                                           resample = FALSE,
-                                           transform = NULL,
-                                           prediction = NULL,
-                                           prior_selection = NULL,
-                                           likelihood_selection = NULL,
-                                           log_prior_name = "lprior",
-                                           log_lik_name = "log_lik",
-                                           separator = "_",
-                                           num_args = NULL,
-                                           ...
-                                           ) {
-
+powerscale_sensitivity.default <- function(
+  x,
+  variable = NULL,
+  lower_alpha = 0.99,
+  upper_alpha = 1.01,
+  div_measure = "cjs_dist",
+  measure_args = list(),
+  component = c(
+    "prior",
+    "likelihood"
+  ),
+  sensitivity_threshold = 0.05,
+  moment_match = FALSE,
+  k_threshold = 0.5,
+  resample = FALSE,
+  transform = NULL,
+  prediction = NULL,
+  prior_selection = NULL,
+  likelihood_selection = NULL,
+  log_prior_name = "lprior",
+  log_lik_name = "log_lik",
+  separator = "_",
+  num_args = NULL,
+  ...
+) {
   psd <- create_priorsense_data(
     x = x,
     log_prior_name = log_prior_name,
@@ -89,32 +89,33 @@ powerscale_sensitivity.default <- function(x,
     num_args = num_args,
     ...
   )
-
 }
 
 ##' @rdname powerscale-sensitivity
 ##' @export
-powerscale_sensitivity.priorsense_data <- function(x,
-                                                   variable = NULL,
-                                                   lower_alpha = 0.99,
-                                                   upper_alpha = 1.01,
-                                                   div_measure = "cjs_dist",
-                                                   measure_args = list(),
-                                                   component = c(
-                                                     "prior",
-                                                     "likelihood"
-                                                   ),
-                                                   sensitivity_threshold = 0.05,
-                                                   moment_match = FALSE,
-                                                   k_threshold = 0.5,
-                                                   resample = FALSE,
-                                                   transform = NULL,
-                                                   prediction = NULL,
-                                                   prior_selection = NULL,
-                                                   likelihood_selection = NULL,
-                                                   separator = "_",
-                                                   num_args = NULL,
-                                                   ...) {
+powerscale_sensitivity.priorsense_data <- function(
+  x,
+  variable = NULL,
+  lower_alpha = 0.99,
+  upper_alpha = 1.01,
+  div_measure = "cjs_dist",
+  measure_args = list(),
+  component = c(
+    "prior",
+    "likelihood"
+  ),
+  sensitivity_threshold = 0.05,
+  moment_match = FALSE,
+  k_threshold = 0.5,
+  resample = FALSE,
+  transform = NULL,
+  prediction = NULL,
+  prior_selection = NULL,
+  likelihood_selection = NULL,
+  separator = "_",
+  num_args = NULL,
+  ...
+) {
   component <- tolower(component)
 
   # input checks
@@ -162,8 +163,10 @@ powerscale_sensitivity.priorsense_data <- function(x,
     prior_sense <- NA
   }
 
-  varnames <- unique(c(as.character(gradients$divergence$prior$variable),
-                       as.character(gradients$divergence$likelihood$variable)))
+  varnames <- unique(c(
+    as.character(gradients$divergence$prior$variable),
+    as.character(gradients$divergence$likelihood$variable)
+  ))
 
   sense <- data.frame(
     variable = varnames,
@@ -175,11 +178,15 @@ powerscale_sensitivity.priorsense_data <- function(x,
   # likelihood
 
   sense$diagnosis <- ifelse(
-    sense$prior >= sensitivity_threshold & sense$likelihood >= sensitivity_threshold, "potential prior-likelihood conflict",
-    ifelse(sense$prior > sensitivity_threshold & sense$likelihood < sensitivity_threshold,
-           "potential strong prior / weak likelihood",
-           "-"
-           )
+    sense$prior >= sensitivity_threshold &
+      sense$likelihood >= sensitivity_threshold,
+    "potential prior-likelihood conflict",
+    ifelse(
+      sense$prior > sensitivity_threshold &
+        sense$likelihood < sensitivity_threshold,
+      "potential strong prior / weak likelihood",
+      "-"
+    )
   )
 
   out <- sense
@@ -198,10 +205,7 @@ powerscale_sensitivity.priorsense_data <- function(x,
 
 ##' @rdname powerscale-sensitivity
 ##' @export
-powerscale_sensitivity.CmdStanFit <- function(x,
-                                              ...
-                                              ) {
-
+powerscale_sensitivity.CmdStanFit <- function(x, ...) {
   psd <- create_priorsense_data.CmdStanFit(x)
 
   powerscale_sensitivity.priorsense_data(
@@ -212,10 +216,7 @@ powerscale_sensitivity.CmdStanFit <- function(x,
 
 ##' @rdname powerscale-sensitivity
 ##' @export
-powerscale_sensitivity.stanfit <- function(x,
-                                           ...
-                                           ) {
-
+powerscale_sensitivity.stanfit <- function(x, ...) {
   psd <- create_priorsense_data.stanfit(x, ...)
 
   powerscale_sensitivity.priorsense_data(

@@ -8,26 +8,25 @@
 ##'   tolerances for approximate equality.*
 find_alpha_threshold <- function(x, ...) {
   UseMethod("find_alpha_threshold")
-
 }
 
 ##' @export
 find_alpha_threshold.default <- function(x, ...) {
-
   psd <- create_priorsense_data(x, ...)
 
   find_alpha_threshold(psd, ...)
-
 }
 
 ##' @export
-find_alpha_threshold.priorsense_data <- function(x,
-                                                 component,
-                                                 alpha_bound,
-                                                 epsilon = 0.00001,
-                                                 moment_match = FALSE,
-                                                 selection = NULL,
-                                                 ...) {
+find_alpha_threshold.priorsense_data <- function(
+  x,
+  component,
+  alpha_bound,
+  epsilon = 0.00001,
+  moment_match = FALSE,
+  selection = NULL,
+  ...
+) {
   checkmate::assert_number(alpha_bound, lower = 0)
   checkmate::assert_number(epsilon, lower = 0)
   checkmate::assert_choice(component, c("prior", "likelihood"))
@@ -51,25 +50,24 @@ find_alpha_threshold.priorsense_data <- function(x,
   continue <- TRUE
 
   while (continue) {
-
     # calculate criterion
     new_pareto_k_diags <- get_powerscaling_details(
       suppressWarnings(
-      powerscale(
-        x = x,
-        alpha = alpha,
-        component = component,
-        moment_match = moment_match,
-        selection = selection,
-        ...
+        powerscale(
+          x = x,
+          alpha = alpha,
+          component = component,
+          moment_match = moment_match,
+          selection = selection,
+          ...
+        )
       )
-      ))$diagnostics
+    )$diagnostics
 
     new_pareto_k <- new_pareto_k_diags$khat
     new_khat_threshold <- new_pareto_k_diags$khat_threshold
 
-    compare <- comparison(new_pareto_k, pareto_k,
-                          new_khat_threshold, epsilon)
+    compare <- comparison(new_pareto_k, pareto_k, new_khat_threshold, epsilon)
 
     # check criterion
     if (compare == "left") {
@@ -97,10 +95,7 @@ find_alpha_threshold.priorsense_data <- function(x,
 ##' @param epsilon numeric tolerance
 ##' @return character specifying direction of next value
 ##' @noRd
-above_one_comparison <- function(new_pareto_k,
-                                 pareto_k,
-                                 k_threshold,
-                                 epsilon) {
+above_one_comparison <- function(new_pareto_k, pareto_k, k_threshold, epsilon) {
   if (abs(new_pareto_k - pareto_k) < epsilon) {
     return("stop")
   } else if (new_pareto_k >= k_threshold) {
@@ -117,10 +112,7 @@ above_one_comparison <- function(new_pareto_k,
 ##' @param epsilon numeric tolerance
 ##' @return character specifying direction of next value
 ##' @noRd
-below_one_comparison <- function(new_pareto_k,
-                                 pareto_k,
-                                 k_threshold,
-                                 epsilon) {
+below_one_comparison <- function(new_pareto_k, pareto_k, k_threshold, epsilon) {
   if (abs(new_pareto_k - pareto_k) < epsilon) {
     return("stop")
   } else if (new_pareto_k < k_threshold) {

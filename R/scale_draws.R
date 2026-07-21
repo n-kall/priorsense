@@ -8,7 +8,6 @@
 ##' @return draws object with variables centered and/or scaled
 ##' @noRd
 scale_draws <- function(draws, center = TRUE, scale = TRUE, ...) {
-
   draws <- posterior::as_draws_matrix(draws)
 
   # keep track of weights
@@ -18,7 +17,8 @@ scale_draws <- function(draws, center = TRUE, scale = TRUE, ...) {
   if (!(is.null(wei))) {
     draws <- posterior::mutate_variables(
       draws,
-      .log_weight = NULL)
+      .log_weight = NULL
+    )
   }
 
   # center draws
@@ -26,7 +26,7 @@ scale_draws <- function(draws, center = TRUE, scale = TRUE, ...) {
     center <- matrixStats::colMedians(draws)
   }
   if (scale) {
-   scale <- matrixStats::colMads(draws)
+    scale <- matrixStats::colMads(draws)
   }
   draws_c <- base::scale(draws, center = center, scale = scale)
 

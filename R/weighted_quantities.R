@@ -19,11 +19,14 @@
 NULL
 
 median_weighted <- function(x, weights, ...) {
-
   checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE)
 
-  checkmate::assert_numeric(weights, len = length(x),
-                            null.ok = TRUE, any.missing = FALSE)
+  checkmate::assert_numeric(
+    weights,
+    len = length(x),
+    null.ok = TRUE,
+    any.missing = FALSE
+  )
 
   x <- as.numeric(x)
   weights <- as.numeric(weights)
@@ -37,11 +40,14 @@ median_weighted <- function(x, weights, ...) {
 }
 
 mad_weighted <- function(x, weights, ...) {
-
   checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE)
 
-  checkmate::assert_numeric(weights, len = length(x),
-                            null.ok = TRUE, any.missing = FALSE)
+  checkmate::assert_numeric(
+    weights,
+    len = length(x),
+    null.ok = TRUE,
+    any.missing = FALSE
+  )
 
   x <- as.numeric(x)
   weights <- as.numeric(weights)
@@ -55,11 +61,14 @@ mad_weighted <- function(x, weights, ...) {
 }
 
 var_weighted <- function(x, weights, ...) {
-
   checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE)
 
-  checkmate::assert_numeric(weights, len = length(x), null.ok = TRUE,
-                            any.missing = FALSE)
+  checkmate::assert_numeric(
+    weights,
+    len = length(x),
+    null.ok = TRUE,
+    any.missing = FALSE
+  )
 
   x <- as.numeric(x)
   weights <- as.numeric(weights)
@@ -73,11 +82,14 @@ var_weighted <- function(x, weights, ...) {
 }
 
 sd_weighted <- function(x, weights, ...) {
-
   checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE)
 
-  checkmate::assert_numeric(weights, len = length(x), null.ok = TRUE,
-                            any.missing = FALSE)
+  checkmate::assert_numeric(
+    weights,
+    len = length(x),
+    null.ok = TRUE,
+    any.missing = FALSE
+  )
 
   x <- as.numeric(x)
   weights <- as.numeric(weights)
@@ -90,12 +102,15 @@ sd_weighted <- function(x, weights, ...) {
   return(c(sd = sd))
 }
 
-mean_weighted  <- function(x, weights, ...) {
-
+mean_weighted <- function(x, weights, ...) {
   checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE)
 
-  checkmate::assert_numeric(weights, len = length(x), null.ok = TRUE,
-                            any.missing = FALSE)
+  checkmate::assert_numeric(
+    weights,
+    len = length(x),
+    null.ok = TRUE,
+    any.missing = FALSE
+  )
 
   x <- as.numeric(x)
   weights <- as.numeric(weights)
@@ -129,12 +144,20 @@ weighted_summary_measures <- function(x) {
   return(funcs)
 }
 
-quantile_weighted <- function(x, weights, probs = c(0.05, 0.95),
-                              type = "7", ...) {
-
+quantile_weighted <- function(
+  x,
+  weights,
+  probs = c(0.05, 0.95),
+  type = "7",
+  ...
+) {
   checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE)
-  checkmate::assert_numeric(weights, len = length(x), null.ok = TRUE,
-                            any.missing = FALSE)
+  checkmate::assert_numeric(
+    weights,
+    len = length(x),
+    null.ok = TRUE,
+    any.missing = FALSE
+  )
 
   checkmate::assert_numeric(probs, null.ok = FALSE, any.missing = FALSE)
 
@@ -180,8 +203,9 @@ quantile_weighted <- function(x, weights, probs = c(0.05, 0.95),
 .quantile_weighted <- function(x, probs, cdf_fun, weights) {
   # Weighted generic quantile estimator
   n <- length(x)
-  if (is.null(weights))
+  if (is.null(weights)) {
     weights <- rep(1 / n, n)
+  }
   nw <- sum(weights)^2 / sum(weights^2) # Kish's effective sample size
 
   idx <- order(x)
@@ -191,14 +215,16 @@ quantile_weighted <- function(x, weights, probs = c(0.05, 0.95),
   weights <- weights / sum(weights)
   cdf_probs <- cumsum(c(0, weights))
 
-  vapply(probs,
-         function(p) {
-           cdf <- cdf_fun(nw, p)
-           q <- cdf(cdf_probs)
-           w <- utils::tail(q, -1) - utils::head(q, -1)
-           sum(w * x)
-         },
-         FUN.VALUE = c(1))
+  vapply(
+    probs,
+    function(p) {
+      cdf <- cdf_fun(nw, p)
+      q <- cdf(cdf_probs)
+      w <- utils::tail(q, -1) - utils::head(q, -1)
+      sum(w * x)
+    },
+    FUN.VALUE = c(1)
+  )
 }
 
 quantile2_weighted <- quantile_weighted

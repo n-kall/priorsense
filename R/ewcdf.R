@@ -22,13 +22,15 @@ ewcdf <- function(x, weights = NULL) {
   totwt <- 1
   ## make function
   rval <- stats::approxfun(
-    vals, cumwt,
-    method = "constant", yleft = 0, yright = totwt,
-    f = 0, ties = "ordered"
+    vals,
+    cumwt,
+    method = "constant",
+    yleft = 0,
+    yright = totwt,
+    f = 0,
+    ties = "ordered"
   )
-  class(rval) <- c("ewcdf",
-                   "ecdf",
-                   "stepfun", class(rval))
+  class(rval) <- c("ewcdf", "ecdf", "stepfun", class(rval))
   assign("weights", weights, envir = environment(rval))
   attr(rval, "call") <- sys.call()
   return(rval)

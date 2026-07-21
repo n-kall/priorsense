@@ -58,15 +58,11 @@
 #'   hoc sensitivity analysis
 #' @srrstats {EA5.3} column summaries are handled by `posterior` package
 
-
-
-
 #' @seealso
 #' [powerscale-overview],
 #' [powerscale-plots]
 #' @template powerscale_references
 "_PACKAGE"
-
 
 ## usethis namespace: start
 #' @importFrom lifecycle deprecated

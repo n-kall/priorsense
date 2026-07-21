@@ -2,27 +2,29 @@
 ##' @export
 powerscale_sequence <- function(x, ...) {
   UseMethod("powerscale_sequence")
-
 }
 
 ##' @rdname powerscale-overview
 ##' @export
-powerscale_sequence.default <- function(x,
-                                        lower_alpha = 0.8,
-                                        upper_alpha = 1 / lower_alpha,
-                                        length = 3, variable = NULL,
-                                        variables = NULL,
-                                        component = c("prior", "likelihood"),
-                                        moment_match = FALSE,
-                                        k_threshold = 0.5,
-                                        resample = FALSE,
-                                        transform = NULL,
-                                        prediction = NULL,
-                                        auto_alpha_range = FALSE,
-                                        symmetric = TRUE,
-                                        prior_selection = NULL,
-                                        likelihood_selection = NULL,
-                                        ...) {
+powerscale_sequence.default <- function(
+  x,
+  lower_alpha = 0.8,
+  upper_alpha = 1 / lower_alpha,
+  length = 3,
+  variable = NULL,
+  variables = NULL,
+  component = c("prior", "likelihood"),
+  moment_match = FALSE,
+  k_threshold = 0.5,
+  resample = FALSE,
+  transform = NULL,
+  prediction = NULL,
+  auto_alpha_range = FALSE,
+  symmetric = TRUE,
+  prior_selection = NULL,
+  likelihood_selection = NULL,
+  ...
+) {
   psd <- create_priorsense_data(x, ...)
   powerscale_sequence(
     psd,
@@ -47,23 +49,25 @@ powerscale_sequence.default <- function(x,
 
 ##' @rdname powerscale-overview
 ##' @export
-powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
-                                                upper_alpha = 1 / lower_alpha,
-                                                length = 3, variable = NULL,
-                                                variables = NULL,
-                                                component = c("prior", "likelihood"),
-                                                moment_match = FALSE,
-                                                k_threshold = NULL,
-                                                resample = FALSE,
-                                                transform = NULL,
-                                                prediction = NULL,
-                                                auto_alpha_range = FALSE,
-                                                symmetric = TRUE,
-                                                prior_selection = NULL,
-                                                likelihood_selection = NULL,
-                                                ...
-                                                ) {
-
+powerscale_sequence.priorsense_data <- function(
+  x,
+  lower_alpha = 0.8,
+  upper_alpha = 1 / lower_alpha,
+  length = 3,
+  variable = NULL,
+  variables = NULL,
+  component = c("prior", "likelihood"),
+  moment_match = FALSE,
+  k_threshold = NULL,
+  resample = FALSE,
+  transform = NULL,
+  prediction = NULL,
+  auto_alpha_range = FALSE,
+  symmetric = TRUE,
+  prior_selection = NULL,
+  likelihood_selection = NULL,
+  ...
+) {
   component <- tolower(as.character(component))
   lower_alpha <- as.numeric(lower_alpha)
   upper_alpha <- as.numeric(upper_alpha)
@@ -82,13 +86,16 @@ powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
     variable <- as.character(variable)
   }
 
-
   # input checks
-    if (!is.null(variable) && !is.null(variables)) {
-   checkmate::assert(
-      if (identical(variable, variables)) TRUE else "must be identical if both provided",
+  if (!is.null(variable) && !is.null(variables)) {
+    checkmate::assert(
+      if (identical(variable, variables)) {
+        TRUE
+      } else {
+        "must be identical if both provided"
+      },
       .var.name = "`variable` and `variables`"
-      )
+    )
   }
   if (is.null(variable)) {
     variable <- variables
@@ -103,7 +110,11 @@ powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
   checkmate::assertFlag(symmetric)
   checkmate::assertNumber(k_threshold, null.ok = TRUE)
   checkmate::assertFlag(resample)
-  checkmate::assertChoice(transform, c("whiten", "scale", "identity"), null.ok = TRUE)
+  checkmate::assertChoice(
+    transform,
+    c("whiten", "scale", "identity"),
+    null.ok = TRUE
+  )
   checkmate::assertFunction(prediction, null.ok = TRUE)
   checkmate::assertCharacter(variable, null.ok = TRUE)
 
@@ -176,7 +187,8 @@ powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
   base_draws <- posterior::subset_draws(
     x$draws,
     variable = variable_base,
-    ...)
+    ...
+  )
   # append predictions
   if (!is.null(prediction)) {
     base_draws <- posterior::bind_draws(base_draws, pred_draws)
@@ -199,19 +211,15 @@ powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
     transform_details <- list(transform = transform)
   }
 
-
-
   scaled_draws_list <- vector("list", length(alpha_seq))
 
   likelihood_scaled <- NULL
   prior_scaled <- NULL
 
   if ("prior" %in% component) {
-
     scaled_component <- "prior"
 
     for (i in seq_along(alpha_seq)) {
-
       # calculate the scaled draws
       scaled_draws_list[[i]] <- powerscale(
         x = x,
@@ -234,7 +242,6 @@ powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
     )
   }
   if ("likelihood" %in% component) {
-
     scaled_component <- "likelihood"
     for (i in seq_along(alpha_seq)) {
       # calculate the scaled draws
@@ -251,14 +258,12 @@ powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
         selection = likelihood_selection,
         ...
       )
-
     }
 
     likelihood_scaled <- list(
       draws_sequence = scaled_draws_list,
       component = scaled_component
     )
-
   }
 
   out <- list(
@@ -274,5 +279,4 @@ powerscale_sequence.priorsense_data <- function(x, lower_alpha = 0.8,
   class(out) <- c("powerscaled_sequence", class(out))
 
   return(out)
-
 }
