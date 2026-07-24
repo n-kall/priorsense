@@ -69,7 +69,7 @@ previous work was focused on posteriors that could be computed
 analytically. While probabilistic programming and Markov chain Monte Carlo
 methods have increased in popularity and use, tools for sensitivity checks that
 can be used for complex intractable posteriors remain relatively rare. The main
-other software package that has been developed is adjustr [@Adjustr], which focuses on
+other software package that has been developed is `adjustr` [@Adjustr], which focuses on
 flexibility in manual alternative model specification. ArviZ [@Martin2026], a
 Python suite for Bayesian model diagnostics, also includes diagnostics mirroring
 those implemented in `priorsense`.

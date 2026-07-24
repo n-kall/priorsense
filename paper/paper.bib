@@ -10,19 +10,6 @@
   encoding = {UTF-8}
 }
 
-@article{gelmanBayesianWorkflow2020,
-  title = {Bayesian {{Workflow}}},
-  author = {Gelman, Andrew and Vehtari, Aki and Simpson, Daniel and Margossian, Charles C. and Carpenter, Bob and Yao, Yuling and Kennedy, Lauren and Gabry, Jonah and B{\"u}rkner, Paul-Christian and Modr{\'a}k, Martin},
-  year = 2020,
-  month = nov,
-  journal = {arXiv:2011.01808 [stat]},
-  eprint = {2011.01808},
-  primaryclass = {stat},
-  urldate = {2020-11-04},
-  abstract = {The Bayesian approach to data analysis provides a powerful way to handle uncertainty in all observations, model parameters, and model structure using probability theory. Probabilistic programming languages make it easier to specify and fit Bayesian models, but this still leaves us with many options regarding constructing, evaluating, and using these models, along with many remaining challenges in computation. Using Bayesian inference to solve real-world problems requires not only statistical skills, subject matter knowledge, and programming, but also awareness of the decisions made in the process of data analysis. All of these aspects can be understood as part of a tangled workflow of applied Bayesian statistics. Beyond inference, the workflow also includes iterative model building, model checking, validation and troubleshooting of computational problems, model understanding, and model comparison. We review all these aspects of workflow in the context of several examples, keeping in mind that in practice we will be fitting many models for any given problem, even if only a subset of them will ultimately be relevant for our conclusions.},
-  archiveprefix = {arXiv},
-  keywords = {Statistics - Methodology}
-}
 
 @article{kallioinenDetectingDiagnosingPrior2024,
   title = {Detecting and Diagnosing Prior and Likelihood Sensitivity with Power-Scaling},
@@ -35,8 +22,6 @@
   pages = {57},
   issn = {0960-3174, 1573-1375},
   doi = {10.1007/s11222-023-10366-5},
-  urldate = {2025-12-01},
-  abstract = {Abstract             Determining the sensitivity of the posterior to perturbations of the prior and likelihood is an important part of the Bayesian workflow. We introduce a practical and computationally efficient sensitivity analysis approach using importance sampling to estimate properties of posteriors resulting from power-scaling the prior or likelihood. On this basis, we suggest a diagnostic that can indicate the presence of prior-data conflict or likelihood noninformativity and discuss limitations to this power-scaling approach. The approach can be easily included in Bayesian workflows with minimal effort by the model builder and we present an implementation in our new R package . We further demonstrate the workflow on case studies of real data using models varying in complexity from simple linear models to Gaussian process models.},
   langid = {english}
 }
 
@@ -51,8 +36,6 @@
   pages = {16},
   issn = {1573-1375},
   doi = {10.1007/s11222-020-09982-2},
-  urldate = {2021-04-09},
-  abstract = {Adaptive importance sampling is a class of techniques for finding good proposal distributions for importance sampling. Often the proposal distributions are standard probability distributions whose parameters are adapted based on the mismatch between the current proposal and a target distribution. In this work, we present an implicit adaptive importance sampling method that applies to complicated distributions which are not available in closed form. The method iteratively matches the moments of a set of Monte Carlo draws to weighted moments based on importance weights. We apply the method to Bayesian leave-one-out cross-validation and show that it performs better than many existing parametric adaptive importance sampling methods while being computationally inexpensive.},
   langid = {english}
 }
 
@@ -117,7 +100,7 @@
 
 
 @Manual{Plummer2003JAGS,
-  title   = {JAGS: A Program for Analysis of Bayesian Graphical Models Using Gibbs Sampling},
+  title   = {{JAGS}: A Program for Analysis of Bayesian Graphical Models Using Gibbs Sampling},
   author  = {Martyn Plummer},
   year    = {2003},
   note    = {Proceedings of the 3rd International Workshop on Distributed Statistical Computing (DSC 2003), Vienna, Austria},
@@ -141,7 +124,7 @@
 }
 
 @Manual{Adjustr,
-  title = {adjustr: 'Stan' Model Adjustments and Sensitivity Analyses using Importance Sampling},
+  title = {{adjustr}: 'Stan' Model Adjustments and Sensitivity Analyses using Importance Sampling},
   author = {Cory McCartan},
   year = {2026},
   note = {R package version 0.2.0},
@@ -149,7 +132,7 @@
 }
 
  @Manual{iwmm,
-    title = {iwmm: Importance weighted moment matching},
+    title = {{iwmm}: Importance weighted moment matching},
     author = {Topi Paananen},
     year = {2026},
     note = {R package version 0.0.1, commit f0052215a2ce90fb8781ab8fc3cf1b956358703a},
@@ -168,7 +151,7 @@
 }
 
 @Manual{ggh4x,
-  title = {ggh4x: Hacks for 'ggplot2'},
+  title = {{ggh4x}: Hacks for 'ggplot2'},
   author = {Teun {van den Brand}},
   year = {2025},
   note = {R package version 0.3.1},
@@ -178,7 +161,7 @@
 
 @Book{ggplot2,
   author = {Hadley Wickham},
-  title = {ggplot2: Elegant Graphics for Data Analysis},
+  title = {{ggplot2}: Elegant Graphics for Data Analysis},
   publisher = {Springer-Verlag New York},
   year = {2016},
   isbn = {978-3-319-24277-4},
@@ -198,7 +181,7 @@
 
 @Article{testthat,
   author = {Hadley Wickham},
-  title = {testthat: Get Started with Testing},
+  title = {{testthat}: Get Started with Testing},
   journal = {The R Journal},
   year = {2011},
   volume = {3},
