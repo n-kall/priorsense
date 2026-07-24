@@ -79,8 +79,8 @@ those implemented in `priorsense`.
 The `priorsense` package provides tools for efficient sensitivity checks,
 including numerical and graphical diagnostics. It is directly compatible with
 `brms` [@burknerBrmsPackageBayesian2017], Stan
-[standevelopmentteamStanModellingLanguage2026], JAGS [@Plummer2003JAGS] and
-NIMBLE [@nimble-software:2026, @nimble-article:2017], and can be used with
+[@standevelopmentteamStanModellingLanguage2026], JAGS [@Plummer2003JAGS] and
+NIMBLE [@nimble-article:2017; @nimble-software:2026], and can be used with
 posterior draws from other sources.
 
 `priorsense` functions primarily operate on a `priorsense_data` object, which
@@ -108,7 +108,7 @@ importance weighted moment matching [@paananenImplicitlyAdaptiveImportance2021] 
 
 The diagnostics provided by `priorsense` seamlessly fit into a modern Bayesian
 workflow. It has been included in recommended workflows for Bayesian modelling [@Bayesian-Workflow:2026] and since its release, `priorsense` has been downloaded from CRAN tens-of-thousands of times and has been used for academic research in fields such as
-ecology [@vankoBayesianIntegratedPopulation2026], medicine [@mazzinariHighPEEPRecruitment2024], psychology [@bezdicekInterplayCrossculturalPsychometric2024, @gijsenMappingCognitiveProcesses2024].
+ecology [@vankoBayesianIntegratedPopulation2026], medicine [@mazzinariHighPEEPRecruitment2024], psychology [@bezdicekInterplayCrossculturalPsychometric2024; @gijsenMappingCognitiveProcesses2024].
 
 
 # AI usage disclosure
