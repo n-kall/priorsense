@@ -1,0 +1,217 @@
+@article{burknerBrmsPackageBayesian2017,
+  title = {{{brms}}: {{An R}} Package for {{Bayesian}} Multilevel Models Using {{Stan}}},
+  author = {B{\"u}rkner, Paul-Christian},
+  year = 2017,
+  journal = {Journal of Statistical Software},
+  volume = {80},
+  number = {1},
+  pages = {1--28},
+  doi = {10.18637/jss.v080.i01},
+  encoding = {UTF-8}
+}
+
+@article{gelmanBayesianWorkflow2020,
+  title = {Bayesian {{Workflow}}},
+  author = {Gelman, Andrew and Vehtari, Aki and Simpson, Daniel and Margossian, Charles C. and Carpenter, Bob and Yao, Yuling and Kennedy, Lauren and Gabry, Jonah and B{\"u}rkner, Paul-Christian and Modr{\'a}k, Martin},
+  year = 2020,
+  month = nov,
+  journal = {arXiv:2011.01808 [stat]},
+  eprint = {2011.01808},
+  primaryclass = {stat},
+  urldate = {2020-11-04},
+  abstract = {The Bayesian approach to data analysis provides a powerful way to handle uncertainty in all observations, model parameters, and model structure using probability theory. Probabilistic programming languages make it easier to specify and fit Bayesian models, but this still leaves us with many options regarding constructing, evaluating, and using these models, along with many remaining challenges in computation. Using Bayesian inference to solve real-world problems requires not only statistical skills, subject matter knowledge, and programming, but also awareness of the decisions made in the process of data analysis. All of these aspects can be understood as part of a tangled workflow of applied Bayesian statistics. Beyond inference, the workflow also includes iterative model building, model checking, validation and troubleshooting of computational problems, model understanding, and model comparison. We review all these aspects of workflow in the context of several examples, keeping in mind that in practice we will be fitting many models for any given problem, even if only a subset of them will ultimately be relevant for our conclusions.},
+  archiveprefix = {arXiv},
+  keywords = {Statistics - Methodology}
+}
+
+@article{kallioinenDetectingDiagnosingPrior2024,
+  title = {Detecting and Diagnosing Prior and Likelihood Sensitivity with Power-Scaling},
+  author = {Kallioinen, Noa and Paananen, Topi and B{\"u}rkner, Paul-Christian and Vehtari, Aki},
+  year = 2024,
+  month = feb,
+  journal = {Statistics and Computing},
+  volume = {34},
+  number = {1},
+  pages = {57},
+  issn = {0960-3174, 1573-1375},
+  doi = {10.1007/s11222-023-10366-5},
+  urldate = {2025-12-01},
+  abstract = {Abstract             Determining the sensitivity of the posterior to perturbations of the prior and likelihood is an important part of the Bayesian workflow. We introduce a practical and computationally efficient sensitivity analysis approach using importance sampling to estimate properties of posteriors resulting from power-scaling the prior or likelihood. On this basis, we suggest a diagnostic that can indicate the presence of prior-data conflict or likelihood noninformativity and discuss limitations to this power-scaling approach. The approach can be easily included in Bayesian workflows with minimal effort by the model builder and we present an implementation in our new R package . We further demonstrate the workflow on case studies of real data using models varying in complexity from simple linear models to Gaussian process models.},
+  langid = {english}
+}
+
+@article{paananenImplicitlyAdaptiveImportance2021,
+  title = {Implicitly Adaptive Importance Sampling},
+  author = {Paananen, Topi and Piironen, Juho and B{\"u}rkner, Paul-Christian and Vehtari, Aki},
+  year = 2021,
+  month = feb,
+  journal = {Statistics and Computing},
+  volume = {31},
+  number = {2},
+  pages = {16},
+  issn = {1573-1375},
+  doi = {10.1007/s11222-020-09982-2},
+  urldate = {2021-04-09},
+  abstract = {Adaptive importance sampling is a class of techniques for finding good proposal distributions for importance sampling. Often the proposal distributions are standard probability distributions whose parameters are adapted based on the mismatch between the current proposal and a target distribution. In this work, we present an implicit adaptive importance sampling method that applies to complicated distributions which are not available in closed form. The method iteratively matches the moments of a set of Monte Carlo draws to weighted moments based on importance weights. We apply the method to Bayesian leave-one-out cross-validation and show that it performs better than many existing parametric adaptive importance sampling methods while being computationally inexpensive.},
+  langid = {english}
+}
+
+@misc{standevelopmentteamStanModellingLanguage2026,
+  title = {Stan {{Modelling Language Users Guide}} and {{Reference Manual}}},
+  author = {{Stan Development Team}},
+  year = 2026
+}
+
+@article{vehtariParetoSmoothedImportance2024,
+  title = {Pareto Smoothed Importance Sampling},
+  author = {Vehtari, Aki and Simpson, Daniel and Gelman, Andrew and Yao, Yuling and Gabry, Jonah},
+  year = 2024,
+  journal = {Journal of Machine Learning Research},
+  volume = {25},
+  number = {72},
+  pages = {1--58}
+}
+
+@misc{nimble-software:2026,
+  author = {{de Valpine}, P. and Paciorek, C. and Turek, D. and Michaud, N. and Anderson-Bergman, C. and Obermeyer, F. and Wehrhahn Cortes, C. and Rodr{\'i}guez, A. and {Temple Lang}, D. and Zhang, W. and Paganin, S. and Hug, J. and van Dam-Bates, P.}, 
+  year = {2026},
+  title = {NIMBLE: MCMC, Particle Filtering, and Programmable Hierarchical Modeling},
+  version = {1.4.2},
+  doi = {10.5281/zenodo.1211190},
+  url = {https://cran.r-project.org/package=nimble}
+}
+
+@article{nimble-article:2017, 
+  author = {{de Valpine}, P. and Turek, D. and Paciorek, C.J. and Anderson-Bergman, C. and {Temple Lang}, D. and Bodik, R.} ,
+  title = {Programming with models: writing statistical algorithms for general model structures with {NIMBLE}},
+  year = {2017}, 
+  journal = {Journal of Computational and Graphical Statistics},
+  volume = 26,
+  pages = {403-417},
+  doi = {10.1080/10618600.2016.1172487}
+}
+
+@article{Bürkner2026,
+  doi =          {10.21105/joss.10526},
+  url =          {https://doi.org/10.21105/joss.10526},
+  year =         {2026},
+  publisher =    {The Open Journal},
+  volume =       {11},
+  number =       {122},
+  pages =        {10526},
+  author =       {Bürkner, Paul-Christian and Gabry, Jonah and Kay, Matthew and
+                  Vehtari, Aki},
+  title =        {posterior: Tools for Working with Posterior Distributions in
+                  R},
+  journal =      {Journal of Open Source Software}
+}
+
+@book{Bayesian-Workflow:2026,
+  title={Bayesian Workflow},
+  author={Andrew Gelman and Aki Vehtari and Richard McElreath and Daniel Simpson and
+          Charles C. Margossian and Yuling Yao and Lauren Kennedy and Jonah Gabry and
+          Paul-Christian Bürkner and Martin Modrák and Vianey Leos Barajas},
+  year=2026,
+  publisher={Chapman & Hall}
+}
+
+
+@Manual{Plummer2003JAGS,
+  title   = {JAGS: A Program for Analysis of Bayesian Graphical Models Using Gibbs Sampling},
+  author  = {Martyn Plummer},
+  year    = {2003},
+  note    = {Proceedings of the 3rd International Workshop on Distributed Statistical Computing (DSC 2003), Vienna, Austria},
+  url     = {https://www.r-project.org/conferences/DSC-2003/Proceedings/Plummer.pdf}
+}
+
+@article{Martin2026,
+  doi =          {10.21105/joss.09889},
+  url =          {https://doi.org/10.21105/joss.09889},
+  year =         {2026},
+  publisher =    {The Open Journal},
+  volume =       {11},
+  number =       {119},
+  pages =        {9889},
+  author =       {Martin, Osvaldo A. and Abril-Pla, Oriol and Deklerk, Jordan
+                  and Axen, Seth D. and Carroll, Colin and Hartikainen, Ari and
+                  Vehtari, Aki},
+  title =        {ArviZ: a modular and flexible library for exploratory analysis
+                  of Bayesian models},
+  journal =      {Journal of Open Source Software}
+}
+
+@Manual{Adjustr,
+  title = {adjustr: 'Stan' Model Adjustments and Sensitivity Analyses using Importance Sampling},
+  author = {Cory McCartan},
+  year = {2026},
+  note = {R package version 0.2.0},
+  url = {https://corymccartan.com/adjustr/},
+}
+
+ @Manual{iwmm,
+    title = {iwmm: Importance weighted moment matching},
+    author = {Topi Paananen},
+    year = {2026},
+    note = {R package version 0.0.1, commit f0052215a2ce90fb8781ab8fc3cf1b956358703a},
+    url = {https://github.com/topipa/iwmm},
+  }
+
+@Article{ggdist,
+  author = {Matthew Kay},
+  title = {{ggdist}: Visualizations of Distributions and Uncertainty in the Grammar of Graphics},
+  journal = {IEEE Transactions on Visualization and Computer Graphics},
+  year = {2024},
+  volume = {30},
+  number = {1},
+  pages = {414--424},
+  doi = {10.1109/TVCG.2023.3327195},
+}
+
+@Manual{ggh4x,
+  title = {ggh4x: Hacks for 'ggplot2'},
+  author = {Teun {van den Brand}},
+  year = {2025},
+  note = {R package version 0.3.1},
+  url = {https://CRAN.R-project.org/package=ggh4x},
+  doi = {10.32614/CRAN.package.ggh4x},
+}
+
+@Book{ggplot2,
+  author = {Hadley Wickham},
+  title = {ggplot2: Elegant Graphics for Data Analysis},
+  publisher = {Springer-Verlag New York},
+  year = {2016},
+  isbn = {978-3-319-24277-4},
+  url = {https://ggplot2.tidyverse.org},
+}
+
+@Article{checkmate,
+  title = {{checkmate}: Fast Argument Checks for Defensive {R} Programming},
+  author = {Michel Lang},
+  journal = {The R Journal},
+  year = {2017},
+  doi = {10.32614/RJ-2017-028},
+  pages = {437--445},
+  volume = {9},
+  number = {1},
+}
+
+@Article{testthat,
+  author = {Hadley Wickham},
+  title = {testthat: Get Started with Testing},
+  journal = {The R Journal},
+  year = {2011},
+  volume = {3},
+  pages = {5--10},
+  url = {https://journal.r-project.org/articles/RJ-2011-002/},
+}
+
+@Manual{Rcoreteam,
+    title = {R: A Language and Environment for Statistical Computing},
+    author = {{R Core Team}},
+    organization = {R Foundation for Statistical Computing},
+    address = {Vienna, Austria},
+    year = {2026},
+    doi = {10.32614/R.manuals},
+    url = {https://www.R-project.org/},
+}
