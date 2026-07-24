@@ -108,7 +108,7 @@ importance weighted moment matching [@paananenImplicitlyAdaptiveImportance2021] 
 
 The diagnostics provided by `priorsense` seamlessly fit into a modern Bayesian
 workflow. It has been included in recommended workflows for Bayesian modelling [@Bayesian-Workflow:2026] and since its release, `priorsense` has been downloaded from CRAN tens-of-thousands of times and has been used for academic research in fields such as
-ecology, medicine, psychology, and astrophysics.
+ecology [@vankoBayesianIntegratedPopulation2026], medicine [@mazzinariHighPEEPRecruitment2024], psychology [@bezdicekInterplayCrossculturalPsychometric2024, @gijsenMappingCognitiveProcesses2024].
 
 
 # AI usage disclosure
