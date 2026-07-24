@@ -1,6 +1,6 @@
 # Extract log prior draws
 
-Extract log likelihood from fitted model and return as a draws object.
+Extract log prior from fitted model and return as a draws object.
 
 ## Usage
 

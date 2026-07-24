@@ -3,7 +3,7 @@
 ### Efficient prior and likelihood sensitivity checks
 
 **priorsense** is an R package that provides tools for prior diagnostics
-and sensitivity analysis.
+and sensitivity analysis of Bayesian models.
 
 It currently includes functions for performing power-scaling sensitivity
 analysis on Stan models. This is a way to check how sensitive a
