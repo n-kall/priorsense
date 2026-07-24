@@ -16,16 +16,17 @@
 ##' @param resample resample draws
 ##' @noRd
 ##' @exportS3Method posterior::summarise_draws
-summarise_draws.powerscaled_draws <- function(.x,
-                                              ...,
-                                              .num_args = NULL,
-                                              .args = list(),
-                                              base_draws = NULL,
-                                              diagnostics = FALSE,
-                                              div_measures = "cjs_dist",
-                                              measure_args = list(),
-                                              resample = FALSE) {
-
+summarise_draws.powerscaled_draws <- function(
+  .x,
+  ...,
+  .num_args = NULL,
+  .args = list(),
+  base_draws = NULL,
+  diagnostics = FALSE,
+  div_measures = "cjs_dist",
+  measure_args = list(),
+  resample = FALSE
+) {
   funs <- c(...)
   if (length(funs) == 0) {
     funs <- posterior::default_summary_measures()
@@ -66,7 +67,6 @@ summarise_draws.powerscaled_draws <- function(.x,
     .num_args = .num_args
   )
 
-
   if (!is.null(base_draws)) {
     # calculate the divergences between the base and target draws
     divergences <- measure_divergence(
@@ -86,7 +86,6 @@ summarise_draws.powerscaled_draws <- function(.x,
   }
 
   attr(out, "powerscaling") <- ps_details
-
 
   class(out) <- c("powerscaled_draws_summary", class(out))
   return(out)
@@ -108,13 +107,15 @@ summarise_draws.powerscaled_draws <- function(.x,
 ##' @srrstats{EA4.2} summary method implemented
 ##' @noRd
 ##' @exportS3Method posterior::summarise_draws
-summarise_draws.powerscaled_sequence <- function(.x,
-                                                 ...,
-                                                 .args = list(),
-                                                 .num_args = NULL,
-                                                 div_measures = "cjs_dist",
-                                                 measure_args = list(),
-                                                 resample = FALSE) {
+summarise_draws.powerscaled_sequence <- function(
+  .x,
+  ...,
+  .args = list(),
+  .num_args = NULL,
+  div_measures = "cjs_dist",
+  measure_args = list(),
+  resample = FALSE
+) {
   # handle quantity functions
   funs <- unname(c(...))
   # use default functions if unspecified
@@ -158,13 +159,11 @@ summarise_draws.powerscaled_sequence <- function(.x,
 
   # for prior-scaled
   if (!is.null(.x$prior_scaled)) {
-
     base_summary_prior <- base_summary
     base_summary_prior$component <- "prior"
 
     # loop over and summarise set of power-scaled posteriors
     for (scaled in .x$prior_scaled$draws_sequence) {
-
       quantities <- summarise_draws(
         .x = scaled,
         ... = funs,
@@ -187,13 +186,11 @@ summarise_draws.powerscaled_sequence <- function(.x,
 
   # for likelihood-scaled
   if (!is.null(.x$likelihood_scaled)) {
-
     base_summary_likelihood <- base_summary
     base_summary_likelihood$component <- "likelihood"
 
     # loop over and summarise set of power-scaled posteriors
     for (scaled in .x$likelihood_scaled$draws_sequence) {
-
       quantities <- summarise_draws(
         .x = scaled,
         funs,
@@ -219,7 +216,8 @@ summarise_draws.powerscaled_sequence <- function(.x,
     rbind(
       base_summary_prior,
       base_summary_likelihood,
-      summaries)
+      summaries
+    )
   )
 
   # correctly specify types of variables

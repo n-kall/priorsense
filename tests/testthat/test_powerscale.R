@@ -1,5 +1,5 @@
 #' @srrstats {EA6.0} return values are tested in tests
- 
+
 univariate_normal_draws <- example_powerscale_model()$draws
 
 #' @srrstats {EA4.0} output type tested
@@ -10,17 +10,16 @@ test_that("priorsense_data is created", {
     ),
     "priorsense_data"
   )
-}
-)
+})
 
 #' @srrstats {G5.3} Missing values tested
 #' @srrstats {EA4.0} output type tested
 test_that("powerscale returns powerscaled_draws with no missing values", {
   psp <- powerscale(
-      x = univariate_normal_draws,
-      component = "prior",
-      alpha = 0.8
-    )
+    x = univariate_normal_draws,
+    component = "prior",
+    alpha = 0.8
+  )
   expect_s3_class(
     psp,
     "powerscaled_draws"
@@ -28,19 +27,17 @@ test_that("powerscale returns powerscaled_draws with no missing values", {
   expect_false(checkmate::anyMissing(psp))
 
   psl <- powerscale(
-      x = univariate_normal_draws,
-      component = "likelihood",
-      alpha = 0.8
+    x = univariate_normal_draws,
+    component = "likelihood",
+    alpha = 0.8
   )
-  
+
   expect_s3_class(
     psl,
     "powerscaled_draws"
   )
   expect_false(checkmate::anyMissing(psp))
-
-}
-)
+})
 
 #' @srrstats {EA4.0} output type tested
 test_that("powerscale_seqence returns powerscaled_sequence", {
@@ -50,8 +47,7 @@ test_that("powerscale_seqence returns powerscaled_sequence", {
     )),
     "powerscaled_sequence"
   )
-}
-)
+})
 
 #' @srrstats {EA6.0a} classes tested
 #' @srrstats {EA6.0b} dimensions tested
@@ -59,25 +55,23 @@ test_that("powerscale_seqence returns powerscaled_sequence", {
 #' @srrstats {EA6.0d} classes of columns tested
 test_that("powerscale_sensitivity returns powerscaled_sensitivity_summary with expected columns", {
   ps <- powerscale_sensitivity(
-      x = univariate_normal_draws
-    )
-  expect_s3_class(ps
-,
-    "powerscaled_sensitivity_summary"
+    x = univariate_normal_draws
   )
+  expect_s3_class(ps, "powerscaled_sensitivity_summary")
 
   expect_equal(dim(ps), c(2, 4))
-  
-  expect_identical(colnames(ps), c("variable", "prior", "likelihood", "diagnosis"))
+
+  expect_identical(
+    colnames(ps),
+    c("variable", "prior", "likelihood", "diagnosis")
+  )
   expect_vector(ps[["variable"]], ptype = character())
   expect_vector(ps[["prior"]], ptype = numeric())
   expect_vector(ps[["likelihood"]], ptype = numeric())
   expect_vector(ps[["diagnosis"]], ptype = character())
-}
-)
+})
 
 test_that("powerscale_sequence uses input alphas correctly", {
-
   lower_alpha <- 0.5
   upper_alpha <- 2.5
   pss <- suppressWarnings(powerscale_sequence(
@@ -105,7 +99,7 @@ test_that("powerscale_sequence uses input alphas correctly", {
 
   expect_equal(
     get_powerscaling_details(
-      pss$prior_scaled$draws_sequence[[length(pss$alphas)-1]]
+      pss$prior_scaled$draws_sequence[[length(pss$alphas) - 1]]
     )$alpha,
     2.5
   )
@@ -114,9 +108,7 @@ test_that("powerscale_sequence uses input alphas correctly", {
     length(pss$alphas),
     10
   )
-
-}
-)
+})
 
 test_that("powerscale_sequence adapts alphas and keeps pareto-k low", {
   k_threshold <- 0.7
@@ -135,7 +127,8 @@ test_that("powerscale_sequence adapts alphas and keeps pareto-k low", {
   expect_lt(
     get_powerscaling_details(
       pss$likelihood_scaled$draws_sequence[[length(
-        pss$likelihood_scaled$draws_sequence)]]
+        pss$likelihood_scaled$draws_sequence
+      )]]
     )$diagnostics$khat,
     k_threshold
   )
@@ -147,13 +140,11 @@ test_that("powerscale_sequence adapts alphas and keeps pareto-k low", {
 
   expect_lt(
     get_powerscaling_details(pss$prior_scaled$draws_sequence[[
-      length(pss$prior_scaled$draws_sequence)]]
-      )$diagnostics$khat,
+      length(pss$prior_scaled$draws_sequence)
+    ]])$diagnostics$khat,
     k_threshold
   )
-
-}
-)
+})
 
 test_that("powerscale_gradients respects custom log component names", {
   set.seed(10)
@@ -164,7 +155,11 @@ test_that("powerscale_gradients respects custom log component names", {
   ))
 
   renamed_draws <- raw_draws
-  posterior::variables(renamed_draws) <- c("mu", "custom_lprior", "custom_log_lik")
+  posterior::variables(renamed_draws) <- c(
+    "mu",
+    "custom_lprior",
+    "custom_log_lik"
+  )
 
   ref_prior <- powerscale_gradients(
     raw_draws,
@@ -200,7 +195,6 @@ test_that("powerscale_gradients respects custom log component names", {
 })
 
 test_that("powerscale_sequence gives symmetric range", {
-
   lower_alpha <- 0.3
   length <- 9
   pss <- suppressWarnings(powerscale_sequence(
@@ -209,63 +203,61 @@ test_that("powerscale_sequence gives symmetric range", {
     lower_alpha = lower_alpha,
     length = length
   ))
-  
+
   expect_equal(
     pss$alphas[1],
     lower_alpha
   )
-  
+
   expect_equal(
     get_powerscaling_details(pss$prior_scaled$draws_sequence[[1]])$alpha,
     lower_alpha
   )
-  
+
   expect_equal(
     pss$alphas[length(pss$alphas)],
     1 / lower_alpha
   )
-  
+
   expect_equal(
     get_powerscaling_details(pss$prior_scaled$draws_sequence[[
-      length(pss$alphas)-1]])$alpha,
+      length(pss$alphas) - 1
+    ]])$alpha,
     1 / lower_alpha
   )
-  
+
   expect_equal(
     length(pss$alphas),
     9
   )
-  
+
   expect_equal(
     abs(log(pss$alphas[1])),
     abs(log(pss$alphas[length(pss$alphas)]))
   )
-  
-}
-)
+})
 
 #' @srrstats {G5.9a} Adding trivial noise to data does not
 #'   meaningfully change results*
 test_that("small variation in draws does not affect result", {
-
   adjusted_draws <- univariate_normal_draws + .Machine$double.eps
 
   orig_ps <- powerscale_sensitivity(univariate_normal_draws)
   adjusted_ps <- powerscale_sensitivity(adjusted_draws)
 
   expect_equal(orig_ps, adjusted_ps)
-}
-)
+})
 
 
 #' @srrstats {G5.2} error behaviour tested here
 #' @srrstats {G5.8, G5.8d} test edge case out of scope
 test_that("powerscaling with alpha < 0 is an error", {
-  expect_error(powerscale(univariate_normal_draws,
-             component = "prior",
-             alpha = -1))
-}
-)
+  expect_error(powerscale(
+    univariate_normal_draws,
+    component = "prior",
+    alpha = -1
+  ))
+})
 
 #' @srrstats {G5.8, G5.8a} test edge case zero-length data
 test_that("powerscaling zero draws is an error", {
@@ -275,8 +267,7 @@ test_that("powerscaling zero draws is an error", {
     lprior = numeric()
   )
   expect_error(powerscale(zero_draws, component = "prior", alpha = 0.1))
-}
-)
+})
 
 #' @srrstats {G5.2a, G5.2b, G5.8b} constant weights unsupported and
 #'   give explicit error message
@@ -286,13 +277,14 @@ test_that("powerscaling with constant loglik is an error", {
     log_lik = rep(1, times = 100),
     lprior = 1:100
   )
-  expect_error(powerscale(const_draws, component = "likelihood", alpha = 0.1),
-               paste0("Log likelihood is constant. ",
-                      "Power-scaling will not work in this case"
-               )
-               )
-}
-)
+  expect_error(
+    powerscale(const_draws, component = "likelihood", alpha = 0.1),
+    paste0(
+      "Log likelihood is constant. ",
+      "Power-scaling will not work in this case"
+    )
+  )
+})
 
 test_that("powerscaling with constant lprior is an error", {
   const_draws <- data.frame(
@@ -300,14 +292,14 @@ test_that("powerscaling with constant lprior is an error", {
     lprior = rep(1, times = 100),
     log_lik = 1:100
   )
-  expect_error(powerscale(const_draws, component = "prior", alpha = 0.1),
-               paste0(
-                 "Log prior is constant. ",
-                 "Power-scaling will not work in this case"
-               )
-               )
-  }
-)
+  expect_error(
+    powerscale(const_draws, component = "prior", alpha = 0.1),
+    paste0(
+      "Log prior is constant. ",
+      "Power-scaling will not work in this case"
+    )
+  )
+})
 
 #' @srrstats {G5.8, G5.8c} test edge case with NAs
 test_that("powerscaling with NA weights is an error", {
@@ -317,5 +309,4 @@ test_that("powerscaling with NA weights is an error", {
     lprior = 1:100
   )
   expect_error(powerscale(na_draws, component = "likelihood", alpha = 0.1))
-}
-)
+})

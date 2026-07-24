@@ -16,8 +16,7 @@ test_that("priorsense_data is created", {
     ),
     "priorsense_data"
   )
-}
-)
+})
 
 test_that("powerscale returns powerscaled_draws", {
   expect_s3_class(
@@ -36,17 +35,16 @@ test_that("powerscale returns powerscaled_draws", {
     ),
     "powerscaled_draws"
   )
-}
-)
+})
 
 test_that("powerscale_seqence returns powerscaled_sequence", {
-  expect_s3_class(powerscale_sequence(
+  expect_s3_class(
+    powerscale_sequence(
       x = sfit
     ),
     "powerscaled_sequence"
   )
-}
-)
+})
 
 test_that("powerscale_sensitivity returns powerscaled_sensitivity_summary", {
   expect_s3_class(
@@ -55,5 +53,4 @@ test_that("powerscale_sensitivity returns powerscaled_sensitivity_summary", {
     ),
     "powerscaled_sensitivity_summary"
   )
-}
-)
+})

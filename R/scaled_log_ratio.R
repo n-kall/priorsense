@@ -6,12 +6,10 @@
 ##' @return log ratio
 ##' @keywords internal
 ##' @noRd
-scaled_log_ratio <- function(component_draws, alpha,
-                             ...) {
-
+scaled_log_ratio <- function(component_draws, alpha, ...) {
   # calculate log ratios for power-scaling
   scaled <- component_draws * (alpha - 1)
-  
+
   return(scaled)
 }
 
@@ -25,11 +23,9 @@ scaled_log_ratio <- function(component_draws, alpha,
 ##' @keywords internal
 ##' @noRd
 powerscale_log_ratio_fun <- function(draws, fit, alpha, component_fn, ...) {
-
   constr_draws <- iwmm::constrain_draws(fit, draws)
 
   component_draws <- rowsums_draws(component_fn(constr_draws))
-   
+
   component_draws * (alpha - 1)
-  
 }

@@ -38,5 +38,4 @@ test_that("cjs errors with complex and character input", {
   expect_error(
     cjs_dist(c("a", "a", "a"), c("b", "b", "b"))
   )
-}
-)
+})

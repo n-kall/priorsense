@@ -14,3 +14,6 @@ docs
 README.html
 **/.quarto/
 revdep/
+paper/paper.pdf
+paper/auto/
+renv/

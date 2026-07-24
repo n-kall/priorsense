@@ -13,17 +13,42 @@
 ##'
 ##' ex_eightschools <- example_powerscale_model(model = "eight_schools", language = "jags")
 ##' @export
-example_powerscale_model <- function(model = "univariate_normal", language = "stan") {
-
+example_powerscale_model <- function(
+  model = "univariate_normal",
+  language = "stan"
+) {
   checkmate::assertChoice(model, c("univariate_normal", "eight_schools"))
   checkmate::assertChoice(language, c("stan", "jags", "nimble"))
 
-
   univariate_normal_model <- list(
     data = list(
-      y = c(9.5, 10.2, 9.1, 9.1, 10.3, 10.9, 11.7, 10.3, 9.6, 8.6, 9.1,
-            11.1, 9.3, 10.5, 9.7, 10.3, 10.0, 9.8, 9.6, 8.3, 10.2, 9.8,
-            10.0, 10.0, 9.1),
+      y = c(
+        9.5,
+        10.2,
+        9.1,
+        9.1,
+        10.3,
+        10.9,
+        11.7,
+        10.3,
+        9.6,
+        8.6,
+        9.1,
+        11.1,
+        9.3,
+        10.5,
+        9.7,
+        10.3,
+        10.0,
+        9.8,
+        9.6,
+        8.3,
+        10.2,
+        9.8,
+        10.0,
+        10.0,
+        9.1
+      ),
       N = 25
     ),
     stan = "data {
@@ -53,7 +78,7 @@ generated quantities {
 }
 
 ",
-jags = "model {
+    jags = "model {
   for(n in 1:N) {
     y[n] ~ dnorm(mu, tau)
     log_lik[n] <- logdensity.norm(y[n], mu, tau)
@@ -68,27 +93,27 @@ jags = "model {
 }
 ",
 
-nimble = quote({for (n in 1:N) {
-  y[n] ~ dnorm(mu, sd = sigma)
-  log_lik[n] <- dnorm(y[n], mu, sd = sigma, log = TRUE)
-}
+    nimble = quote({
+      for (n in 1:N) {
+        y[n] ~ dnorm(mu, sd = sigma)
+        log_lik[n] <- dnorm(y[n], mu, sd = sigma, log = TRUE)
+      }
 
-  mu ~ dnorm(0, sd = 1)
-  sigma ~ dnorm(0, sd = 2.5)
+      mu ~ dnorm(0, sd = 1)
+      sigma ~ dnorm(0, sd = 2.5)
 
-  lprior_mu <- dnorm(mu, 0, sd = 1, log = TRUE)
-  lprior_sigma <- dnorm(sigma, 0, sd = 2.5, log = TRUE)
+      lprior_mu <- dnorm(mu, 0, sd = 1, log = TRUE)
+      lprior_sigma <- dnorm(sigma, 0, sd = 2.5, log = TRUE)
 
-  lprior <- lprior_mu + lprior_sigma
-})
-)
-
+      lprior <- lprior_mu + lprior_sigma
+    })
+  )
 
   eight_schools_model <- list(
     data = list(
       J = 8,
-      y = c(28,  8, -3,  7, -1,  1, 18, 12),
-      sigma = c(15, 10, 16, 11,  9, 11, 10, 18)
+      y = c(28, 8, -3, 7, -1, 1, 18, 12),
+      sigma = c(15, 10, 16, 11, 9, 11, 10, 18)
     ),
     stan = "data {
   int<lower=0> J;          // number of schools
@@ -124,7 +149,7 @@ generated quantities  {
 }
 
 ",
-jags = "model {
+    jags = "model {
   for (j in 1:J) {
     y[j] ~ dnorm(theta[j], pow(sigma[j], -2))
     theta[j] <- mu + tau * theta_trans[j]
@@ -141,26 +166,24 @@ jags = "model {
   lprior <- lprior_mu + lprior_tau
 }
 ",
-nimble = quote({
-  for (j in 1:J) {
-    y[j] ~ dnorm(theta[j], sd = sigma[j])
-    theta[j] <- mu + tau * theta_trans[j]
-    theta_trans[j] ~ dnorm(0, 1)
-    log_lik[j] <- dnorm(y[j] , theta[j], sd = sigma[j], log = TRUE)
+    nimble = quote({
+      for (j in 1:J) {
+        y[j] ~ dnorm(theta[j], sd = sigma[j])
+        theta[j] <- mu + tau * theta_trans[j]
+        theta_trans[j] ~ dnorm(0, 1)
+        log_lik[j] <- dnorm(y[j], theta[j], sd = sigma[j], log = TRUE)
+      }
 
-  }
+      mu ~ dnorm(0, sd = 5)
+      tau ~ dnorm(0, sd = 5)
 
-  mu ~ dnorm(0, sd = 5)
-  tau ~ dnorm(0, sd = 5)
-
-  lprior_mu <- dnorm(mu, 0, sd = 5, log = TRUE)
-  lprior_tau <- dnorm(tau, 0, sd = 5, log = TRUE)
-  lprior <- lprior_mu + lprior_tau
-})
-)
+      lprior_mu <- dnorm(mu, 0, sd = 5, log = TRUE)
+      lprior_tau <- dnorm(tau, 0, sd = 5, log = TRUE)
+      lprior <- lprior_mu + lprior_tau
+    })
+  )
 
   if (model == "univariate_normal") {
-
     model_code <- univariate_normal_model[[language]]
     data <- univariate_normal_model[["data"]]
     draws <- get("draws_univariate_normal", asNamespace("priorsense"))

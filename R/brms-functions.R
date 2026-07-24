@@ -33,12 +33,16 @@
 ##' }
 ##' }
 ##' @export
-predictions_as_draws <- function(x, predict_fn, prediction_names = NULL,
-                                 warn_dims = getOption("priorsense.warn", TRUE),
-                                 ...) {
+predictions_as_draws <- function(
+  x,
+  predict_fn,
+  prediction_names = NULL,
+  warn_dims = getOption("priorsense.warn", TRUE),
+  ...
+) {
   require_package("brms")
   terms <- brms::brmsterms(x$formula)
-  if(inherits(terms, "mvbrmsterms")) {
+  if (inherits(terms, "mvbrmsterms")) {
     responses <- brms::brmsterms(x$formula)$responses
     mv <- TRUE
   } else {
@@ -51,42 +55,52 @@ predictions_as_draws <- function(x, predict_fn, prediction_names = NULL,
     dim_pred <- dim(predictions)
     if (length(dim_pred) == 3) {
       if (warn_dims) {
-        warning("coercing predict_fn()'s output from 3 margins to 2 margins ",
-                "(by making the former margin 2 nested within blocks which ",
-                "correspond to former margin 3)")
+        warning(
+          "coercing predict_fn()'s output from 3 margins to 2 margins ",
+          "(by making the former margin 2 nested within blocks which ",
+          "correspond to former margin 3)"
+        )
       }
-      predictions <- array(predictions,
-                           dim = c(dim_pred[1], dim_pred[2] * dim_pred[3]))
+      predictions <- array(
+        predictions,
+        dim = c(dim_pred[1], dim_pred[2] * dim_pred[3])
+      )
     } else if (length(dim_pred) > 3) {
-      stop("predict_fn() returned an unexpected number of margins (> 3) for ",
-           "this univariate model")
+      stop(
+        "predict_fn() returned an unexpected number of margins (> 3) for ",
+        "this univariate model"
+      )
     }
     # add additional dimension in univariate case
     dim(predictions) <- c(dim(predictions), 1)
   } else {
     if (length(dim_pred) != 3) {
-      stop("predict_fn() returned an unexpected number of margins (!= 3) for ",
-           "this multivariate model")
+      stop(
+        "predict_fn() returned an unexpected number of margins (!= 3) for ",
+        "this multivariate model"
+      )
     }
   }
   for (resp in seq_along(responses)) {
     # create draws array of predictions for each response variable
     predicted_draws <- posterior::as_draws_array(
       array(
-        predictions[, , resp],
+        predictions[,, resp],
         dim = c(
           posterior::ndraws(x) / posterior::nchains(x),
-          posterior::nchains(x), dim(predictions)[2]
+          posterior::nchains(x),
+          dim(predictions)[2]
         )
       )
     )
     # name predicted variables
-    posterior::variables(predicted_draws) <-  c(
+    posterior::variables(predicted_draws) <- c(
       paste0(
         responses[[resp]],
         "_pred[",
         seq_along(posterior::variables(predicted_draws)),
-        "]")
+        "]"
+      )
     )
     pred_draws[[resp]] <- predicted_draws
   }

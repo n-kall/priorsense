@@ -2,7 +2,6 @@ psd <- create_priorsense_data(example_powerscale_model()$draws)
 
 
 test_that("print methods provide output", {
-
   ps <- powerscale_sensitivity(psd)
   expect_output(print(ps))
 

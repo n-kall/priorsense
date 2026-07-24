@@ -8,7 +8,8 @@ test_that("powerscale_derivative gives 0 for uniform log_component", {
         1 / length(seq(0, 1, 0.01)),
         length(seq(0, 1, 0.01))
       )),
-      quantity = "mean"),
+      quantity = "mean"
+    ),
     c(psens_mean = 0)
   )
   expect_equal(
@@ -18,7 +19,8 @@ test_that("powerscale_derivative gives 0 for uniform log_component", {
         1 / length(seq(0, 1, 0.01)),
         length(seq(0, 1, 0.01))
       )),
-      quantity = "sd"),
+      quantity = "sd"
+    ),
     c(psens_sd = 0)
   )
   expect_equal(
@@ -28,7 +30,8 @@ test_that("powerscale_derivative gives 0 for uniform log_component", {
         1 / length(seq(0, 1, 0.01)),
         length(seq(0, 1, 0.01))
       )),
-      quantity = "var"),
+      quantity = "var"
+    ),
     c(psens_var = 0)
   )
 })
@@ -40,21 +43,24 @@ test_that("powerscale_derivative gives warning if not using mean, sd or var", {
     priorsense::powerscale_derivative(
       x = seq(0, 1, 0.01),
       log_component = log(1 + seq(0, 1, 0.01)),
-      quantity = "median"),
+      quantity = "median"
+    ),
     "Power-scaling derivative for medians or quantiles is zero. Consider using powerscale_gradients instead."
   )
   expect_warning(
     priorsense::powerscale_derivative(
       x = seq(0, 1, 0.01),
       log_component = log(1 + seq(0, 1, 0.01)),
-      quantity = "q95"),
+      quantity = "q95"
+    ),
     "Power-scaling derivative for medians or quantiles is zero. Consider using powerscale_gradients instead."
   )
   expect_warning(
     priorsense::powerscale_derivative(
       x = seq(0, 1, 0.01),
       log_component = log(1 + seq(0, 1, 0.01)),
-      quantity = "mad"),
+      quantity = "mad"
+    ),
     "Power-scaling derivative for medians or quantiles is zero. Consider using powerscale_gradients instead."
   )
 })
