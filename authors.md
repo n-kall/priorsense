@@ -19,7 +19,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/n-kall/priorsense/blob/main/inst/CITATION)
+[`inst/CITATION`](https://github.com/n-kall/priorsense/blob/v1.3.0/inst/CITATION)
 
 Kallioinen, N., Paananen, T., Bürkner, P-C., Vehtari, A. (2023).
 Detecting and diagnosing prior and likelihood sensitivity with
