@@ -9,7 +9,7 @@ authors:
   - name: Noa Kallioinen
     corresponding: true
     orcid: 0000-0003-1586-8382
-    affiliation: 1,4
+    affiliation: "1,4"
   - name: Topi Paananen
     orcid: 0000-0002-6542-407X
     affiliation: 2
