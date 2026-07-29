@@ -33,3 +33,4 @@
 ^revdep$
 ^data-raw$
 ^paper$
+^inst/extdata$

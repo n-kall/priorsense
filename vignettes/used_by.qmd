@@ -1,0 +1,13 @@
+---
+title: "Published papers using priorsense"
+bibliography: ../inst/extdata/used_by.bib
+nocite: |
+  @*
+---
+
+The following published papers have included sensitivity checks using
+priorsense.
+
+
+::: {#refs}
+:::
