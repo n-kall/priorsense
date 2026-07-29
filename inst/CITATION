@@ -1,69 +1,96 @@
 bibentry(
-  bibtype = "article",
-  title = "Detecting and diagnosing prior and likelihood sensitivity with power-scaling",
-  author = c(
-    person(given = "Noa", family = "Kallioinen"),
-    person(given = "Topi", family = "Paananen"),
-    person(given = "Paul-Christian", family = "Bürkner"),
-    person(given = "Aki", family = "Vehtari")
-  ),
-  year = "2023",
-  journal = "Statistics and Computing",
-  volume = 34,
-  issue = 57,
-  doi = "10.1007/s11222-023-10366-5",
-  header = "To cite the priorsense package and power-scaling sensitivity:",
-  textVersion = paste("Kallioinen, N., Paananen, T., Bürkner, P-C., Vehtari, A. (2023).",
-                      "Detecting and diagnosing prior and likelihood sensitivity with power-scaling.",
-                      "Statistics and Computing. 34(57).",
-                      "doi:10.1007/s11222-023-10366-5"),
-  encoding = "UTF-8"
+    bibtype = "article",
+    title = "priorsense: Efficient prior and likelihood sensitivity checks for Bayesian models in R"
+    author = c(
+        person(given = "Noa", family = "Kallioinen"),
+        person(given = "Topi", family = "Paananen"),
+        person(given = "Paul-Christian", family = "Bürkner"),
+        person(given = "Aki", family = "Vehtari")
+    ),
+    year = "2026",
+    journal = "Journal of Open Source Software",
+    volume = 11,
+    issue = 123,
+    doi = "10.21105/joss.11036",
+    header = "To cite the priorsense package:",
+    textVersion = paste(
+        "Kallioinen, N., Paananen, T., Bürkner, P-C., Vehtari, A. (2026).",
+        "priorsense: Efficient prior and likelihood sensitivity checks for Bayesian models in R",
+        "Journal of Open Source Software. 11(123).",
+        "doi:10.21105/joss.11036"
+    ),
+    encoding = "UTF-8"
+)
+
+
+bibentry(
+    bibtype = "article",
+    title = "Detecting and diagnosing prior and likelihood sensitivity with power-scaling",
+    author = c(
+        person(given = "Noa", family = "Kallioinen"),
+        person(given = "Topi", family = "Paananen"),
+        person(given = "Paul-Christian", family = "Bürkner"),
+        person(given = "Aki", family = "Vehtari")
+    ),
+    year = "2023",
+    journal = "Statistics and Computing",
+    volume = 34,
+    issue = 57,
+    doi = "10.1007/s11222-023-10366-5",
+    header = "To cite the power-scaling sensitivity check method:",
+    textVersion = paste(
+        "Kallioinen, N., Paananen, T., Bürkner, P-C., Vehtari, A. (2023).",
+        "Detecting and diagnosing prior and likelihood sensitivity with power-scaling.",
+        "Statistics and Computing. 34(57).",
+        "doi:10.1007/s11222-023-10366-5"
+    ),
+    encoding = "UTF-8"
 )
 
 bibentry(
-  bibtype = "article",
-  title = "Pareto smoothed importance sampling",
-  author = c(
-    person(given = "Aki", family = "Vehtari"),
-    person(given = "Daniel", family = "Simpson"),
-    person(given = "Andrew", family = "Gelman"),
-    person(given = "Yuling", family = "Yao"),
-    person(given = "Jonah", family = "Gabry")
-  ),
-  journal = "Journal of Machine Learning Research",
-  volume = 25,
-  issue = 72,
-  year = "2024",
-  header = "To cite Pareto-smoothed importance sampling:",
-  textVersion = paste(
-    "Aki Vehtari, Daniel Simpson, Andrew Gelman, Yuling Yao, Jonah Gabry (2024).",
-    "Pareto smoothed importance sampling.",
-    "Journal of Machine Learning Research 25(72)",
-    "https://jmlr.org/papers/v25/19-556.html"
-  )
+    bibtype = "article",
+    title = "Pareto smoothed importance sampling",
+    author = c(
+        person(given = "Aki", family = "Vehtari"),
+        person(given = "Daniel", family = "Simpson"),
+        person(given = "Andrew", family = "Gelman"),
+        person(given = "Yuling", family = "Yao"),
+        person(given = "Jonah", family = "Gabry")
+    ),
+    journal = "Journal of Machine Learning Research",
+    volume = 25,
+    issue = 72,
+    year = "2024",
+    header = "To cite Pareto-smoothed importance sampling:",
+    textVersion = paste(
+        "Aki Vehtari, Daniel Simpson, Andrew Gelman, Yuling Yao, Jonah Gabry (2024).",
+        "Pareto smoothed importance sampling.",
+        "Journal of Machine Learning Research 25(72)",
+        "https://jmlr.org/papers/v25/19-556.html"
+    )
 )
 
 bibentry(
-  bibtype = "Article",
-  title = "Implicitly adaptive importance sampling",
-  author = c(
-    person(given = "Topi", family = "Paananen"),
-    person(given = "Juho", family = "Piironen"),
-    person(given = "Paul-Christian", family = "Bürkner"),
-    person(given = "Aki", family = "Vehtari")
-  ),
-  year = "2021",
-  journal = "Statistics and Computing",
-  volume = 31,
-  issue = 16,
-  pages = "1--19",
-  doi = "10.1007/s11222-020-09982-2",
-  header = "To cite importance weighted moment matching:",
-  textVersion = paste(
-    "Topi Paananen, Juho Piironen, Paul-Christian Bürkner, Aki Vehtari (2021).",
-    "Implicitly adaptive importance sampling.",
-    "Statistics and Computing, 31(16), 1-19.",
-    "doi:10.1007/s11222-020-09982-2"
-  ),
-  encoding = "UTF-8"
+    bibtype = "Article",
+    title = "Implicitly adaptive importance sampling",
+    author = c(
+        person(given = "Topi", family = "Paananen"),
+        person(given = "Juho", family = "Piironen"),
+        person(given = "Paul-Christian", family = "Bürkner"),
+        person(given = "Aki", family = "Vehtari")
+    ),
+    year = "2021",
+    journal = "Statistics and Computing",
+    volume = 31,
+    issue = 16,
+    pages = "1--19",
+    doi = "10.1007/s11222-020-09982-2",
+    header = "To cite importance weighted moment matching:",
+    textVersion = paste(
+        "Topi Paananen, Juho Piironen, Paul-Christian Bürkner, Aki Vehtari (2021).",
+        "Implicitly adaptive importance sampling.",
+        "Statistics and Computing, 31(16), 1-19.",
+        "doi:10.1007/s11222-020-09982-2"
+    ),
+    encoding = "UTF-8"
 )
