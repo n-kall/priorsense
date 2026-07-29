@@ -11,6 +11,7 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 [![R-CMD-check](https://github.com/n-kall/priorsense/workflows/R-CMD-check/badge.svg)](https://github.com/n-kall/priorsense/actions)
 [![Status at rOpenSci Software Peer
 Review](https://badges.ropensci.org/704_status.svg)](https://github.com/ropensci/software-review/issues/704)
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.11036/status.svg)](https://doi.org/10.21105/joss.11036)
 [![priorsense status
 badge](https://n-kall.r-universe.dev/badges/priorsense)](https://n-kall.r-universe.dev)
 [![priorsense CRAN
