@@ -1,6 +1,6 @@
 bibentry(
     bibtype = "article",
-    title = "priorsense: Efficient prior and likelihood sensitivity checks for Bayesian models in R"
+    title = "priorsense: Efficient prior and likelihood sensitivity checks for Bayesian models in R",
     author = c(
         person(given = "Noa", family = "Kallioinen"),
         person(given = "Topi", family = "Paananen"),
