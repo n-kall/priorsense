@@ -21,18 +21,21 @@ badge](https://www.r-pkg.org/badges/version/priorsense)](https://cran.r-project.
 ### Efficient prior and likelihood sensitivity checks
 
 **priorsense** is an R package that provides tools for prior diagnostics
-and sensitivity analysis of Bayesian models.
+and sensitivity analysis of Bayesian models [(Kallioinen et al.,
+2026)](https://doi.org/10.21105/joss.11036).
 
 It currently includes functions for performing power-scaling sensitivity
-analysis on Stan models. This is a way to check how sensitive a
-posterior is to perturbations of the prior and likelihood and diagnose
+analysis on fitted Bayesian models. This is a way to check how sensitive
+a posterior is to perturbations of the prior and likelihood and diagnose
 the cause of sensitivity. For efficient computation, power-scaling
 sensitivity analysis relies on Pareto smoothed importance sampling
 (Vehtari et al., 2024) and importance weighted moment matching (Paananen
 et al., 2021).
 
-Power-scaling sensitivity analysis and priorsense are described in
-[Kallioinen et al. (2023)](https://doi.org/10.1007/s11222-023-10366-5).
+Priorsense supports brms, Stan, JAGS and NIMBLE, along with posterior
+draws from other software. Power-scaling sensitivity analysis checks are
+described in [Kallioinen et
+al. (2023)](https://doi.org/10.1007/s11222-023-10366-5).
 
 ### Resources
 
@@ -66,6 +69,11 @@ feature, open an issue. If you are able to fix an issue, fork the
 repository and make a pull request to the `development` branch.
 
 ### References
+
+Noa Kallioinen, Topi Paananen, Paul-Christian Bürkner, Aki Vehtari
+(2026). priorsense: Efficient prior and likelihood sensitivity checks
+for Bayesian models in R. Journal of Open Source Software. 11, 123.
+https://doi.org/10.21105/joss.11036
 
 Noa Kallioinen, Topi Paananen, Paul-Christian Bürkner, Aki Vehtari
 (2023). Detecting and diagnosing prior and likelihood sensitivity with
