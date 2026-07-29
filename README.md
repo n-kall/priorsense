@@ -8,14 +8,15 @@
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![R-CMD-check](https://github.com/n-kall/priorsense/workflows/R-CMD-check/badge.svg)](https://github.com/n-kall/priorsense/actions)
-[![Status at rOpenSci Software Peer
-Review](https://badges.ropensci.org/704_status.svg)](https://github.com/ropensci/software-review/issues/704)
-[![DOI](https://joss.theoj.org/papers/10.21105/joss.11036/status.svg)](https://doi.org/10.21105/joss.11036)
 [![priorsense status
 badge](https://n-kall.r-universe.dev/badges/priorsense)](https://n-kall.r-universe.dev)
 [![priorsense CRAN
 badge](https://www.r-pkg.org/badges/version/priorsense)](https://cran.r-project.org/package=priorsense)
+[![R-CMD-check](https://github.com/n-kall/priorsense/workflows/R-CMD-check/badge.svg)](https://github.com/n-kall/priorsense/actions)
+[![Status at rOpenSci Software Peer
+Review](https://badges.ropensci.org/704_status.svg)](https://github.com/ropensci/software-review/issues/704)
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.11036/status.svg)](https://doi.org/10.21105/joss.11036)
+
 <!-- badges: end -->
 
 ### Efficient prior and likelihood sensitivity checks
@@ -32,9 +33,10 @@ sensitivity analysis relies on Pareto smoothed importance sampling
 (Vehtari et al., 2024) and importance weighted moment matching (Paananen
 et al., 2021).
 
-Priorsense supports brms, Stan, JAGS and NIMBLE, along with posterior
-draws from other software. Power-scaling sensitivity analysis checks are
-described in [Kallioinen et
+Priorsense supports fitted model objects from `brms`, Stan (`cmdstanr`
+and `rstan`), JAGS (`jagsUI` and `R2jags`) and NIMBLE, along with
+posterior draws from other software. Power-scaling sensitivity analysis
+checks are described in [Kallioinen et
 al. (2023)](https://doi.org/10.1007/s11222-023-10366-5).
 
 ### Resources
