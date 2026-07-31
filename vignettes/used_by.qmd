@@ -1,6 +1,7 @@
 ---
 title: "Published papers using priorsense"
-bibliography: ../inst/extdata/used_by.bib
+bibliography: used_by.bib
+csl: used_by.csl
 nocite: |
   @*
 ---
@@ -11,3 +12,9 @@ priorsense.
 
 ::: {#refs}
 :::
+
+<style>
+#refs .csl-entry {
+  margin-bottom: 1.25rem;
+}
+</style>
