@@ -60,22 +60,25 @@ Implicitly adaptive importance sampling. *Statistics and Computing*.
 
 ## Author
 
-**Maintainer**: Noa Kallioinen <noa.kallioinen@helsinki.fi> \[copyright
-holder\]
+**Maintainer**: Noa Kallioinen <noa.kallioinen@helsinki.fi>
+([ORCID](https://orcid.org/0000-0003-1586-8382)) \[copyright holder\]
 
 Authors:
 
-- Noa Kallioinen <noa.kallioinen@helsinki.fi> \[copyright holder\]
+- Noa Kallioinen <noa.kallioinen@helsinki.fi>
+  ([ORCID](https://orcid.org/0000-0003-1586-8382)) \[copyright holder\]
 
-- Topi Paananen
+- Topi Paananen ([ORCID](https://orcid.org/0000-0002-6542-407X))
 
 - Paul-Christian Bürkner
+  ([ORCID](https://orcid.org/0000-0001-5765-8995))
 
-- Aki Vehtari
+- Aki Vehtari ([ORCID](https://orcid.org/0000-0003-2164-9469))
 
 Other contributors:
 
-- Frank Weber \[contributor\]
+- Frank Weber ([ORCID](https://orcid.org/0000-0002-4842-7922))
+  \[contributor\]
 
 - Simon Taylor \[reviewer\]
 

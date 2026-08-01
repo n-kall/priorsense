@@ -18,3 +18,5 @@
   checks](https://n-kall.github.io/priorsense/articles/quantity_of_interest.md):
 - [Interpreting sensitivity
   diagnostics](https://n-kall.github.io/priorsense/articles/sensitivity_diagnostic.md):
+- [Published papers using
+  priorsense](https://n-kall.github.io/priorsense/articles/used_by.md):

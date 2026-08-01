@@ -3,14 +3,17 @@
 ## Authors
 
 - **Noa Kallioinen**. Author, maintainer, copyright holder.
+  [](https://orcid.org/0000-0003-1586-8382)
 
-- **Topi Paananen**. Author.
+- **Topi Paananen**. Author. [](https://orcid.org/0000-0002-6542-407X)
 
 - **Paul-Christian Bürkner**. Author.
+  [](https://orcid.org/0000-0001-5765-8995)
 
-- **Aki Vehtari**. Author.
+- **Aki Vehtari**. Author. [](https://orcid.org/0000-0003-2164-9469)
 
 - **Frank Weber**. Contributor.
+  [](https://orcid.org/0000-0002-4842-7922)
 
 - **Simon Taylor**. Reviewer.
 
@@ -19,7 +22,23 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/n-kall/priorsense/blob/v1.3.0/inst/CITATION)
+[`inst/CITATION`](https://github.com/n-kall/priorsense/blob/main/inst/CITATION)
+
+Kallioinen, N., Paananen, T., Bürkner, P-C., Vehtari, A. (2026).
+priorsense: Efficient prior and likelihood sensitivity checks for
+Bayesian models in R Journal of Open Source Software. 11(123).
+doi:10.21105/joss.11036
+
+    @Article{,
+      title = {priorsense: Efficient prior and likelihood sensitivity checks for Bayesian models in R},
+      author = {Noa Kallioinen and Topi Paananen and Paul-Christian Bürkner and Aki Vehtari},
+      year = {2026},
+      journal = {Journal of Open Source Software},
+      volume = {11},
+      issue = {123},
+      doi = {10.21105/joss.11036},
+      encoding = {UTF-8},
+    }
 
 Kallioinen, N., Paananen, T., Bürkner, P-C., Vehtari, A. (2023).
 Detecting and diagnosing prior and likelihood sensitivity with

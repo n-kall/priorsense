@@ -1,5 +1,9 @@
 # Changelog
 
+## priorsense 1.3.1
+
+- Add new JOSS paper as primary citation for the package.
+
 ## priorsense 1.3.0
 
 - Add support for `nimble` and `jagsUI` and improved related vignettes
