@@ -30,6 +30,7 @@
 ^vignettes/sensitivity_diagnostic_files$
 ^vignettes/airquality.qmd$
 ^vignettes/airquality_files$
+^vignettes/used_by*$
 ^revdep$
 ^data-raw$
 ^paper$

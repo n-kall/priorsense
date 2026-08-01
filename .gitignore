@@ -17,3 +17,7 @@ revdep/
 paper/paper.pdf
 paper/auto/
 renv/
+vignettes/*_files
+vignettes/_quarto.yaml
+inst/auto
+.Rbuildignore.save
