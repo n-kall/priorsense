@@ -74,6 +74,7 @@ powerscale_sensitivity.default <- function(
     powerscale_sensitivity.priorsense_data(
         psd,
         variable = variable,
+        variables = variables,
         lower_alpha = lower_alpha,
         upper_alpha = upper_alpha,
         div_measure = div_measure,
@@ -123,6 +124,7 @@ powerscale_sensitivity.priorsense_data <- function(
 
     # input checks
     checkmate::assertCharacter(variable, null.ok = TRUE)
+    checkmate::assertCharacter(variables, null.ok = TRUE)
     checkmate::assertNumber(lower_alpha, lower = 0, upper = 1)
     checkmate::assertNumber(upper_alpha, lower = 1)
     checkmate::assertCharacter(div_measure, len = 1)
@@ -148,7 +150,6 @@ powerscale_sensitivity.priorsense_data <- function(
     }
     if (is.null(variable)) {
         variable <- variables
-        print(variable)
     }
 
     gradients <- powerscale_gradients(
