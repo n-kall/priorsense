@@ -5,30 +5,50 @@
 
 <!-- badges: start -->
 
-[![Lifecycle:
-stable](https://img.shields.io/badge/lifecycle-stable-green.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
-[![CRAN
-status](https://www.r-pkg.org/badges/version/priorsense)](https://CRAN.R-project.org/package=priorsense)
+[![Project Status: Active – The project has reached a stable, usable
+state and is being actively
+developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![priorsense status
+badge](https://n-kall.r-universe.dev/badges/priorsense)](https://n-kall.r-universe.dev)
+[![priorsense CRAN
+badge](https://www.r-pkg.org/badges/version/priorsense)](https://cran.r-project.org/package=priorsense)
 [![R-CMD-check](https://github.com/n-kall/priorsense/workflows/R-CMD-check/badge.svg)](https://github.com/n-kall/priorsense/actions)
+[![Status at rOpenSci Software Peer
+Review](https://badges.ropensci.org/704_status.svg)](https://github.com/ropensci/software-review/issues/704)
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.11036/status.svg)](https://doi.org/10.21105/joss.11036)
+
 <!-- badges: end -->
 
-## Overview
+### Efficient prior and likelihood sensitivity checks
 
-priorsense provides tools for prior diagnostics and sensitivity
-analysis.
+**priorsense** is an R package that provides tools for prior diagnostics
+and sensitivity analysis of Bayesian models [(Kallioinen et al.,
+2026)](https://doi.org/10.21105/joss.11036).
 
 It currently includes functions for performing power-scaling sensitivity
-analysis on Stan models. This is a way to check how sensitive a
-posterior is to perturbations of the prior and likelihood and diagnose
+analysis on fitted Bayesian models. This is a way to check how sensitive
+a posterior is to perturbations of the prior and likelihood and diagnose
 the cause of sensitivity. For efficient computation, power-scaling
 sensitivity analysis relies on Pareto smoothed importance sampling
 (Vehtari et al., 2024) and importance weighted moment matching (Paananen
 et al., 2021).
 
-Power-scaling sensitivity analysis and priorsense are described in
-[Kallioinen et al. (2023)](https://doi.org/10.1007/s11222-023-10366-5).
+Priorsense supports fitted model objects from `brms`, Stan (`cmdstanr`
+and `rstan`), JAGS (`jagsUI` and `R2jags`) and NIMBLE, along with
+posterior draws from other software. Power-scaling sensitivity analysis
+checks are described in [Kallioinen et
+al. (2023)](https://doi.org/10.1007/s11222-023-10366-5).
 
-## Installation
+### Resources
+
+- Check the [getting started
+  vignette](https://n-kall.github.io/priorsense/articles/getting_started.html)
+  for a simple example
+
+- For a more detailed modelling example see
+  [here](https://n-kall.github.io/priorsense/articles/airquality.html)
+
+### Installation
 
 Download the stable version from CRAN with:
 
@@ -40,109 +60,22 @@ Download the development version from [GitHub](https://github.com/)
 with:
 
 ``` r
-# install.packages("remotes")
-remotes::install_github("n-kall/priorsense", ref = "development")
+# install.packages("pak")
+pak::pkg_install("n-kall/priorsense@development")
 ```
 
-## Usage
+### Contributing
 
-priorsense works with models created with rstan, cmdstanr, brms, R2jags,
-or with draws objects from the posterior package.
-
-### Example
-
-Consider a simple univariate model with unknown mu and sigma fit to some
-data y (available via`example_powerscale_model("univariate_normal")`):
-
-``` stan
-data {
-  int<lower=1> N;
-  array[N] real y;
-}
-parameters {
-  real mu;
-  real<lower=0> sigma;
-}
-model {
-  // priors
-  target += normal_lpdf(mu | 0, 1);
-  target += normal_lpdf(sigma | 0, 2.5);
-  // likelihood
-  target += normal_lpdf(y | mu, sigma);
-}
-generated quantities {
-  vector[N] log_lik;
-  real lprior;
-  // log likelihood
-  for (n in 1:N) log_lik[n] =  normal_lpdf(y[n] | mu, sigma);
-  // joint log prior
-  lprior = normal_lpdf(mu | 0, 1) +
-    normal_lpdf(sigma | 0, 2.5);
-```
-
-We first fit the model using Stan:
-
-``` r
-library(priorsense)
-
-normal_model <- example_powerscale_model("univariate_normal")
-
-fit <- rstan::stan(
-  model_code = normal_model$model_code,
-  data = normal_model$data,
-  refresh = FALSE,
-  seed = 123
-)
-```
-
-Once fit, sensitivity can be checked as follows:
-
-``` r
-powerscale_sensitivity(fit)
-```
-
-    Sensitivity based on cjs_dist
-    Prior selection: all priors
-    Likelihood selection: all data
-
-     variable prior likelihood                     diagnosis
-           mu  0.43       0.64 potential prior-data conflict
-        sigma  0.36       0.67 potential prior-data conflict
-
-To visually inspect changes to the posterior, use one of the diagnostic
-plot functions. Estimates with high Pareto-k values may be inaccurate
-and are indicated.
-
-``` r
-powerscale_plot_dens(fit)
-```
-
-<img src="man/figures/powerscale-plot_dens-1.png" style="width:70.0%" />
-
-``` r
-powerscale_plot_ecdf(fit)
-```
-
-<img src="man/figures/powerscale_plot_ecdf-1.png" style="width:70.0%" />
-
-``` r
-powerscale_plot_quantities(fit)
-```
-
-<img src="man/figures/powerscale_plot_quantities-1.png"
-style="width:70.0%" />
-
-In some cases, setting `moment_match = TRUE` will improve the unreliable
-estimates at the cost of some further computation. This requires the
-[`iwmm` package](https://github.com/topipa/iwmm).
-
-## Contributing
-
-Contributions are welcome! If you find an bug or have an idea for a
+Contributions are welcome! If you find a bug or have an idea for a
 feature, open an issue. If you are able to fix an issue, fork the
 repository and make a pull request to the `development` branch.
 
-## References
+### References
+
+Noa Kallioinen, Topi Paananen, Paul-Christian Bürkner, Aki Vehtari
+(2026). priorsense: Efficient prior and likelihood sensitivity checks
+for Bayesian models in R. Journal of Open Source Software. 11, 123.
+https://doi.org/10.21105/joss.11036
 
 Noa Kallioinen, Topi Paananen, Paul-Christian Bürkner, Aki Vehtari
 (2023). Detecting and diagnosing prior and likelihood sensitivity with

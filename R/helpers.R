@@ -1,7 +1,6 @@
 ##' stop without call
 ##' @keywords internal
 ##' @noRd
-##' @param ... 
 stop2 <- function(...) {
   stop(..., call. = FALSE)
 }
@@ -29,25 +28,29 @@ rowsums_draws <- function(x) {
 ##' @return draws object without excluded variables
 ##' @keywords internal
 ##' @noRd
-remove_unwanted_vars <- function(x,
-                                 excluded_variables = c(
-                                   "lprior",
-                                   "log_lik",
-                                   "lp__"
-                                 ),
-                                 regex = TRUE, ...) {
-
+remove_unwanted_vars <- function(
+  x,
+  excluded_variables = c(
+    "lprior",
+    "log_lik",
+    "lp__"
+  ),
+  regex = TRUE,
+  ...
+) {
   draws <- posterior::as_draws_df(x)
 
-  draws <- posterior::subset_draws(draws,
-                                   variable = excluded_variables,
-                                   exclude = TRUE,
-                                   regex = regex)
+  draws <- posterior::subset_draws(
+    draws,
+    variable = excluded_variables,
+    exclude = TRUE,
+    regex = regex
+  )
 
   return(draws)
 }
 ##' require package
-##' 
+##'
 ##' @param package character specifying which package is required
 ##' @param version character specifying which version is required,
 ##'   default is NULL, implying any version is acceptable
@@ -62,8 +65,13 @@ require_package <- function(package, version = NULL, message = NULL) {
   if (!is.null(version)) {
     version <- as.package_version(version)
     if (utils::packageVersion(package) < version) {
-      stop2("Please install package '", package,
-            "' version ", version, " or higher.")
+      stop2(
+        "Please install package '",
+        package,
+        "' version ",
+        version,
+        " or higher."
+      )
     }
   }
   invisible(TRUE)

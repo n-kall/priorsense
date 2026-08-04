@@ -7,7 +7,7 @@
 ##' on the cumulative Jensen-Shannon divergence. The divergence CJS(P || Q)
 ##' between two cumulative distribution functions P and Q is defined as:
 ##'
-##' \deqn{CJS(P || Q) = \sum P(x) \log \frac{P(x)}{0.5 (P(x) + Q(x))} +
+##' \deqn{CJS(P || Q) = \sum P(x) \log_2 \frac{P(x)}{0.5 (P(x) + Q(x))} +
 ##' \frac{1}{2 \ln 2} \sum (Q(x) - P(x))}
 ##'
 ##' The symmetric metric is defined as:
@@ -42,30 +42,41 @@
 ##' y <- rnorm(100, 2, 2)
 ##' cjs_dist(x, y, x_weights = NULL, y_weights = NULL)
 ##' @export
-cjs_dist <- function(x,
-                     y,
-                     x_weights = NULL,
-                     y_weights = NULL,
-                     metric = TRUE,
-                     unsigned = TRUE,
-                     ...) {
-
+cjs_dist <- function(
+  x,
+  y,
+  x_weights = NULL,
+  y_weights = NULL,
+  metric = TRUE,
+  unsigned = TRUE,
+  ...
+) {
   checkmate::assert_numeric(x, min.len = 1, any.missing = FALSE, finite = TRUE)
   checkmate::assert_atomic_vector(x)
   x <- as.numeric(x)
-  
+
   checkmate::assert_numeric(y, min.len = 1, any.missing = FALSE, finite = TRUE)
   checkmate::assert_atomic_vector(y)
   y <- as.numeric(y)
 
-  checkmate::assert_numeric(x_weights, len = length(x), null.ok = TRUE,
-                            any.missing = FALSE, finite = TRUE)
-  checkmate::assert_numeric(y_weights, len = length(y), null.ok = TRUE,
-                            any.missing = FALSE, finite = TRUE)
+  checkmate::assert_numeric(
+    x_weights,
+    len = length(x),
+    null.ok = TRUE,
+    any.missing = FALSE,
+    finite = TRUE
+  )
+  checkmate::assert_numeric(
+    y_weights,
+    len = length(y),
+    null.ok = TRUE,
+    any.missing = FALSE,
+    finite = TRUE
+  )
 
   checkmate::assert_vector(x_weights, strict = TRUE, null.ok = TRUE)
   checkmate::assert_vector(y_weights, strict = TRUE, null.ok = TRUE)
-  
+
   checkmate::assert_flag(metric)
   checkmate::assert_flag(unsigned)
 
@@ -137,15 +148,23 @@ cjs_dist <- function(x,
   qx_int <- sum(qx * binwidth)
 
   # calculate cjs
-  cjs_pq <-  sum(binwidth * (
-    px * (log(px, base = 2) -
-            log(0.5 * px + 0.5 * qx, base = 2)
-    )), na.rm = TRUE) + 0.5 / log(2) * (qx_int - px_int)
+  cjs_pq <- sum(
+    binwidth *
+      (px *
+        (log(px, base = 2) -
+          log(0.5 * px + 0.5 * qx, base = 2))),
+    na.rm = TRUE
+  ) +
+    0.5 / log(2) * (qx_int - px_int)
 
-  cjs_qp <- sum(binwidth * (
-    qx * (log(qx, base = 2) -
-            log(0.5 * qx + 0.5 * px, base = 2)
-    )), na.rm = TRUE) + 0.5 / log(2) * (px_int - qx_int)
+  cjs_qp <- sum(
+    binwidth *
+      (qx *
+        (log(qx, base = 2) -
+          log(0.5 * qx + 0.5 * px, base = 2))),
+    na.rm = TRUE
+  ) +
+    0.5 / log(2) * (px_int - qx_int)
 
   # calculate upper bound
   bound <- px_int + qx_int

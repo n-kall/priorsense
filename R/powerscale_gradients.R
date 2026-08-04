@@ -36,40 +36,53 @@
 ##' powerscale_gradients(drw)
 ##' @export
 powerscale_gradients <- function(x, ...) {
-
   UseMethod("powerscale_gradients")
 }
 
 ##' @rdname powerscale-gradients
 ##' @export
-powerscale_gradients.default <- function(x, log_prior_name = "lprior", log_lik_name = "log_lik", ...) {
+powerscale_gradients.default <- function(
+  x,
+  log_prior_name = "lprior",
+  log_lik_name = "log_lik",
+  ...
+) {
+  psd <- create_priorsense_data(
+    x,
+    log_prior_name = log_prior_name,
+    log_lik_name = log_lik_name,
+    ...
+  )
 
-  psd <- create_priorsense_data(x)
-
-  powerscale_gradients(psd, ...)
-
-  }
+  powerscale_gradients(
+    psd,
+    log_prior_name = log_prior_name,
+    log_lik_name = log_lik_name,
+    ...
+  )
+}
 
 ##' @rdname powerscale-gradients
 ##' @export
-powerscale_gradients.priorsense_data <- function(x,
-                                         variable = NULL,
-                                         component = c("prior", "likelihood"),
-                                         type = c("quantities", "divergence"),
-                                         lower_alpha = 0.99,
-                                         upper_alpha = 1.01,
-                                         div_measure = "cjs_dist",
-                                         measure_args = list(),
-                                         moment_match = FALSE,
-                                         k_threshold = NULL,
-                                         resample = FALSE,
-                                         transform = NULL,
-                                         prediction = NULL,
-                                         scale = FALSE,
-                                         prior_selection = NULL,
-                                         likelihood_selection = NULL,
-                                         ...) {
-
+powerscale_gradients.priorsense_data <- function(
+  x,
+  variable = NULL,
+  component = c("prior", "likelihood"),
+  type = c("quantities", "divergence"),
+  lower_alpha = 0.99,
+  upper_alpha = 1.01,
+  div_measure = "cjs_dist",
+  measure_args = list(),
+  moment_match = FALSE,
+  k_threshold = NULL,
+  resample = FALSE,
+  transform = NULL,
+  prediction = NULL,
+  scale = FALSE,
+  prior_selection = NULL,
+  likelihood_selection = NULL,
+  ...
+) {
   # input coercion
   component <- tolower(as.character(component))
   lower_alpha <- as.numeric(lower_alpha)
@@ -89,6 +102,8 @@ powerscale_gradients.priorsense_data <- function(x,
     variable <- as.character(variable)
   }
 
+  log_prior_name <- x$log_prior_name
+  log_lik_name <- x$log_lik_name
 
   # input checks
   checkmate::assertSubset(type, c("quantities", "divergence"))
@@ -112,7 +127,7 @@ powerscale_gradients.priorsense_data <- function(x,
   if (!(is.null(prediction))) {
     pred_draws <- prediction(x$fit, ...)
 
-  # bind predictions and posterior draws
+    # bind predictions and posterior draws
     base_draws <- posterior::bind_draws(base_draws, pred_draws)
   }
 
@@ -163,7 +178,6 @@ powerscale_gradients.priorsense_data <- function(x,
   )
 
   for (comp in component) {
-
     # calculate the lower scaled draws
     perturbed_draws_lower[[comp]] <- powerscale(
       x = x,
@@ -176,6 +190,8 @@ powerscale_gradients.priorsense_data <- function(x,
       transform = transform,
       prediction = prediction,
       selection = selection[[comp]],
+      log_prior_name = log_prior_name,
+      log_lik_name = log_lik_name,
       ...
     )
 
@@ -191,11 +207,12 @@ powerscale_gradients.priorsense_data <- function(x,
       transform = transform,
       prediction = prediction,
       selection = selection[[comp]],
+      log_prior_name = log_prior_name,
+      log_lik_name = log_lik_name,
       ...
     )
 
     if ("divergence" %in% type) {
-
       # compute the divergence for lower draws
       lower_dist <- measure_divergence(
         draws1 = base_draws_t,
@@ -225,7 +242,6 @@ powerscale_gradients.priorsense_data <- function(x,
     }
 
     if ("quantities" %in% type) {
-
       # summarise base posterior
       base_quantities <- summarise_draws(
         base_draws_t,
@@ -252,20 +268,18 @@ powerscale_gradients.priorsense_data <- function(x,
         scale = scale,
         ...
       )
-
     }
   }
 
   if ("multi_div" %in% type) {
-
     upper_multi_kl <- c()
     upper_multi_wasserstein <- c()
 
     for (comp in component) {
-
       upper_multi_kl[[comp]] <- sqrt(mv_kl_div(
         weights = stats::weights(perturbed_draws_upper[[comp]])
-      )) / log(upper_alpha, base = 2)
+      )) /
+        log(upper_alpha, base = 2)
 
       upper_multi_wasserstein[[comp]] <- mv_wasserstein_dist(
         draws1 = base_draws_t,
@@ -276,8 +290,10 @@ powerscale_gradients.priorsense_data <- function(x,
       upper_mw_dist[[comp]] <- mv_wasserstein_dist(
         posterior::weight_draws(
           base_draws_t,
-          rep(1 / posterior::ndraws(base_draws_t),
-              times = posterior::ndraws(base_draws_t)),
+          rep(
+            1 / posterior::ndraws(base_draws_t),
+            times = posterior::ndraws(base_draws_t)
+          ),
           perturbed_draws_upper[[comp]]
         )
       )
@@ -303,14 +319,15 @@ powerscale_gradients.priorsense_data <- function(x,
 ##' @param scale scale by base posterior sd
 ##' @noRd
 ##' @return a tibble
-powerscale_quantities_gradients <- function(base_quantities,
-                                            lower_quantities,
-                                            upper_quantities,
-                                            lower_alpha,
-                                            upper_alpha,
-                                            scale = FALSE,
-                                            ...) {
-
+powerscale_quantities_gradients <- function(
+  base_quantities,
+  lower_quantities,
+  upper_quantities,
+  lower_alpha,
+  upper_alpha,
+  scale = FALSE,
+  ...
+) {
   variable <- base_quantities$variable
 
   gradients_lower <- (base_quantities[-1] - lower_quantities[-1]) /
@@ -337,11 +354,13 @@ powerscale_quantities_gradients <- function(base_quantities,
 ##' @param upper_alpha upper alpha
 ##' @noRd
 ##' @return gradients
-powerscale_divergence_gradients <- function(lower_divergences,
-                                            upper_divergences,
-                                            lower_alpha, upper_alpha,
-                                            ...) {
-
+powerscale_divergence_gradients <- function(
+  lower_divergences,
+  upper_divergences,
+  lower_alpha,
+  upper_alpha,
+  ...
+) {
   variable <- lower_divergences$variable
 
   upper_diff <- subset(upper_divergences, select = -c(variable))

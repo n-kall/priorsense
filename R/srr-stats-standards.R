@@ -9,7 +9,7 @@
 #'
 #' @srrstatsVerbose TRUE
 #'
-#' 
+#'
 #'
 #'
 #'
@@ -52,6 +52,6 @@ NULL
 #' @srrstatsNA {EA5.6} No bundled libraries
 #' @srrstatsNA {EA5.5} plots do not require units as they are unit-free quantities
 #' @srrstatsNA {EA5.1} default typefaces are used
-#' 
+#'
 #' @noRd
 NULL

@@ -14,6 +14,7 @@ powerscale_sensitivity(x, ...)
 \method{powerscale_sensitivity}{default}(
   x,
   variable = NULL,
+  variables = NULL,
   lower_alpha = 0.99,
   upper_alpha = 1.01,
   div_measure = "cjs_dist",
@@ -29,6 +30,7 @@ powerscale_sensitivity(x, ...)
   likelihood_selection = NULL,
   log_prior_name = "lprior",
   log_lik_name = "log_lik",
+  separator = "_",
   num_args = NULL,
   ...
 )
@@ -36,6 +38,7 @@ powerscale_sensitivity(x, ...)
 \method{powerscale_sensitivity}{priorsense_data}(
   x,
   variable = NULL,
+  variables = NULL,
   lower_alpha = 0.99,
   upper_alpha = 1.01,
   div_measure = "cjs_dist",
@@ -49,6 +52,7 @@ powerscale_sensitivity(x, ...)
   prediction = NULL,
   prior_selection = NULL,
   likelihood_selection = NULL,
+  separator = "_",
   num_args = NULL,
   ...
 )
@@ -64,6 +68,8 @@ powerscale_sensitivity(x, ...)
 
 \item{variable}{Character vector of variables to check.}
 
+\item{variables}{alias of \code{variable}.}
+
 \item{lower_alpha}{Lower alpha value for gradient calculation.}
 
 \item{upper_alpha}{Upper alpha value for gradient calculation.}
@@ -73,19 +79,30 @@ divergence measure to use. The following methods are
 implemented:
 \itemize{
 \item \code{"cjs_dist"}: Cumulative Jensen-Shannon distance. Default
-method. See function \code{cjs_dist} for more details.
-\item \code{"js_dist"}: Jensen-Shannon distance.
-\item \code{"js_div"}: Jensen-Shannon divergence.
-\item \code{"hellinger_dist"}: Hellinger distance.
-\item \code{"kl_dist"}: Kullback-Leibler distance.
-\item \code{"kl_div"}: Kullback-Leibler divergence.
-\item \code{"ks_dist"}: Kolmogorov-Smirnov distance.
-\item \code{"hellinger_dist"}: Hellinger distance.
-\item \code{"ws_dist"}: Wassterstein distance (pass \code{measure_args = list(p = N)})
-for a different order, where N is the order.
+method. See function \code{\link[=cjs_dist]{cjs_dist()}} for more details.
+\item \code{"js_dist"}: Jensen-Shannon distance. First estimates density using
+\code{\link[stats:density]{stats::density()}}. Requires the \code{philentropy} package. See
+\code{\link[philentropy:jensen_shannon]{philentropy::jensen_shannon()}}.
+\item \code{"js_div"}: Jensen-Shannon divergence. First estimates density using
+\code{\link[stats:density]{stats::density()}}. Requires the \code{philentropy} package. See
+\code{\link[philentropy:jensen_shannon]{philentropy::jensen_shannon()}}.
+\item \code{"hellinger_dist"}: Hellinger distance. First estimates density using
+\code{\link[stats:density]{stats::density()}}. Requires the \code{philentropy} package. See
+\code{\link[philentropy:hellinger]{philentropy::hellinger()}}.
+\item \code{"kl_dist"}: Kullback-Leibler distance. First esimates density using
+\code{\link[stats:density]{stats::density()}}. Requires the \code{philentropy} package. See
+\code{\link[philentropy:kullback_leibler_distance]{philentropy::kullback_leibler_distance()}}.
+\item \code{"kl_div"}: Kullback-Leibler divergence. First estimates density using
+\code{\link[stats:density]{stats::density()}}. Requires the \code{philentropy} package. See
+\code{\link[philentropy:kullback_leibler_distance]{philentropy::kullback_leibler_distance()}}.
+\item \code{"ks_dist"}: Kolmogorov-Smirnov distance. See \code{\link[stats:ks.test]{stats::ks.test()}}.
+\item \code{"ws_dist"}: Wassterstein distance (pass \code{measure_args = list(p = N)}) for
+a different order, where N is the order. Requires the \code{transport}
+package. See \code{\link[transport:wasserstein1d]{transport::wasserstein1d()}}.
 }}
 
-\item{measure_args}{Named list of further arguments passed to divergence measure functions.}
+\item{measure_args}{Named list of further arguments passed to divergence
+measure functions.}
 
 \item{component}{Character vector specifying component(s) to scale
 (default is both "prior" and "likelihood").}
@@ -110,20 +127,23 @@ perform before sensitivity analysis. Either "scale" or "whiten".}
 draws_df of predictions to be appended to the posterior draws}
 
 \item{prior_selection}{Vector specifying partitions of component to be
-included in power-scaling. Default is NULL, which takes all
-partitions. If this is a character, then it is appended to the
-variable name (specified by \code{log_prior_name}) with an \verb{_}
-between them. If numeric, then it is appended inside \verb{[]}.}
+included in power-scaling. Default is NULL, which takes all partitions. If
+this is a character, then it is appended to the variable name (specified
+by \code{log_prior_name}) with a separator between them. If numeric, then it is
+appended inside \verb{[]}.}
 
 \item{likelihood_selection}{Vector specifying partitions of component to be
-included in power-scaling. Default is NULL, which takes all
-partitions. If this is a character, then it is appended to the
-variable name (specified by \code{log_lik_name}) with an \verb{_}
-between them. If numeric, then it is appended inside \verb{[]}.}
+included in power-scaling. Default is NULL, which takes all partitions. If
+this is a character, then it is appended to the variable name (specified
+by \code{log_lik_name}) with a separator between them. If numeric, then it is
+appended inside \verb{[]}.}
 
 \item{log_prior_name}{Character (case sensitive) specifying name of the variable storing the log prior evaluations}
 
 \item{log_lik_name}{Character (case sensitive) specifying name of the variable storing the log likelihood evaluations}
+
+\item{separator}{Character specifying the separator between the component
+name and the partition. The default is \code{"_"}.}
 
 \item{num_args}{(named list) Optional arguments passed to
 \link[tibble:num]{num()} for pretty printing of summaries. Can be

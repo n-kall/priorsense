@@ -6,7 +6,6 @@
 ##' @srrstats {G3.1, G3.1a} Function for computing covariance can be specified
 ##' @noRd
 whiten_draws <- function(draws, covariance_fn = stats::cov, ...) {
-
   base_draws <- posterior::as_draws_matrix(
     posterior::merge_chains(draws)
   )
@@ -18,7 +17,8 @@ whiten_draws <- function(draws, covariance_fn = stats::cov, ...) {
   if (!(is.null(wei))) {
     base_draws <- posterior::mutate_variables(
       base_draws,
-      .log_weight = NULL)
+      .log_weight = NULL
+    )
   }
 
   # code from whitening package (c) Korbinian Strimmer and Takoua

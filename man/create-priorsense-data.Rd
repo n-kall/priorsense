@@ -8,6 +8,8 @@
 \alias{create_priorsense_data.CmdStanFit}
 \alias{create_priorsense_data.draws}
 \alias{create_priorsense_data.rjags}
+\alias{create_priorsense_data.jagsUI}
+\alias{create_priorsense_data.mcmc.list}
 \title{Create data structure for priorsense}
 \usage{
 create_priorsense_data(x, ...)
@@ -32,6 +34,10 @@ create_priorsense_data(x, ...)
 \method{create_priorsense_data}{draws}(x, ...)
 
 \method{create_priorsense_data}{rjags}(x, ...)
+
+\method{create_priorsense_data}{jagsUI}(x, ...)
+
+\method{create_priorsense_data}{mcmc.list}(x, ...)
 }
 \arguments{
 \item{x}{an object for which the method is defined or an object

@@ -1,0 +1,20 @@
+---
+title: "Published papers using priorsense"
+bibliography: used_by.bib
+csl: used_by.csl
+nocite: |
+  @*
+---
+
+The following published papers have included sensitivity checks using
+priorsense.
+
+
+::: {#refs}
+:::
+
+<style>
+#refs .csl-entry {
+  margin-bottom: 1.25rem;
+}
+</style>

@@ -16,10 +16,10 @@ test_that("moment matching is applied when specified and pareto-k is higher than
   expect_true(
     get_powerscaling_details(
       powerscale(
-      x = sfit,
-      alpha = 0.2,
-      component = "likelihood",
-      moment_match = TRUE
+        x = sfit,
+        alpha = 0.2,
+        component = "likelihood",
+        moment_match = TRUE
       )
     )$moment_match
   )

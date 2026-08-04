@@ -1,3 +1,27 @@
+priorsense 1.3.1
+---
++ Add new JOSS paper as primary citation for the package.
+
+priorsense 1.3.0
+---
++ Add support for `nimble` and `jagsUI` and improved related vignettes
++ Add `separator` argument for specifying separator between `log_lik_name` or
+  `log_prior_name` and tags
++ Fix issues affecting prior and likelihood selection
++ Fix issue affecting use of `log_prior_name` and `log_lik_name`
++ Fix issue with length of alpha sequence and improve relevant documentation 
++ Allow either `colors` or `colours` to be accepted in plot functions
++ Fix error in `scale_draws()` when draws have weights
++ Fix incorrect fallback weights length in `ks_dist()` when x and y have different sample sizes
++ Fix error in density plot when using `trim` with `facet_rows = "variable"`
+
+priorsense 1.2.0
+---
++ Allow either `variable` or `variables` to be accepted to subset
++ Fix issue with plotting of high Pareto-k values in quantities plot
++ Use new weighted ecdf from ggplot2, which fixes issue with previous implementation
++ Fix `powerscale_gradients()` handling of custom `log_prior_name` and `log_lik_name` when starting from raw draws
+
 priorsense 1.1.1
 ---
 + Maintain compatibility with ggplot2

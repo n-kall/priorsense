@@ -1,0 +1,87 @@
+---
+title: "Using priorsense with Stan"
+vignette: >
+  %\VignetteIndexEntry{Using priorsense with Stan}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+```{r}
+#| include: false
+ggplot2::theme_set(bayesplot::theme_default(base_family = "sans"))
+options(priorsense.plot_help_text = FALSE)
+```
+
+```{r}
+#| message: false
+#| warning: false
+library(cmdstanr)
+library(posterior)
+library(priorsense)
+```
+
+`priorsense` is compatible with models fit with either `rstan` and `cmdstanr`.
+To use `priorsense` with a Stan model, the log prior and log likelihood
+evaluations should be added to the model code.
+
+Consider the univariate normal model with unknown mu and sigma available
+via`example_powerscale_model("univariate_normal")`. In Stan, `lprior` and
+`log_lik` variables can be defined as below. By also defining separate
+`lprior_mu` and `lprior_sigma` variables, it will be possible to check the
+sensitivity for each prior separately.
+
+
+```{r}
+model <- example_powerscale_model("univariate_normal")
+```
+
+```{r}
+#| echo: false
+#| results: asis
+library(priorsense)
+model <- example_powerscale_model()
+cat("```stan\n")
+cat(model$model_code)
+cat("```")
+```
+
+We first fit the model using Stan:
+
+```{r}
+#| message: false
+#| warning: false
+fit <- rstan::stan(
+  model_code = model$model_code,
+  data = model$data,
+  refresh = FALSE,
+  seed = 123
+)
+```
+
+Then the `priorsense` functions will work as usual.
+
+```{r}
+powerscale_sensitivity(fit)
+```
+
+```{r}
+powerscale_sensitivity(fit, prior_selection = "sigma")
+```
+
+```{r}
+powerscale_sensitivity(fit, prior_selection = "mu")
+```
+
+```{r}
+#| message: false
+#| warning: false
+#| fig-width: 6
+#| fig-height: 4
+powerscale_plot_dens(fit)
+```
+
+
+In some cases, setting `moment_match = TRUE` will improve
+unreliable estimates at the cost of some further computation. This
+requires the [`iwmm` package](https://github.com/topipa/iwmm).

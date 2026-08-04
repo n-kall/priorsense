@@ -2,6 +2,7 @@
 ##'   for which `powerscale_sequence` will first be run on.
 ##' @param variable A character vector of variable names. If `NULL`
 ##'   (the default) all variables will be plotted.
+##' @param variables Alias of `variable`.
 ##' @param quantity A character vector specifying one or several
 ##'   quantities to plot. Options are "mean", "median", "sd", "mad",
 ##'   "quantile".
@@ -21,6 +22,7 @@
 ##'   `powerscale_plot_dens` with order lowest, base, highest; or
 ##'   length 2 for `powerscale_plot_quantities` with order low Pareto
 ##'   k, high Pareto k. If `NULL` the defaults will be used.
+##' @param colours Alias of `colors`.
 ##' @param facet_rows Character defining the rows of the plot facets,
 ##'   either "variable" or "component". Default is "variable".
 ##' @param variables_per_page Number specifying the maximum number of

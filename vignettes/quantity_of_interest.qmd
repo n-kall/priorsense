@@ -8,17 +8,17 @@ vignette: >
 
 ## Choosing a quantity of interest
 
-There is no quantity to check the sensitivity of in all models. What
+There is no best quantity to check the sensitivity of in all models. What
 you should look at depends on the model and what it is used for. Here
 we outline three options: measures of model fit, predictions, and
 parameters.
 
 ### Measures of model fit
 
-If you are evaluating the model based on some measure, it can be
-useful to assess how this measure of performance changes when changing
-the prior or likelihood. Examples of measures of model fit include
-log-score, R2, and metrics such as MAE or RMSE.
+If you are evaluating the model based on some measure, it can be useful to
+assess how this measure of performance changes when changing the prior or
+likelihood. Examples of measures of model fit include R2, and metrics such as
+MAE or RMSE.
 
 ### Predictions
 

@@ -8,11 +8,13 @@
 ##' @return a tibble
 ##' @keywords internal
 ##' @noRd
-measure_divergence <- function(draws1, draws2,
-                                measure,
-                                measure_args = list(),
-                                ...) {
-
+measure_divergence <- function(
+  draws1,
+  draws2,
+  measure,
+  measure_args = list(),
+  ...
+) {
   draws1 <- posterior::as_draws_df(draws1)
   draws2 <- posterior::as_draws_df(draws2)
 
@@ -27,7 +29,6 @@ measure_divergence <- function(draws1, draws2,
     divs <- numeric(length(variables))
     names(divs) <- variables
     for (v in variables) {
-
       args <- c(
         list(
           x = draws1[[v]],
