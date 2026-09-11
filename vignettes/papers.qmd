@@ -1,7 +1,11 @@
 ---
 title: "Published papers using priorsense"
-bibliography: used_by.bib
-csl: used_by.csl
+vignette: >
+  %\VignetteIndexEntry{Published papers using priorsense}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+bibliography: papers.bib
+csl: papers.csl
 nocite: |
   @*
 ---
