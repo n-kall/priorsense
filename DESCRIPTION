@@ -1,6 +1,6 @@
 Package: priorsense
 Title: Prior Diagnostics and Sensitivity Analysis
-Version: 1.3.1
+Version: 1.3.1.9000
 Authors@R: c(person("Noa", "Kallioinen", email = "noa.kallioinen@helsinki.fi", role = c("aut", "cre", "cph"), comment = c(ORCID = "0000-0003-1586-8382")),
 	     person("Topi", "Paananen", role = c("aut"), comment = c(ORCID = "0000-0002-6542-407X")),
 	     person("Paul-Christian", "Bürkner", role = c("aut"), comment = c(ORCID = "0000-0001-5765-8995")),
@@ -14,9 +14,9 @@ License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c ("namespace", "rd", "srr::srr_stats_roclet"))
-RoxygenNote: 8.0.0
 Imports:
     checkmate (>= 2.3.4),
+    cli,
     ggdist (>= 3.3.3),
     ggh4x (>= 0.3.1),
     ggplot2 (>= 4.0.3),
@@ -48,6 +48,7 @@ VignetteBuilder: quarto
 Additional_repositories:
     https://topipa.r-universe.dev,
     https://stan-dev.r-universe.dev
-URL: https://n-kall.github.io/priorsense/, https://github.com/n-kall/priorsense
-BugReports: https://github.com/n-kall/priorsense/issues
-Config/Needs/website: quarto
+URL: https://mc-stan.org/priorsense/, https://mc-stan.org/priorsense
+BugReports: https://github.com/stan-dev/priorsense/issues
+Config/Needs/website: quarto, stan-dev/pkgdown-config
+Config/roxygen2/version: 8.1.0

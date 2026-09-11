@@ -1,4 +1,97 @@
-url: https://n-kall.github.io/priorsense/
+url: https://mc-stan.org/priorsense/
+
+destination: "."
+
+development:
+  mode: auto
+
 template:
-  bootstrap: 5
+  package: pkgdownconfig
+
+navbar:
+  title: "priorsense"
+
+  structure:
+    left: [home, vignettes, functions, news, pkgs, stan]
+    right: [search, bluesky, forum, github, lightswitch]
+
+  components:
+    pkgs:
+      text: Other Packages
+      menu:
+        - text: bayesplot
+          href: https://mc-stan.org/bayesplot
+        - text: cmdstanr
+          href: https://mc-stan.org/cmdstanr
+        - text: loo
+          href: https://mc-stan.org/loo
+        - text: posterior
+          href: https://mc-stan.org/posterior
+        - text: projpred
+          href: https://mc-stan.org/projpred
+        - text: rstan
+          href: https://mc-stan.org/rstan
+        - text: rstanarm
+          href: https://mc-stan.org/rstanarm
+        - text: rstantools
+          href: https://mc-stan.org/rstantools
+        - text: shinystan
+          href: https://mc-stan.org/shinystan
+
+articles:
+  - title: Getting started
+    desc: |
+      These vignettes demonstrate how to use the **priorsense** package to check prior and likelihood sensitivity for Bayesian models fit using MCMC.
+    contents:
+      - getting_started
+      - priorsense_with_stan
+      - priorsense_with_brms
+      - priorsense_with_jags
+      - priorsense_with_nimble
+  - title: Additional topics
+    desc: |
+      These vignettes demonstrate how to use the **priorsense** package in more detail.
+    contents:
+      - airquality
+  - title: Further details
+    contents:
+      - sensitivity_diagnostic
+      - quantity_of_interest
+      - used_by
+
+reference:
+  - title: Package description
+    contents:
+      - priorsense-package
+  - title: Primary power-scaling sensitivity checks
+    desc: |
+      Numerical sensitivity checks for prior and likelihood
+    contents:
+      - powerscale_sensitivity
+  - title: Graphical checks
+    desc: |
+      Plots for power-scaling sensitivity checks
+    contents:
+      - powerscale_plot_dens
+      - powerscale_plot_ecdf
+      - powerscale_plot_quantities
+  - title: Example models
+    desc: |
+      Provides example model code and data for different PPLs compatible with priorsense
+    contents:
+      - example_powerscale_model
+  - title: Other functions for exploring sensitivity
+    contents:
+      - powerscale
+      - powerscale_sequence
+      - powerscale_derivative
+      - powerscale_gradients
+      - create_priorsense_data
+  - title: Helper functions
+    contents:
+      - create_priorsense_data
+      - log_lik_draws
+      - log_prior_draws
+      - predictions_as_draws
+      - cjs_dist
 
