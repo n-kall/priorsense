@@ -48,7 +48,7 @@ articles:
       - priorsense_with_brms
       - priorsense_with_jags
       - priorsense_with_nimble
-  - title: Additional topics
+  - title: Additional examples
     desc: |
       These vignettes demonstrate how to use the **priorsense** package in more detail.
     contents:
