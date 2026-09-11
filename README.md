@@ -68,7 +68,9 @@ pak::pkg_install("stan-dev/priorsense@development")
 
 Contributions are welcome! If you find a bug or have an idea for a
 feature, open an issue. If you are able to fix an issue, fork the
-repository and make a pull request to the `development` branch.
+repository and make a pull request to the `development` branch. Read
+[CONTRIBUTING.md](https://github.com/stan-dev/priorsense/blob/main/.github/CONTRIBUTING.md)
+for more details.
 
 ### References
 
