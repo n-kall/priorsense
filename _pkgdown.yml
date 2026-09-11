@@ -41,7 +41,7 @@ navbar:
 articles:
   - title: Getting started
     desc: |
-      These vignettes demonstrate how to use the **priorsense** package to check prior and likelihood sensitivity for Bayesian models fit using MCMC.
+      These pages demonstrate how to use the **priorsense** package to check prior and likelihood sensitivity for Bayesian models fit using MCMC.
     contents:
       - getting_started
       - priorsense_with_stan
@@ -50,7 +50,7 @@ articles:
       - priorsense_with_nimble
   - title: Additional examples
     desc: |
-      These vignettes demonstrate how to use the **priorsense** package in more detail.
+      These pages demonstrate how to use the **priorsense** package in more detail.
     contents:
       - airquality
   - title: Further details
@@ -63,11 +63,12 @@ reference:
   - title: Package description
     contents:
       - priorsense-package
-  - title: Primary power-scaling sensitivity checks
+  - title: Numerical power-scaling sensitivity checks
     desc: |
       Numerical sensitivity checks for prior and likelihood
     contents:
       - powerscale_sensitivity
+      - powerscale_derivative
   - title: Graphical checks
     desc: |
       Plots for power-scaling sensitivity checks
@@ -84,7 +85,6 @@ reference:
     contents:
       - powerscale
       - powerscale_sequence
-      - powerscale_derivative
       - powerscale_gradients
       - create_priorsense_data
   - title: Helper functions
