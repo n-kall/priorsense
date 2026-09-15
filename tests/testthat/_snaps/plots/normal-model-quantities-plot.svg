@@ -273,19 +273,19 @@
 <polyline points='24.80,435.95 27.54,435.95 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
 <polyline points='24.80,366.23 27.54,366.23 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
 <text x='342.07' y='568.24' text-anchor='middle' style='font-size: 11.00px; font-family: sans;' textLength='99.07px' lengthAdjust='spacingAndGlyphs'>Power-scaling alpha</text>
-<rect x='650.92' y='253.21' width='63.61' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
-<rect x='650.92' y='253.21' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
-<line x1='652.64' y1='261.85' x2='666.47' y2='261.85' style='stroke-width: 1.07; stroke-dasharray: 5.69,5.69; stroke-linecap: butt;' />
-<line x1='652.64' y1='261.85' x2='666.47' y2='261.85' style='stroke-width: 1.07; stroke-dasharray: 5.69,5.69; stroke-linecap: butt;' />
-<text x='673.67' y='264.88' style='font-size: 8.80px; font-family: sans;' textLength='40.85px' lengthAdjust='spacingAndGlyphs'>+/-2MCSE</text>
-<rect x='650.92' y='281.45' width='59.45' height='49.89' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
-<text x='650.92' y='290.16' style='font-size: 11.00px; font-family: sans;' textLength='54.44px' lengthAdjust='spacingAndGlyphs'>component</text>
-<rect x='650.92' y='296.78' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
-<polygon points='656.00,308.97 663.11,308.97 663.11,301.86 656.00,301.86 ' style='stroke-width: 0.71; stroke: none; fill: #000000;' />
+<rect x='650.92' y='253.21' width='59.45' height='49.89' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
+<text x='650.92' y='261.92' style='font-size: 11.00px; font-family: sans;' textLength='56.88px' lengthAdjust='spacingAndGlyphs'>Component</text>
+<rect x='650.92' y='268.54' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
+<polygon points='656.00,280.74 663.11,280.74 663.11,273.62 656.00,273.62 ' style='stroke-width: 0.71; stroke: none; fill: #000000;' />
+<rect x='650.92' y='285.82' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
+<rect x='656.40' y='291.31' width='6.30' height='6.30' style='stroke-width: 0.71; fill: #FFFFFF;' />
+<text x='673.67' y='280.21' style='font-size: 8.80px; font-family: sans;' textLength='17.60px' lengthAdjust='spacingAndGlyphs'>prior</text>
+<text x='673.67' y='297.49' style='font-size: 8.80px; font-family: sans;' textLength='36.69px' lengthAdjust='spacingAndGlyphs'>likelihood</text>
+<rect x='650.92' y='314.06' width='63.61' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
 <rect x='650.92' y='314.06' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
-<rect x='656.40' y='319.55' width='6.30' height='6.30' style='stroke-width: 0.71; fill: #FFFFFF;' />
-<text x='673.67' y='308.45' style='font-size: 8.80px; font-family: sans;' textLength='17.60px' lengthAdjust='spacingAndGlyphs'>prior</text>
-<text x='673.67' y='325.73' style='font-size: 8.80px; font-family: sans;' textLength='36.69px' lengthAdjust='spacingAndGlyphs'>likelihood</text>
+<line x1='652.64' y1='322.70' x2='666.47' y2='322.70' style='stroke-width: 1.07; stroke-dasharray: 5.69,5.69; stroke-linecap: butt;' />
+<line x1='652.64' y1='322.70' x2='666.47' y2='322.70' style='stroke-width: 1.07; stroke-dasharray: 5.69,5.69; stroke-linecap: butt;' />
+<text x='673.67' y='325.73' style='font-size: 8.80px; font-family: sans;' textLength='40.85px' lengthAdjust='spacingAndGlyphs'>+/-2MCSE</text>
 <text x='44.19' y='14.56' style='font-size: 13.20px; font-family: sans;' textLength='167.29px' lengthAdjust='spacingAndGlyphs'>Normal model quantities plot</text>
 </g>
 </svg>

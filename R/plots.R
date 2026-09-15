@@ -187,8 +187,7 @@ prepare_plot <- function(d, resample, variable, colors, ...) {
     p <- p +
         ggplot2::scale_linetype_manual(
             values = c("solid", "dashed"),
-            drop = TRUE,
-            name = "Pareto k"
+            drop = TRUE
         ) +
         ggplot2::scale_color_gradientn(
             name = "Power-scaling alpha",
@@ -210,6 +209,7 @@ prepare_plot <- function(d, resample, variable, colors, ...) {
             )
         ) +
         ggplot2::scale_fill_gradientn(
+            name = "Power-scaling alpha",
             colours = c(colors[1:3]),
             trans = "log",
             limits = c(
@@ -232,18 +232,33 @@ prepare_plot <- function(d, resample, variable, colors, ...) {
         p <- p +
             ggplot2::guides(
                 color = ggplot2::guide_legend(
-                    override.aes = ggplot2::aes(linetype = "solid")
+                    title = "Power-scaling alpha",
+                    override.aes = ggplot2::aes(linetype = "solid"),
+                    order = 5
+                )
+            )
+    } else {
+        p <- p +
+            ggplot2::guides(
+                fill = ggplot2::guide_legend(
+                    title = "Power-scaling alpha",
+                    order = 5
                 )
             )
     }
 
-    if (!(any(d$pareto_k_value == "High"))) {
+    if (any(d$pareto_k_value == "High")) {
         p <- p +
             ggplot2::guides(
-                linetype = "none"
+                linetype = ggplot2::guide_legend(
+                    title = "Pareto k",
+                    order = 10
+                )
             )
+    } else {
+        p <- p +
+            ggplot2::guides(linetype = "none")
     }
-
     return(p)
 }
 
@@ -286,16 +301,6 @@ powerscale_plot_dens.default <-
             variables_per_page = variables_per_page
         )
     }
-
-draw_key_path2 <- function(data, params, size) {
-    grid::segmentsGrob(
-        x0 = 0.1,
-        x1 = 0.9,
-        y0 = 0.5,
-        y1 = 0.5,
-        gp = grid::gpar(col = data$colour)
-    )
-}
 
 ##' @export
 powerscale_plot_dens.powerscaled_sequence <-
@@ -530,6 +535,20 @@ powerscale_plot_dens.powerscaled_sequence <-
         return(plots)
     }
 
+draw_key_path2 <- function(data, params, size) {
+    grid::segmentsGrob(
+        x0 = 0.1,
+        x1 = 0.9,
+        y0 = 0.5,
+        y1 = 0.5,
+        gp = grid::gpar(
+            col = data$colour,
+            lty = data$linetype,
+            lwd = 2 * data$linewidth
+        )
+    )
+}
+
 ##' @rdname powerscale-plots
 ##' @export
 powerscale_plot_ecdf <- function(x, ...) {
@@ -665,11 +684,6 @@ powerscale_plot_ecdf.powerscaled_sequence <-
             dsub <- d[d$variable %in% sub_variable, ]
 
             p <- prepare_plot(dsub, resample = resample, colors = colors, ...) +
-                ggplot2::guides(
-                    linetype = ggplot2::guide_legend(
-                        title = "Pareto k"
-                    )
-                ) +
                 ggplot2::ylab("ECDF") +
                 ggplot2::xlab(NULL)
 
@@ -710,7 +724,23 @@ powerscale_plot_ecdf.powerscaled_sequence <-
                     )
             }
 
-            if (!(any(d$pareto_k_value == "High"))) {
+            p <- p +
+                ggplot2::guides(
+                    colour = ggplot2::guide_legend(
+                        title = "Power-scaling alpha",
+                        order = 5
+                    )
+                )
+
+            if (any(d$pareto_k_value == "High")) {
+                p <- p +
+                    ggplot2::guides(
+                        linetype = ggplot2::guide_legend(
+                            title = "Pareto k",
+                            order = 10
+                        )
+                    )
+            } else {
                 p <- p +
                     ggplot2::guides(linetype = "none")
             }
@@ -1087,6 +1117,7 @@ powerscale_summary_plot <- function(
                 data = points
             ) +
             ggplot2::scale_shape_manual(
+                name = "Component",
                 values = c("likelihood" = 22, "prior" = 15)
             ) +
             ggplot2::scale_color_manual(values = pareto_k_colours) +
