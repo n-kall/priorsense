@@ -29,18 +29,18 @@ Imports:
     tibble (>= 3.3.1),
     utils
 Suggests:
-    bayesplot (>= 1.15.0),
+    bayesplot (>= 1.16.0),
     brms (>= 2.23.0),
     cmdstanr (>= 0.8.1),
     iwmm (>= 0.0.1),
-    nimble (>= 1.4.2),
+    nimble (>= 1.4.3),
     philentropy (>= 0.10.0),
-    quarto (>= 1.4.4),
+    quarto (>= 1.5.1),
     R2jags (>= 0.8),
-    rstan (>= 2.32.6),
-    testthat (>= 3.0.0),
+    rstan (>= 2.32.7),
+    testthat (>= 3.3.2),
     transport (>= 0.15),
-    vdiffr (>= 1.0.8)
+    vdiffr (>= 1.0.9)
 Config/testthat/edition: 3
 Depends:
     R (>= 4.1.0)
