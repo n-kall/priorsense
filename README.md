@@ -48,6 +48,15 @@ al. (2023)](https://doi.org/10.1007/s11222-023-10366-5).
 - For a more detailed modelling example see
   [here](https://mc-stan.org/priorsense/articles/airquality.html)
 
+### Resources
+
+- [mc-stan.org/priorsense](https://mc-stan.org/priorsense) (online
+  documentation, vignettes)
+- [Ask a question](https://discourse.mc-stan.org) (Stan Forums on
+  Discourse)
+- [Open an issue](https://github.com/stan-dev/priorsense/issues) (GitHub
+  issues for bug reports, feature requests)
+
 ### Installation
 
 Download the stable version from CRAN with:

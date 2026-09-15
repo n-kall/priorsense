@@ -47,6 +47,12 @@ from other software. Power-scaling sensitivity analysis checks are described in
 - For a more detailed modelling example see
   [here](https://mc-stan.org/priorsense/articles/airquality.html)
 
+### Resources
+
+* [mc-stan.org/priorsense](https://mc-stan.org/priorsense) (online documentation, vignettes)
+* [Ask a question](https://discourse.mc-stan.org) (Stan Forums on Discourse)
+* [Open an issue](https://github.com/stan-dev/priorsense/issues) (GitHub issues for bug reports, feature requests)
+
 ### Installation
 
 Download the stable version from CRAN with:
