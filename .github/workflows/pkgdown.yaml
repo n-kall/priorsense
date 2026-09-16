@@ -42,8 +42,7 @@ jobs:
             XML
             stan-dev/cmdstanr
             stan-dev/pkgdown-config
-            n-kall/priorsense
-            paul-buerkner/brms
+            brms
             topipa/iwmm
             rcmdcheck
             rstan
