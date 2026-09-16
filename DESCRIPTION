@@ -50,5 +50,5 @@ Additional_repositories:
     https://stan-dev.r-universe.dev
 URL: https://mc-stan.org/priorsense/, https://mc-stan.org/priorsense
 BugReports: https://github.com/stan-dev/priorsense/issues
-Config/Needs/website: quarto, stan-dev/pkgdown-config
+Config/Needs/website: quarto
 Config/roxygen2/version: 8.1.0
