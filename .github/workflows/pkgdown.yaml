@@ -61,6 +61,7 @@ jobs:
       - name: Build pkgdown site
         run: |
           pkgdown::build_site_github_pages(
+            install = TRUE,
             new_process = FALSE,
             install = FALSE
           )
