@@ -57,7 +57,7 @@ articles:
     contents:
       - sensitivity_diagnostic
       - quantity_of_interest
-      - used_by
+      - papers
 
 reference:
   - title: Package description
