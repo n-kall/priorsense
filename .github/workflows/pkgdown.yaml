@@ -34,36 +34,15 @@ jobs:
         with:
           use-public-rspm: true
 
-      - uses: r-lib/actions/setup-r-dependencies@v2
+      - name: Install dependencies
+        uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: |
+          packages: |
+            deps::.
+            any::sessioninfo
             any::pkgdown
-            local::.
-            XML
-            stan-dev/cmdstanr
-            stan-dev/pkgdown-config
-            brms
-            topipa/iwmm
-            rcmdcheck
-            rstan
-            checkmate
-            jsonlite
-            nimble
-            posterior
-            processx
-            R6
-            BH
-            R2jags
-            RcppEigen
-            StanHeaders
-            RcppParallel
-            withr
-            testthat
-            quarto
-            any::XML
-            any::textshaping
           needs: website
-
+          dependencies: '"all"'
 
       - name: Build site
         run: |
