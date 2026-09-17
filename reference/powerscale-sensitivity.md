@@ -13,6 +13,7 @@ powerscale_sensitivity(x, ...)
 powerscale_sensitivity(
   x,
   variable = NULL,
+  variables = NULL,
   lower_alpha = 0.99,
   upper_alpha = 1.01,
   div_measure = "cjs_dist",
@@ -37,6 +38,7 @@ powerscale_sensitivity(
 powerscale_sensitivity(
   x,
   variable = NULL,
+  variables = NULL,
   lower_alpha = 0.99,
   upper_alpha = 1.01,
   div_measure = "cjs_dist",
@@ -76,6 +78,10 @@ powerscale_sensitivity(x, ...)
 
   Character vector of variables to check.
 
+- variables:
+
+  alias of `variable`.
+
 - lower_alpha:
 
   Lower alpha value for gradient calculation.
@@ -91,7 +97,7 @@ powerscale_sensitivity(x, ...)
 
   - `"cjs_dist"`: Cumulative Jensen-Shannon distance. Default method.
     See function
-    [`cjs_dist()`](https://n-kall.github.io/priorsense/reference/cjs_dist.md)
+    [`cjs_dist()`](https://mc-stan.org/priorsense/reference/cjs_dist.md)
     for more details.
 
   - `"js_dist"`: Jensen-Shannon distance. First estimates density using

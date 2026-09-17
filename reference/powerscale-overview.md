@@ -239,7 +239,7 @@ Implicitly adaptive importance sampling. *Statistics and Computing*.
 
 ## See also
 
-[powerscale-plots](https://n-kall.github.io/priorsense/reference/powerscale-plots.md)
+[powerscale-plots](https://mc-stan.org/priorsense/reference/powerscale-plots.md)
 
 ## Examples
 

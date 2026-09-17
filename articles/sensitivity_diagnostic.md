@@ -7,7 +7,7 @@ diagnostics.
 ## Sensitivity diagnostic
 
 The sensitivity diagnostic value given by
-[`powerscale_sensitivity()`](https://n-kall.github.io/priorsense/reference/powerscale-sensitivity.md)
+[`powerscale_sensitivity()`](https://mc-stan.org/priorsense/reference/powerscale-sensitivity.md)
 is based on a measure of how much the posterior would change if the
 prior or likelihood is changed. This value is provided for each marginal
 posterior specified in the `variable` argument. In simple models with

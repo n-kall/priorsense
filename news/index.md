@@ -1,5 +1,13 @@
 # Changelog
 
+## priorsense 1.3.1.9000
+
+- `priorsense` is now an official Stan package, and links to pages and
+  repositories have been updated
+- Plot help text now prints to the console rather than on the plot
+- [`powerscale_plot_quantities()`](https://mc-stan.org/priorsense/reference/powerscale-plots.md)
+  now highlights the line segment closer to 1 when k-hat is high
+
 ## priorsense 1.3.1
 
 - Add new JOSS paper as primary citation for the package.
@@ -29,7 +37,7 @@ CRAN release: 2025-10-28
 - Use new weighted ecdf from ggplot2, which fixes issue with previous
   implementation
 - Fix
-  [`powerscale_gradients()`](https://n-kall.github.io/priorsense/reference/powerscale-gradients.md)
+  [`powerscale_gradients()`](https://mc-stan.org/priorsense/reference/powerscale-gradients.md)
   handling of custom `log_prior_name` and `log_lik_name` when starting
   from raw draws
 

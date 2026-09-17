@@ -89,7 +89,7 @@ powerscale_gradients(
 
   - `"cjs_dist"`: Cumulative Jensen-Shannon distance. Default method.
     See function
-    [`cjs_dist()`](https://n-kall.github.io/priorsense/reference/cjs_dist.md)
+    [`cjs_dist()`](https://mc-stan.org/priorsense/reference/cjs_dist.md)
     for more details.
 
   - `"js_dist"`: Jensen-Shannon distance. First estimates density using

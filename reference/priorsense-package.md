@@ -9,7 +9,7 @@ implementation of the method described in Kallioinen et al. (2023).
 ## Details
 
 The main diagnostic function provided by priorsense is
-[`powerscale_sensitivity`](https://n-kall.github.io/priorsense/reference/powerscale-sensitivity.md).
+[`powerscale_sensitivity`](https://mc-stan.org/priorsense/reference/powerscale-sensitivity.md).
 Given a fitted model or draws object, it computes the powerscaling
 sensitivity diagnostic described in Kallioinen et al. (2023). It does so
 by perturbing the prior and likelihood and computing the effect on the
@@ -18,10 +18,10 @@ importance sampling and importance weighted moment matching; Vehtari et
 al. 2022, Paananen et al. 2021).
 
 In addition, visual diagnostics are available by first using
-[`powerscale_sequence`](https://n-kall.github.io/priorsense/reference/powerscale-overview.md)
+[`powerscale_sequence`](https://mc-stan.org/priorsense/reference/powerscale-overview.md)
 to create a sequence of perturbed posteriors, and then a plot function
 such as
-[`powerscale_plot_ecdf`](https://n-kall.github.io/priorsense/reference/powerscale-plots.md)
+[`powerscale_plot_ecdf`](https://mc-stan.org/priorsense/reference/powerscale-plots.md)
 to visualise the change.
 
 For an introduction, see `vignette("priorsense")`.
@@ -55,18 +55,18 @@ Implicitly adaptive importance sampling. *Statistics and Computing*.
 
 ## See also
 
-[powerscale-overview](https://n-kall.github.io/priorsense/reference/powerscale-overview.md),
-[powerscale-plots](https://n-kall.github.io/priorsense/reference/powerscale-plots.md)
+[powerscale-overview](https://mc-stan.org/priorsense/reference/powerscale-overview.md),
+[powerscale-plots](https://mc-stan.org/priorsense/reference/powerscale-plots.md)
 
 ## Author
 
 **Maintainer**: Noa Kallioinen <noa.kallioinen@helsinki.fi>
-([ORCID](https://orcid.org/0000-0003-1586-8382)) \[copyright holder\]
+([ORCID](https://orcid.org/0000-0003-1586-8382))
 
 Authors:
 
 - Noa Kallioinen <noa.kallioinen@helsinki.fi>
-  ([ORCID](https://orcid.org/0000-0003-1586-8382)) \[copyright holder\]
+  ([ORCID](https://orcid.org/0000-0003-1586-8382))
 
 - Topi Paananen ([ORCID](https://orcid.org/0000-0002-6542-407X))
 

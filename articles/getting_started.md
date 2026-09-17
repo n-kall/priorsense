@@ -10,13 +10,13 @@ analysis but may be extended in the future to include other diagnostics.
 
 Power-scaling sensitivity analysis tries to determine how small changes
 to the prior or likelihood affect the posterior. This is done by
-power-scaling the prior or likelihood by raising it to some
-$`\alpha > 0`$.
+power-scaling the prior or likelihood by raising it to some \\\alpha \>
+0\\.
 
-- For prior power-scaling: $`p(\theta \mid y) \propto p(\theta)^\alpha
-  p(y \mid \theta)`$
-- For likelihood power-scaling: $`p(\theta \mid y) \propto
-  p(\theta) p(y \mid \theta)^\alpha`$
+- For prior power-scaling: \\p(\theta \mid y) \propto p(\theta)^\alpha
+  p(y \mid \theta)\\
+- For likelihood power-scaling: \\p(\theta \mid y) \propto p(\theta) p(y
+  \mid \theta)^\alpha\\
 
 In priorsense, this is done in a computationally efficient manner using
 Pareto-smoothed importance sampling (and optionally importance weighted
@@ -41,13 +41,13 @@ For instructions how to adapt model code, see the vignettes for each
 supported language:
 
 - `brms`:
-  [`vignette("priorsense_with_brms")`](https://n-kall.github.io/priorsense/articles/priorsense_with_brms.md)
+  [`vignette("priorsense_with_brms")`](https://mc-stan.org/priorsense/articles/priorsense_with_brms.md)
 - Stan (`cmdstanr` or `rstan`):
-  [`vignette("priorsense_with_stan")`](https://n-kall.github.io/priorsense/articles/priorsense_with_stan.md)
+  [`vignette("priorsense_with_stan")`](https://mc-stan.org/priorsense/articles/priorsense_with_stan.md)
 - JAGS (`jagsUI` or `R2jags`):
-  [`vignette("priorsense_with_jags")`](https://n-kall.github.io/priorsense/articles/priorsense_with_jags.md)
+  [`vignette("priorsense_with_jags")`](https://mc-stan.org/priorsense/articles/priorsense_with_jags.md)
 - NIMBLE:
-  [`vignette("priorsense_with_nimble")`](https://n-kall.github.io/priorsense/articles/priorsense_with_nimble.md)
+  [`vignette("priorsense_with_nimble")`](https://mc-stan.org/priorsense/articles/priorsense_with_nimble.md)
 
 ## Simple example
 
@@ -55,19 +55,13 @@ Consider a simple univariate normal model with unknown mu and sigma fit
 to some data y (available
 via`example_powerscale_model("univariate_normal")`):
 
-``` math
-y \sim \text{normal}(\mu, \sigma)
-```
+\\y \sim \text{normal}(\mu, \sigma)\\
 
 with priors:
 
-``` math
-\mu \sim \text{normal}(0, 1)
-```
+\\\mu \sim \text{normal}(0, 1)\\
 
-``` math
-\sigma \sim \text{normal}^+(0, 2.5)
-```
+\\\sigma \sim \text{normal}^+(0, 2.5)\\
 
 ``` r
 
@@ -136,9 +130,9 @@ As can be seen in the plots, power-scaling the prior and likelihood have
 opposite direction effects on the posterior. This is further evidence of
 prior-likelihood conflict.
 
-Indeed, if we inspect the raw data, we see that the prior on $`\mu`$,
-$`\text{normal}(0, 1)`$ does not match well with the mean of the data,
-whereas the prior on $`\sigma`$, $`\text{normal}^+(0, 2.5)`$ is
+Indeed, if we inspect the raw data, we see that the prior on \\\mu\\,
+\\\text{normal}(0, 1)\\ does not match well with the mean of the data,
+whereas the prior on \\\sigma\\, \\\text{normal}^+(0, 2.5)\\ is
 reasonable:
 
 ``` r

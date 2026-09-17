@@ -23,11 +23,20 @@ al. (2023)](https://doi.org/10.1007/s11222-023-10366-5).
 ### Resources
 
 - Check the [getting started
-  vignette](https://n-kall.github.io/priorsense/articles/getting_started.html)
+  vignette](https://mc-stan.org/priorsense/articles/getting_started.html)
   for a simple example
 
 - For a more detailed modelling example see
-  [here](https://n-kall.github.io/priorsense/articles/airquality.html)
+  [here](https://mc-stan.org/priorsense/articles/airquality.html)
+
+### Resources
+
+- [mc-stan.org/priorsense](https://mc-stan.org/priorsense) (online
+  documentation, vignettes)
+- [Ask a question](https://discourse.mc-stan.org) (Stan Forums on
+  Discourse)
+- [Open an issue](https://github.com/stan-dev/priorsense/issues) (GitHub
+  issues for bug reports, feature requests)
 
 ### Installation
 
@@ -44,14 +53,16 @@ with:
 ``` r
 
 # install.packages("pak")
-pak::pkg_install("n-kall/priorsense@development")
+pak::pkg_install("stan-dev/priorsense@development")
 ```
 
 ### Contributing
 
 Contributions are welcome! If you find a bug or have an idea for a
 feature, open an issue. If you are able to fix an issue, fork the
-repository and make a pull request to the `development` branch.
+repository and make a pull request to the `development` branch. Read
+[CONTRIBUTING.md](https://github.com/stan-dev/priorsense/blob/main/.github/CONTRIBUTING.md)
+for more details.
 
 ### References
 
@@ -75,58 +86,94 @@ Research. 25, 72. <https://jmlr.org/papers/v25/19-556.html>
 
 # Package index
 
-## All functions
+## Package description
 
-- [`cjs_dist()`](https://n-kall.github.io/priorsense/reference/cjs_dist.md)
-  : Cumulative Jensen-Shannon divergence
-- [`create_priorsense_data()`](https://n-kall.github.io/priorsense/reference/create-priorsense-data.md)
-  : Create data structure for priorsense
-- [`example_powerscale_model()`](https://n-kall.github.io/priorsense/reference/example_powerscale_model.md)
-  : Example models for power-scaling sensitivity
-- [`log_lik_draws()`](https://n-kall.github.io/priorsense/reference/log_lik_draws.md)
-  : Extract log likelihood draws
-- [`log_prior_draws()`](https://n-kall.github.io/priorsense/reference/log_prior_draws.md)
-  : Extract log prior draws
-- [`powerscale_gradients()`](https://n-kall.github.io/priorsense/reference/powerscale-gradients.md)
-  : Power-scale gradients
-- [`powerscale()`](https://n-kall.github.io/priorsense/reference/powerscale-overview.md)
-  [`powerscale_sequence()`](https://n-kall.github.io/priorsense/reference/powerscale-overview.md)
-  : Prior/likelihood power-scaling perturbation
-- [`powerscale_plot_dens()`](https://n-kall.github.io/priorsense/reference/powerscale-plots.md)
-  [`powerscale_plot_ecdf()`](https://n-kall.github.io/priorsense/reference/powerscale-plots.md)
-  [`powerscale_plot_quantities()`](https://n-kall.github.io/priorsense/reference/powerscale-plots.md)
-  [`plot(`*`<powerscaled_sequence>`*`)`](https://n-kall.github.io/priorsense/reference/powerscale-plots.md)
-  : Diagnostic plots for power-scaling sensitivity
-- [`powerscale_sensitivity()`](https://n-kall.github.io/priorsense/reference/powerscale-sensitivity.md)
-  : Power-scaling sensitivity analysis
-- [`powerscale_derivative()`](https://n-kall.github.io/priorsense/reference/powerscale_derivative.md)
-  : Derivative with respect to power-scaling
-- [`predictions_as_draws()`](https://n-kall.github.io/priorsense/reference/predictions_as_draws.md)
-  : brms predictions as draws
-- [`priorsense-package`](https://n-kall.github.io/priorsense/reference/priorsense-package.md)
-  [`priorsense`](https://n-kall.github.io/priorsense/reference/priorsense-package.md)
+- [`priorsense-package`](https://mc-stan.org/priorsense/reference/priorsense-package.md)
+  [`priorsense`](https://mc-stan.org/priorsense/reference/priorsense-package.md)
   : priorsense: Prior (and likelihood) diagnostics and sensitivity
   analysis
 
+## Numerical power-scaling sensitivity checks
+
+Numerical sensitivity checks for prior and likelihood
+
+- [`powerscale_sensitivity()`](https://mc-stan.org/priorsense/reference/powerscale-sensitivity.md)
+  : Power-scaling sensitivity analysis
+- [`powerscale_derivative()`](https://mc-stan.org/priorsense/reference/powerscale_derivative.md)
+  : Derivative with respect to power-scaling
+
+## Graphical checks
+
+Plots for power-scaling sensitivity checks
+
+- [`powerscale_plot_dens()`](https://mc-stan.org/priorsense/reference/powerscale-plots.md)
+  [`powerscale_plot_ecdf()`](https://mc-stan.org/priorsense/reference/powerscale-plots.md)
+  [`powerscale_plot_quantities()`](https://mc-stan.org/priorsense/reference/powerscale-plots.md)
+  [`plot(`*`<powerscaled_sequence>`*`)`](https://mc-stan.org/priorsense/reference/powerscale-plots.md)
+  : Diagnostic plots for power-scaling sensitivity
+
+## Example models
+
+Provides example model code and data for different PPLs compatible with
+priorsense
+
+- [`example_powerscale_model()`](https://mc-stan.org/priorsense/reference/example_powerscale_model.md)
+  : Example models for power-scaling sensitivity
+
+## Other functions for exploring sensitivity
+
+- [`powerscale()`](https://mc-stan.org/priorsense/reference/powerscale-overview.md)
+  [`powerscale_sequence()`](https://mc-stan.org/priorsense/reference/powerscale-overview.md)
+  : Prior/likelihood power-scaling perturbation
+- [`powerscale_gradients()`](https://mc-stan.org/priorsense/reference/powerscale-gradients.md)
+  : Power-scale gradients
+- [`create_priorsense_data()`](https://mc-stan.org/priorsense/reference/create-priorsense-data.md)
+  : Create data structure for priorsense
+
+## Helper functions
+
+- [`create_priorsense_data()`](https://mc-stan.org/priorsense/reference/create-priorsense-data.md)
+  : Create data structure for priorsense
+- [`log_lik_draws()`](https://mc-stan.org/priorsense/reference/log_lik_draws.md)
+  : Extract log likelihood draws
+- [`log_prior_draws()`](https://mc-stan.org/priorsense/reference/log_prior_draws.md)
+  : Extract log prior draws
+- [`predictions_as_draws()`](https://mc-stan.org/priorsense/reference/predictions_as_draws.md)
+  : brms predictions as draws
+- [`cjs_dist()`](https://mc-stan.org/priorsense/reference/cjs_dist.md) :
+  Cumulative Jensen-Shannon divergence
+
 # Articles
 
-### All vignettes
+### Getting started
+
+These pages demonstrate how to use the **priorsense** package to check
+prior and likelihood sensitivity for Bayesian models fit using MCMC.
+
+- [Getting started with
+  priorsense](https://mc-stan.org/priorsense/articles/getting_started.md):
+- [Using priorsense with
+  Stan](https://mc-stan.org/priorsense/articles/priorsense_with_stan.md):
+- [Using priorsense with
+  brms](https://mc-stan.org/priorsense/articles/priorsense_with_brms.md):
+- [Using priorsense with
+  JAGS](https://mc-stan.org/priorsense/articles/priorsense_with_jags.md):
+- [Using priorsense with
+  NIMBLE](https://mc-stan.org/priorsense/articles/priorsense_with_nimble.md):
+
+### Additional examples
+
+These pages demonstrate how to use the **priorsense** package in more
+detail.
 
 - [Workflow example: air
-  quality](https://n-kall.github.io/priorsense/articles/airquality.md):
-- [Getting started with
-  priorsense](https://n-kall.github.io/priorsense/articles/getting_started.md):
-- [Using priorsense with
-  brms](https://n-kall.github.io/priorsense/articles/priorsense_with_brms.md):
-- [Using priorsense with
-  JAGS](https://n-kall.github.io/priorsense/articles/priorsense_with_jags.md):
-- [Using priorsense with
-  NIMBLE](https://n-kall.github.io/priorsense/articles/priorsense_with_nimble.md):
-- [Using priorsense with
-  Stan](https://n-kall.github.io/priorsense/articles/priorsense_with_stan.md):
-- [Quantities of interest for sensitivity
-  checks](https://n-kall.github.io/priorsense/articles/quantity_of_interest.md):
+  quality](https://mc-stan.org/priorsense/articles/airquality.md):
+
+### Further details
+
 - [Interpreting sensitivity
-  diagnostics](https://n-kall.github.io/priorsense/articles/sensitivity_diagnostic.md):
+  diagnostics](https://mc-stan.org/priorsense/articles/sensitivity_diagnostic.md):
+- [Quantities of interest for sensitivity
+  checks](https://mc-stan.org/priorsense/articles/quantity_of_interest.md):
 - [Published papers using
-  priorsense](https://n-kall.github.io/priorsense/articles/used_by.md):
+  priorsense](https://mc-stan.org/priorsense/articles/papers.md):

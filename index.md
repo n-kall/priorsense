@@ -23,11 +23,20 @@ al. (2023)](https://doi.org/10.1007/s11222-023-10366-5).
 ### Resources
 
 - Check the [getting started
-  vignette](https://n-kall.github.io/priorsense/articles/getting_started.html)
+  vignette](https://mc-stan.org/priorsense/articles/getting_started.html)
   for a simple example
 
 - For a more detailed modelling example see
-  [here](https://n-kall.github.io/priorsense/articles/airquality.html)
+  [here](https://mc-stan.org/priorsense/articles/airquality.html)
+
+### Resources
+
+- [mc-stan.org/priorsense](https://mc-stan.org/priorsense) (online
+  documentation, vignettes)
+- [Ask a question](https://discourse.mc-stan.org) (Stan Forums on
+  Discourse)
+- [Open an issue](https://github.com/stan-dev/priorsense/issues) (GitHub
+  issues for bug reports, feature requests)
 
 ### Installation
 
@@ -44,14 +53,16 @@ with:
 ``` r
 
 # install.packages("pak")
-pak::pkg_install("n-kall/priorsense@development")
+pak::pkg_install("stan-dev/priorsense@development")
 ```
 
 ### Contributing
 
 Contributions are welcome! If you find a bug or have an idea for a
 feature, open an issue. If you are able to fix an issue, fork the
-repository and make a pull request to the `development` branch.
+repository and make a pull request to the `development` branch. Read
+[CONTRIBUTING.md](https://github.com/stan-dev/priorsense/blob/main/.github/CONTRIBUTING.md)
+for more details.
 
 ### References
 

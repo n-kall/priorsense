@@ -120,7 +120,7 @@ plot(x, type = c("dens", "ecdf", "quantities"), ...)
 
   - `"cjs_dist"`: Cumulative Jensen-Shannon distance. Default method.
     See function
-    [`cjs_dist()`](https://n-kall.github.io/priorsense/reference/cjs_dist.md)
+    [`cjs_dist()`](https://mc-stan.org/priorsense/reference/cjs_dist.md)
     for more details.
 
   - `"js_dist"`: Jensen-Shannon distance. First estimates density using
@@ -204,4 +204,13 @@ using the **ggplot2** package.
 ex <- example_powerscale_model()
 
 powerscale_plot_dens(ex$draws)
+#> 
+#> ── Power-scaling sensitivity density plot: ──
+#> 
+#> The plot shows posterior density depending on the degree of power-scaling
+#> (alpha). Overlapping lines indicate low sensitivity. Wider gaps between lines
+#> indicate greater sensitivity. Estimates with high Pareto k (dashed lines) may
+#> be inaccurate.
+#> Disable this help text with `help_text = FALSE` or
+#> `options(priorsense.plot_help_text = FALSE)`
 ```

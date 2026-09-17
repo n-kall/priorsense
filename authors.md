@@ -2,7 +2,7 @@
 
 ## Authors
 
-- **Noa Kallioinen**. Author, maintainer, copyright holder.
+- **Noa Kallioinen**. Author, maintainer.
   [](https://orcid.org/0000-0003-1586-8382)
 
 - **Topi Paananen**. Author. [](https://orcid.org/0000-0002-6542-407X)
@@ -22,7 +22,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/n-kall/priorsense/blob/main/inst/CITATION)
+[`inst/CITATION`](https://github.com/stan-dev/priorsense/blob/stan/inst/CITATION)
 
 Kallioinen, N., Paananen, T., Bürkner, P-C., Vehtari, A. (2026).
 priorsense: Efficient prior and likelihood sensitivity checks for
