@@ -50,6 +50,9 @@ jobs:
           dependencies: '"all"'
           extra-packages: |
             BH
+            RcppEigen
+            StanHeaders
+            RcppParallel
             stan-dev/cmdstanr
             topipa/iwmm
             stan-dev/pkgdown-config
@@ -60,7 +63,7 @@ jobs:
         run: |
           pak::pkg_install(
             "local::.",
-            dependencies = FALSE,
+            dependencies = TRUE,
             upgrade = FALSE
           )
       
