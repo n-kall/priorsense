@@ -22,7 +22,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/stan-dev/priorsense/blob/stan/inst/CITATION)
+[`inst/CITATION`](https://github.com/stan-dev/priorsense/blob/development/inst/CITATION)
 
 Kallioinen, N., Paananen, T., Bürkner, P-C., Vehtari, A. (2026).
 priorsense: Efficient prior and likelihood sensitivity checks for
