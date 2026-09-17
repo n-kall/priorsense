@@ -59,11 +59,11 @@ Computing}. 31(16).  \code{doi:10.1007/s11222-020-09982-2}
 \link{powerscale-plots}
 }
 \author{
-\strong{Maintainer}: Noa Kallioinen \email{noa.kallioinen@helsinki.fi} (\href{https://orcid.org/0000-0003-1586-8382}{ORCID}) [copyright holder]
+\strong{Maintainer}: Noa Kallioinen \email{noa.kallioinen@helsinki.fi} (\href{https://orcid.org/0000-0003-1586-8382}{ORCID})
 
 Authors:
 \itemize{
-  \item Noa Kallioinen \email{noa.kallioinen@helsinki.fi} (\href{https://orcid.org/0000-0003-1586-8382}{ORCID}) [copyright holder]
+  \item Noa Kallioinen \email{noa.kallioinen@helsinki.fi} (\href{https://orcid.org/0000-0003-1586-8382}{ORCID})
   \item Topi Paananen (\href{https://orcid.org/0000-0002-6542-407X}{ORCID})
   \item Paul-Christian Bürkner (\href{https://orcid.org/0000-0001-5765-8995}{ORCID})
   \item Aki Vehtari (\href{https://orcid.org/0000-0003-2164-9469}{ORCID})
