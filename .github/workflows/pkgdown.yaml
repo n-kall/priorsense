@@ -49,6 +49,7 @@ jobs:
           needs: website
           dependencies: '"all"'
           extra-packages: |
+            BH
             stan-dev/cmdstanr
             topipa/iwmm
             stan-dev/pkgdown-config
