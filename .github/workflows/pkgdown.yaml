@@ -49,6 +49,7 @@ jobs:
           needs: website
           dependencies: '"all"'
           extra-packages: |
+            local::.
             BH
             RcppEigen
             StanHeaders
@@ -61,8 +62,9 @@ jobs:
       - name: Build pkgdown site
         run: |
           pkgdown::build_site_github_pages(
-            install = TRUE,
-            new_process = FALSE
+            install = FALSE,
+            new_process = TRUE,
+            quiet = FALSE
           )
         shell: Rscript {0}
 
