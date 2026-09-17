@@ -1,0 +1,179 @@
+# priorsense
+
+### Efficient prior and likelihood sensitivity checks
+
+**priorsense** is an R package that provides tools for prior diagnostics
+and sensitivity analysis of Bayesian models [(Kallioinen et al.,
+2026)](https://doi.org/10.21105/joss.11036).
+
+It currently includes functions for performing power-scaling sensitivity
+analysis on fitted Bayesian models. This is a way to check how sensitive
+a posterior is to perturbations of the prior and likelihood and diagnose
+the cause of sensitivity. For efficient computation, power-scaling
+sensitivity analysis relies on Pareto smoothed importance sampling
+(Vehtari et al., 2024) and importance weighted moment matching (Paananen
+et al., 2021).
+
+Priorsense supports fitted model objects from `brms`, Stan (`cmdstanr`
+and `rstan`), JAGS (`jagsUI` and `R2jags`) and NIMBLE, along with
+posterior draws from other software. Power-scaling sensitivity analysis
+checks are described in [Kallioinen et
+al. (2023)](https://doi.org/10.1007/s11222-023-10366-5).
+
+### Resources
+
+- Check the [getting started
+  vignette](https://mc-stan.org/priorsense/articles/getting_started.html)
+  for a simple example
+
+- For a more detailed modelling example see
+  [here](https://mc-stan.org/priorsense/articles/airquality.html)
+
+### Resources
+
+- [mc-stan.org/priorsense](https://mc-stan.org/priorsense) (online
+  documentation, vignettes)
+- [Ask a question](https://discourse.mc-stan.org) (Stan Forums on
+  Discourse)
+- [Open an issue](https://github.com/stan-dev/priorsense/issues) (GitHub
+  issues for bug reports, feature requests)
+
+### Installation
+
+Download the stable version from CRAN with:
+
+``` r
+
+install.packages("priorsense")
+```
+
+Download the development version from [GitHub](https://github.com/)
+with:
+
+``` r
+
+# install.packages("pak")
+pak::pkg_install("stan-dev/priorsense@development")
+```
+
+### Contributing
+
+Contributions are welcome! If you find a bug or have an idea for a
+feature, open an issue. If you are able to fix an issue, fork the
+repository and make a pull request to the `development` branch. Read
+[CONTRIBUTING.md](https://github.com/stan-dev/priorsense/blob/main/.github/CONTRIBUTING.md)
+for more details.
+
+### References
+
+Noa Kallioinen, Topi Paananen, Paul-Christian Bürkner, Aki Vehtari
+(2026). priorsense: Efficient prior and likelihood sensitivity checks
+for Bayesian models in R. Journal of Open Source Software. 11, 123.
+<https://doi.org/10.21105/joss.11036>
+
+Noa Kallioinen, Topi Paananen, Paul-Christian Bürkner, Aki Vehtari
+(2023). Detecting and diagnosing prior and likelihood sensitivity with
+power-scaling. Statistics and Computing. 34, 57.
+<https://doi.org/10.1007/s11222-023-10366-5>
+
+Topi Paananen, Juho Piironen, Paul-Christian Bürkner, Aki Vehtari
+(2021). Implicitly adaptive importance sampling. Statistics and
+Computing 31, 16. <https://doi.org/10.1007/s11222-020-09982-2>
+
+Aki Vehtari, Daniel Simpson, Andrew Gelman, Yuling Yao, Jonah Gabry
+(2024). Pareto smoothed importance sampling. Journal of Machine Learning
+Research. 25, 72. <https://jmlr.org/papers/v25/19-556.html>
+
+# Package index
+
+## Package description
+
+- [`priorsense-package`](https://mc-stan.org/priorsense/dev/reference/priorsense-package.md)
+  [`priorsense`](https://mc-stan.org/priorsense/dev/reference/priorsense-package.md)
+  : priorsense: Prior (and likelihood) diagnostics and sensitivity
+  analysis
+
+## Numerical power-scaling sensitivity checks
+
+Numerical sensitivity checks for prior and likelihood
+
+- [`powerscale_sensitivity()`](https://mc-stan.org/priorsense/dev/reference/powerscale-sensitivity.md)
+  : Power-scaling sensitivity analysis
+- [`powerscale_derivative()`](https://mc-stan.org/priorsense/dev/reference/powerscale_derivative.md)
+  : Derivative with respect to power-scaling
+
+## Graphical checks
+
+Plots for power-scaling sensitivity checks
+
+- [`powerscale_plot_dens()`](https://mc-stan.org/priorsense/dev/reference/powerscale-plots.md)
+  [`powerscale_plot_ecdf()`](https://mc-stan.org/priorsense/dev/reference/powerscale-plots.md)
+  [`powerscale_plot_quantities()`](https://mc-stan.org/priorsense/dev/reference/powerscale-plots.md)
+  [`plot(`*`<powerscaled_sequence>`*`)`](https://mc-stan.org/priorsense/dev/reference/powerscale-plots.md)
+  : Diagnostic plots for power-scaling sensitivity
+
+## Example models
+
+Provides example model code and data for different PPLs compatible with
+priorsense
+
+- [`example_powerscale_model()`](https://mc-stan.org/priorsense/dev/reference/example_powerscale_model.md)
+  : Example models for power-scaling sensitivity
+
+## Other functions for exploring sensitivity
+
+- [`powerscale()`](https://mc-stan.org/priorsense/dev/reference/powerscale-overview.md)
+  [`powerscale_sequence()`](https://mc-stan.org/priorsense/dev/reference/powerscale-overview.md)
+  : Prior/likelihood power-scaling perturbation
+- [`powerscale_gradients()`](https://mc-stan.org/priorsense/dev/reference/powerscale-gradients.md)
+  : Power-scale gradients
+- [`create_priorsense_data()`](https://mc-stan.org/priorsense/dev/reference/create-priorsense-data.md)
+  : Create data structure for priorsense
+
+## Helper functions
+
+- [`create_priorsense_data()`](https://mc-stan.org/priorsense/dev/reference/create-priorsense-data.md)
+  : Create data structure for priorsense
+- [`log_lik_draws()`](https://mc-stan.org/priorsense/dev/reference/log_lik_draws.md)
+  : Extract log likelihood draws
+- [`log_prior_draws()`](https://mc-stan.org/priorsense/dev/reference/log_prior_draws.md)
+  : Extract log prior draws
+- [`predictions_as_draws()`](https://mc-stan.org/priorsense/dev/reference/predictions_as_draws.md)
+  : brms predictions as draws
+- [`cjs_dist()`](https://mc-stan.org/priorsense/dev/reference/cjs_dist.md)
+  : Cumulative Jensen-Shannon divergence
+
+# Articles
+
+### Getting started
+
+These pages demonstrate how to use the **priorsense** package to check
+prior and likelihood sensitivity for Bayesian models fit using MCMC.
+
+- [Getting started with
+  priorsense](https://mc-stan.org/priorsense/dev/articles/getting_started.md):
+- [Using priorsense with
+  Stan](https://mc-stan.org/priorsense/dev/articles/priorsense_with_stan.md):
+- [Using priorsense with
+  brms](https://mc-stan.org/priorsense/dev/articles/priorsense_with_brms.md):
+- [Using priorsense with
+  JAGS](https://mc-stan.org/priorsense/dev/articles/priorsense_with_jags.md):
+- [Using priorsense with
+  NIMBLE](https://mc-stan.org/priorsense/dev/articles/priorsense_with_nimble.md):
+
+### Additional examples
+
+These pages demonstrate how to use the **priorsense** package in more
+detail.
+
+- [Workflow example: air
+  quality](https://mc-stan.org/priorsense/dev/articles/airquality.md):
+
+### Further details
+
+- [Interpreting sensitivity
+  diagnostics](https://mc-stan.org/priorsense/dev/articles/sensitivity_diagnostic.md):
+- [Quantities of interest for sensitivity
+  checks](https://mc-stan.org/priorsense/dev/articles/quantity_of_interest.md):
+- [Published papers using
+  priorsense](https://mc-stan.org/priorsense/dev/articles/papers.md):
