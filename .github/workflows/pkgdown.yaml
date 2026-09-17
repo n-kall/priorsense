@@ -53,6 +53,32 @@ jobs:
             topipa/iwmm
             stan-dev/pkgdown-config
             any::textshaping
+
+      - name: Build pkgdown articles with diagnostics
+        shell: Rscript {0}
+        env:
+          QUARTO_LOG_LEVEL: DEBUG
+          QUARTO_PRINT_STACK: "true"
+        run: |
+          options(
+            warn = 1,
+            error = function() {
+              cat("\n=== R traceback ===\n")
+              traceback(20)
+      
+              cat("\n=== rlang traceback ===\n")
+              try(rlang::last_trace(drop = FALSE))
+      
+              quit(status = 1, save = "no")
+            }
+          )
+      
+          cat("Quarto executable: ", quarto::quarto_path(), "\n")
+          system2(quarto::quarto_path(), "--version")
+      
+          pkgdown::build_articles(
+            new_process = FALSE, quiet = FALSE
+          )
       
       - name: Build pkgdown site
         run: |
