@@ -43,8 +43,8 @@ powerscale_sensitivity(fit)
     Likelihood selection: all data
 
         variable prior likelihood                           diagnosis
-     b_Intercept 0.372      0.543 potential prior-likelihood conflict
-           sigma 0.335      0.634 potential prior-likelihood conflict
+     b_Intercept 0.401      0.577 potential prior-likelihood conflict
+           sigma 0.309      0.549 potential prior-likelihood conflict
 
 ``` r
 
@@ -56,8 +56,8 @@ powerscale_sensitivity(fit, prior_selection = "sigma")
     Likelihood selection: all data
 
         variable prior likelihood diagnosis
-     b_Intercept 0.005      0.543         -
-           sigma 0.009      0.634         -
+     b_Intercept 0.004      0.577         -
+           sigma 0.007      0.549         -
 
 ``` r
 
@@ -69,8 +69,8 @@ powerscale_sensitivity(fit, prior_selection = "intercept")
     Likelihood selection: all data
 
         variable prior likelihood                           diagnosis
-     b_Intercept 0.376      0.543 potential prior-likelihood conflict
-           sigma 0.344      0.634 potential prior-likelihood conflict
+     b_Intercept 0.405      0.577 potential prior-likelihood conflict
+           sigma 0.316      0.549 potential prior-likelihood conflict
 
 ``` r
 
