@@ -1117,14 +1117,18 @@ powerscale_summary_plot <- function(
                 data = points
             ) +
             ggplot2::scale_shape_manual(
-                name = "Component",
                 values = c("likelihood" = 22, "prior" = 15)
             ) +
             ggplot2::scale_color_manual(values = pareto_k_colours) +
             ggplot2::guides(
                 color = ggplot2::guide_legend(
                     title = "Pareto k",
-                    override.aes = list(shape = 15)
+                    override.aes = list(shape = 15),
+                    order = 2
+                ),
+                shape = ggplot2::guide_legend(
+                    title = "Component",
+                    order = 1
                 )
             ) +
             ggplot2::ylab(NULL) +
@@ -1179,7 +1183,8 @@ powerscale_summary_plot <- function(
                     ),
                     data = sub_mcse,
                     color = "black"
-                )
+                ) +
+                ggplot2::guides(linetype = ggplot2::guide_legend(order = 3))
         }
 
         plots[[i]] <- p
