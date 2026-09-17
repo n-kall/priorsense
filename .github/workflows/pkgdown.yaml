@@ -57,47 +57,6 @@ jobs:
             topipa/iwmm
             stan-dev/pkgdown-config
             any::textshaping
-
-      - name: Install package for article build
-        shell: Rscript {0}
-        run: |
-          pak::pkg_install(
-            "local::.",
-            dependencies = TRUE,
-            upgrade = FALSE
-          )
-      
-          stopifnot(requireNamespace("priorsense", quietly = TRUE))
-      
-          message(
-            "Installed priorsense version: ",
-            as.character(packageVersion("priorsense"))
-          )
-      
-      - name: Build pkgdown articles with diagnostics
-        shell: Rscript {0}
-        env:
-          QUARTO_LOG_LEVEL: DEBUG
-          QUARTO_PRINT_STACK: "true"
-        run: |
-          options(
-            warn = 1,
-            error = function() {
-              cat("\n=== R traceback ===\n")
-              traceback(20)
-      
-              cat("\n=== rlang traceback ===\n")
-              try(print(rlang::last_trace(drop = FALSE)))
-      
-              quit(status = 1, save = "no")
-            }
-          )
-      
-          pkgdown::build_articles(
-            pkg = ".",
-            quiet = FALSE,
-            lazy = FALSE
-          )
       
       - name: Build pkgdown site
         run: |
