@@ -1,3 +1,9 @@
+priorsense 1.3.1.9000
+---
++ `priorsense` is now an official Stan package, and links to pages and repositories have been updated
++ Plot help text now prints to the console rather than on the plot
++ `powerscale_plot_quantities()` now highlights the line segment closer to 1 when k-hat is high
+
 priorsense 1.3.1
 ---
 + Add new JOSS paper as primary citation for the package.
