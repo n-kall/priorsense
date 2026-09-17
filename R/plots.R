@@ -766,6 +766,72 @@ powerscale_plot_ecdf.powerscaled_sequence <-
     }
 
 
+powerscale_quantity_segments <- function(summaries) {
+    group_vars <- interaction(
+        summaries$variable,
+        summaries$quantity,
+        summaries$component,
+        drop = TRUE,
+        lex.order = TRUE
+    )
+
+    grouped_summaries <- split(summaries, group_vars)
+
+    segments <- lapply(grouped_summaries, function(group_data) {
+        group_data <- group_data[
+            order(group_data[[".powerscale_alpha"]]),
+            ,
+            drop = FALSE
+        ]
+
+        if (nrow(group_data) < 2) {
+            return(NULL)
+        }
+
+        segment_data <- group_data[-nrow(group_data), , drop = FALSE]
+
+        segment_data$x <- group_data[[".powerscale_alpha"]][-nrow(group_data)]
+        segment_data$xend <- group_data[[".powerscale_alpha"]][-1]
+        segment_data$y <- group_data$value[-nrow(group_data)]
+        segment_data$yend <- group_data$value[-1]
+
+        lower_distance <- abs(log(segment_data$x))
+        upper_distance <- abs(log(segment_data$xend))
+
+        lower_status <- group_data$pareto_k_value[-nrow(group_data)]
+        upper_status <- group_data$pareto_k_value[-1]
+
+        segment_status <- ifelse(
+            lower_distance > upper_distance,
+            as.character(lower_status),
+            ifelse(
+                upper_distance > lower_distance,
+                as.character(upper_status),
+                ifelse(
+                    lower_status == "High" | upper_status == "High",
+                    "High",
+                    "OK"
+                )
+            )
+        )
+
+        segment_data$pareto_k_value <- factor(
+            segment_status,
+            levels = c("OK", "High")
+        )
+
+        segment_data
+    })
+
+    segments <- Filter(Negate(is.null), segments)
+
+    if (length(segments) == 0) {
+        return(summaries[FALSE, , drop = FALSE])
+    }
+
+    do.call(rbind, segments)
+}
+
 ##' @rdname powerscale-plots
 ##' @export
 powerscale_plot_quantities <- function(x, ...) {
@@ -1081,6 +1147,8 @@ powerscale_summary_plot <- function(
                     max(summaries[[".powerscale_alpha"]]),
         ]
 
+        line_segments <- powerscale_quantity_segments(summaries)
+
         p <- ggplot2::ggplot(
             data = summaries,
             mapping = ggplot2::aes(
@@ -1088,10 +1156,16 @@ powerscale_summary_plot <- function(
                 y = .data$value
             )
         ) +
-            ggplot2::geom_line(ggplot2::aes(
-                color = .data$pareto_k_value,
-                group = .data$component
-            )) +
+            ggplot2::geom_segment(
+                data = line_segments,
+                mapping = ggplot2::aes(
+                    x = .data$x,
+                    xend = .data$xend,
+                    y = .data$y,
+                    yend = .data$yend,
+                    color = .data$pareto_k_value
+                )
+            ) +
             ggh4x::facet_grid2(
                 rows = ggplot2::vars(factor(
                     .data$variable,
