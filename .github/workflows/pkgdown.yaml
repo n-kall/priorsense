@@ -77,7 +77,7 @@ jobs:
           system2(quarto::quarto_path(), "--version")
       
           pkgdown::build_articles(
-            new_process = FALSE, quiet = FALSE
+            quiet = FALSE
           )
       
       - name: Build pkgdown site
