@@ -8,6 +8,7 @@ priorsense.Rcheck
 .DS_Store
 docs
 /doc/
+/dev/
 /Meta/
 /pkgdown/
 /..Rcheck/

@@ -14,6 +14,7 @@ powerscale_sensitivity(x, ...)
 \method{powerscale_sensitivity}{default}(
   x,
   variable = NULL,
+  variables = NULL,
   lower_alpha = 0.99,
   upper_alpha = 1.01,
   div_measure = "cjs_dist",
@@ -37,6 +38,7 @@ powerscale_sensitivity(x, ...)
 \method{powerscale_sensitivity}{priorsense_data}(
   x,
   variable = NULL,
+  variables = NULL,
   lower_alpha = 0.99,
   upper_alpha = 1.01,
   div_measure = "cjs_dist",
@@ -65,6 +67,8 @@ powerscale_sensitivity(x, ...)
 \item{...}{Further arguments passed to functions.}
 
 \item{variable}{Character vector of variables to check.}
+
+\item{variables}{alias of \code{variable}.}
 
 \item{lower_alpha}{Lower alpha value for gradient calculation.}
 

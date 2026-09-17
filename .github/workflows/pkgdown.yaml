@@ -29,50 +29,40 @@ jobs:
       - uses: r-lib/actions/setup-pandoc@v2
 
       - uses: quarto-dev/quarto-actions/setup@v2
-
-      - uses: r-lib/actions/setup-r@v2
+      
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
         with:
           use-public-rspm: true
-
-      - uses: r-lib/actions/setup-r-dependencies@v2
+          extra-repositories: |
+            https://stan-dev.r-universe.dev
+            https://topipa.r-universe.dev
+      
+      - name: Install pkgdown dependencies
+        uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: |
+          cache-version: 4
+          packages: |
+            deps::.
+            any::sessioninfo
             any::pkgdown
-            local::.
-            XML
-            stan-dev/cmdstanr
-            paul-buerkner/brms
-            topipa/iwmm
-            rcmdcheck
-            rstan
-            checkmate
-            jsonlite
-            nimble
-            posterior
-            processx
-            R6
+          needs: website
+          dependencies: '"all"'
+          extra-packages: |
             BH
-            R2jags
             RcppEigen
             StanHeaders
             RcppParallel
-            withr
-            testthat
-            quarto
-            any::XML
+            stan-dev/cmdstanr
+            topipa/iwmm
+            stan-dev/pkgdown-config
             any::textshaping
-          needs: website
-
-
-      - name: Build site
+      
+      - name: Build pkgdown site
         run: |
-          withr::with_envvar(
-            c("NOT_CRAN" = "true"), # this should already be set by setup-r@v2? keeping because vignettes don't build otherwise
-            pkgdown::build_site_github_pages(
-              lazy = FALSE, # change to TRUE if runner times out.
-              run_dont_run = TRUE,
-              new_process = TRUE
-            )
+          pkgdown::build_site_github_pages(
+            install = TRUE,
+            new_process = FALSE
           )
         shell: Rscript {0}
 
