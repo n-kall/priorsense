@@ -62,7 +62,7 @@ jobs:
         run: |
           pkgdown::build_site_github_pages(
             install = TRUE,
-            new_process = FALSE,
+            new_process = TRUE,
             quiet = FALSE
           )
         shell: Rscript {0}
