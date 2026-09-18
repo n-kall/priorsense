@@ -1,6 +1,6 @@
 # Changelog
 
-## priorsense 1.3.1.9000
+## priorsense 1.4.0
 
 - `priorsense` is now an official Stan package, and links to pages and
   repositories have been updated
