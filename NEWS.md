@@ -1,4 +1,4 @@
-priorsense 1.3.1.9000
+priorsense 1.4.0
 ---
 + `priorsense` is now an official Stan package, and links to pages and repositories have been updated
 + Plot help text now prints to the console rather than on the plot
